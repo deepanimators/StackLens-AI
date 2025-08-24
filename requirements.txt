@@ -1,0 +1,20 @@
+# StackLens AI - Python Dependencies (Essential packages only)
+# Only Vector Database Service for RAG functionality
+
+# FastAPI and server components
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Machine Learning for Vector Database
+sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+numpy==1.24.3
+
+# Data processing
+pydantic==2.5.0
+
+# Utilities
+python-dotenv==1.0.0
+
+# Optional GPU acceleration (uncomment if GPU available)
+# faiss-gpu==1.7.4
