@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-#Requires -Version 7.0
+# PowerShell 5.1+ compatible rebuild script
 
 param(
     [string]$ServerIP = "localhost"
