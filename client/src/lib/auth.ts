@@ -168,7 +168,7 @@ export async function authenticatedRequest(
   method: string,
   url: string,
   data?: unknown
-): Promise<Response> {
+): Promise<any> {
   const headers = {
     ...authManager.getAuthHeaders(),
     ...(data && !(data instanceof FormData)
@@ -181,17 +181,15 @@ export async function authenticatedRequest(
     headers,
     body:
       data instanceof FormData ? data : data ? JSON.stringify(data) : undefined,
-    credentials: "include",
   });
 
-  if (response.status === 401) {
-    authManager.logout();
-    if (
-      typeof window !== "undefined" &&
-      !window.location.pathname.includes("/login")
-    ) {
-      window.location.href = "/login";
-    }
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return await response.json();
   }
 
   return response;

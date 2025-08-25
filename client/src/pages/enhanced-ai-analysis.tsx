@@ -112,21 +112,21 @@ export default function EnhancedAIAnalysisPage() {
   // Fetch AI service health
   const { data: healthData } = useQuery({
     queryKey: ["/api/ai/health"],
-    queryFn: () => authenticatedRequest("/api/ai/health"),
+    queryFn: () => authenticatedRequest("GET", "/api/ai/health"),
     refetchInterval: 30000, // Refresh every 30 seconds
   });
 
   // Fetch AI statistics
   const { data: statisticsData } = useQuery({
     queryKey: ["/api/ai/statistics"],
-    queryFn: () => authenticatedRequest("/api/ai/statistics"),
+    queryFn: () => authenticatedRequest("GET", "/api/ai/statistics"),
     refetchInterval: 60000, // Refresh every minute
   });
 
   // Fetch real-time monitoring
   const { data: monitoringData } = useQuery({
     queryKey: ["/api/ai/monitoring/realtime"],
-    queryFn: () => authenticatedRequest("/api/ai/monitoring/realtime"),
+    queryFn: () => authenticatedRequest("GET", "/api/ai/monitoring/realtime"),
     refetchInterval: 15000, // Refresh every 15 seconds
   });
 

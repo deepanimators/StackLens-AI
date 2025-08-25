@@ -76,14 +76,14 @@ export default function EnhancedDashboard() {
   // Fetch AI-enhanced dashboard data
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: ["/api/dashboard/ai-enhanced"],
-    queryFn: () => authenticatedRequest("/api/dashboard/ai-enhanced"),
+    queryFn: () => authenticatedRequest("GET", "/api/dashboard/ai-enhanced"),
     refetchInterval: 30000, // Refresh every 30 seconds
   });
 
   // Fetch regular dashboard stats for comparison
   const { data: regularStats } = useQuery({
     queryKey: ["/api/dashboard/stats"],
-    queryFn: () => authenticatedRequest("/api/dashboard/stats"),
+    queryFn: () => authenticatedRequest("GET", "/api/dashboard/stats"),
   });
 
   if (isLoading) {

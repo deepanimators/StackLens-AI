@@ -13,7 +13,7 @@ import {
   modelDeployments,
   auditLogs,
   notifications,
-  userSettings,
+  settings as userSettings,
   aiTrainingData,
   type User,
   type InsertUser,
@@ -43,11 +43,11 @@ import {
   type InsertAuditLog,
   type Notification,
   type InsertNotification,
-  type UserSettings,
-  type InsertUserSettings,
+  type Setting as UserSettings,
+  type InsertSetting as InsertUserSettings,
   type AiTrainingData,
   type InsertAiTrainingData,
-} from "@shared/sqlite-schema";
+} from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc, asc, count, sql } from "drizzle-orm";
 
@@ -266,10 +266,12 @@ export interface IStorage {
   ): Promise<void>;
   deleteTrainingData(id: number): Promise<void>;
   getTrainingDataMetrics(): Promise<{
-    total: number;
-    byCategory: Record<string, number>;
+    totalRecords: number;
+    validatedRecords: number;
+    bySource: Record<string, number>;
     bySeverity: Record<string, number>;
-    averageConfidence: number;
+    byErrorType: Record<string, number>;
+    avgConfidence: number;
   }>;
 }
 
@@ -428,8 +430,20 @@ export class DatabaseStorage implements IStorage {
   async getErrorsByUser(userId: number): Promise<ErrorLog[]> {
     const results = await db
       .select({
-        ...errorLogs,
-        filename: logFiles.originalName,
+        id: errorLogs.id,
+        fileId: errorLogs.fileId,
+        lineNumber: errorLogs.lineNumber,
+        timestamp: errorLogs.timestamp,
+        severity: errorLogs.severity,
+        errorType: errorLogs.errorType,
+        message: errorLogs.message,
+        fullText: errorLogs.fullText,
+        pattern: errorLogs.pattern,
+        resolved: errorLogs.resolved,
+        aiSuggestion: errorLogs.aiSuggestion,
+        mlPrediction: errorLogs.mlPrediction,
+        createdAt: errorLogs.createdAt,
+        // filename: logFiles.originalName,
       })
       .from(errorLogs)
       .innerJoin(logFiles, eq(errorLogs.fileId, logFiles.id))
@@ -583,7 +597,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteMlModel(id: number): Promise<boolean> {
     const result = await db.delete(mlModels).where(eq(mlModels.id, id));
-    return result.rowCount > 0;
+    return result.changes > 0;
   }
 
   // Error patterns
@@ -623,7 +637,7 @@ export class DatabaseStorage implements IStorage {
     const result = await db
       .delete(errorPatterns)
       .where(eq(errorPatterns.id, id));
-    return result.rowCount > 0;
+    return result.changes > 0;
   }
 
   async getAllErrorPatterns(): Promise<ErrorPattern[]> {
@@ -698,7 +712,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteRole(id: number): Promise<boolean> {
     const result = await db.delete(roles).where(eq(roles.id, id));
-    return result.rowCount > 0;
+    return result.changes > 0;
   }
 
   // User Role Management
@@ -727,7 +741,7 @@ export class DatabaseStorage implements IStorage {
       .update(userRoles)
       .set({ isActive: false })
       .where(eq(userRoles.id, id));
-    return result.rowCount > 0;
+    return result.changes > 0;
   }
 
   // Training Modules
@@ -794,7 +808,7 @@ export class DatabaseStorage implements IStorage {
     const result = await db
       .delete(trainingModules)
       .where(eq(trainingModules.id, id));
-    return result.rowCount > 0;
+    return result.changes > 0;
   }
 
   // User Training
@@ -1050,18 +1064,20 @@ export class DatabaseStorage implements IStorage {
       };
     }
 
-    const navigationPreferences = userSettingsRecord.navigationPreferences
-      ? JSON.parse(userSettingsRecord.navigationPreferences)
-      : {
-          showTopNav: true,
-          topNavStyle: "sticky",
-          topNavColor: "#1f2937",
-          showSideNav: true,
-          sideNavStyle: "overlay",
-          sideNavPosition: "left",
-          sideNavColor: "#374151",
-          enableBreadcrumbs: true,
-        };
+    const navigationPreferences =
+      userSettingsRecord.navigationPreferences &&
+      typeof userSettingsRecord.navigationPreferences === "string"
+        ? JSON.parse(userSettingsRecord.navigationPreferences)
+        : {
+            showTopNav: true,
+            topNavStyle: "sticky",
+            topNavColor: "#1f2937",
+            showSideNav: true,
+            sideNavStyle: "overlay",
+            sideNavPosition: "left",
+            sideNavColor: "#374151",
+            enableBreadcrumbs: true,
+          };
 
     console.log(
       "Returning UI settings from database. Navigation preferences:",
@@ -1252,8 +1268,8 @@ export class DatabaseStorage implements IStorage {
       .set({
         isValidated: isValid,
         validatedBy,
-        validatedAt: Date.now(),
-        updatedAt: Date.now(),
+        validatedAt: new Date(),
+        updatedAt: new Date(),
       })
       .where(eq(aiTrainingData.id, id));
   }
@@ -1272,7 +1288,7 @@ export class DatabaseStorage implements IStorage {
 
     await this.upsertUserSettings(1, {
       navigationPreferences,
-      updatedAt: Date.now(),
+      updatedAt: new Date(),
     });
 
     console.log(

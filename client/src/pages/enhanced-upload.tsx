@@ -106,10 +106,7 @@ export default function EnhancedUploadPage() {
       formData.append("file", fileData.file);
       formData.append("aiOptions", JSON.stringify(aiOptions));
 
-      return await authenticatedRequest("/api/files/upload", {
-        method: "POST",
-        body: formData,
-      });
+      return await authenticatedRequest("POST", "/api/files/upload", formData);
     },
     onSuccess: (data, variables) => {
       // Update file status to analyzing
