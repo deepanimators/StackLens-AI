@@ -48,7 +48,7 @@ if ($needsInstall) {
     pause
     exit 0
 } else {
-    Write-Host "✓ All prerequisites found" -ForegroundColor Green
+    Write-Host "All prerequisites found" -ForegroundColor Green
 }
 
 # Step 2: Setup Application
@@ -68,8 +68,9 @@ Write-Host "=====================================" -ForegroundColor Green
 Write-Host "    QUICK DEPLOY COMPLETED!" -ForegroundColor Yellow
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "🚀 Your StackLens-AI is now running!" -ForegroundColor Green
+Write-Host "Your StackLens-AI is now running!" -ForegroundColor Green
 Write-Host ""
-Write-Host "� Access URL: http://$ServerIP:$Port" -ForegroundColor Cyan
-Write-Host "📤 Share this URL with your staff!" -ForegroundColor Yellow
+$accessUrl = "http://" + $ServerIP + ":" + $Port
+Write-Host "Access URL: $accessUrl" -ForegroundColor Cyan
+Write-Host "Share this URL with your staff!" -ForegroundColor Yellow
 Write-Host ""
