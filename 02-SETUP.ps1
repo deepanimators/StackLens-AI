@@ -93,7 +93,7 @@ if (-not $installSuccess) {
     Write-Host "All npm install attempts failed. Installing core packages manually..." -ForegroundColor Yellow
     
     # Install critical packages individually
-    $corePackages = @("vite", "@vitejs/plugin-react", "typescript", "react", "react-dom", "cross-env")
+    $corePackages = @("vite", "@vitejs/plugin-react", "typescript", "react", "react-dom", "cross-env", "axios")
     foreach ($package in $corePackages) {
         Write-Host "Installing $package..." -ForegroundColor Gray
         npm install $package --save --no-audit
