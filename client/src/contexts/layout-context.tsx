@@ -24,7 +24,7 @@ interface LayoutProviderProps {
 export function LayoutProvider({ children }: LayoutProviderProps) {
   const [layoutType, setLayoutType] = useState<LayoutType>(() => {
     const saved = localStorage.getItem('stacklens-layout-type');
-    return (saved as LayoutType) || 'sidebar';
+    return (saved as LayoutType) || 'topnav';
   });
 
   useEffect(() => {
