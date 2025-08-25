@@ -54,4 +54,4 @@ Write-Host ""
 Write-Host "🔄 For future updates:" -ForegroundColor Cyan
 Write-Host "   1. Push changes to your Git repo" -ForegroundColor White  
 Write-Host "   2. Run: git pull" -ForegroundColor White
-Write-Host "   3. Run: .\deploy-to-windows.ps1 -ServerIP $ServerIP -UpdateOnly" -ForegroundColor White
+Write-Host "   3. Run: .\deploy-to-windows.ps1 -ServerIP YOUR_SERVER_IP -UpdateOnly" -ForegroundColor White
