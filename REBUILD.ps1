@@ -68,8 +68,8 @@ if (Test-Path "dist/index.js") {
     exit 1
 }
 
-if (Test-Path "client/dist/index.html") {
-    Write-Host "Client build output found: client/dist/index.html" -ForegroundColor Green
+if (Test-Path "dist/public/index.html") {
+    Write-Host "Client build output found: dist/public/index.html" -ForegroundColor Green
 } else {
     Write-Host "ERROR: Client build output missing!" -ForegroundColor Red
     exit 1
