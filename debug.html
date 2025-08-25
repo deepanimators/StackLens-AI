@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .test {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+      .success {
+        background: #e8f5e8;
+        border-color: #4caf50;
+      }
+      .error {
+        background: #ffe8e8;
+        border-color: #f44336;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>StackLens Debug Test</h1>
+
+    <div class="test success">✅ HTML is loading</div>
+
+    <div class="test" id="css-test">🔍 Testing CSS loading...</div>
+
+    <div class="test" id="js-test">🔍 Testing JavaScript loading...</div>
+
+    <div class="test" id="api-test">🔍 Testing API connection...</div>
+
+    <div class="test" id="assets-test">🔍 Testing asset files...</div>
+
+    <script>
+      // Test JavaScript
+      document.getElementById("js-test").textContent =
+        "✅ JavaScript is working";
+      document.getElementById("js-test").className = "test success";
+
+      // Test API
+      fetch("/api/auth/me")
+        .then((response) => {
+          const apiTest = document.getElementById("api-test");
+          if (response.status === 401) {
+            apiTest.textContent =
+              "✅ API is working (returned 401 as expected)";
+            apiTest.className = "test success";
+          } else {
+            apiTest.textContent = `❌ API unexpected response: ${response.status}`;
+            apiTest.className = "test error";
+          }
+        })
+        .catch((error) => {
+          document.getElementById(
+            "api-test"
+          ).textContent = `❌ API error: ${error.message}`;
+          document.getElementById("api-test").className = "test error";
+        });
+
+      // Test assets
+      Promise.all([
+        fetch("/assets/index-yUxBeiJW.css").then((r) => r.ok),
+        fetch("/assets/index-2SjBJzb3.js").then((r) => r.ok),
+      ])
+        .then((results) => {
+          const assetsTest = document.getElementById("assets-test");
+          if (results.every((r) => r)) {
+            assetsTest.textContent = "✅ Asset files are accessible";
+            assetsTest.className = "test success";
+          } else {
+            assetsTest.textContent = "❌ Some asset files failed to load";
+            assetsTest.className = "test error";
+          }
+        })
+        .catch((error) => {
+          document.getElementById(
+            "assets-test"
+          ).textContent = `❌ Assets error: ${error.message}`;
+          document.getElementById("assets-test").className = "test error";
+        });
+    </script>
+
+    <style>
+      /* Test CSS by changing background */
+      #css-test {
+        background: #e8f5e8;
+        border-color: #4caf50;
+      }
+      #css-test:after {
+        content: "✅ CSS is working";
+      }
+    </style>
+  </body>
+</html>

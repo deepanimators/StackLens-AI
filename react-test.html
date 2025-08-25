@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <title>React Test</title>
+    <style>
+      body {
+        margin: 0;
+        background: #000;
+        color: #fff;
+        font-family: Arial, sans-serif;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .loading {
+        background: #333;
+        padding: 20px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="loading">🔍 Testing React mounting...</div>
+    </div>
+
+    <script type="module">
+      console.log("Script starting...");
+
+      // Test if we can access the built assets
+      fetch("/assets/index-2SjBJzb3.js")
+        .then((response) => {
+          console.log("JS file response:", response.status, response.ok);
+          return response.text();
+        })
+        .then((content) => {
+          console.log("JS file size:", content.length, "characters");
+          console.log("First 100 chars:", content.substring(0, 100));
+
+          // Try to execute the React app by creating a script element
+          const script = document.createElement("script");
+          script.type = "module";
+          script.crossOrigin = "anonymous";
+          script.src = "/assets/index-2SjBJzb3.js";
+          script.onload = () => console.log("React script loaded successfully");
+          script.onerror = (e) =>
+            console.error("React script failed to load:", e);
+          document.head.appendChild(script);
+
+          // Also load the CSS
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = "/assets/index-yUxBeiJW.css";
+          link.crossOrigin = "anonymous";
+          link.onload = () => console.log("CSS loaded successfully");
+          link.onerror = (e) => console.error("CSS failed to load:", e);
+          document.head.appendChild(link);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch JS file:", error);
+          document.getElementById("root").innerHTML =
+            '<div class="loading">❌ Failed to load JavaScript: ' +
+            error.message +
+            "</div>";
+        });
+
+      // Wait a few seconds and check if React mounted
+      setTimeout(() => {
+        const root = document.getElementById("root");
+        if (root && root.innerHTML.includes("Testing React mounting")) {
+          console.log("React did not mount - still showing test message");
+          root.innerHTML =
+            '<div class="loading">❌ React failed to mount after 3 seconds</div>';
+        } else {
+          console.log("React appears to have mounted successfully");
+        }
+      }, 3000);
+    </script>
+  </body>
+</html>
