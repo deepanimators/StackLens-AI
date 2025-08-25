@@ -1,4 +1,4 @@
-# SETUP PYTHON - Python 3.12 Detection and Configuration
+# SETUP PYTHON - Python 3.12 Detection and Configuration (FIXED)
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "    PYTHON 3.12 SETUP" -ForegroundColor Yellow
 Write-Host "=====================================" -ForegroundColor Cyan
@@ -32,7 +32,7 @@ foreach ($cmd in $pythonCommands) {
     if ($version -eq "3.12") {
         $python312Found = $true
         $pythonCommand = $cmd
-        Write-Host "✓ Found Python 3.12 using command: $cmd" -ForegroundColor Green
+        Write-Host "Found Python 3.12 using command: $cmd" -ForegroundColor Green
         break
     }
     elseif ($version) {
@@ -41,7 +41,7 @@ foreach ($cmd in $pythonCommands) {
 }
 
 if (-not $python312Found) {
-    Write-Host "⚠ Python 3.12 not found. Checking available versions..." -ForegroundColor Yellow
+    Write-Host "Python 3.12 not found. Checking available versions..." -ForegroundColor Yellow
     
     # Try to find any Python 3.x
     foreach ($cmd in $pythonCommands) {
@@ -54,7 +54,7 @@ if (-not $python312Found) {
     }
     
     if (-not $pythonCommand) {
-        Write-Host "✗ No suitable Python version found!" -ForegroundColor Red
+        Write-Host "No suitable Python version found!" -ForegroundColor Red
         Write-Host ""
         Write-Host "Please install Python 3.12:" -ForegroundColor Cyan
         Write-Host "1. Download from: https://python.org/downloads/release/python-3120/" -ForegroundColor White
@@ -71,7 +71,7 @@ Write-Host "Setting up Python environment..." -ForegroundColor Green
 $env:PYTHON312_CMD = $pythonCommand
 $env:PIP312_CMD = "$pythonCommand -m pip"
 
-Write-Host "✓ Python environment configured:" -ForegroundColor Green
+Write-Host "Python environment configured:" -ForegroundColor Green
 Write-Host "   Python command: $pythonCommand" -ForegroundColor White
 Write-Host "   Pip command: $($env:PIP312_CMD)" -ForegroundColor White
 
@@ -81,6 +81,6 @@ Write-Host "Setting up pip..." -ForegroundColor Green
 & $pythonCommand -m pip install --upgrade pip setuptools wheel
 
 Write-Host ""
-Write-Host "✓ Python setup completed!" -ForegroundColor Green
+Write-Host "Python setup completed!" -ForegroundColor Green
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host ""
