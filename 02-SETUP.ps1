@@ -93,11 +93,15 @@ if (-not $installSuccess) {
     Write-Host "All npm install attempts failed. Installing core packages manually..." -ForegroundColor Yellow
     
     # Install critical packages individually
-    $corePackages = @("vite", "@vitejs/plugin-react", "typescript", "react", "react-dom")
+    $corePackages = @("vite", "@vitejs/plugin-react", "typescript", "react", "react-dom", "cross-env")
     foreach ($package in $corePackages) {
         Write-Host "Installing $package..." -ForegroundColor Gray
         npm install $package --save --no-audit
     }
+} else {
+    # Ensure cross-env is installed for Windows compatibility
+    Write-Host "Ensuring cross-env is installed for Windows compatibility..." -ForegroundColor Yellow
+    npm install cross-env --save --no-audit
 }
 
 # Step 4: Install Python Dependencies
