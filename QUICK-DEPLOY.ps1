@@ -43,7 +43,7 @@ Write-Host "========================" -ForegroundColor Green
 Write-Host "Your StackLens-AI application is now running!" -ForegroundColor White
 Write-Host ""
 Write-Host "🌐 Access URLs:" -ForegroundColor Cyan
-Write-Host "   Main App: http://$ServerIP`:$Port" -ForegroundColor White
+Write-Host "   Main App: http://$ServerIP:$Port" -ForegroundColor White
 Write-Host "   Share this URL with your staff!" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "📊 Management Commands:" -ForegroundColor Cyan  
@@ -52,6 +52,6 @@ Write-Host "   Logs:     pm2 logs stacklens-ai-server" -ForegroundColor White
 Write-Host "   Restart:  pm2 restart stacklens-ai-server" -ForegroundColor White
 Write-Host ""
 Write-Host "🔄 For future updates:" -ForegroundColor Cyan
-Write-Host "   1. Push changes to your Git repo" -ForegroundColor White  
+Write-Host "   1. Push changes to your Git repo" -ForegroundColor White
 Write-Host "   2. Run: git pull" -ForegroundColor White
 Write-Host "   3. Run: .\deploy-to-windows.ps1 -ServerIP YOUR_SERVER_IP -UpdateOnly" -ForegroundColor White
