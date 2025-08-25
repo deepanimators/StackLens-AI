@@ -24,25 +24,28 @@ export function FirebaseAuthWrapper({ children }: FirebaseAuthWrapperProps) {
         if (result) {
           // User successfully signed in
           const user = result.user;
-          
+
           // Sync user with backend
-          const response = await fetch(buildApiUrl('/api/auth/firebase-signin'), {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              uid: user.uid,
-              email: user.email,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-            }),
-          });
+          const response = await fetch(
+            buildApiUrl("/api/auth/firebase-signin"),
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+              }),
+            }
+          );
 
           if (response.ok) {
             const { token } = await response.json();
-            localStorage.setItem('auth_token', token);
-            
+            localStorage.setItem("auth_token", token);
+
             toast({
               title: "Welcome!",
               description: "Successfully signed in with Google",
@@ -50,7 +53,7 @@ export function FirebaseAuthWrapper({ children }: FirebaseAuthWrapperProps) {
           }
         }
       } catch (error) {
-        console.error('Firebase auth error:', error);
+        console.error("Firebase auth error:", error);
         toast({
           title: "Sign In Error",
           description: "Failed to sign in with Google. Please try again.",

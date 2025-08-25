@@ -164,29 +164,33 @@ class AuthManager {
 export const authManager = new AuthManager();
 
 // Helper function to make authenticated requests
-import { auth } from './firebase';
-import { buildApiUrl } from './config';
+import { auth } from "./firebase";
+import { buildApiUrl } from "./config";
 
-export const authenticatedRequest = async (method: string, url: string, body?: FormData | Record<string, any>): Promise<any> => {
+export const authenticatedRequest = async (
+  method: string,
+  url: string,
+  body?: FormData | Record<string, any>
+): Promise<any> => {
   const user = auth.currentUser;
-  
+
   if (!user) {
-    throw new Error('Not authenticated');
+    throw new Error("Not authenticated");
   }
 
   const token = await user.getIdToken();
-  
+
   const headers: Record<string, string> = {
-    'Authorization': `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   };
-  
+
   let requestBody: string | FormData | undefined;
-  
+
   if (body) {
     if (body instanceof FormData) {
       requestBody = body;
     } else {
-      headers['Content-Type'] = 'application/json';
+      headers["Content-Type"] = "application/json";
       requestBody = JSON.stringify(body);
     }
   }
