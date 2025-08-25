@@ -76,7 +76,7 @@ Write-Host "    DEPLOYMENT COMPLETED!" -ForegroundColor Yellow
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "Access URLs:" -ForegroundColor Cyan
-Write-Host "   Main App: http://$ServerIP:$Port" -ForegroundColor White
+Write-Host "   Main App: http://${ServerIP}:${Port}" -ForegroundColor White
 Write-Host "   Share this URL with your staff!" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "Services are running in separate windows." -ForegroundColor Green
