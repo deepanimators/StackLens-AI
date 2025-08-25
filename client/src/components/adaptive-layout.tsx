@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { useLayout } from "@/contexts/layout-context";
 import { useSettings } from "@/contexts/settings-context";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
 import TopNav from "@/components/top-nav";
+import { cn } from "@/lib/utils";
 
 interface AdaptiveLayoutProps {
   children: ReactNode;
@@ -20,6 +21,26 @@ export default function AdaptiveLayout({
 }: AdaptiveLayoutProps) {
   const { layoutType } = useLayout();
   const { uiSettings } = useSettings();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+      if (window.innerWidth < 1024) {
+        setIsSidebarOpen(false); // Close sidebar on mobile by default
+      }
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   // Check navigation preferences from settings
   const showTopNav = uiSettings?.navigationPreferences?.showTopNav ?? true;
@@ -84,17 +105,36 @@ export default function AdaptiveLayout({
         sideNavPosition === "right" ? "flex-row-reverse" : ""
       }`}
     >
-      {showSideNav && (
-        <Sidebar
-          className={sideNavPosition === "right" ? "order-2" : "order-1"}
+      {/* Overlay for mobile */}
+      {isMobile && isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
         />
       )}
+
+      {showSideNav && (
+        <div
+          className={cn(
+            "transition-all duration-300 ease-in-out z-50",
+            sideNavPosition === "right" ? "order-2" : "order-1",
+            isMobile ? "fixed inset-y-0 left-0" : "relative",
+            isMobile && !isSidebarOpen && "-translate-x-full",
+            isMobile && isSidebarOpen && "translate-x-0"
+          )}
+        >
+          <Sidebar />
+        </div>
+      )}
+
       <div className="flex-1 flex flex-col overflow-hidden">
         {title && (
           <Header
             title={title}
             subtitle={subtitle}
             onUploadClick={onUploadClick}
+            onSidebarToggle={toggleSidebar}
+            isSidebarOpen={isSidebarOpen}
           />
         )}
         <main className="flex-1 overflow-auto p-6 space-y-6">{children}</main>

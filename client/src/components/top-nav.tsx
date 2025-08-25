@@ -33,7 +33,16 @@ import {
   Bell,
   Plus,
   Menu,
+  LayoutGrid,
+  LayoutPanelLeft,
 } from "lucide-react";
+import { useLayout } from "@/contexts/layout-context";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface TopNavProps {
   className?: string;
@@ -59,6 +68,11 @@ export default function TopNav({ className }: TopNavProps) {
   const user = authManager.getUser();
   const [searchQuery, setSearchQuery] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { layoutType, setLayoutType } = useLayout();
+
+  const toggleLayoutType = () => {
+    setLayoutType(layoutType === "sidebar" ? "topnav" : "sidebar");
+  };
 
   // Query for processing analyses to show in notifications
   const { data: processingAnalyses } = useQuery({
@@ -95,8 +109,14 @@ export default function TopNav({ className }: TopNavProps) {
         return processingItems;
       } catch (error) {
         console.error("💥 Error fetching processing analyses:", error);
-        console.error("Error type:", error.constructor.name);
-        console.error("Error message:", error.message);
+        console.error(
+          "Error type:",
+          error instanceof Error ? error.constructor.name : typeof error
+        );
+        console.error(
+          "Error message:",
+          error instanceof Error ? error.message : String(error)
+        );
         return [];
       }
     },
@@ -389,6 +409,32 @@ export default function TopNav({ className }: TopNavProps) {
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Layout Toggle */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={toggleLayoutType}
+                    className="h-8 w-8 p-0"
+                  >
+                    {layoutType === "sidebar" ? (
+                      <LayoutGrid className="h-4 w-4" />
+                    ) : (
+                      <LayoutPanelLeft className="h-4 w-4" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    Switch to {layoutType === "sidebar" ? "Top Nav" : "Sidebar"}{" "}
+                    Layout
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
             {/* Theme Toggle */}
             <ThemeToggle />

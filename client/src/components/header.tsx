@@ -1,19 +1,41 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Bell, Plus } from "lucide-react";
+import {
+  Search,
+  Bell,
+  Plus,
+  Menu,
+  LayoutGrid,
+  LayoutPanelLeft,
+} from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useLayout } from "@/contexts/layout-context";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface HeaderProps {
   title: string;
   subtitle?: string;
   onUploadClick?: () => void;
+  onSidebarToggle?: () => void;
+  isSidebarOpen?: boolean;
 }
 
-export default function Header({ title, subtitle, onUploadClick }: HeaderProps) {
+export default function Header({
+  title,
+  subtitle,
+  onUploadClick,
+  onSidebarToggle,
+  isSidebarOpen,
+}: HeaderProps) {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const { layoutType, setLayoutType } = useLayout();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,14 +43,40 @@ export default function Header({ title, subtitle, onUploadClick }: HeaderProps) 
     console.log("Search query:", searchQuery);
   };
 
+  const toggleLayoutType = () => {
+    setLayoutType(layoutType === "sidebar" ? "topnav" : "sidebar");
+  };
+
   return (
     <header className="bg-card border-b border-border px-6 py-4">
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">{title}</h2>
-          {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
+        <div className="flex items-center space-x-4">
+          {/* Sidebar Toggle Button (only show in sidebar mode) */}
+          {layoutType === "sidebar" && onSidebarToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onSidebarToggle}
+                  className="lg:hidden"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{isSidebarOpen ? "Close sidebar" : "Open sidebar"}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+
+          {/* Title Section */}
+          <div>
+            <h2 className="text-2xl font-bold">{title}</h2>
+            {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
+          </div>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           {/* Search */}
           <form onSubmit={handleSearch} className="relative">
@@ -41,10 +89,34 @@ export default function Header({ title, subtitle, onUploadClick }: HeaderProps) 
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </form>
-          
+
+          {/* Layout Toggle Button */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleLayoutType}
+                className="hidden sm:flex"
+              >
+                {layoutType === "sidebar" ? (
+                  <LayoutGrid className="h-4 w-4" />
+                ) : (
+                  <LayoutPanelLeft className="h-4 w-4" />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                Switch to{" "}
+                {layoutType === "sidebar" ? "top navigation" : "sidebar"}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+
           {/* Theme Toggle */}
           <ThemeToggle />
-          
+
           {/* Notifications */}
           <Button variant="outline" size="icon" className="relative">
             <Bell className="h-4 w-4" />
@@ -52,7 +124,7 @@ export default function Header({ title, subtitle, onUploadClick }: HeaderProps) 
           </Button>
 
           {/* Upload Button */}
-          <Button 
+          <Button
             onClick={onUploadClick || (() => setLocation("/upload"))}
             className="flex items-center space-x-2"
           >
