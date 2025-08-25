@@ -23,8 +23,11 @@ Write-Host "Cleaning Replit Dependencies..." -ForegroundColor Green
 # Clean package.json
 if (Test-Path "package.json") {
     $packageJson = Get-Content "package.json" -Raw
-    $packageJson = $packageJson -replace '"@replit/vite-plugin-cartographer":\s*"[^"]*",?\s*', ''
-    $packageJson = $packageJson -replace ',(\s*\n\s*})', '$1'
+    # Remove the replit plugin line
+    $packageJson = $packageJson -replace '.*@replit/vite-plugin-cartographer.*', ''
+    # Clean up extra commas
+    $packageJson = $packageJson -replace ',\s*\n\s*}', '}' 
+    $packageJson = $packageJson -replace ',\s*,', ','
     Set-Content "package.json" -Value $packageJson
     Write-Host "package.json cleaned" -ForegroundColor Green
 }
@@ -32,8 +35,13 @@ if (Test-Path "package.json") {
 # Clean vite.config.ts
 if (Test-Path "vite.config.ts") {
     $viteConfig = Get-Content "vite.config.ts" -Raw
-    $viteConfig = $viteConfig -replace "import\s+cartographer\s+from\s+['\"]@replit/vite-plugin-cartographer['\"];?\s*", ""
-    $viteConfig = $viteConfig -replace "cartographer\(\),?\s*", ""
+    # Remove cartographer import line
+    $viteConfig = $viteConfig -replace "import.*cartographer.*from.*@replit.*", ""
+    # Remove cartographer plugin usage
+    $viteConfig = $viteConfig -replace "cartographer\(\)", ""
+    # Clean up extra commas and whitespace
+    $viteConfig = $viteConfig -replace ",\s*,", ","
+    $viteConfig = $viteConfig -replace ",\s*\]", "]"
     Set-Content "vite.config.ts" -Value $viteConfig
     Write-Host "vite.config.ts cleaned" -ForegroundColor Green
 }
