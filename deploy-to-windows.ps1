@@ -1,5 +1,6 @@
-# StackLens AI - Complete Automated Deployment
-# Run this script on your Windows server as Administrator
+# StackLens AI - Complete Automated Deployment (Root Directory Version)
+# Copy this entire project folder to your Windows server
+# Run this script from the project root as Administrator
 
 param(
     [Parameter(Mandatory=$true)]
@@ -13,11 +14,12 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "🚀 StackLens AI - Automated Windows Deployment" -ForegroundColor Green
-Write-Host "================================================" -ForegroundColor Green
+Write-Host "🚀 StackLens AI - Windows Server Deployment" -ForegroundColor Green
+Write-Host "==========================================" -ForegroundColor Green
 Write-Host "Server IP: $ServerIP" -ForegroundColor Yellow
 Write-Host "Port: $Port" -ForegroundColor Yellow
 Write-Host "Install Path: $InstallPath" -ForegroundColor Yellow
+Write-Host "Source: $(Get-Location)" -ForegroundColor Yellow
 Write-Host ""
 
 function Test-Administrator {
@@ -105,8 +107,61 @@ if (-not $UpdateOnly) {
 
 Set-Location $InstallPath
 
-# Step 4: Install Dependencies
-Write-Host "📦 Step 4: Installing dependencies..." -ForegroundColor Cyan
+# Step 4: Clean up development dependencies
+Write-Host "🧹 Step 4: Cleaning up development dependencies..." -ForegroundColor Cyan
+
+# Remove Replit-specific dependencies from package.json
+if (Test-Path "package.json") {
+    Write-Host "Removing Replit dependencies from package.json..." -ForegroundColor Yellow
+    $packageJson = Get-Content "package.json" -Raw | ConvertFrom-Json
+    
+    # Remove Replit dependencies if they exist
+    if ($packageJson.devDependencies -and $packageJson.devDependencies.'@replit/vite-plugin-cartographer') {
+        $packageJson.devDependencies.PSObject.Properties.Remove('@replit/vite-plugin-cartographer')
+        Write-Host "   Removed @replit/vite-plugin-cartographer" -ForegroundColor Gray
+    }
+    if ($packageJson.devDependencies -and $packageJson.devDependencies.'@replit/vite-plugin-runtime-error-modal') {
+        $packageJson.devDependencies.PSObject.Properties.Remove('@replit/vite-plugin-runtime-error-modal')
+        Write-Host "   Removed @replit/vite-plugin-runtime-error-modal" -ForegroundColor Gray
+    }
+    
+    # Save cleaned package.json
+    $packageJson | ConvertTo-Json -Depth 100 | Out-File "package.json" -Encoding UTF8
+    Write-Host "✅ Package.json cleaned for production deployment" -ForegroundColor Green
+}
+
+# Clean up vite.config.ts to remove Replit references
+if (Test-Path "vite.config.ts") {
+    Write-Host "Cleaning vite.config.ts for production..." -ForegroundColor Yellow
+    $viteConfig = Get-Content "vite.config.ts" -Raw
+    
+    # Remove Replit import line
+    $viteConfig = $viteConfig -replace 'import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";', ''
+    
+    # Remove runtime error overlay from plugins (if exists)
+    $viteConfig = $viteConfig -replace 'runtimeErrorOverlay\(\),', ''
+    
+    # Remove cartographer plugin block
+    $viteConfig = $viteConfig -replace '(?s)\.\.\.\(process\.env\.NODE_ENV.*?\],', ''
+    
+    $viteConfig | Out-File "vite.config.ts" -Encoding UTF8
+    Write-Host "✅ Vite config cleaned for production deployment" -ForegroundColor Green
+}
+
+# Clean up client/index.html to remove Replit dev banner
+if (Test-Path "client/index.html") {
+    Write-Host "Cleaning client/index.html..." -ForegroundColor Yellow
+    $htmlContent = Get-Content "client/index.html" -Raw
+    
+    # Remove Replit dev banner script and comment
+    $htmlContent = $htmlContent -replace '(?s)<!-- This is a script.*?replit-dev-banner\.js"></script>', ''
+    
+    $htmlContent | Out-File "client/index.html" -Encoding UTF8
+    Write-Host "✅ HTML cleaned for production deployment" -ForegroundColor Green
+}
+
+# Step 5: Install Dependencies
+Write-Host "📦 Step 5: Installing dependencies..." -ForegroundColor Cyan
 
 if (-not (Test-Path "package.json")) {
     Write-Host "❌ package.json not found in $InstallPath" -ForegroundColor Red

@@ -10,6 +10,31 @@ Write-Host "🔧 Setting up StackLens AI Application..." -ForegroundColor Green
 Write-Host "Server IP: $ServerIP" -ForegroundColor Yellow
 Write-Host "Port: $Port" -ForegroundColor Yellow
 
+# 0. Clean up Replit dependencies (for Windows deployment)
+Write-Host "🧹 Cleaning up development dependencies..." -ForegroundColor Yellow
+if (Test-Path "package.json") {
+    $packageJson = Get-Content "package.json" -Raw | ConvertFrom-Json
+    
+    # Remove Replit dependencies if they exist
+    $cleaned = $false
+    if ($packageJson.devDependencies -and $packageJson.devDependencies.'@replit/vite-plugin-cartographer') {
+        $packageJson.devDependencies.PSObject.Properties.Remove('@replit/vite-plugin-cartographer')
+        Write-Host "   Removed @replit/vite-plugin-cartographer" -ForegroundColor Gray
+        $cleaned = $true
+    }
+    if ($packageJson.devDependencies -and $packageJson.devDependencies.'@replit/vite-plugin-runtime-error-modal') {
+        $packageJson.devDependencies.PSObject.Properties.Remove('@replit/vite-plugin-runtime-error-modal')
+        Write-Host "   Removed @replit/vite-plugin-runtime-error-modal" -ForegroundColor Gray
+        $cleaned = $true
+    }
+    
+    if ($cleaned) {
+        # Save cleaned package.json
+        $packageJson | ConvertTo-Json -Depth 100 | Out-File "package.json" -Encoding UTF8
+        Write-Host "✅ Package.json cleaned for Windows deployment" -ForegroundColor Green
+    }
+}
+
 # 1. Install Node.js dependencies
 Write-Host "Installing Node.js dependencies..." -ForegroundColor Yellow
 if (Test-Path "package.json") {

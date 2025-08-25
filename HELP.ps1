@@ -1,8 +1,10 @@
-# StackLens-AI Deployment Helper
-# This script shows you all available deployment options
+# StackLens-AI Deployment Helper (Root Directory)
+# This script shows you all available deployment options from project root
 
 Write-Host "🚀 StackLens-AI Windows GPU Server Deployment" -ForegroundColor Green
 Write-Host "=============================================" -ForegroundColor Green
+Write-Host ""
+Write-Host "📁 Current Directory: $(Get-Location)" -ForegroundColor Gray
 Write-Host ""
 Write-Host "📋 Available Deployment Methods:" -ForegroundColor Cyan
 Write-Host ""
@@ -21,6 +23,10 @@ Write-Host "   .\03-start-application.ps1" -ForegroundColor White
 Write-Host ""
 Write-Host "4. 🏗️ COMPLETE AUTOMATION (Advanced)" -ForegroundColor Yellow
 Write-Host "   .\deploy-to-windows.ps1 -ServerIP 'YOUR_SERVER_IP' -Port 4000" -ForegroundColor White
+Write-Host ""
+Write-Host "🧹 Fix Replit Dependencies (if needed):" -ForegroundColor Cyan
+Write-Host "   .\CLEAN-REPLIT-DEPS.ps1" -ForegroundColor White
+Write-Host "   → Run this if you see '@replit/vite-plugin-cartographer' errors" -ForegroundColor Gray
 Write-Host ""
 Write-Host "📁 What's Included:" -ForegroundColor Cyan
 Write-Host "   ✅ Complete backend (server/)" -ForegroundColor Green
