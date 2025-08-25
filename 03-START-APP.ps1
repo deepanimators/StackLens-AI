@@ -1,4 +1,4 @@
-# 03 - START APPLICATION
+# 03 - START APPLICATION (FIXED)
 # Run after 02-SETUP.ps1
 
 param(
@@ -48,28 +48,31 @@ Write-Host "=====================================" -ForegroundColor Green
 Write-Host "    APPLICATION STARTED!" -ForegroundColor Yellow
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "🌐 Access URLs:" -ForegroundColor Cyan
-Write-Host "   Main App: http://$ServerIP:$Port" -ForegroundColor White
+Write-Host "Access URLs:" -ForegroundColor Cyan
+$mainUrl = "http://" + $ServerIP + ":" + $Port
+Write-Host "   Main App: $mainUrl" -ForegroundColor White
 Write-Host "   Vector DB: http://localhost:8001" -ForegroundColor White
 Write-Host ""
-Write-Host "📝 Services Status:" -ForegroundColor Green
-Write-Host "   ✓ Vector Database Service (Port 8001)" -ForegroundColor White
-Write-Host "   ✓ Main Application (Port $Port)" -ForegroundColor White
+Write-Host "Services Status:" -ForegroundColor Green
+Write-Host "   Vector Database Service (Port 8001)" -ForegroundColor White
+$portText = "Main Application (Port " + $Port + ")"
+Write-Host "   $portText" -ForegroundColor White
 Write-Host ""
-Write-Host "🔗 Share this URL with your staff:" -ForegroundColor Cyan
-Write-Host "   http://$ServerIP:$Port" -ForegroundColor Yellow
+Write-Host "Share this URL with your staff:" -ForegroundColor Cyan
+Write-Host "   $mainUrl" -ForegroundColor Yellow
 Write-Host ""
-Write-Host "📋 To stop services:" -ForegroundColor Red
+Write-Host "To stop services:" -ForegroundColor Red
 Write-Host "   Close the PowerShell windows that opened" -ForegroundColor White
 Write-Host ""
-Write-Host "🔄 To restart later:" -ForegroundColor Cyan
-Write-Host "   Run: .\03-START-APP.ps1 -ServerIP $ServerIP" -ForegroundColor White
+Write-Host "To restart later:" -ForegroundColor Cyan
+$restartCmd = ".\03-START-APP.ps1 -ServerIP " + $ServerIP
+Write-Host "   Run: $restartCmd" -ForegroundColor White
 Write-Host ""
 
 # Optional: Open browser
 $response = Read-Host "Open browser to test? (y/n)"
 if ($response -eq 'y' -or $response -eq 'Y') {
-    Start-Process "http://$ServerIP:$Port"
+    Start-Process $mainUrl
 }
 
 pause

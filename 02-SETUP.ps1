@@ -1,4 +1,4 @@
-# 02 - SETUP APPLICATION
+# 02 - SETUP APPLICATION (FIXED)
 # Run after 01-INSTALL.ps1
 
 param(
@@ -26,7 +26,7 @@ if (Test-Path "package.json") {
     $packageJson = $packageJson -replace '"@replit/vite-plugin-cartographer":\s*"[^"]*",?\s*', ''
     $packageJson = $packageJson -replace ',(\s*\n\s*})', '$1'
     Set-Content "package.json" -Value $packageJson
-    Write-Host "✓ package.json cleaned" -ForegroundColor Green
+    Write-Host "package.json cleaned" -ForegroundColor Green
 }
 
 # Clean vite.config.ts
@@ -35,7 +35,7 @@ if (Test-Path "vite.config.ts") {
     $viteConfig = $viteConfig -replace "import\s+cartographer\s+from\s+['\"]@replit/vite-plugin-cartographer['\"];?\s*", ""
     $viteConfig = $viteConfig -replace "cartographer\(\),?\s*", ""
     Set-Content "vite.config.ts" -Value $viteConfig
-    Write-Host "✓ vite.config.ts cleaned" -ForegroundColor Green
+    Write-Host "vite.config.ts cleaned" -ForegroundColor Green
 }
 
 # Step 3: Install Node Dependencies
@@ -43,9 +43,9 @@ Write-Host ""
 Write-Host "Installing Node.js Dependencies..." -ForegroundColor Green
 npm install --legacy-peer-deps
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "✓ Node dependencies installed" -ForegroundColor Green
+    Write-Host "Node dependencies installed" -ForegroundColor Green
 } else {
-    Write-Host "⚠ Node dependencies had warnings, continuing..." -ForegroundColor Yellow
+    Write-Host "Node dependencies had warnings, continuing..." -ForegroundColor Yellow
 }
 
 # Step 4: Install Python Dependencies
@@ -68,9 +68,9 @@ foreach ($package in $packages) {
     Write-Host "Installing $package..." -ForegroundColor Gray
     python -m pip install $package
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ $package installed" -ForegroundColor Green
+        Write-Host "$package installed" -ForegroundColor Green
     } else {
-        Write-Host "⚠ $package failed, continuing..." -ForegroundColor Yellow
+        Write-Host "$package failed, continuing..." -ForegroundColor Yellow
     }
 }
 
@@ -79,14 +79,14 @@ Write-Host ""
 Write-Host "Building Application..." -ForegroundColor Green
 npm run build
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "✓ Application built successfully" -ForegroundColor Green
+    Write-Host "Application built successfully" -ForegroundColor Green
 } else {
     Write-Host "Trying alternative build..." -ForegroundColor Yellow
     npx vite build
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Alternative build successful" -ForegroundColor Green
+        Write-Host "Alternative build successful" -ForegroundColor Green
     } else {
-        Write-Host "⚠ Build issues, continuing..." -ForegroundColor Yellow
+        Write-Host "Build issues, continuing..." -ForegroundColor Yellow
     }
 }
 
@@ -97,13 +97,12 @@ $env:SERVER_IP = $ServerIP
 $env:PORT = $Port
 
 # Create .env file
-$envContent = @"
-SERVER_IP=$ServerIP
-PORT=$Port
-NODE_ENV=production
-"@
+$envLine1 = "SERVER_IP=" + $ServerIP
+$envLine2 = "PORT=" + $Port
+$envLine3 = "NODE_ENV=production"
+$envContent = $envLine1 + "`n" + $envLine2 + "`n" + $envLine3
 Set-Content ".env" -Value $envContent
-Write-Host "✓ Environment configured" -ForegroundColor Green
+Write-Host "Environment configured" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "=====================================" -ForegroundColor Green
