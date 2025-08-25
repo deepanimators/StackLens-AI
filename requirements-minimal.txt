@@ -1,0 +1,23 @@
+# Minimal Python 3.12 Requirements - Pre-compiled wheels only
+# Core web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+pydantic==2.5.0
+
+# HTTP and async
+requests==2.31.0
+aiofiles==23.2.1
+httpx==0.25.2
+
+# Basic data processing (pre-compiled)
+numpy==1.26.2
+pandas==2.1.4
+
+# Text processing (lightweight)
+nltk==3.8.1
+
+# Optional ML packages (install manually if needed)
+# sentence-transformers  # Install separately if GPU available
+# torch                  # Install separately if GPU available
+# faiss-cpu             # Install separately if needed
