@@ -1,6 +1,18 @@
 # StackLens AI - Create Deployment Package
 param(
-    [string]$OutputPath = "../deployment/windows-server"
+    [string]### 1. Prerequisites (Run as Administrator)
+```
+.\01-install-prerequisites.ps1
+```
+
+### 2. Setup Application
+```
+.\02-setup-application.ps1 -ServerIP "YOUR_SERVER_IP" -Port "4000"
+```
+
+### 3. Start Application
+```
+.\03-start-application.ps1putPath = "../deployment/windows-server"
 )
 
 Write-Host "📦 Creating StackLens AI Deployment Package..." -ForegroundColor Green
@@ -95,16 +107,16 @@ C:\StackLensAI\
 ### Start/Stop/Restart
 ```powershell
 # Start application
-.\scripts\03-start-application.ps1
+.\03-start-application.ps1
 
 # Restart application
-.\scripts\03-start-application.ps1 -Restart
+.\03-start-application.ps1 -Restart
 
 # Stop application
-.\scripts\03-start-application.ps1 -Stop
+.\03-start-application.ps1 -Stop
 
 # Check status
-.\scripts\03-start-application.ps1 -Status
+.\03-start-application.ps1 -Status
 ```
 
 ### View Logs
@@ -114,10 +126,10 @@ pm2 logs stacklens-ai-server --lines 100
 ```
 
 ### Update Application
-1. Stop the application: `.\scripts\03-start-application.ps1 -Stop`
+1. Stop the application: `.\03-start-application.ps1 -Stop`
 2. Replace application files
-3. Run setup: `.\scripts\02-setup-application.ps1`
-4. Start application: `.\scripts\03-start-application.ps1`
+3. Run setup: `.\02-setup-application.ps1`
+4. Start application: `.\03-start-application.ps1`
 
 ## Troubleshooting
 

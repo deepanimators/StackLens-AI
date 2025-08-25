@@ -74,13 +74,33 @@ if (-not $UpdateOnly) {
     }
     
     New-Item -ItemType Directory -Force -Path $InstallPath
-    Set-Location $InstallPath
 }
 
-# Step 3: Copy Application Files (assumes files are in current directory)
+# Step 3: Copy Application Files from current directory to install directory
 if (-not $UpdateOnly) {
-    Write-Host "📋 Step 3: Application files should be placed in $InstallPath" -ForegroundColor Cyan
-    Write-Host "Ensure you have copied the deployment package to this location" -ForegroundColor Yellow
+    Write-Host "📋 Step 3: Copying application files to $InstallPath..." -ForegroundColor Cyan
+    
+    $currentDir = Get-Location
+    Write-Host "Copying from: $currentDir" -ForegroundColor Gray
+    Write-Host "Copying to: $InstallPath" -ForegroundColor Gray
+    
+    # Copy all files and folders except PowerShell scripts
+    $filesToCopy = @("client", "server", "shared", "python-services", "db", "package.json", "requirements.txt", "tsconfig.json", "vite.config.ts", "tailwind.config.ts", "postcss.config.js")
+    
+    foreach ($item in $filesToCopy) {
+        if (Test-Path $item) {
+            Write-Host "Copying $item..." -ForegroundColor Gray
+            if (Test-Path $item -PathType Container) {
+                Copy-Item $item $InstallPath -Recurse -Force
+            } else {
+                Copy-Item $item $InstallPath -Force
+            }
+        } else {
+            Write-Host "⚠️ $item not found, skipping..." -ForegroundColor Yellow
+        }
+    }
+    
+    Write-Host "✅ Application files copied successfully!" -ForegroundColor Green
 }
 
 Set-Location $InstallPath
