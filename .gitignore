@@ -4,3 +4,7 @@ dist/
 # Ignore node_modules
 node_modules/
 package-lock.json
+
+# db files
+*.sqlite
+*.db

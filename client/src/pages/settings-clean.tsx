@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import AdaptiveLayout from "@/components/adaptive-layout";
 import { authManager } from "@/lib/auth";
+import { buildApiUrl } from "@/lib/config";
 import { useToast } from "@/hooks/use-toast";
 import { 
   User, 
@@ -94,7 +95,7 @@ export default function SettingsPage() {
 
   const handleNotificationSubmit = async (data: NotificationForm) => {
     try {
-      const response = await fetch('/api/settings', {
+      const response = await fetch(buildApiUrl('/api/settings'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

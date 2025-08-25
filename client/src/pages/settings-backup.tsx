@@ -15,6 +15,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import AdaptiveLayout from "@/components/adaptive-layout";
 import { authManager } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
+import { buildApiUrl } from "@/lib/config";
 import { 
   User, 
   Settings as SettingsIcon, 
@@ -101,7 +102,7 @@ export default function SettingsPage() {
 
   const handleNotificationSubmit = async (data: NotificationForm) => {
     try {
-      const response = await fetch('/api/settings', {
+      const response = await fetch(buildApiUrl('/api/settings'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +132,7 @@ export default function SettingsPage() {
 
   const handleAPISubmit = async (data: APIForm) => {
     try {
-      const response = await fetch('/api/settings', {
+      const response = await fetch(buildApiUrl('/api/settings'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -161,7 +162,7 @@ export default function SettingsPage() {
 
   const handleUISubmit = async (data: UIForm) => {
     try {
-      const response = await fetch('/api/settings', {
+      const response = await fetch(buildApiUrl('/api/settings'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

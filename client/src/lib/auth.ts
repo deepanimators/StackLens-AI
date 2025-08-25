@@ -101,7 +101,7 @@ class AuthManager {
     }
 
     try {
-      const response = await fetch("/api/auth/me", {
+      const response = await fetch(buildApiUrl("/api/auth/me"), {
         headers: {
           Authorization: `Bearer ${this.token}`,
         },
@@ -164,33 +164,42 @@ class AuthManager {
 export const authManager = new AuthManager();
 
 // Helper function to make authenticated requests
-export async function authenticatedRequest(
-  method: string,
-  url: string,
-  data?: unknown
-): Promise<any> {
-  const headers = {
-    ...authManager.getAuthHeaders(),
-    ...(data && !(data instanceof FormData)
-      ? { "Content-Type": "application/json" }
-      : {}),
-  };
+import { auth } from './firebase';
+import { buildApiUrl } from './config';
 
-  const response = await fetch(url, {
+export const authenticatedRequest = async (method: string, url: string, body?: FormData | Record<string, any>): Promise<any> => {
+  const user = auth.currentUser;
+  
+  if (!user) {
+    throw new Error('Not authenticated');
+  }
+
+  const token = await user.getIdToken();
+  
+  const headers: Record<string, string> = {
+    'Authorization': `Bearer ${token}`,
+  };
+  
+  let requestBody: string | FormData | undefined;
+  
+  if (body) {
+    if (body instanceof FormData) {
+      requestBody = body;
+    } else {
+      headers['Content-Type'] = 'application/json';
+      requestBody = JSON.stringify(body);
+    }
+  }
+
+  const response = await fetch(buildApiUrl(url), {
     method,
     headers,
-    body:
-      data instanceof FormData ? data : data ? JSON.stringify(data) : undefined,
+    body: requestBody,
   });
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    throw new Error(`Request failed: ${response.statusText}`);
   }
 
-  const contentType = response.headers.get("content-type");
-  if (contentType && contentType.includes("application/json")) {
-    return await response.json();
-  }
-
-  return response;
-}
+  return await response.json();
+};

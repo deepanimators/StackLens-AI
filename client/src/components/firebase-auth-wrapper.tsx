@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { getRedirectResult } from "firebase/auth";
 import { auth, isAuthConfigured } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
+import { buildApiUrl } from "@/lib/config";
 
 interface FirebaseAuthWrapperProps {
   children: React.ReactNode;
@@ -25,7 +26,7 @@ export function FirebaseAuthWrapper({ children }: FirebaseAuthWrapperProps) {
           const user = result.user;
           
           // Sync user with backend
-          const response = await fetch('/api/auth/firebase-signin', {
+          const response = await fetch(buildApiUrl('/api/auth/firebase-signin'), {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

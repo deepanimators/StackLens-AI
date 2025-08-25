@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { FaGoogle } from "react-icons/fa";
 import { useLocation } from "wouter";
 import { queryClient } from "@/lib/queryClient";
+import { buildApiUrl } from "@/lib/config";
 
 export function FirebaseSignIn() {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +50,7 @@ export function FirebaseSignIn() {
     try {
       const idToken = await result.user.getIdToken();
 
-      const response = await fetch("/api/auth/firebase-verify", {
+      const response = await fetch(buildApiUrl("/api/auth/firebase-verify"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -116,6 +117,17 @@ export function FirebaseSignIn() {
       console.error("Sign in error:", error);
 
       let errorMessage = "Failed to sign in with Google. Please try again.";
+
+      if (error.code === "auth/unauthorized-domain") {
+        toast({
+          title: "Domain Not Authorized",
+          description:
+            "This domain is not authorized for Google sign-in. Please contact your administrator or use manual login.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
 
       if (error.message.includes("Redirecting to Google")) {
         // Redirect is happening, show loading message
