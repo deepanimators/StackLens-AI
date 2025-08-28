@@ -84,12 +84,13 @@ const transformErrorLog = (apiError: any): ErrorLog => {
   };
 };
 
-export default function AllErrorsPage() {
+export default function AllErrors() {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(50); // Changed from 10 to 50 as requested
+  const [limit, setLimit] = useState(25);
   const [severity, setSeverity] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [fileFilter, setFileFilter] = useState<string>("all");
+  const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
   const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [showAISuggestionModal, setShowAISuggestionModal] = useState(false);
@@ -102,7 +103,7 @@ export default function AllErrorsPage() {
   } = useQuery({
     queryKey: [
       "/api/errors",
-      { page, limit, severity, search: searchQuery, fileFilter },
+      { page, limit, severity, search: searchQuery, fileFilter, errorType: errorTypeFilter },
     ],
     queryFn: async (): Promise<ErrorsResponse> => {
       console.log("🔍 All Errors: Making API request", {
@@ -111,6 +112,7 @@ export default function AllErrorsPage() {
         severity,
         searchQuery,
         fileFilter,
+        errorTypeFilter,
       });
 
       const params = new URLSearchParams({
@@ -119,6 +121,7 @@ export default function AllErrorsPage() {
         ...(severity && severity !== "all" && { severity }),
         ...(searchQuery && { search: searchQuery }),
         ...(fileFilter && fileFilter !== "all" && { fileFilter }),
+        ...(errorTypeFilter && errorTypeFilter !== "all" && { errorType: errorTypeFilter }),
       });
 
       try {
@@ -149,6 +152,15 @@ export default function AllErrorsPage() {
     },
   });
 
+  // Get error types for the error type filter dropdown
+  const { data: errorTypes } = useQuery({
+    queryKey: ["/api/errors/types"],
+    queryFn: async () => {
+      const data = await authenticatedRequest("GET", "/api/errors/types");
+      return data || [];
+    },
+  });
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
@@ -162,6 +174,11 @@ export default function AllErrorsPage() {
 
   const handleFileFilter = (newFileFilter: string) => {
     setFileFilter(newFileFilter);
+    setPage(1);
+  };
+
+  const handleErrorTypeFilter = (newErrorType: string) => {
+    setErrorTypeFilter(newErrorType);
     setPage(1);
   };
 
@@ -320,6 +337,20 @@ export default function AllErrorsPage() {
                       {file.originalName || `File ${file.id}`}
                     </SelectItem>
                   ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={errorTypeFilter} onValueChange={handleErrorTypeFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                {(errorTypes || []).map((type: string) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 

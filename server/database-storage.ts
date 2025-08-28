@@ -445,7 +445,7 @@ export class DatabaseStorage implements IStorage {
         mlPrediction: errorLogs.mlPrediction,
         mlConfidence: errorLogs.mlConfidence,
         createdAt: errorLogs.createdAt,
-        // filename: logFiles.originalName,
+        filename: logFiles.originalName,
       })
       .from(errorLogs)
       .innerJoin(logFiles, eq(errorLogs.fileId, logFiles.id))

@@ -48,7 +48,7 @@ interface ErrorLog {
 interface AnalysisModalProps {
   isOpen: boolean;
   onClose: () => void;
-  error: ErrorLog;
+  error: ErrorLog & { filename?: string };
   onGenerateSuggestion?: (error: ErrorLog) => void;
 }
 
@@ -63,20 +63,8 @@ export default function AnalysisModal({
   error,
   onGenerateSuggestion,
 }: AnalysisModalProps) {
-  // Fetch file name if fileId is present
-  const { data: fileData } = useQuery({
-    queryKey: ["/api/files", error.fileId],
-    queryFn: async () => {
-      if (!error.fileId) return null;
-      const response = await authenticatedRequest(
-        "GET",
-        `/api/files/${error.fileId}`
-      );
-      if (!response.ok) return null;
-      return response.json();
-    },
-    enabled: !!error.fileId,
-  });
+  // File name is now included directly in the error object from the database query
+  // No need for a separate API call
   const [activeTab, setActiveTab] = useState("details");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
@@ -278,10 +266,7 @@ export default function AnalysisModal({
                 <div>
                   <p className="text-sm text-muted-foreground">File Name</p>
                   <p className="font-medium">
-                    {fileData?.originalName ||
-                      fileData?.filename ||
-                      fileData?.name ||
-                      (error.fileId ? `File #${error.fileId}` : "Unknown File")}
+                    {error.filename || (error.fileId ? `File #${error.fileId}` : "Unknown File")}
                   </p>
                 </div>
                 <div>

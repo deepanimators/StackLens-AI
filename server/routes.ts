@@ -4768,6 +4768,7 @@ Format as JSON with the following structure:
       const severity = req.query.severity as string;
       const search = req.query.search as string;
       const fileFilter = req.query.fileFilter as string;
+      const errorTypeFilter = req.query.errorType as string;
 
       // For now, get all user errors and filter in memory
       // TODO: Implement proper SQL filtering in the storage layer
@@ -4779,6 +4780,12 @@ Format as JSON with the following structure:
       if (severity && severity !== "all") {
         filteredErrors = filteredErrors.filter(
           (error) => error.severity === severity
+        );
+      }
+
+      if (errorTypeFilter && errorTypeFilter !== "all") {
+        filteredErrors = filteredErrors.filter(
+          (error) => error.errorType === errorTypeFilter
         );
       }
 
@@ -4920,6 +4927,19 @@ Format as JSON with the following structure:
     } catch (error) {
       console.error("Error fetching error statistics:", error);
       res.status(500).json({ error: "Failed to fetch error statistics" });
+    }
+  });
+
+  // Get all error types for filtering
+  app.get("/api/errors/types", requireAuth, async (req: any, res: any) => {
+    try {
+      const allUserErrors = await storage.getErrorsByUser(req.user.id);
+      const errorTypesSet = new Set(allUserErrors.map(error => error.errorType).filter(Boolean));
+      const errorTypes = Array.from(errorTypesSet);
+      res.json(errorTypes.sort());
+    } catch (error) {
+      console.error("Error fetching error types:", error);
+      res.status(500).json({ error: "Failed to fetch error types" });
     }
   });
 
@@ -6099,18 +6119,24 @@ Format as JSON with the following structure:
       const analysisId = req.query.analysisId;
       const format = req.query.format || "csv";
 
-      if (!analysisId) {
-        return res.status(400).json({ message: "Analysis ID is required" });
-      }
+      let errors;
+      let filename;
 
-      // Get errors for the specific analysis
-      const errors = await db
-        .select()
-        .from(errorLogs)
-        .where(
-          sql`file_id IN (SELECT file_id FROM analysis_history WHERE user_id = ${req.user.id} AND id = ${analysisId})`
-        )
-        .orderBy(desc(errorLogs.createdAt));
+      if (analysisId) {
+        // Get errors for the specific analysis
+        errors = await db
+          .select()
+          .from(errorLogs)
+          .where(
+            sql`file_id IN (SELECT file_id FROM analysis_history WHERE user_id = ${req.user.id} AND id = ${analysisId})`
+          )
+          .orderBy(desc(errorLogs.createdAt));
+        filename = `analysis-${analysisId}`;
+      } else {
+        // Get all errors for the user
+        errors = await storage.getErrorsByUser(req.user.id);
+        filename = "all-errors";
+      }
 
       // Prepare export data
       const exportData = errors.map((error) => ({
@@ -6169,7 +6195,7 @@ Format as JSON with the following structure:
           );
           res.setHeader(
             "Content-Disposition",
-            `attachment; filename="analysis-${analysisId}.xlsx"`
+            `attachment; filename="${filename}.xlsx"`
           );
           res.setHeader("Content-Length", buffer.length);
 
@@ -6181,7 +6207,7 @@ Format as JSON with the following structure:
           res.setHeader("Content-Type", "text/csv");
           res.setHeader(
             "Content-Disposition",
-            `attachment; filename="analysis-${analysisId}.csv"`
+            `attachment; filename="${filename}.csv"`
           );
           return res.send(csvData);
         }
@@ -6192,7 +6218,7 @@ Format as JSON with the following structure:
       res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",
-        `attachment; filename="analysis-${analysisId}.csv"`
+        `attachment; filename="${filename}.csv"`
       );
       res.send(csvData);
     } catch (error) {
