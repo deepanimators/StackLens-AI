@@ -75,50 +75,125 @@ export default function AnalysisHistoryPage() {
 
   // Fetch analysis history (completed analyses)
   const {
-    data: analysisHistory,
+    data: analysisData,
     isLoading,
     error: historyError,
   } = useQuery({
     queryKey: ["/api/analysis/history"],
-    queryFn: async (): Promise<AnalysisHistory[]> => {
+    queryFn: async () => {
       try {
-        const response = await authenticatedRequest(
+        // Request with reasonable limit for display but get statistics for all records
+        const data = await authenticatedRequest(
           "GET",
-          "/api/analysis/history"
+          "/api/analysis/history?limit=100"
         );
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        const data = await response.json();
-        console.log("Analysis History Data:", data); // Debug log
+        console.log("📊 Analysis history response:", data);
 
         // Handle paginated response structure
         if (data && Array.isArray(data.history)) {
-          return data.history.map((item: any) => ({
+          console.log("✅ Analysis history data received");
+          console.log(
+            `📈 Total analyses from API statistics: ${
+              data.statistics?.totalAnalyses || data.history.length
+            }`
+          );
+          console.log(
+            `📈 Total errors from API statistics: ${
+              data.statistics?.totalErrors || 0
+            }`
+          );
+
+          const mappedHistory = data.history.map((item: any) => ({
             ...item,
             filename: item.fileName || item.filename, // Map fileName to filename
             analysisDate: item.uploadDate || item.analysisDate, // Map uploadDate to analysisDate
             analysisTimestamp: item.uploadDate || item.analysisTimestamp,
             uploadTimestamp: item.uploadDate || item.uploadTimestamp,
           }));
+
+          return {
+            history: mappedHistory,
+            statistics: data.statistics || {
+              totalAnalyses: mappedHistory.length,
+              totalErrors: mappedHistory.reduce(
+                (sum: number, item: any) => sum + (item.totalErrors || 0),
+                0
+              ),
+              totalCriticalErrors: mappedHistory.reduce(
+                (sum: number, item: any) => sum + (item.criticalErrors || 0),
+                0
+              ),
+              totalHighErrors: mappedHistory.reduce(
+                (sum: number, item: any) => sum + (item.highErrors || 0),
+                0
+              ),
+              totalMediumErrors: mappedHistory.reduce(
+                (sum: number, item: any) => sum + (item.mediumErrors || 0),
+                0
+              ),
+              totalLowErrors: mappedHistory.reduce(
+                (sum: number, item: any) => sum + (item.lowErrors || 0),
+                0
+              ),
+            },
+            pagination: data.pagination,
+          };
         }
 
         // Fallback for direct array response
         if (Array.isArray(data)) {
-          return data.map((item: any) => ({
+          const mappedData = data.map((item: any) => ({
             ...item,
             filename: item.fileName || item.filename, // Map fileName to filename
             analysisDate: item.uploadDate || item.analysisDate, // Map uploadDate to analysisDate
             analysisTimestamp: item.uploadDate || item.analysisTimestamp,
             uploadTimestamp: item.uploadDate || item.uploadTimestamp,
           }));
+          return {
+            history: mappedData,
+            statistics: {
+              totalAnalyses: mappedData.length,
+              totalErrors: mappedData.reduce(
+                (sum: number, item: any) => sum + (item.totalErrors || 0),
+                0
+              ),
+              totalCriticalErrors: mappedData.reduce(
+                (sum: number, item: any) => sum + (item.criticalErrors || 0),
+                0
+              ),
+              totalHighErrors: mappedData.reduce(
+                (sum: number, item: any) => sum + (item.highErrors || 0),
+                0
+              ),
+              totalMediumErrors: mappedData.reduce(
+                (sum: number, item: any) => sum + (item.mediumErrors || 0),
+                0
+              ),
+              totalLowErrors: mappedData.reduce(
+                (sum: number, item: any) => sum + (item.lowErrors || 0),
+                0
+              ),
+            },
+            pagination: null,
+          };
         }
 
         console.warn(
           "Unexpected analysis history API response structure:",
           data
         );
-        return [];
+        return {
+          history: [],
+          statistics: {
+            totalAnalyses: 0,
+            totalErrors: 0,
+            totalCriticalErrors: 0,
+            totalHighErrors: 0,
+            totalMediumErrors: 0,
+            totalLowErrors: 0,
+          },
+          pagination: null,
+        };
       } catch (error) {
         console.error("Analysis History API Error:", error);
         throw error;
@@ -137,16 +212,23 @@ export default function AnalysisHistoryPage() {
     staleTime: 5000, // Cache for 5 seconds to reduce unnecessary requests
   });
 
+  // Extract analysis history and statistics from the API response
+  const analysisHistory = analysisData?.history || [];
+  const statistics = analysisData?.statistics || {
+    totalAnalyses: 0,
+    totalErrors: 0,
+    totalCriticalErrors: 0,
+    totalHighErrors: 0,
+    totalMediumErrors: 0,
+    totalLowErrors: 0,
+  };
+
   // Fetch all files including processing ones
   const { data: logFiles, error: filesError } = useQuery({
     queryKey: ["/api/files"],
     queryFn: async (): Promise<LogFile[]> => {
       try {
-        const response = await authenticatedRequest("GET", "/api/files");
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        const data = await response.json();
+        const data = await authenticatedRequest("GET", "/api/files");
         console.log("Log Files API Response:", data); // Debug log
 
         // Handle paginated response structure
@@ -287,14 +369,10 @@ export default function AnalysisHistoryPage() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
-      const response = await authenticatedRequest(
+      return await authenticatedRequest(
         "DELETE",
         `/api/analysis/history/${id}`
       );
-      if (!response.ok) {
-        throw new Error("Failed to delete analysis history");
-      }
-      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/analysis/history"] });
@@ -315,18 +393,11 @@ export default function AnalysisHistoryPage() {
 
   const bulkDeleteMutation = useMutation({
     mutationFn: async (ids: number[]) => {
-      const response = await authenticatedRequest(
+      return await authenticatedRequest(
         "POST",
         "/api/analysis/history/bulk-delete",
-        {
-          body: JSON.stringify({ historyIds: ids }),
-          headers: { "Content-Type": "application/json" },
-        }
+        { historyIds: ids }
       );
-      if (!response.ok) {
-        throw new Error("Failed to delete multiple analyses");
-      }
-      return response.json();
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/analysis/history"] });
@@ -348,17 +419,10 @@ export default function AnalysisHistoryPage() {
 
   const retriggerAnalysisMutation = useMutation({
     mutationFn: async () => {
-      const response = await authenticatedRequest(
+      return await authenticatedRequest(
         "POST",
-        "/api/analysis/retrigger-pending",
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        "/api/analysis/retrigger-pending"
       );
-      if (!response.ok) {
-        throw new Error("Failed to retrigger pending analyses");
-      }
-      return response.json();
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/analysis/history"] });
@@ -415,10 +479,23 @@ export default function AnalysisHistoryPage() {
 
   const handleExport = async (analysis: AnalysisHistory) => {
     try {
-      const response = await authenticatedRequest(
-        "GET",
-        `/api/export/errors?analysisId=${analysis.id}`
+      // Make a direct fetch request since we need the blob response
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `/api/export/errors?analysisId=${analysis.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+
+      if (!response.ok) {
+        throw new Error(`Export failed: ${response.statusText}`);
+      }
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -520,9 +597,7 @@ export default function AnalysisHistoryPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Analyses</p>
-                <p className="text-2xl font-bold">
-                  {analysisHistory?.length || 0}
-                </p>
+                <p className="text-2xl font-bold">{statistics.totalAnalyses}</p>
               </div>
               <FileText className="h-8 w-8 text-blue-600" />
             </div>
@@ -534,12 +609,7 @@ export default function AnalysisHistoryPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Errors</p>
-                <p className="text-2xl font-bold">
-                  {analysisHistory?.reduce(
-                    (sum, a) => sum + a.totalErrors,
-                    0
-                  ) || 0}
-                </p>
+                <p className="text-2xl font-bold">{statistics.totalErrors}</p>
               </div>
               <AlertTriangle className="h-8 w-8 text-orange-600" />
             </div>
@@ -552,10 +622,7 @@ export default function AnalysisHistoryPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Critical Issues</p>
                 <p className="text-2xl font-bold text-red-600">
-                  {analysisHistory?.reduce(
-                    (sum, a) => sum + a.criticalErrors,
-                    0
-                  ) || 0}
+                  {statistics.totalCriticalErrors}
                 </p>
               </div>
               <CheckCircle className="h-8 w-8 text-red-600" />
@@ -740,7 +807,8 @@ export default function AnalysisHistoryPage() {
                           <span>
                             {formatDate(
                               analysis.analysisTimestamp ||
-                                analysis.analysisDate
+                                analysis.analysisDate ||
+                                ""
                             )}
                           </span>
                         </div>
@@ -956,7 +1024,12 @@ export default function AnalysisHistoryPage() {
                     </p>
                     <p>
                       <strong>Analysis Date:</strong>{" "}
-                      {formatDateTime(selectedAnalysis.analysisDate)}
+                      {formatDateTime(
+                        selectedAnalysis.analysisDate ||
+                          selectedAnalysis.analysisTimestamp ||
+                          selectedAnalysis.uploadTimestamp ||
+                          ""
+                      )}
                     </p>
                     <p>
                       <strong>Processing Time:</strong>{" "}

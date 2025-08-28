@@ -43,8 +43,7 @@ import {
   type InsertAuditLog,
   type Notification,
   type InsertNotification,
-  type Setting as UserSettings,
-  type InsertSetting as InsertUserSettings,
+  type InsertSetting,
   type AiTrainingData,
   type InsertAiTrainingData,
 } from "@shared/schema";
@@ -211,12 +210,12 @@ export interface IStorage {
   deleteNotification(id: number): Promise<boolean>;
 
   // User Settings
-  getUserSettings(userId: number): Promise<UserSettings | undefined>;
+  // User Settings
+  getUserSettings(userId: number): Promise<typeof userSettings.$inferSelect | undefined>;
   upsertUserSettings(
     userId: number,
-    settings: Partial<InsertUserSettings>
-  ): Promise<UserSettings>;
-  deleteUserSettings(userId: number): Promise<boolean>;
+    settings: Partial<InsertSetting>
+  ): Promise<typeof userSettings.$inferSelect>;
 
   // UI Settings management
   getUISettings(): Promise<any | null>;
@@ -562,7 +561,7 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(mlModels)
       .where(eq(mlModels.isActive, true))
-      .orderBy(desc(mlModels.createdAt));
+      .orderBy(desc(mlModels.trainedAt));
     return result[0];
   }
 
@@ -944,11 +943,19 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAuditLogs(userId?: number, limit = 100): Promise<AuditLog[]> {
-    let query = db.select().from(auditLogs);
     if (userId) {
-      query = query.where(eq(auditLogs.userId, userId));
+      return await db
+        .select()
+        .from(auditLogs)
+        .where(eq(auditLogs.userId, userId))
+        .limit(limit)
+        .orderBy(desc(auditLogs.timestamp));
     }
-    return await query.limit(limit).orderBy(desc(auditLogs.createdAt));
+    return await db
+      .select()
+      .from(auditLogs)
+      .limit(limit)
+      .orderBy(desc(auditLogs.timestamp));
   }
 
   // Notifications
@@ -1004,31 +1011,40 @@ export class DatabaseStorage implements IStorage {
   }
 
   // User Settings
-  async getUserSettings(userId: number): Promise<UserSettings | undefined> {
+  // User Settings
+  async getUserSettings(userId: number): Promise<typeof userSettings.$inferSelect | undefined> {
     const result = await db
       .select()
       .from(userSettings)
-      .where(eq(userSettings.userId, userId));
+      .where(eq(userSettings.id, userId));
     return result[0];
   }
 
   async upsertUserSettings(
     userId: number,
-    settings: Partial<InsertUserSettings>
-  ): Promise<UserSettings> {
+    settings: Partial<InsertSetting>
+  ): Promise<typeof userSettings.$inferSelect> {
     const existing = await this.getUserSettings(userId);
 
     if (existing) {
       const result = await db
         .update(userSettings)
         .set({ ...settings, updatedAt: new Date() })
-        .where(eq(userSettings.userId, userId))
+        .where(eq(userSettings.id, userId))
         .returning();
       return result[0];
     } else {
       const result = await db
         .insert(userSettings)
-        .values({ ...settings, userId })
+        .values({ 
+          category: settings.category || 'general',
+          key: settings.key || 'settings',
+          value: settings.value || null,
+          isActive: settings.isActive ?? true,
+          description: settings.description || null,
+          updatedBy: settings.updatedBy || null,
+          updatedAt: new Date()
+        })
         .returning();
       return result[0];
     }
@@ -1037,7 +1053,7 @@ export class DatabaseStorage implements IStorage {
   async deleteUserSettings(userId: number): Promise<boolean> {
     const result = await db
       .delete(userSettings)
-      .where(eq(userSettings.userId, userId));
+      .where(eq(userSettings.id, userId));
     return result.changes > 0;
   }
 
@@ -1065,9 +1081,9 @@ export class DatabaseStorage implements IStorage {
     }
 
     const navigationPreferences =
-      userSettingsRecord.navigationPreferences &&
-      typeof userSettingsRecord.navigationPreferences === "string"
-        ? JSON.parse(userSettingsRecord.navigationPreferences)
+      userSettingsRecord.value &&
+      typeof userSettingsRecord.value === "string"
+        ? JSON.parse(userSettingsRecord.value)
         : {
             showTopNav: true,
             topNavStyle: "sticky",
@@ -1128,6 +1144,8 @@ export class DatabaseStorage implements IStorage {
         validatedBy: data.validatedBy || null,
         validatedAt: data.validatedAt
           ? typeof data.validatedAt === "number"
+            ? new Date(data.validatedAt)
+            : data.validatedAt instanceof Date
             ? data.validatedAt
             : null
           : null,
@@ -1287,8 +1305,9 @@ export class DatabaseStorage implements IStorage {
     );
 
     await this.upsertUserSettings(1, {
-      navigationPreferences,
-      updatedAt: new Date(),
+      category: 'ui',
+      key: 'navigationPreferences',
+      value: navigationPreferences,
     });
 
     console.log(

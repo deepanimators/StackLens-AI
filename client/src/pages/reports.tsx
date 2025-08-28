@@ -140,17 +140,20 @@ const fetchReportData = async () => {
 
     // Calculate real statistics from the API responses
     const totalFiles =
-      dashboardResponse?.totalFiles || filesResponse?.length || 0;
+      dashboardResponse?.totalFiles || filesResponse?.files?.length || 0;
+    const errorsArray = errorsResponse?.errors || [];
+    const filesArray = filesResponse?.files || [];
+
     const totalErrors =
-      dashboardResponse?.totalErrors || errorsResponse?.length || 0;
+      dashboardResponse?.totalErrors || errorsArray?.length || 0;
     const criticalErrors =
       dashboardResponse?.criticalErrors ||
-      errorsResponse?.filter((error: any) => error.severity === "critical")
+      errorsArray?.filter((error: any) => error.severity === "critical")
         .length ||
       0;
     const resolvedErrors =
       dashboardResponse?.resolvedErrors ||
-      errorsResponse?.filter((error: any) => error.resolved === true).length ||
+      errorsArray?.filter((error: any) => error.resolved === true).length ||
       0;
 
     const resolutionRate = totalErrors > 0 ? resolvedErrors / totalErrors : 0;
@@ -158,22 +161,22 @@ const fetchReportData = async () => {
     // Create severity distribution from real data
     const severityDistribution = {
       critical:
-        errorsResponse?.filter((error: any) => error.severity === "critical")
+        errorsArray?.filter((error: any) => error.severity === "critical")
           .length || 0,
       high:
-        errorsResponse?.filter((error: any) => error.severity === "high")
-          .length || 0,
+        errorsArray?.filter((error: any) => error.severity === "high").length ||
+        0,
       medium:
-        errorsResponse?.filter((error: any) => error.severity === "medium")
+        errorsArray?.filter((error: any) => error.severity === "medium")
           .length || 0,
       low:
-        errorsResponse?.filter((error: any) => error.severity === "low")
-          .length || 0,
+        errorsArray?.filter((error: any) => error.severity === "low").length ||
+        0,
     };
 
     // Group errors by type for real error type distribution
     const errorTypeMap = new Map();
-    errorsResponse?.forEach((error: any) => {
+    errorsArray?.forEach((error: any) => {
       const type = error.errorType || "Unknown";
       errorTypeMap.set(type, (errorTypeMap.get(type) || 0) + 1);
     });

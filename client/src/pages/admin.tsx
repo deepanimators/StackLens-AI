@@ -149,8 +149,7 @@ export default function AdminDashboard() {
   const { data: adminStats } = useQuery<AdminStats>({
     queryKey: ["/api/admin/stats"],
     queryFn: async () => {
-      const response = await authenticatedRequest("GET", "/api/admin/stats");
-      return response.json();
+      return await authenticatedRequest("GET", "/api/admin/stats");
     },
   });
 
@@ -158,8 +157,7 @@ export default function AdminDashboard() {
   const { data: users } = useQuery<User[]>({
     queryKey: ["/api/admin/users"],
     queryFn: async () => {
-      const response = await authenticatedRequest("GET", "/api/admin/users");
-      return response.json();
+      return await authenticatedRequest("GET", "/api/admin/users");
     },
   });
 
@@ -167,8 +165,7 @@ export default function AdminDashboard() {
   const { data: roles } = useQuery<Role[]>({
     queryKey: ["/api/admin/roles"],
     queryFn: async () => {
-      const response = await authenticatedRequest("GET", "/api/admin/roles");
-      return response.json();
+      return await authenticatedRequest("GET", "/api/admin/roles");
     },
   });
 
@@ -176,11 +173,7 @@ export default function AdminDashboard() {
   const { data: trainingModules } = useQuery<TrainingModule[]>({
     queryKey: ["/api/admin/training-modules"],
     queryFn: async () => {
-      const response = await authenticatedRequest(
-        "GET",
-        "/api/admin/training-modules"
-      );
-      return response.json();
+      return await authenticatedRequest("GET", "/api/admin/training-modules");
     },
   });
 
@@ -188,8 +181,7 @@ export default function AdminDashboard() {
   const { data: mlModels } = useQuery<MLModel[]>({
     queryKey: ["/api/admin/models"],
     queryFn: async () => {
-      const response = await authenticatedRequest("GET", "/api/admin/models");
-      return response.json();
+      return await authenticatedRequest("GET", "/api/admin/models");
     },
   });
 

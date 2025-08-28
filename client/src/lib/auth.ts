@@ -1,4 +1,6 @@
 import { apiRequest } from "./queryClient";
+import { auth } from "./firebase";
+import { buildApiUrl } from "./config";
 
 export interface User {
   id: number;
@@ -29,6 +31,31 @@ class AuthManager {
 
   constructor() {
     this.loadFromStorage();
+
+    // Development mode auto-login
+    if (import.meta.env.DEV && !this.token) {
+      console.log("🔧 Development mode: attempting auto-login");
+      this.attemptDevLogin();
+    }
+  }
+
+  // Development auto-login helper
+  private async attemptDevLogin() {
+    try {
+      console.log("🔧 Attempting development auto-login...");
+      const result = await this.login({
+        username: "deepanimators",
+        password: "admin123",
+      });
+      console.log(
+        "🔧 Development auto-login successful:",
+        result.user.username
+      );
+    } catch (error) {
+      console.log(
+        "🔧 Development auto-login failed, user needs to login manually"
+      );
+    }
   }
 
   private loadFromStorage() {
@@ -97,10 +124,16 @@ class AuthManager {
 
   async getCurrentUser(): Promise<User | null> {
     if (!this.token) {
+      console.log("🔐 No auth token found, user not authenticated");
       return null;
     }
 
     try {
+      console.log(
+        "🔐 Fetching current user with token:",
+        this.token?.substring(0, 20) + "..."
+      );
+
       const response = await fetch(buildApiUrl("/api/auth/me"), {
         headers: {
           Authorization: `Bearer ${this.token}`,
@@ -108,7 +141,9 @@ class AuthManager {
       });
 
       if (!response.ok) {
+        console.log("🔐 Auth check failed with status:", response.status);
         if (response.status === 401) {
+          console.log("🔐 Token expired or invalid, logging out");
           this.logout();
           return null;
         }
@@ -116,12 +151,15 @@ class AuthManager {
       }
 
       const data = await response.json();
+      console.log("🔐 Current user fetched successfully:", data.user.username);
       this.user = data.user;
       this.saveToStorage();
 
       return this.user;
     } catch (error) {
-      console.error("Failed to fetch current user:", error);
+      console.error("🔐 Failed to fetch current user:", error);
+      // If there's a network error or server is down, clear auth and return null
+      this.logout();
       return null;
     }
   }
@@ -163,25 +201,24 @@ class AuthManager {
 
 export const authManager = new AuthManager();
 
-// Helper function to make authenticated requests
-import { auth } from "./firebase";
-import { buildApiUrl } from "./config";
-
+// Helper function to make authenticated requests using traditional auth
 export const authenticatedRequest = async (
   method: string,
   url: string,
   body?: FormData | Record<string, any>
 ): Promise<any> => {
-  const user = auth.currentUser;
+  console.log(`🌐 Making authenticated request: ${method} ${url}`);
 
-  if (!user) {
+  // Check if user is authenticated with traditional auth
+  if (!authManager.isAuthenticated()) {
+    console.log("🔐 User not authenticated, throwing error");
     throw new Error("Not authenticated");
   }
 
-  const token = await user.getIdToken();
+  console.log("🔐 User is authenticated, proceeding with request");
 
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${token}`,
+    ...authManager.getAuthHeaders(),
   };
 
   let requestBody: string | FormData | undefined;
@@ -195,15 +232,23 @@ export const authenticatedRequest = async (
     }
   }
 
-  const response = await fetch(buildApiUrl(url), {
+  const fullUrl = buildApiUrl(url);
+  console.log(`🌐 Full request URL: ${fullUrl}`);
+
+  const response = await fetch(fullUrl, {
     method,
     headers,
     body: requestBody,
   });
 
   if (!response.ok) {
+    console.log(
+      `🌐 Request failed with status: ${response.status} ${response.statusText}`
+    );
     throw new Error(`Request failed: ${response.statusText}`);
   }
 
-  return await response.json();
+  const result = await response.json();
+  console.log(`🌐 Request successful, response:`, result);
+  return result;
 };

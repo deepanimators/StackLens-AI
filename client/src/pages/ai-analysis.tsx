@@ -92,27 +92,36 @@ export default function AIAnalysisPage() {
   const [consolidatedCurrentPage, setConsolidatedCurrentPage] = useState(1);
   const [consolidatedItemsPerPage] = useState(10);
 
-  // Fetch all errors with AI suggestions (not just first 100)
+  // Fast stats query for dashboard (no heavy data loading)
+  const { data: errorStats } = useQuery({
+    queryKey: ["/api/errors/stats"],
+    queryFn: async () => {
+      return await authenticatedRequest("GET", "/api/errors/stats");
+    },
+    staleTime: 10000, // Cache for 10 seconds
+  });
+
+  // Fetch all errors with AI suggestions (only when needed for detailed view)
   const { data: errors, refetch: refetchErrors } = useQuery({
     queryKey: ["/api/errors/enhanced/all"],
     queryFn: async (): Promise<ErrorLog[]> => {
+      // Only load first few pages for performance, prioritize errors with AI/ML data
       let allErrors: ErrorLog[] = [];
       let page = 1;
       let hasMore = true;
-      const pageSize = 1000; // Increased from 100 to 1000 to reduce API calls
-      while (hasMore) {
-        const response = await authenticatedRequest(
+      const pageSize = 500; // Reduced from 1000 to 500 for better performance
+      const maxPages = 5; // Reduced from 20 to 5 pages for faster loading
+
+      while (hasMore && page <= maxPages) {
+        const data = await authenticatedRequest(
           "GET",
           `/api/errors/enhanced?page=${page}&limit=${pageSize}`
         );
-        const data = await response.json();
+        // Fixed: authenticatedRequest already returns parsed JSON, no need to call .json()
         if (data.data && data.data.length > 0) {
           allErrors = allErrors.concat(data.data);
           hasMore = data.pagination?.hasNext || false;
           page++;
-
-          // Prevent infinite loops - stop after reasonable number of pages (limit to ~10-20 pages for dashboard)
-          if (page > 20) break; // Reduced to show first 20k items max for better performance
         } else {
           hasMore = false;
         }
@@ -128,20 +137,22 @@ export default function AIAnalysisPage() {
   });
 
   const { data: consolidatedData, refetch: refetchConsolidated } = useQuery({
-    queryKey: ["/api/errors/consolidated/all"],
+    queryKey: ["/api/errors/consolidated/summary"],
     queryFn: async () => {
+      // Load only first few pages for performance
       let allConsolidatedErrors: any[] = [];
       let page = 1;
       let hasMore = true;
-      const pageSize = 500; // Increased from 50 to 500 to reduce API calls
+      const pageSize = 200; // Reduced from 500 to 200 for better performance
+      const maxPages = 5; // Reduced from 20 to 5 for faster loading
       let totalErrors = 0;
 
-      while (hasMore) {
-        const response = await authenticatedRequest(
+      while (hasMore && page <= maxPages) {
+        const data = await authenticatedRequest(
           "GET",
           `/api/errors/consolidated?page=${page}&limit=${pageSize}`
         );
-        const data = await response.json();
+        // Fixed: authenticatedRequest already returns parsed JSON, no need to call .json()
 
         if (data.data && data.data.length > 0) {
           allConsolidatedErrors = allConsolidatedErrors.concat(data.data);
@@ -149,9 +160,6 @@ export default function AIAnalysisPage() {
             data.totalErrors || data.pagination?.total || totalErrors;
           hasMore = data.pagination?.hasNext || data.hasMore || false;
           page++;
-
-          // Prevent infinite loops - stop after reasonable number of pages (limit to ~10-20 pages for dashboard)
-          if (page > 20) break; // Reduced for better performance, shows first 10k consolidated patterns
         } else {
           hasMore = false;
         }
@@ -176,19 +184,18 @@ export default function AIAnalysisPage() {
   const { data: mlStatus } = useQuery({
     queryKey: ["/api/ml/status"],
     queryFn: async (): Promise<MLStatus> => {
-      const response = await authenticatedRequest("GET", "/api/ml/status");
-      return response.json();
+      return await authenticatedRequest("GET", "/api/ml/status");
     },
   });
 
   const { data: suggestionPerformance } = useQuery({
     queryKey: ["/api/ai/suggestion-performance"],
     queryFn: async (): Promise<SuggestionPerformance> => {
-      const response = await authenticatedRequest(
+      // Fixed: Return the authenticated request result directly
+      return await authenticatedRequest(
         "GET",
         "/api/ai/suggestion-performance"
       );
-      return response.json();
     },
   });
 
@@ -355,16 +362,21 @@ export default function AIAnalysisPage() {
     firstConsolidated: consolidatedErrors[0],
   });
 
-  // Calculate total errors properly - use the actual total from server or fallback to loaded errors count
-  const calculatedTotalErrors =
-    consolidatedData?.totalErrors || errors?.length || 0;
-
+  // Calculate statistics - prioritize fast errorStats API, fallback to loaded data
   const aiSuggestionStats = {
-    totalErrors: calculatedTotalErrors,
-    withAISuggestions: sortedAISuggestionErrors.length || 0,
-    withMLPredictions: sortedMLPredictionErrors.length || 0,
+    totalErrors:
+      errorStats?.totalErrors ||
+      consolidatedData?.totalErrors ||
+      errors?.length ||
+      0,
+    withAISuggestions:
+      errorStats?.withAISuggestions || sortedAISuggestionErrors.length || 0,
+    withMLPredictions:
+      errorStats?.withMLPredictions || sortedMLPredictionErrors.length || 0,
     resolvedErrors:
-      sortedErrors?.filter((e) => e.resolved === true).length || 0,
+      errorStats?.resolvedErrors ||
+      sortedErrors?.filter((e) => e.resolved === true).length ||
+      0,
   };
 
   return (

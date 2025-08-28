@@ -89,6 +89,13 @@ export function serveStatic(app: Express) {
     if (req.originalUrl.startsWith("/api/")) {
       return next();
     }
-    res.sendFile(path.resolve(distPath, "index.html"));
+
+    try {
+      const indexPath = path.resolve(distPath, "index.html");
+      res.sendFile(indexPath);
+    } catch (error) {
+      console.error("Failed to serve static file:", error);
+      next(error);
+    }
   });
 }

@@ -88,11 +88,7 @@ export default function AllErrorsPage() {
         ...(fileFilter && fileFilter !== "all" && { fileFilter }),
       });
 
-      const response = await authenticatedRequest(
-        "GET",
-        `/api/errors?${params}`
-      );
-      const data = await response.json();
+      const data = await authenticatedRequest("GET", `/api/errors?${params}`);
 
       // Transform the API response to UI format
       return {
@@ -108,8 +104,7 @@ export default function AllErrorsPage() {
   const { data: files } = useQuery({
     queryKey: ["/api/files"],
     queryFn: async () => {
-      const response = await authenticatedRequest("GET", "/api/files");
-      const data = await response.json();
+      const data = await authenticatedRequest("GET", "/api/files");
       // Handle the actual API response structure: { files: [...] }
       return data.files || [];
     },

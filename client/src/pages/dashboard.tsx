@@ -89,7 +89,7 @@ export default function Dashboard() {
         "GET",
         "/api/dashboard/stats"
       );
-      return response.json() as Promise<DashboardStats>;
+      return response as Promise<DashboardStats>;
     },
   });
 
@@ -97,9 +97,8 @@ export default function Dashboard() {
     queryKey: ["/api/files"],
     queryFn: async () => {
       const response = await authenticatedRequest("GET", "/api/files");
-      const data = await response.json();
       // Handle the actual API response structure: { files: [...] }
-      return (data.files || []) as RecentFile[];
+      return (response.files || []) as RecentFile[];
     },
   });
 
@@ -110,8 +109,7 @@ export default function Dashboard() {
         "GET",
         "/api/errors?limit=10"
       );
-      const data = await response.json();
-      return data.errors || [];
+      return response.errors || [];
     },
   });
 

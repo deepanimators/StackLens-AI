@@ -80,30 +80,25 @@ export default function TopNav({ className }: TopNavProps) {
     queryFn: async () => {
       try {
         console.log("🔍 Fetching processing analyses...");
-        const response = await authenticatedRequest(
-          "GET",
-          "/api/analysis/history"
-        );
+        const data = await authenticatedRequest("GET", "/api/analysis/history");
 
-        console.log(
-          `📊 Analysis history response: ${response.status} ${response.statusText}`
-        );
+        console.log(`📊 Analysis history response:`, data);
 
-        if (!response.ok) {
-          console.warn(
-            `⚠️ Analysis history request failed: ${response.status}`
-          );
+        if (!data) {
+          console.warn(`⚠️ Analysis history request failed: no data received`);
           return [];
         }
 
-        const data = await response.json();
         console.log(`✅ Analysis history data received`);
 
         const allAnalyses = data.history || data || [];
-        const processingItems = allAnalyses.filter(
-          (analysis: any) =>
-            analysis.status === "processing" || analysis.status === "pending"
-        );
+        const processingItems = Array.isArray(allAnalyses)
+          ? allAnalyses.filter(
+              (analysis: any) =>
+                analysis.status === "processing" ||
+                analysis.status === "pending"
+            )
+          : [];
 
         console.log(`📈 Found ${processingItems.length} processing analyses`);
         return processingItems;
@@ -137,12 +132,7 @@ export default function TopNav({ className }: TopNavProps) {
     queryKey: ["/api/analysis/recent-completions"],
     queryFn: async () => {
       try {
-        const response = await authenticatedRequest(
-          "GET",
-          "/api/analysis/history"
-        );
-        if (!response.ok) return [];
-        const data = await response.json();
+        const data = await authenticatedRequest("GET", "/api/analysis/history");
         const allAnalyses = data.history || data || [];
         // Get recently completed analyses (last 2 hours)
         const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
