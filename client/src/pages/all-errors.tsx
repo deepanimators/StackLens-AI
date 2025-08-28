@@ -62,7 +62,7 @@ const transformErrorLog = (apiError: any): ErrorLog => ({
 
 export default function AllErrorsPage() {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50); // Changed from 10 to 50 as requested
   const [severity, setSeverity] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [fileFilter, setFileFilter] = useState<string>("all");
@@ -73,6 +73,7 @@ export default function AllErrorsPage() {
   const {
     data: errorsData,
     isLoading,
+    error: queryError,
     refetch,
   } = useQuery({
     queryKey: [
@@ -80,6 +81,14 @@ export default function AllErrorsPage() {
       { page, limit, severity, search: searchQuery, fileFilter },
     ],
     queryFn: async (): Promise<ErrorsResponse> => {
+      console.log("🔍 All Errors: Making API request", {
+        page,
+        limit,
+        severity,
+        searchQuery,
+        fileFilter,
+      });
+
       const params = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
@@ -88,15 +97,21 @@ export default function AllErrorsPage() {
         ...(fileFilter && fileFilter !== "all" && { fileFilter }),
       });
 
-      const data = await authenticatedRequest("GET", `/api/errors?${params}`);
+      try {
+        const data = await authenticatedRequest("GET", `/api/errors?${params}`);
+        console.log("🔍 All Errors: API response received", data);
 
-      // Transform the API response to UI format
-      return {
-        errors: (data.errors || []).map(transformErrorLog),
-        total: data.total || 0,
-        page: data.page || page,
-        limit: data.limit || limit,
-      };
+        // Transform the API response to UI format
+        return {
+          errors: (data.errors || []).map(transformErrorLog),
+          total: data.total || 0,
+          page: data.page || page,
+          limit: data.limit || limit,
+        };
+      } catch (error) {
+        console.error("🔍 All Errors: API request failed", error);
+        throw error;
+      }
     },
   });
 
