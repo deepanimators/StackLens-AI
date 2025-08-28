@@ -266,7 +266,8 @@ export default function AnalysisModal({
                 <div>
                   <p className="text-sm text-muted-foreground">File Name</p>
                   <p className="font-medium">
-                    {error.filename || (error.fileId ? `File #${error.fileId}` : "Unknown File")}
+                    {error.filename ||
+                      (error.fileId ? `File #${error.fileId}` : "Unknown File")}
                   </p>
                 </div>
                 <div>

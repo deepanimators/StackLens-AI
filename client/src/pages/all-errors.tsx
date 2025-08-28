@@ -103,7 +103,14 @@ export default function AllErrors() {
   } = useQuery({
     queryKey: [
       "/api/errors",
-      { page, limit, severity, search: searchQuery, fileFilter, errorType: errorTypeFilter },
+      {
+        page,
+        limit,
+        severity,
+        search: searchQuery,
+        fileFilter,
+        errorType: errorTypeFilter,
+      },
     ],
     queryFn: async (): Promise<ErrorsResponse> => {
       console.log("🔍 All Errors: Making API request", {
@@ -121,7 +128,8 @@ export default function AllErrors() {
         ...(severity && severity !== "all" && { severity }),
         ...(searchQuery && { search: searchQuery }),
         ...(fileFilter && fileFilter !== "all" && { fileFilter }),
-        ...(errorTypeFilter && errorTypeFilter !== "all" && { errorType: errorTypeFilter }),
+        ...(errorTypeFilter &&
+          errorTypeFilter !== "all" && { errorType: errorTypeFilter }),
       });
 
       try {
@@ -340,7 +348,10 @@ export default function AllErrors() {
               </SelectContent>
             </Select>
 
-            <Select value={errorTypeFilter} onValueChange={handleErrorTypeFilter}>
+            <Select
+              value={errorTypeFilter}
+              onValueChange={handleErrorTypeFilter}
+            >
               <SelectTrigger className="w-48">
                 <SelectValue placeholder="Filter by type" />
               </SelectTrigger>

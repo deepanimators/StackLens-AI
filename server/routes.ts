@@ -4838,6 +4838,7 @@ Format as JSON with the following structure:
         return {
           id: error.id,
           fileId: error.fileId,
+          filename: (error as any).filename || "Unknown",
           message: error.message,
           severity: error.severity,
           errorType: error.errorType,
@@ -4934,7 +4935,9 @@ Format as JSON with the following structure:
   app.get("/api/errors/types", requireAuth, async (req: any, res: any) => {
     try {
       const allUserErrors = await storage.getErrorsByUser(req.user.id);
-      const errorTypesSet = new Set(allUserErrors.map(error => error.errorType).filter(Boolean));
+      const errorTypesSet = new Set(
+        allUserErrors.map((error) => error.errorType).filter(Boolean)
+      );
       const errorTypes = Array.from(errorTypesSet);
       res.json(errorTypes.sort());
     } catch (error) {
