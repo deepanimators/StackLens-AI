@@ -551,6 +551,11 @@ export default function AnalysisHistoryPage() {
       return "Unknown File";
     }
     const file = logFiles.find((f) => f.id === fileId);
+    console.log(
+      `🔍 getFileName: Looking for fileId ${fileId} in logFiles:`,
+      logFiles
+    );
+    console.log(`🔍 getFileName: Found file:`, file);
     return file?.originalName || "Unknown File";
   };
 
@@ -1020,7 +1025,8 @@ export default function AnalysisHistoryPage() {
                   <div className="bg-muted rounded-lg p-4 space-y-2">
                     <p>
                       <strong>File:</strong>{" "}
-                      {getFileName(selectedAnalysis.fileId)}
+                      {selectedAnalysis.filename ||
+                        getFileName(selectedAnalysis.fileId)}
                     </p>
                     <p>
                       <strong>Analysis Date:</strong>{" "}

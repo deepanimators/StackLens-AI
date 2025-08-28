@@ -2502,7 +2502,6 @@ Format as JSON with the following structure:
           trainingDataSize: trainingData.feedbackData.length,
           trainingMetrics: trainingData,
           isActive: false,
-          trainedAt: new Date(),
         });
 
         res.json({
@@ -4611,7 +4610,8 @@ Format as JSON with the following structure:
 
           return {
             id: item.id,
-            fileName,
+            fileId: item.fileId, // Add fileId for patterns API
+            filename: fileName, // Use filename instead of fileName for frontend consistency
             uploadDate: validUploadDate,
             totalErrors: item.totalErrors || 0,
             criticalErrors: item.criticalErrors || 0,
