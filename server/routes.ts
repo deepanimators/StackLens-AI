@@ -1268,8 +1268,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: any, res: any) => {
       try {
         const analysisId = parseInt(req.params.analysisId);
+        console.log(
+          `🔍 Patterns API: Fetching patterns for analysisId ${analysisId}`
+        );
+
         // Get all error logs for this analysis
         const analysis = await storage.getAnalysisHistory(analysisId);
+        console.log(`🔍 Patterns API: Found analysis:`, analysis);
+
         if (!analysis) {
           return res.status(404).json({ message: "Analysis not found" });
         }
@@ -1280,14 +1286,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .json({ message: "Analysis does not have an associated file" });
         }
 
+        console.log(
+          `🔍 Patterns API: Fetching errors for fileId ${analysis.fileId}`
+        );
         const errors = await storage.getErrorLogsByFile(analysis.fileId);
+        console.log(
+          `🔍 Patterns API: Found ${errors?.length || 0} errors for file`
+        );
+
         if (!errors || errors.length === 0) {
-          return res
-            .status(404)
-            .json({ message: "No error logs found for this analysis" });
+          console.log(
+            `🔍 Patterns API: No errors found, returning empty patterns`
+          );
+          return res.json({ patterns: [] }); // Return empty patterns instead of 404
         }
+
         // Use ErrorPatternAnalyzer to extract patterns
         const patterns = ErrorPatternAnalyzer.extractPatterns(errors);
+        console.log(
+          `🔍 Patterns API: Extracted ${patterns?.length || 0} patterns`
+        );
+        console.log(`🔍 Patterns API: Patterns:`, patterns);
+
         res.json({ patterns });
       } catch (error) {
         console.error("Error fetching error patterns:", error);

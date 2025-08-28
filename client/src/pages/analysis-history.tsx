@@ -263,31 +263,85 @@ export default function AnalysisHistoryPage() {
   });
 
   // Fetch error patterns for selected analysis
-  const { data: errorPatterns, isLoading: patternsLoading } = useQuery({
-    queryKey: [`/api/analysis/${selectedAnalysis?.id}/patterns`],
+  const {
+    data: errorPatterns,
+    isLoading: patternsLoading,
+    error: patternsError,
+  } = useQuery({
+    queryKey: [
+      `/api/analysis/${selectedAnalysis?.id}/patterns`,
+      showErrorPatterns,
+    ],
     queryFn: async (): Promise<ErrorPattern[]> => {
-      if (!selectedAnalysis) return [];
-      const response = await authenticatedRequest(
-        "GET",
-        `/api/analysis/${selectedAnalysis.id}/patterns`
+      console.log(`🔍 Frontend Query: Query function called!`);
+      console.log(
+        `🔍 Frontend Query: selectedAnalysis exists: ${!!selectedAnalysis}`
       );
-      const data = await response.json();
-      console.log("Error Patterns Data:", data); // Debug log
+      console.log(`🔍 Frontend Query: showErrorPatterns: ${showErrorPatterns}`);
+      console.log(`🔍 Frontend Query: selectedAnalysis:`, selectedAnalysis);
 
-      // Handle response structure - server returns { patterns: [...] }
-      if (data && Array.isArray(data.patterns)) {
-        return data.patterns;
+      if (!selectedAnalysis) {
+        console.log("🔍 Frontend: No selectedAnalysis, returning empty array");
+        return [];
       }
 
-      // Fallback for direct array
-      if (Array.isArray(data)) {
-        return data;
+      if (!showErrorPatterns) {
+        console.log(
+          "🔍 Frontend: showErrorPatterns is false, returning empty array"
+        );
+        return [];
       }
 
-      return [];
+      console.log(
+        `🔍 Frontend: Starting patterns query for analysis ID: ${selectedAnalysis.id}`
+      );
+      console.log(
+        "🔍 Frontend: Selected analysis for patterns:",
+        selectedAnalysis
+      );
+
+      try {
+        const data = await authenticatedRequest(
+          "GET",
+          `/api/analysis/${selectedAnalysis.id}/patterns`
+        );
+
+        console.log("🔍 Frontend: Error Patterns API Response:", data);
+
+        // Handle response structure - server returns { patterns: [...] }
+        if (data && Array.isArray(data.patterns)) {
+          console.log(
+            `🔍 Frontend: Found ${data.patterns.length} patterns in response`
+          );
+          return data.patterns;
+        }
+
+        // Fallback for direct array
+        if (Array.isArray(data)) {
+          console.log(`🔍 Frontend: Direct array with ${data.length} patterns`);
+          return data;
+        }
+
+        console.log(
+          "🔍 Frontend: No valid patterns found in response, returning empty array"
+        );
+        return [];
+      } catch (error) {
+        console.error(`🔍 Frontend: Patterns API error:`, error);
+        return [];
+      }
     },
-    enabled: !!selectedAnalysis && selectedAnalysis.status === "completed",
-  }); // Combine completed analyses with processing files
+    enabled: (() => {
+      const isEnabled = !!selectedAnalysis && showErrorPatterns;
+      console.log(
+        `🔍 Frontend Query: Query enabled: ${isEnabled} (selectedAnalysis: ${!!selectedAnalysis}, showErrorPatterns: ${showErrorPatterns})`
+      );
+      return isEnabled;
+    })(),
+    retry: false, // Don't retry on failure for debugging
+  });
+
+  // Combine completed analyses with processing files
   const combinedHistory = React.useMemo(() => {
     // Ensure analysisHistory is always an array
     const historyArray = Array.isArray(analysisHistory) ? analysisHistory : [];
@@ -920,7 +974,13 @@ export default function AnalysisHistoryPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => setSelectedAnalysis(analysis)}
+                                onClick={() => {
+                                  console.log(
+                                    "🔍 Frontend: Selecting analysis for details:",
+                                    analysis
+                                  );
+                                  setSelectedAnalysis(analysis);
+                                }}
                                 className="text-primary hover:text-primary"
                               >
                                 <Eye className="h-4 w-4" />
@@ -1127,7 +1187,16 @@ export default function AnalysisHistoryPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setShowErrorPatterns(!showErrorPatterns)}
+                  onClick={() => {
+                    console.log(
+                      `🔍 Frontend: Toggling showErrorPatterns from ${showErrorPatterns} to ${!showErrorPatterns}`
+                    );
+                    console.log(
+                      "🔍 Frontend: Current selectedAnalysis:",
+                      selectedAnalysis
+                    );
+                    setShowErrorPatterns(!showErrorPatterns);
+                  }}
                 >
                   {showErrorPatterns ? "Hide" : "Show"} Patterns
                 </Button>
@@ -1135,6 +1204,37 @@ export default function AnalysisHistoryPage() {
 
               {showErrorPatterns && (
                 <div className="bg-muted rounded-lg p-4">
+                  {(() => {
+                    console.log(
+                      `🔍 Frontend UI: patternsLoading: ${patternsLoading}`
+                    );
+                    console.log(
+                      `🔍 Frontend UI: patternsError:`,
+                      patternsError
+                    );
+                    console.log(
+                      `🔍 Frontend UI: errorPatterns:`,
+                      errorPatterns
+                    );
+                    console.log(
+                      `🔍 Frontend UI: errorPatterns type:`,
+                      typeof errorPatterns
+                    );
+                    console.log(
+                      `🔍 Frontend UI: errorPatterns length:`,
+                      errorPatterns?.length
+                    );
+                    console.log(
+                      `🔍 Frontend UI: selectedAnalysis:`,
+                      selectedAnalysis
+                    );
+                    console.log(
+                      `🔍 Frontend UI: Render condition - patternsLoading: ${patternsLoading}, errorPatterns exists: ${!!errorPatterns}, length > 0: ${
+                        errorPatterns && errorPatterns.length > 0
+                      }`
+                    );
+                    return null;
+                  })()}
                   {patternsLoading ? (
                     <div className="flex items-center justify-center py-4">
                       <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
