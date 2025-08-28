@@ -211,7 +211,9 @@ export interface IStorage {
 
   // User Settings
   // User Settings
-  getUserSettings(userId: number): Promise<typeof userSettings.$inferSelect | undefined>;
+  getUserSettings(
+    userId: number
+  ): Promise<typeof userSettings.$inferSelect | undefined>;
   upsertUserSettings(
     userId: number,
     settings: Partial<InsertSetting>
@@ -441,6 +443,7 @@ export class DatabaseStorage implements IStorage {
         resolved: errorLogs.resolved,
         aiSuggestion: errorLogs.aiSuggestion,
         mlPrediction: errorLogs.mlPrediction,
+        mlConfidence: errorLogs.mlConfidence,
         createdAt: errorLogs.createdAt,
         // filename: logFiles.originalName,
       })
@@ -463,7 +466,22 @@ export class DatabaseStorage implements IStorage {
 
   async getErrorsBySeverity(severity: string): Promise<ErrorLog[]> {
     return await db
-      .select()
+      .select({
+        id: errorLogs.id,
+        fileId: errorLogs.fileId,
+        lineNumber: errorLogs.lineNumber,
+        timestamp: errorLogs.timestamp,
+        severity: errorLogs.severity,
+        errorType: errorLogs.errorType,
+        message: errorLogs.message,
+        fullText: errorLogs.fullText,
+        pattern: errorLogs.pattern,
+        resolved: errorLogs.resolved,
+        aiSuggestion: errorLogs.aiSuggestion,
+        mlPrediction: errorLogs.mlPrediction,
+        mlConfidence: errorLogs.mlConfidence,
+        createdAt: errorLogs.createdAt,
+      })
       .from(errorLogs)
       .where(eq(errorLogs.severity, severity))
       .orderBy(desc(errorLogs.createdAt));
@@ -474,7 +492,22 @@ export class DatabaseStorage implements IStorage {
     // In a real implementation, this would join with a suggestions table
     // For now, return recent errors as training data for RAG
     return await db
-      .select()
+      .select({
+        id: errorLogs.id,
+        fileId: errorLogs.fileId,
+        lineNumber: errorLogs.lineNumber,
+        timestamp: errorLogs.timestamp,
+        severity: errorLogs.severity,
+        errorType: errorLogs.errorType,
+        message: errorLogs.message,
+        fullText: errorLogs.fullText,
+        pattern: errorLogs.pattern,
+        resolved: errorLogs.resolved,
+        aiSuggestion: errorLogs.aiSuggestion,
+        mlPrediction: errorLogs.mlPrediction,
+        mlConfidence: errorLogs.mlConfidence,
+        createdAt: errorLogs.createdAt,
+      })
       .from(errorLogs)
       .orderBy(desc(errorLogs.createdAt))
       .limit(50); // Limit to prevent too many results
@@ -1012,7 +1045,9 @@ export class DatabaseStorage implements IStorage {
 
   // User Settings
   // User Settings
-  async getUserSettings(userId: number): Promise<typeof userSettings.$inferSelect | undefined> {
+  async getUserSettings(
+    userId: number
+  ): Promise<typeof userSettings.$inferSelect | undefined> {
     const result = await db
       .select()
       .from(userSettings)
@@ -1036,14 +1071,14 @@ export class DatabaseStorage implements IStorage {
     } else {
       const result = await db
         .insert(userSettings)
-        .values({ 
-          category: settings.category || 'general',
-          key: settings.key || 'settings',
+        .values({
+          category: settings.category || "general",
+          key: settings.key || "settings",
           value: settings.value || null,
           isActive: settings.isActive ?? true,
           description: settings.description || null,
           updatedBy: settings.updatedBy || null,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         })
         .returning();
       return result[0];
@@ -1081,8 +1116,7 @@ export class DatabaseStorage implements IStorage {
     }
 
     const navigationPreferences =
-      userSettingsRecord.value &&
-      typeof userSettingsRecord.value === "string"
+      userSettingsRecord.value && typeof userSettingsRecord.value === "string"
         ? JSON.parse(userSettingsRecord.value)
         : {
             showTopNav: true,
@@ -1305,8 +1339,8 @@ export class DatabaseStorage implements IStorage {
     );
 
     await this.upsertUserSettings(1, {
-      category: 'ui',
-      key: 'navigationPreferences',
+      category: "ui",
+      key: "navigationPreferences",
       value: navigationPreferences,
     });
 

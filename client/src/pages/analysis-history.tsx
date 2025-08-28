@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import AdaptiveLayout from "@/components/adaptive-layout";
 import ProgressBar from "@/components/progress-bar";
-import { authenticatedRequest } from "@/lib/auth";
+import { authenticatedRequest, authManager } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import {
   FileText,
@@ -480,7 +480,7 @@ export default function AnalysisHistoryPage() {
   const handleExport = async (analysis: AnalysisHistory) => {
     try {
       // Make a direct fetch request since we need the blob response
-      const token = localStorage.getItem("token");
+      const token = authManager.getToken();
       const response = await fetch(
         `/api/export/errors?analysisId=${analysis.id}`,
         {

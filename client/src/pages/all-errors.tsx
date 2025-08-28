@@ -42,23 +42,47 @@ interface ErrorsResponse {
 }
 
 // Transform API response to UI format
-const transformErrorLog = (apiError: any): ErrorLog => ({
-  id: apiError.id,
-  fileId: apiError.fileId || undefined,
-  lineNumber: apiError.lineNumber || apiError.line_number,
-  timestamp: apiError.timestamp
-    ? typeof apiError.timestamp === "string"
-      ? apiError.timestamp
-      : new Date(apiError.timestamp).toISOString()
-    : null,
-  severity: apiError.severity,
-  errorType: apiError.errorType || "Unknown",
-  message: apiError.message,
-  fullText: apiError.fullText || apiError.stack_trace || apiError.message,
-  resolved: Boolean(apiError.resolved),
-  aiSuggestion: apiError.aiSuggestion,
-  mlPrediction: apiError.mlPrediction,
-});
+const transformErrorLog = (apiError: any): ErrorLog => {
+  // Parse ai_suggestion if it's a string
+  let aiSuggestion = apiError.aiSuggestion;
+  if (typeof aiSuggestion === "string" && aiSuggestion) {
+    try {
+      aiSuggestion = JSON.parse(aiSuggestion);
+    } catch (e) {
+      console.warn("Failed to parse aiSuggestion JSON:", e);
+      aiSuggestion = null;
+    }
+  }
+
+  // Parse ml_prediction if it's a string
+  let mlPrediction = apiError.mlPrediction;
+  if (typeof mlPrediction === "string" && mlPrediction) {
+    try {
+      mlPrediction = JSON.parse(mlPrediction);
+    } catch (e) {
+      console.warn("Failed to parse mlPrediction JSON:", e);
+      mlPrediction = null;
+    }
+  }
+
+  return {
+    id: apiError.id,
+    fileId: apiError.fileId || undefined,
+    lineNumber: apiError.lineNumber || apiError.line_number,
+    timestamp: apiError.timestamp
+      ? typeof apiError.timestamp === "string"
+        ? apiError.timestamp
+        : new Date(apiError.timestamp).toISOString()
+      : null,
+    severity: apiError.severity,
+    errorType: apiError.errorType || "Unknown",
+    message: apiError.message,
+    fullText: apiError.fullText || apiError.stack_trace || apiError.message,
+    resolved: Boolean(apiError.resolved),
+    aiSuggestion: aiSuggestion,
+    mlPrediction: mlPrediction,
+  };
+};
 
 export default function AllErrorsPage() {
   const [page, setPage] = useState(1);

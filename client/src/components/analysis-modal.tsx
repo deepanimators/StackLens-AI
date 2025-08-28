@@ -111,11 +111,16 @@ export default function AnalysisModal({
   const { data: patternsData, isLoading: patternsLoading } = useQuery({
     queryKey: ["/api/files", error.fileId, "patterns"],
     queryFn: async (): Promise<{ patterns: any[] }> => {
+      console.log(
+        `🔍 Analysis Modal: Fetching patterns for file ${error.fileId}`
+      );
       const response = await authenticatedRequest(
         "GET",
         `/api/files/${error.fileId}/patterns`
       );
-      return response.json();
+      const data = await response.json();
+      console.log(`🔍 Analysis Modal: Patterns response:`, data);
+      return data;
     },
     enabled: isOpen && !!error.fileId,
   });

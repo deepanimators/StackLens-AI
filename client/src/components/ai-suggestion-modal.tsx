@@ -71,6 +71,18 @@ export default function AISuggestionModal({
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Debug logging
+  console.log(
+    `🤖 AI Suggestion Modal: Error ID ${error?.id}, has aiSuggestion:`,
+    !!error?.aiSuggestion
+  );
+  if (error?.aiSuggestion) {
+    console.log(
+      `🤖 AI Suggestion Modal: aiSuggestion data:`,
+      error.aiSuggestion
+    );
+  }
+
   // Reset suggestion state when error changes
   useEffect(() => {
     setSuggestion(error?.aiSuggestion);
