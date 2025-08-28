@@ -46,11 +46,14 @@ export default function ErrorTable({
   fileName,
 }: ErrorTableProps) {
   const getSeverityColor = (severity: string) => {
-    return SEVERITY_COLORS[severity as keyof typeof SEVERITY_COLORS] || SEVERITY_COLORS.medium;
+    return (
+      SEVERITY_COLORS[severity as keyof typeof SEVERITY_COLORS] ||
+      SEVERITY_COLORS.medium
+    );
   };
 
   const formatTimestamp = (timestamp: string | null) => {
-    if (!timestamp) return 'N/A';
+    if (!timestamp) return "N/A";
     try {
       return new Date(timestamp).toLocaleString();
     } catch {
@@ -60,7 +63,7 @@ export default function ErrorTable({
 
   const truncateMessage = (message: string, maxLength: number = 80) => {
     if (message.length <= maxLength) return message;
-    return message.substring(0, maxLength) + '...';
+    return message.substring(0, maxLength) + "...";
   };
 
   return (
@@ -92,17 +95,14 @@ export default function ErrorTable({
               )}
               {showFileName && (
                 <TableCell className="text-muted-foreground">
-                  {fileName || 'Unknown'}
+                  {(error as any).filename || "Unknown"}
                 </TableCell>
               )}
               <TableCell>
-                <Badge 
+                <Badge
                   variant="secondary"
-                  className={cn(
-                    "capitalize",
-                    `bg-severity-${error.severity}`
-                  )}
-                  style={{ 
+                  className={cn("capitalize", `bg-severity-${error.severity}`)}
+                  style={{
                     backgroundColor: `${getSeverityColor(error.severity)}20`,
                     color: getSeverityColor(error.severity),
                     borderColor: `${getSeverityColor(error.severity)}40`,
@@ -111,9 +111,7 @@ export default function ErrorTable({
                   {error.severity}
                 </Badge>
               </TableCell>
-              <TableCell className="font-medium">
-                {error.errorType}
-              </TableCell>
+              <TableCell className="font-medium">{error.errorType}</TableCell>
               <TableCell className="max-w-md">
                 <div className="truncate" title={error.message}>
                   {truncateMessage(error.message)}
@@ -138,7 +136,10 @@ export default function ErrorTable({
                     <Bot className="h-4 w-4" />
                   </Button>
                   {error.resolved && (
-                    <div className="w-2 h-2 bg-green-500 rounded-full" title="Resolved" />
+                    <div
+                      className="w-2 h-2 bg-green-500 rounded-full"
+                      title="Resolved"
+                    />
                   )}
                 </div>
               </TableCell>
@@ -146,7 +147,7 @@ export default function ErrorTable({
           ))}
         </TableBody>
       </Table>
-      
+
       {errors.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
           <ExternalLink className="h-8 w-8 mx-auto mb-2 opacity-50" />

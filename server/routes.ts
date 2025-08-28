@@ -4774,6 +4774,16 @@ Format as JSON with the following structure:
       // TODO: Implement proper SQL filtering in the storage layer
       const allUserErrors = await storage.getErrorsByUser(req.user.id);
 
+      console.log(`🔍 [DEBUG] Total user errors: ${allUserErrors.length}`);
+      if (errorTypeFilter && errorTypeFilter !== "all") {
+        const errorTypes = allUserErrors.map((e) => e.errorType);
+        const uniqueTypes = Array.from(new Set(errorTypes));
+        console.log(
+          `🔍 [DEBUG] Available error types: ${uniqueTypes.join(", ")}`
+        );
+        console.log(`🔍 [DEBUG] Requested filter: ${errorTypeFilter}`);
+      }
+
       let filteredErrors = allUserErrors;
 
       // Apply filters
@@ -4784,8 +4794,13 @@ Format as JSON with the following structure:
       }
 
       if (errorTypeFilter && errorTypeFilter !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by errorType: ${errorTypeFilter}`);
+        const beforeFiltering = filteredErrors.length;
         filteredErrors = filteredErrors.filter(
           (error) => error.errorType === errorTypeFilter
+        );
+        console.log(
+          `🔍 [DEBUG] Error type filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
         );
       }
 

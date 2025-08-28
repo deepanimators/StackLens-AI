@@ -102,11 +102,10 @@ export default function AnalysisModal({
       console.log(
         `🔍 Analysis Modal: Fetching patterns for file ${error.fileId}`
       );
-      const response = await authenticatedRequest(
+      const data = await authenticatedRequest(
         "GET",
         `/api/files/${error.fileId}/patterns`
       );
-      const data = await response.json();
       console.log(`🔍 Analysis Modal: Patterns response:`, data);
       return data;
     },

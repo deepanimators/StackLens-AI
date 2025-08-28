@@ -15,7 +15,7 @@ import AdaptiveLayout from "@/components/adaptive-layout";
 import ErrorTable from "@/components/error-table";
 import AnalysisModal from "@/components/analysis-modal";
 import AISuggestionModal from "@/components/ai-suggestion-modal";
-import { authenticatedRequest } from "@/lib/auth";
+import { authenticatedRequest, authManager } from "@/lib/auth";
 import { Search, Filter, Download, RefreshCw } from "lucide-react";
 import { SEVERITY_LABELS } from "@/lib/constants";
 
@@ -23,6 +23,7 @@ import { SEVERITY_LABELS } from "@/lib/constants";
 interface ErrorLog {
   id: number;
   fileId?: number;
+  filename?: string;
   lineNumber: number;
   timestamp: string | null;
   severity: string;
@@ -68,6 +69,7 @@ const transformErrorLog = (apiError: any): ErrorLog => {
   return {
     id: apiError.id,
     fileId: apiError.fileId || undefined,
+    filename: apiError.filename || apiError.file_path || "Unknown",
     lineNumber: apiError.lineNumber || apiError.line_number,
     timestamp: apiError.timestamp
       ? typeof apiError.timestamp === "string"
@@ -202,10 +204,20 @@ export default function AllErrors() {
 
   const handleExport = async () => {
     try {
-      const response = await authenticatedRequest(
-        "GET",
-        "/api/export/errors?format=csv"
+      const response = await fetch(
+        `http://localhost:4000/api/export/errors?format=csv`,
+        {
+          method: "GET",
+          headers: {
+            ...authManager.getAuthHeaders(),
+          },
+        }
       );
+
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.statusText}`);
+      }
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
