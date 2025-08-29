@@ -1,0 +1,1550 @@
+2025-08-27/00:02:11.902/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:02:11.905/CDT ERROR AbstractEndpoint:179:[thcheck]: - POS for PLK-2474 is offline. Handler=MicrosSimphonyV2PosHandler
+
+2025-08-27/00:02:41.912/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:03:11.928/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:03:41.924/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:04:11.937/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:04:41.931/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:05:11.930/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:05:41.944/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:06:11.924/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:06:41.926/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:07:11.948/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:07:41.963/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:08:11.959/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:08:41.958/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:09:11.964/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:09:41.950/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:10:11.963/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:10:41.960/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:11:11.956/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:11:41.970/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:12:11.964/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:12:41.980/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:13:11.977/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:13:41.973/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:14:11.985/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:14:42.000/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:15:11.995/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:15:41.993/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:16:11.990/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:16:42.000/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:17:12.016/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:17:42.013/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:18:12.008/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:18:42.023/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:19:12.020/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:19:42.013/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:20:12.026/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:20:42.042/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:21:12.040/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:21:42.019/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:22:12.045/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:22:42.045/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:23:12.059/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:23:42.052/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:24:12.069/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:24:42.066/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:25:12.061/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:25:42.057/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:26:12.084/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:26:42.084/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:27:12.097/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:27:42.112/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:28:12.090/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:28:42.102/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:29:12.119/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:29:42.116/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:30:12.111/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:30:42.106/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:31:12.097/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:31:42.119/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:32:12.115/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:32:42.124/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:33:12.124/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:33:42.155/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:34:12.137/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:34:42.161/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:35:12.175/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:35:42.192/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:36:12.186/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:36:42.185/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:37:12.186/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:37:42.210/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:38:12.242/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:38:42.199/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:39:12.219/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:39:42.214/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:40:12.222/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:40:42.225/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:41:12.238/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:41:42.251/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:42:12.246/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:42:42.260/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:43:12.249/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:43:42.251/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:44:12.267/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:44:42.257/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:45:12.274/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:45:42.291/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:46:12.265/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:46:42.284/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:47:12.282/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:47:42.293/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:48:12.291/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:48:42.305/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:49:12.316/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:49:42.304/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:50:12.303/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:50:42.324/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:51:12.332/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:51:42.331/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:52:12.346/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:52:42.360/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:53:12.334/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:53:42.352/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:54:12.364/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:54:42.381/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:55:12.376/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:55:42.374/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:56:12.369/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:56:42.381/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:57:12.396/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:57:42.409/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:58:12.407/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:58:42.403/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:59:12.403/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/00:59:42.412/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:00:12.426/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:00:42.422/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:01:12.434/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:01:42.448/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:02:12.464/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:02:42.460/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:03:12.440/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:03:42.454/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:04:12.466/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:04:42.463/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:05:12.459/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:05:42.468/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:06:12.465/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:06:42.466/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:07:12.463/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:07:42.460/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:08:12.470/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:08:42.473/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:09:12.499/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:09:42.496/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:10:12.489/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:10:42.504/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:11:12.519/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:11:42.510/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:12:12.530/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:12:42.525/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:13:12.537/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:13:42.535/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:14:12.547/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:14:42.562/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:15:12.536/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:15:42.554/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:16:12.544/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:16:42.565/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:17:12.562/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:17:42.576/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:18:12.572/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:18:42.566/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:19:12.572/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:19:42.645/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:20:12.592/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:20:42.605/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:21:12.601/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:21:42.615/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:22:12.612/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:22:42.607/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:23:12.605/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:23:42.618/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:24:12.615/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:24:42.612/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:25:12.622/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:25:42.638/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:26:12.634/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:26:42.659/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:27:12.660/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:27:42.663/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:28:12.672/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:28:42.683/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:29:12.697/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:29:42.711/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:30:12.687/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:30:42.704/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:31:12.699/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:31:42.698/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:32:12.707/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:32:42.725/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:33:12.721/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:33:42.716/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:34:12.721/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:34:42.744/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:35:12.740/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:35:42.738/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:36:12.732/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:36:42.746/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:37:12.737/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:37:42.758/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:38:12.754/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:38:42.763/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:39:12.762/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:39:42.777/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:40:12.773/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:40:42.768/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:41:12.784/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:41:42.780/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:42:12.777/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:42:42.757/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:43:12.787/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:43:42.760/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:44:12.779/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:44:42.794/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:45:12.789/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:45:42.769/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:46:12.773/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:46:42.785/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:47:12.811/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:47:42.807/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:48:12.787/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:48:42.800/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:49:12.814/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:49:42.809/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:50:12.806/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:50:42.803/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:51:12.816/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:51:42.812/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:52:12.809/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:52:42.802/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:53:12.819/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:53:42.816/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:54:12.829/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:54:42.826/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:55:12.822/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:55:42.830/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:56:12.815/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:56:42.830/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:57:12.827/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:57:42.821/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:58:12.837/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:58:42.847/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:59:12.863/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/01:59:42.873/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:00:12.873/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:00:42.885/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:01:12.878/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:03:41.916/CDT  INFO ConfigurationScheduleService:134:[tStop-3]: - Refreshed menu items availability
+
+2025-08-27/02:03:44.890/CDT  INFO KioskWebServiceConfig:336:[tStop-3]: - External API not defined to publish kiosk status.
+
+2025-08-27/02:03:57.549/CDT  INFO MicrosSimphonyV2APIUtils:99:[-exec-8]: - Read file: /tillster/workspace/pos/simphony-auth-token content: {"access_token":"[nec]qmInpJ1ZmXAkBnjyd6YoyxNAY954F1LSKZ1kQIRfdAS+YHxa5v2NEOZGQ1lMlCn90Cz9G5Nwzinv+DBCCypnGmcSvKuJdiyKEyn9qEgTQMXzFKPzTSnNCxHI09+j0UUQBymTmGhHADOUquXrVkQ/wBu1Zm4WIRV/fS5p7krjbAnytYgFpgrZMxY0x5+tg/6CMoHT0lB+LAlF4kJEDlLJz25PsLh5LInHVuews5iMAOHmmgd19gIyGUF7BC7hkTDweTK5juiWdZKaEWZp65S33SBV/jWaQPcL7xo8K3l/UU3haiGXY9ncZaoNVT5kAaEErZrjiLFikzsA7F6kSOIUkaYaWjkKCLwP6zi2i+AIE4aFPyJmDMcRwWnQDrlHCk+HXWlvjSXx3M5w0ewJku0myC4ju+39MWDHcgyJ1Q0RcpsLfFpmU/teqNRHOMw5yV1zBGGG7WxWEZETZqh/yKO3inQmsxyeOY97zHOnGXnKvtbYiUqybzZ4Z0ClCteHs198wI3TTyfPItfuPWZeOkQL/CG3SeuD7tw9Qxm8RVJ4CbxwEhNocKePBr+vrpcbpL8oxyJSee364DfMkqLFwlqo5jepyPH6cXXiK+oRHiRkFFXM50ZgMKw8mVPGldP4q7pJJ//FaGvdv3cMx4efL4JsULpMuF/qAdzW0G1H9oO32dBWcpXHpKL5jdjW5I9cTudtM7SwAcAIVolLWqlgcFx6TLmvk3F8Dc8GBT/jiwygUYHaFu31MjyZD9x4zOa0oRRnssqDw4VcRq4Q6kbEU7GzFUTCsJrGAjfPTtRdK47ymIGG4HmGFcukthnMpYhHiRqbJK1WhXE4iNb2Y+4oHnTBVa2FS1YPxrvchOZIV8glXTRLjdxyct7DTDPiuC2mc1229w7RTx/kP+0pOQYj5vGoGWt5fIr4mZx60zjOz1JNBVp7Wt2ybbVtErkRQBILEWZSAlfoS5n+/OW+cZMhmRnqQLP7pLrKH40l2bG4PApQgwlQjcHUsDTzqnzwtOEd5zyXAK/4i2OUGG6Ra9ChzSAmmIozclySYsh1REozNOynT+e55EKF6sNVCaTNq2TeVknbcqaL4xLuylpx1qdDv1foMiEROtS/5PnpzrLvB7cS0NJbEQqsWbQYR6KXejV5SqQ9jEE51MzYDdB7opgPMIjFaCZFdXayB+ro36kou8s20DgDH+MTPj4/RuZ7czXNj9O7zwz2QpxnSiru5koliRcq/TUoeHx1HXtwOwHZq6Fn+Eu35qBgSKJunHG5Tk+N47J8qrmyEIa6gdhqW8bX82uEGFcjTyk2fEYRitY=[nec]","refresh_token":"[nec]IpN9G6YnKDpASHliNNQiMn1tCt+hSbSB7l5rQ1rBdAkFiFMFbpwSp/m8KbEFdVHU1t+1fw61W8tcT3MzcFH62M5Zr1N3jp1d47jDDHRpF6c4dgNddEPBi3zmiZ+01sCVaXNQyReXnm2hF3DPBu1Ynq2ufVcdmYmv9LRwsbTmDJRwjb0B/ITyn9ywMd7UOrlukIHylYfn35249Pr+BAVWSHFkTpRN1Pbn2Y3XmeCXEQsIXKF9Y+kRiaf0Eu4SJ6WssN1Rx6sCcuBt+MEg[nec]","id_token":"[nec]X5SK1G2Opj8AXHm3LE8YP8yirGkH+qDkWTrDSe8FU0OFGL2mqqiCVAIpd5OLABuezkMmpiVbMukP2ckT/aj64CIXz8/feWh6vnANgLmq07e/cZB1W2SOo9eQC7QiKMqVyXUL9OX/bjZFAZqd9HB6DzC02bIftfBpZT6r+Sofw1Uf4MLm7VNlsgf+xd0iQDwENJFXOSHS1mVl39hWb3i6h6zjJHEoMFNIuk0xmLL64sbCRXyYgStKvpCZXc3ggByo2NFK8mnVri9tZuJzR2lXtmmdZEQWQjRR0wvI3DVCZe3eg7mHxjWuSBtpE7QV5RDdv1vESOp4VQU5z/GY+tilrhEA6f5BkdoYLERna/1+H3/KLOvQdnH0xw73Ta/IWF+lmiZITbx3Xv+Pl4VLnjTflq6xT4b6K8Z1c7VRwP/dxYP/7U7LYqHb70IPScqLPKKUCkSU2Xlq+J4Ltdt1MzL4KsyT98XcPrN83gZmGDwZam2M95MSYFyyyzVeDfZVruvwC6XkPdRiUTBVdaeFNPtYs+icjmH5VqdV96ccqv24ETOwD5IldhpfmhDiTNFKGM7KpzVPdJjDV/FZuN5tg+Pz3oORRpmWS/DjkE0nxrqP7rMw2kOcB47t4OkNyjSTQPvcqCp0dtR8W0xWJO35yjjCDTxTYbILLUdbcsORcojY9AXM6fKZR8ftsF30kqOQWr3qfr9n+1Emu/bMp3EujABch570kzk7DiaqnouQ4siVRRuIV6ip8pSmsvyVxrIhHn6t13CoDhiigjf9xFAovyQ559QIyFXNXXfvr81JQ2MOSkE25OMP61p94avlhnrabQj+k+j6OWRc8l6qSkgPGgNc9BhIE5ZdCQFK0ocxWrRADZtmvxKUN0FaOq3T00cH/aUW/mroCJCyIa/naiwQLKuAU53A/CWFQi7DdXF3Pk3rmhRzoabR8sYDcV3gucYDP4/Cf7+1H1waP+EMQeg/SF3be0N7n7myXToUCL/tyBSrE+K06DMsFEwtg2G+gGioL2cWVuaV9MBmQAW4pDQcS/zWdLiMKA1YoRsTIfAVCWmhbe/DhS9bKD0ZjC3hdZLTH6QE42mlKf6SISsFg8VXDQl70WP7CYBgDE/16GabaKv1PFRisBB8Gv+obGUzkxGrFOISIfx0onwATxLjmcb2LuAvaP/5FwEf2TKNsIx9j0m+rckSaRLxck839NO5/C8lPhNOHRNRwrVdLI7eBGCkh83FvkFBGkNuJJOryNJymXVqDYvtEPTzDHgI2gLIGicbN4YOJo56Rkf9Ekc1gBtHvSzMt39JMLrs8W/nsQo=[nec]","token_type":"Bearer","expires_in":"2025-09-09T00:31:02.411Z"}
+
+2025-08-27/02:03:57.564/CDT  INFO MicrosSimphonyV2APIUtils:191:[-exec-8]: - POS Api Token Endpoint Url: https://rbi-prod3-omra-idm.oracleindustry.com:443
+
+2025-08-27/02:03:57.595/CDT  INFO MicrosSimphonyV2PosOrderpoint:170:[-exec-8]: - Micros Simphony api endpoint url: https://192.168.1.1:5443
+
+2025-08-27/02:03:57.595/CDT  INFO MicrosSimphonyV2PosOrderpoint:173:[-exec-8]: - Micros Simphony menu update check endpoint url: https://rbi-prod3-sts.oraclemicros.com:443
+
+2025-08-27/02:03:57.595/CDT  INFO MicrosSimphonyV2PosOrderpoint:176:[-exec-8]: - Micros Simphony menu endpoint url: https://192.168.1.1:5443
+
+2025-08-27/02:03:58.765/CDT ERROR MicrosSimphonyV2PosOrderpoint:156:[-exec-8]: - Exception occurred during getting location info. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:03:58.781/CDT  INFO PosHealthCheckHelper:32:[-exec-8]: - Scheduling PosHealthCheckMonitor
+
+2025-08-27/02:04:03.784/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:04:04.826/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:04:04.826/CDT ERROR AbstractEndpoint:179:[thcheck]: - POS for PLK-2474 is offline. Handler=MicrosSimphonyV2PosHandler
+
+2025-08-27/02:04:33.798/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:04:34.831/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:05:03.811/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:05:04.848/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:05:33.820/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:05:34.854/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:06:03.831/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:06:04.880/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:06:33.832/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:06:34.865/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:07:03.848/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:07:04.882/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:07:33.862/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:07:34.911/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:08:03.876/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:08:04.909/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:08:33.881/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:08:34.914/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:09:03.895/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:09:04.929/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:09:33.910/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:09:34.944/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:10:03.924/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:10:04.963/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:10:33.935/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:10:34.968/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:11:03.935/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:11:04.971/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:11:33.940/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:11:34.987/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:12:03.944/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:12:04.978/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:12:33.955/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:12:34.989/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:13:03.958/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:13:05.006/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:13:33.960/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:13:35.009/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:14:03.961/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:14:05.010/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:14:33.975/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:14:35.023/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:15:03.987/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:15:05.005/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:15:33.996/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:15:35.030/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:16:03.997/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:16:05.032/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:16:34.007/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:16:35.040/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:17:04.014/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:17:05.048/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:17:34.023/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:17:35.057/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:18:04.029/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:18:05.063/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:18:34.038/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:18:35.071/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:19:04.040/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:19:05.074/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:19:34.043/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:19:35.076/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:20:04.047/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:20:05.074/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:20:34.055/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:20:35.089/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:21:04.059/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:21:05.093/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:21:34.074/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:21:35.109/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:22:04.086/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:22:05.121/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:22:34.095/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:22:35.129/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:23:04.109/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:23:05.143/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:23:34.118/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:23:35.150/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:24:04.121/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:24:05.155/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:24:34.133/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:24:35.166/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:25:04.143/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:25:05.179/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:25:34.149/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:25:35.198/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:26:04.150/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:26:05.182/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:26:34.159/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:26:35.195/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:27:04.171/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:27:05.194/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:27:34.177/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:27:35.213/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:28:04.181/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:28:05.219/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:28:34.184/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:28:35.222/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:29:04.185/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:29:05.208/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:29:34.186/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:29:35.215/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:30:04.192/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:30:05.222/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:30:34.201/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:30:35.242/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:31:04.214/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:31:05.258/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:31:34.217/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:31:35.253/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:32:04.228/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:32:05.236/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:32:34.242/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:32:35.282/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:33:04.256/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:33:05.296/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:33:34.258/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:33:35.298/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:34:04.271/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:34:05.317/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:34:34.273/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:34:35.314/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:35:04.284/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:35:05.321/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:35:34.284/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:35:35.325/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:36:04.285/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:36:05.327/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:36:34.296/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:36:35.330/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:37:04.310/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:37:05.344/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:37:34.315/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:37:35.364/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:38:04.323/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:38:05.361/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:38:34.327/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:38:35.375/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:39:04.330/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:39:05.363/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:39:34.330/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:39:35.379/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:40:04.332/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:40:05.374/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:40:34.332/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:40:35.366/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:41:04.333/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:41:05.367/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:41:34.335/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:41:35.383/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:42:04.350/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:42:05.400/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:42:34.354/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:42:35.403/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:43:04.355/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:43:05.388/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:43:34.362/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:43:35.410/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:44:04.367/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:44:05.401/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:44:34.379/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:44:35.428/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:45:04.380/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:45:05.413/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:45:34.384/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:45:35.434/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:46:04.399/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:46:05.433/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:46:34.412/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:46:35.460/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:47:04.414/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:47:05.448/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:47:34.420/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:47:35.469/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:48:04.424/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:48:05.459/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:48:34.425/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:48:35.458/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:49:04.435/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:49:05.485/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:49:34.446/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:49:35.479/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:50:04.453/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:50:05.492/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:50:34.461/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:50:35.494/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:51:04.474/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:51:05.507/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:51:34.483/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:51:35.530/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:52:04.485/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:52:05.518/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:52:34.487/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:52:35.521/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:53:04.491/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:53:05.540/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:53:34.504/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:53:35.551/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:54:04.508/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:54:05.542/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:54:34.514/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:54:35.563/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:55:04.524/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:55:05.553/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:55:34.534/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:55:35.567/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:56:04.549/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:56:05.583/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:56:34.557/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:56:35.607/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:57:04.566/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:57:05.601/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:57:34.570/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:57:35.620/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:58:04.575/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:58:05.610/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:58:34.587/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:58:35.636/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:59:04.602/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:59:05.637/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/02:59:34.608/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/02:59:35.641/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:00:04.613/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:00:05.653/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:00:34.614/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:00:35.659/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:01:04.624/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:01:05.663/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:01:34.637/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:01:35.670/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:02:04.649/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:02:05.680/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:02:34.652/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:02:35.685/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:03:04.667/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:03:05.710/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:03:34.677/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:03:35.713/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:04:04.687/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:04:05.730/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:04:34.693/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:04:35.743/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:05:04.707/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:05:05.722/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:05:34.718/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:05:35.767/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:06:04.725/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:06:05.768/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:06:34.730/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:06:35.778/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:07:04.745/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:07:05.788/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:07:34.754/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:07:35.788/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:08:04.761/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:08:05.803/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:08:34.772/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:08:35.810/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:09:04.785/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:09:05.829/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:09:34.787/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:09:35.835/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:10:04.793/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:10:05.822/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:10:34.806/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:10:35.855/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:11:04.808/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:11:05.836/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:11:34.817/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:11:35.850/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:12:04.832/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:12:05.874/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:12:34.848/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:12:35.896/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:13:04.849/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:13:05.892/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:13:34.850/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:13:35.898/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:14:04.855/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:14:05.897/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:14:34.867/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:14:35.901/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:15:04.873/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:15:05.928/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:15:34.873/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:15:35.905/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:16:04.874/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:16:05.916/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:16:34.875/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:16:35.908/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:17:04.882/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:17:05.918/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:17:34.885/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:17:35.918/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:18:04.890/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:18:05.934/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:18:34.894/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:18:35.931/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:19:04.904/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:19:05.947/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:19:34.916/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:19:35.950/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:20:04.926/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:20:05.951/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:20:34.926/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:20:35.975/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:21:04.928/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:21:05.971/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:21:34.931/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:21:35.965/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:22:04.932/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:22:05.976/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:22:34.935/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:22:35.985/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:23:04.950/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:23:05.993/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:23:34.962/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:23:36.010/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:24:04.978/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:24:06.020/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:24:34.979/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:24:36.012/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:25:04.982/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:25:06.018/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:25:34.983/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:25:36.032/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:26:04.990/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:26:06.034/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:26:34.996/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:26:36.045/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:27:05.003/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:27:06.046/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:27:35.008/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:27:36.041/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:28:05.016/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:28:06.059/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:28:35.025/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:28:36.073/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:29:05.033/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:29:06.074/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:29:35.039/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:29:36.089/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:30:05.039/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:30:06.067/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:30:35.050/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:30:36.098/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:31:05.055/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:31:06.098/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:31:35.058/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:31:36.091/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:32:05.068/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:32:06.109/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:32:35.084/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:32:36.117/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:33:05.099/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:33:06.142/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:33:35.114/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:33:36.161/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:34:05.128/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:34:06.171/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:34:35.140/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:34:36.173/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:35:05.142/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:35:06.174/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:35:35.147/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:35:36.179/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:36:05.160/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:36:06.204/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:36:35.168/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:36:36.217/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:37:05.171/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:37:06.214/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:37:35.183/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:37:36.216/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:38:05.187/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:38:06.230/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:38:35.202/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:38:36.235/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:39:05.207/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:39:06.239/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:39:35.216/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:39:36.265/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:40:05.229/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:40:06.263/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:40:35.238/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:40:36.271/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:41:05.249/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:41:06.292/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:41:35.256/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:41:36.289/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:42:05.260/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:42:06.305/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:42:35.274/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:42:36.320/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:43:05.287/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:43:06.330/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:43:35.301/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:43:36.334/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:44:05.316/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:44:06.358/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:44:35.320/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:44:36.353/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:45:05.321/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:45:06.351/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:45:35.329/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:45:36.376/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:46:05.339/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:46:06.383/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:46:35.350/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:46:36.398/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:47:05.351/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:47:06.393/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:47:35.367/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:47:36.400/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:48:05.380/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:48:06.423/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:48:35.389/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:48:36.438/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:49:05.395/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:49:06.438/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:49:35.405/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:49:36.438/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:50:05.418/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:50:06.458/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:50:35.432/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:50:36.481/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:51:05.439/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:51:06.475/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:51:35.442/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:51:36.491/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:52:05.452/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:52:06.496/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:52:35.457/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:52:36.489/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:53:05.470/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:53:06.514/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:53:35.489/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:53:36.538/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:54:05.490/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:54:06.524/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:54:35.505/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:54:36.546/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:55:05.521/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:55:06.560/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:55:35.523/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:55:36.553/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:56:05.534/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:56:06.569/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:56:35.549/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:56:36.580/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:57:05.551/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:57:06.603/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:57:35.555/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:57:36.594/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:58:05.561/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:58:06.595/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:58:35.567/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:58:36.609/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:59:05.582/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:59:06.618/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/03:59:35.593/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/03:59:36.621/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:00:01.411/CDT  INFO MobileM8WebService:3990:[-exec-7]: - Flushing skumap
+
+2025-08-27/04:00:01.620/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[exec-10]: - Sending connection status request.
+
+2025-08-27/04:00:02.646/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[exec-10]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:00:02.646/CDT  INFO MicrosSimphonyV2PosOrderpoint:220:[exec-10]: - Attempting to persist POS offering
+
+2025-08-27/04:00:03.679/CDT ERROR MicrosSimphonyV2PosOrderpoint:243:[exec-10]: - Exception occurred during persist pos offering: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:00:05.599/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:00:06.638/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:00:35.610/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:00:36.645/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:01:05.623/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:01:06.667/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:01:35.634/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:01:36.663/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:02:05.644/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:02:06.688/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:02:35.652/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:02:36.677/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:03:05.667/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:03:06.711/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:03:35.667/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:03:36.711/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:04:05.676/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:04:06.719/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:04:35.682/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:04:36.704/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:05:05.687/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:05:06.716/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:05:35.691/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:05:36.730/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:06:05.705/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:06:06.757/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:06:35.714/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:06:36.754/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:07:05.725/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:07:06.769/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:07:35.727/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:07:36.782/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:08:05.730/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:08:06.773/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:08:35.741/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:08:36.787/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:09:05.742/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:09:06.784/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:09:35.758/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:09:36.787/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:10:05.766/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:10:06.786/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:10:35.771/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:10:36.805/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:11:05.787/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:11:06.831/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:11:35.788/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:11:36.823/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:12:05.791/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:12:06.814/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:12:35.796/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:12:36.831/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:13:05.799/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:13:06.842/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
+2025-08-27/04:13:35.803/CDT  INFO MicrosSimphonyV2PosOrderpoint:187:[thcheck]: - Sending connection status request.
+
+2025-08-27/04:13:36.846/CDT ERROR MicrosSimphonyV2PosOrderpoint:201:[thcheck]: - Exception occurred during health check. Cause: java.net.ConnectException: Connection refused: connect
+
