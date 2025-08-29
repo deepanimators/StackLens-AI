@@ -44,7 +44,7 @@ export class EnhancedErrorDetectionService {
       {
         name: "FATAL_ERROR",
         pattern:
-          /^[^|]*ERROR[^|]*\|.*(?:FATAL|CRITICAL|SEVERE|Object reference not set|NullPointerException|StackOverflowError)/i,
+          /^[^|]*ERROR(?:[^|]*?\||[\s:]+).*(?:FATAL|CRITICAL|SEVERE|Object reference not set|NullPointerException|StackOverflowError)/i,
         severity: "critical",
         category: "APPLICATION",
         confidence: 0.95,
@@ -52,7 +52,7 @@ export class EnhancedErrorDetectionService {
       {
         name: "SYSTEM_FAILURE",
         pattern:
-          /^[^|]*ERROR[^|]*\|.*(?:out of memory|disk full|permission denied|system overload|process killed)/i,
+          /^[^|]*ERROR(?:[^|]*?\||[\s:]+).*(?:out of memory|disk full|permission denied|system overload|process killed)/i,
         severity: "critical",
         category: "SYSTEM",
         confidence: 0.9,
@@ -60,7 +60,7 @@ export class EnhancedErrorDetectionService {
       {
         name: "DATABASE_CRITICAL",
         pattern:
-          /^[^|]*ERROR[^|]*\|.*(?:deadlock|database is locked|too many connections|foreign key violation)/i,
+          /^[^|]*ERROR(?:[^|]*?\||[\s:]+).*(?:deadlock|database is locked|too many connections|foreign key violation)/i,
         severity: "critical",
         category: "DATABASE",
         confidence: 0.9,
@@ -69,7 +69,7 @@ export class EnhancedErrorDetectionService {
       // High Severity Errors - Only if log level is ERROR
       {
         name: "ERROR_LEVEL_HIGH",
-        pattern: /^[^|]*ERROR[^|]*\|/i,
+        pattern: /^[^|]*ERROR(?:[^|]*?\||[\s:]+)/i,
         severity: "high",
         category: "APPLICATION",
         confidence: 0.9,
@@ -109,8 +109,8 @@ export class EnhancedErrorDetectionService {
 
       // Medium Severity Errors - Only if log level is WARN
       {
-        name: "WARNING_LEVEL",
-        pattern: /^[^|]*WARN[^|]*\|/i,
+        name: "WARN_LEVEL",
+        pattern: /^[^|]*WARN(?:[^|]*?\||[\s:]+)/i,
         severity: "medium",
         category: "APPLICATION",
         confidence: 0.8,
@@ -118,10 +118,26 @@ export class EnhancedErrorDetectionService {
       {
         name: "CONFIGURATION_WARNING",
         pattern:
-          /^[^|]*WARN[^|]*\|.*(?:configuration|config|missing property|invalid setting)/i,
+          /^[^|]*WARN(?:[^|]*?\||[\s:]+).*(?:configuration|config|missing property|invalid setting)/i,
         severity: "medium",
         category: "APPLICATION",
         confidence: 0.7,
+      },
+
+      // Low Severity - INFO level logs (even if they mention "error" in text)
+      {
+        name: "INFO_LEVEL",
+        pattern: /^[^|]*INFO(?:[^|]*?\||[\s:]+)/i,
+        severity: "low",
+        category: "APPLICATION",
+        confidence: 0.6,
+      },
+      {
+        name: "DEBUG_LEVEL",
+        pattern: /^[^|]*DEBUG(?:[^|]*?\||[\s:]+)/i,
+        severity: "low",
+        category: "APPLICATION",
+        confidence: 0.5,
       },
 
       // Low Severity - INFO level logs (even if they mention "error" in text)
@@ -328,8 +344,11 @@ export class EnhancedErrorDetectionService {
    * Extract log level from the log line
    */
   private extractLogLevel(line: string): string {
+    // Handle different log formats:
+    // 1. Pipe-separated: 2025-01-20|INFO|Message
+    // 2. Space-separated: 2025-07-27/07:36:48.916/GMT-07:00  INFO ClassName:Line
     const logLevelMatch = line.match(
-      /^[^|]*?(FATAL|ERROR|WARN|INFO|DEBUG|TRACE)[^|]*?\|/i
+      /^[^|]*?(FATAL|ERROR|WARN|INFO|DEBUG|TRACE)(?:[^|]*?\||[\s:]+)/i
     );
     return logLevelMatch ? logLevelMatch[1].toUpperCase() : "UNKNOWN";
   }
@@ -367,9 +386,9 @@ export class EnhancedErrorDetectionService {
   private isInformationalLog(line: string): boolean {
     // Only exclude logs that are purely informational with no error indicators
     const pureInfoPatterns = [
-      /^[^|]*INFO[^|]*\|.*(?:started successfully|completed successfully|initialized|listening on|connected to|user logged in|request received|response sent)/i,
-      /^[^|]*DEBUG[^|]*\|.*(?:started successfully|completed successfully|initialized|listening on|connected to|user logged in|request received|response sent)/i,
-      /^[^|]*TRACE[^|]*\|/i,
+      /^[^|]*INFO(?:[^|]*?\||[\s:]+).*(?:started successfully|completed successfully|initialized|listening on|connected to|user logged in|request received|response sent)/i,
+      /^[^|]*DEBUG(?:[^|]*?\||[\s:]+).*(?:started successfully|completed successfully|initialized|listening on|connected to|user logged in|request received|response sent)/i,
+      /^[^|]*TRACE(?:[^|]*?\||[\s:]+)/i,
     ];
 
     return pureInfoPatterns.some((pattern) => pattern.test(line.trim()));

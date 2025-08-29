@@ -574,8 +574,19 @@ export default function AnalysisHistoryPage() {
     if (!dateString) return "Unknown Date";
 
     try {
-      const date = new Date(dateString);
-      if (isNaN(date.getTime()) || date.getFullYear() > 3000) {
+      let timestamp = parseInt(dateString);
+      // Convert Unix timestamp (seconds) to milliseconds if needed
+      if (timestamp < 10000000000) {
+        // Unix timestamp in seconds
+        timestamp = timestamp * 1000;
+      }
+
+      const date = new Date(timestamp);
+      if (
+        isNaN(date.getTime()) ||
+        date.getFullYear() > 3000 ||
+        date.getFullYear() < 2020
+      ) {
         return "Unknown Date";
       }
       return date.toLocaleDateString();
@@ -588,8 +599,19 @@ export default function AnalysisHistoryPage() {
     if (!dateString) return "Unknown Date";
 
     try {
-      const date = new Date(dateString);
-      if (isNaN(date.getTime()) || date.getFullYear() > 3000) {
+      let timestamp = parseInt(dateString);
+      // Convert Unix timestamp (seconds) to milliseconds if needed
+      if (timestamp < 10000000000) {
+        // Unix timestamp in seconds
+        timestamp = timestamp * 1000;
+      }
+
+      const date = new Date(timestamp);
+      if (
+        isNaN(date.getTime()) ||
+        date.getFullYear() > 3000 ||
+        date.getFullYear() < 2020
+      ) {
         return "Unknown Date";
       }
       return date.toLocaleString();

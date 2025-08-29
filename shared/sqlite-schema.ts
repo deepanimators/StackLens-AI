@@ -142,6 +142,9 @@ export const errorPatterns = sqliteTable("error_patterns", {
   category: text("category"),
   suggestedFix: text("suggested_fix"),
   isActive: integer("is_active", { mode: "boolean" }).default(true),
+  occurrenceCount: integer("occurrence_count").default(1),
+  successRate: real("success_rate").default(0.8),
+  avgResolutionTime: text("avg_resolution_time").default("30 minutes"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

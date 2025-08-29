@@ -275,11 +275,13 @@ class BackgroundJobProcessor {
           filename: logFile.originalName,
           fileType: logFile.fileType,
           fileSize: logFile.fileSize,
-          uploadTimestamp: logFile.uploadTimestamp,
-          analysisTimestamp: new Date(),
+          uploadTimestamp: logFile.uploadTimestamp
+            ? Math.floor(logFile.uploadTimestamp.getTime() / 1000)
+            : Math.floor(Date.now() / 1000),
+          analysisTimestamp: Math.floor(Date.now() / 1000),
           status: "completed",
           progress: 100,
-          currentStep: "Analysis completed",
+          currentStep: "Analysis completed successfully",
           totalErrors: errorLogs.length,
           criticalErrors: errorLogs.filter((e) => e.severity === "critical")
             .length,
