@@ -1,0 +1,206 @@
+2025-07-27/02:01:22.878/GMT-07:00  INFO LightStatusIndicatorController:[pool-42-thread-1] - Setting ATTENTION Indicator
+
+2025-07-27/02:01:22.880/GMT-07:00  INFO JposStatusLightIndicator:[pool-42-thread-1] - Switching off color: GREEN
+
+2025-07-27/02:01:22.880/GMT-07:00  INFO JposStatusLightIndicator:[pool-42-thread-1] - Setting status light mode to blink. Color: RED
+
+2025-07-27/02:02:03.095/GMT-07:00  INFO LightStatusIndicatorController:[pool-42-thread-1] - Setting OK Indicator
+
+2025-07-27/02:02:03.095/GMT-07:00  INFO JposStatusLightIndicator:[pool-42-thread-1] - Switching off color: RED
+
+2025-07-27/02:02:03.096/GMT-07:00  INFO JposStatusLightIndicator:[pool-42-thread-1] - Switching status light color to: GREEN
+
+2025-07-27/02:13:49.127/GMT-07:00  INFO JposStatusLightIndicator:[localhost-startStop-2] - Initializing device: dn-pole-light-c1030
+
+2025-07-27/02:13:49.127/GMT-07:00  INFO JposStatusLightIndicator:[localhost-startStop-2] - Trying to connect to DN_SEL_ACO_C1030
+
+2025-07-27/02:13:49.532/GMT-07:00  INFO ToneIndicatorOperation:[localhost-startStop-2] - Opening device: dn-pole-light-c1030
+
+2025-07-27/02:13:50.069/GMT-07:00  INFO ToneIndicatorOperation:[localhost-startStop-2] - Open successful
+
+2025-07-27/02:13:50.069/GMT-07:00  INFO ToneIndicatorOperation:[localhost-startStop-2] - Claiming device
+
+2025-07-27/02:14:00.763/GMT-07:00  INFO JposStatusLightIndicator:[localhost-startStop-2] - Trying to connect to DN_Lights_RGBTrafficLight_RCB
+
+2025-07-27/02:14:00.763/GMT-07:00  INFO LightStatusIndicatorOperation:[localhost-startStop-2] - Opening device: dn-pole-light-c1030-lights
+
+2025-07-27/02:14:00.810/GMT-07:00  INFO LightStatusIndicatorOperation:[localhost-startStop-2] - Open successful
+
+2025-07-27/02:14:00.810/GMT-07:00  INFO LightStatusIndicatorOperation:[localhost-startStop-2] - Claiming device
+
+2025-07-27/02:14:04.216/GMT-07:00  INFO LightStatusIndicatorOperation:[localhost-startStop-2] - Claim successful
+
+2025-07-27/02:14:04.216/GMT-07:00  INFO LightStatusIndicatorOperation:[localhost-startStop-2] - Power reporting is disabled. Skipping setting power notification.
+
+2025-07-27/02:14:04.216/GMT-07:00  INFO LightStatusIndicatorOperation:[localhost-startStop-2] - Setting device to enabled
+
+2025-07-27/02:14:04.404/GMT-07:00  INFO LightStatusIndicatorOperation:[localhost-startStop-2] - Device successfully enabled
+
+2025-07-27/02:14:04.404/GMT-07:00  INFO JposStatusLightIndicator:[localhost-startStop-2] - Completed pole light device registration. time taken=15277 ms
+
+2025-07-27/02:14:04.404/GMT-07:00  INFO JposStatusLightIndicator:[localhost-startStop-2] - Switching off color: GREEN
+
+2025-07-27/02:14:04.404/GMT-07:00  INFO JposStatusLightIndicator:[localhost-startStop-2] - Switching off color: RED
+
+2025-07-27/02:14:04.404/GMT-07:00  INFO JposStatusLightIndicator:[localhost-startStop-2] - Switching off color: YELLOW
+
+2025-07-27/02:14:08.440/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-4] - Setting OK Indicator
+
+2025-07-27/02:14:08.440/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-4] - Switching status light color to: GREEN
+
+2025-07-27/02:14:08.594/GMT-07:00  INFO LightStatusIndicatorController:[pool-45-thread-1] - Setting ATTENTION Indicator
+
+2025-07-27/02:14:08.595/GMT-07:00  INFO JposStatusLightIndicator:[pool-45-thread-1] - Switching off color: GREEN
+
+2025-07-27/02:14:08.596/GMT-07:00  INFO JposStatusLightIndicator:[pool-45-thread-1] - Setting status light mode to blink. Color: RED
+
+2025-07-27/02:14:13.769/GMT-07:00  INFO LightStatusIndicatorController:[pool-45-thread-1] - Setting OK Indicator
+
+2025-07-27/02:14:13.769/GMT-07:00  INFO JposStatusLightIndicator:[pool-45-thread-1] - Switching off color: RED
+
+2025-07-27/02:14:13.769/GMT-07:00  INFO JposStatusLightIndicator:[pool-45-thread-1] - Switching status light color to: GREEN
+
+2025-07-27/09:38:51.885/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-15] - Setting IN_USE Indicator
+
+2025-07-27/09:38:51.885/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-15] - Switching off color: GREEN
+
+2025-07-27/09:38:51.885/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-15] - Switching status light color to: YELLOW
+
+2025-07-27/09:47:15.516/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-14] - Setting OK Indicator
+
+2025-07-27/09:47:15.516/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-14] - Switching off color: YELLOW
+
+2025-07-27/09:47:15.516/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-14] - Switching status light color to: GREEN
+
+2025-07-27/10:03:27.515/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-8] - Setting IN_USE Indicator
+
+2025-07-27/10:03:27.516/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching off color: GREEN
+
+2025-07-27/10:03:27.516/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching status light color to: YELLOW
+
+2025-07-27/10:04:58.873/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-13] - Setting OK Indicator
+
+2025-07-27/10:04:58.873/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-13] - Switching off color: YELLOW
+
+2025-07-27/10:04:58.873/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-13] - Switching status light color to: GREEN
+
+2025-07-27/11:01:56.834/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-17] - Setting IN_USE Indicator
+
+2025-07-27/11:01:56.835/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-17] - Switching off color: GREEN
+
+2025-07-27/11:01:56.835/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-17] - Switching status light color to: YELLOW
+
+2025-07-27/11:05:50.729/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-7] - Setting OK Indicator
+
+2025-07-27/11:05:50.729/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching off color: YELLOW
+
+2025-07-27/11:05:50.729/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching status light color to: GREEN
+
+2025-07-27/12:34:29.118/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-19] - Setting IN_USE Indicator
+
+2025-07-27/12:34:29.118/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-19] - Switching off color: GREEN
+
+2025-07-27/12:34:29.118/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-19] - Switching status light color to: YELLOW
+
+2025-07-27/12:36:27.115/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-8] - Setting OK Indicator
+
+2025-07-27/12:36:27.116/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching off color: YELLOW
+
+2025-07-27/12:36:27.116/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching status light color to: GREEN
+
+2025-07-27/12:37:35.818/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-8] - Setting IN_USE Indicator
+
+2025-07-27/12:37:35.818/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching off color: GREEN
+
+2025-07-27/12:37:35.818/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching status light color to: YELLOW
+
+2025-07-27/12:38:30.155/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-21] - Setting OK Indicator
+
+2025-07-27/12:38:30.156/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-21] - Switching off color: YELLOW
+
+2025-07-27/12:38:30.156/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-21] - Switching status light color to: GREEN
+
+2025-07-27/13:05:57.388/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-21] - Setting IN_USE Indicator
+
+2025-07-27/13:05:57.388/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-21] - Switching off color: GREEN
+
+2025-07-27/13:05:57.388/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-21] - Switching status light color to: YELLOW
+
+2025-07-27/13:07:27.866/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-8] - Setting OK Indicator
+
+2025-07-27/13:07:27.866/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching off color: YELLOW
+
+2025-07-27/13:07:27.867/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching status light color to: GREEN
+
+2025-07-27/13:50:15.992/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-7] - Setting IN_USE Indicator
+
+2025-07-27/13:50:15.992/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching off color: GREEN
+
+2025-07-27/13:50:15.992/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching status light color to: YELLOW
+
+2025-07-27/13:51:25.244/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-7] - Setting OK Indicator
+
+2025-07-27/13:51:25.244/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching off color: YELLOW
+
+2025-07-27/13:51:25.244/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching status light color to: GREEN
+
+2025-07-27/13:55:24.334/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-15] - Setting IN_USE Indicator
+
+2025-07-27/13:55:24.335/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-15] - Switching off color: GREEN
+
+2025-07-27/13:55:24.336/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-15] - Switching status light color to: YELLOW
+
+2025-07-27/13:58:34.505/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-18] - Setting OK Indicator
+
+2025-07-27/13:58:34.505/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-18] - Switching off color: YELLOW
+
+2025-07-27/13:58:34.505/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-18] - Switching status light color to: GREEN
+
+2025-07-27/14:35:01.688/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-10] - Setting IN_USE Indicator
+
+2025-07-27/14:35:01.688/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-10] - Switching off color: GREEN
+
+2025-07-27/14:35:01.688/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-10] - Switching status light color to: YELLOW
+
+2025-07-27/14:37:02.253/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-8] - Setting OK Indicator
+
+2025-07-27/14:37:02.254/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching off color: YELLOW
+
+2025-07-27/14:37:02.254/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching status light color to: GREEN
+
+2025-07-27/17:09:23.396/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-15] - Setting IN_USE Indicator
+
+2025-07-27/17:09:23.396/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-15] - Switching off color: GREEN
+
+2025-07-27/17:09:23.396/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-15] - Switching status light color to: YELLOW
+
+2025-07-27/17:11:50.475/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-7] - Setting OK Indicator
+
+2025-07-27/17:11:50.475/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching off color: YELLOW
+
+2025-07-27/17:11:50.475/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-7] - Switching status light color to: GREEN
+
+2025-07-27/19:14:06.947/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-8] - Setting IN_USE Indicator
+
+2025-07-27/19:14:06.947/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching off color: GREEN
+
+2025-07-27/19:14:06.947/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-8] - Switching status light color to: YELLOW
+
+2025-07-27/19:19:47.781/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-17] - Setting OK Indicator
+
+2025-07-27/19:19:47.781/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-17] - Switching off color: YELLOW
+
+2025-07-27/19:19:47.781/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-17] - Switching status light color to: GREEN
+
+2025-07-27/19:42:40.295/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-13] - Setting IN_USE Indicator
+
+2025-07-27/19:42:40.295/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-13] - Switching off color: GREEN
+
+2025-07-27/19:42:40.295/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-13] - Switching status light color to: YELLOW
+
+2025-07-27/19:45:26.924/GMT-07:00  INFO LightStatusIndicatorController:[http-bio-8080-exec-6] - Setting OK Indicator
+
+2025-07-27/19:45:26.925/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-6] - Switching off color: YELLOW
+
+2025-07-27/19:45:26.925/GMT-07:00  INFO JposStatusLightIndicator:[http-bio-8080-exec-6] - Switching status light color to: GREEN
+
