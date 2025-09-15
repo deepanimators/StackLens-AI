@@ -25,7 +25,7 @@ import { spawn } from "child_process";
 import * as genai from "@google/genai";
 import fs from "fs";
 import os from "os";
-import { errorLogs, analysisHistory, logFiles } from "@shared/sqlite-schema";
+import { errorLogs, analysisHistory, logFiles, users } from "@shared/sqlite-schema";
 import {
   insertUserSchema,
   insertLogFileSchema,
@@ -1556,8 +1556,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             features.keywordScore > 6
               ? "high"
               : features.keywordScore > 3
-              ? "medium"
-              : "low",
+                ? "medium"
+                : "low",
           patternCount: features.contextualPatterns.length,
           hasStackTrace: features.contextualPatterns.includes("stack_trace"),
           hasErrorCode: features.contextualPatterns.includes("error_code"),
@@ -1565,8 +1565,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             features.messageLength > 200
               ? "high"
               : features.messageLength > 100
-              ? "medium"
-              : "low",
+                ? "medium"
+                : "low",
         },
       });
     } catch (error) {
@@ -1618,16 +1618,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         totalModels: models.length,
         activeModel: activeModel
           ? {
-              name: activeModel.name,
-              accuracy: activeModel.accuracy,
-              version: activeModel.version,
-              trainingDataSize: activeModel.trainingDataSize,
-            }
+            name: activeModel.name,
+            accuracy: activeModel.accuracy,
+            version: activeModel.version,
+            trainingDataSize: activeModel.trainingDataSize,
+          }
           : null,
         averageAccuracy:
           models.length > 0
             ? models.reduce((sum, model) => sum + (model.accuracy || 0), 0) /
-              models.length
+            models.length
             : 0,
         modelPerformance: models.map((model) => ({
           id: model.id,
@@ -2108,11 +2108,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Active model info for suggestions
           activeModel: isActive
             ? {
-                name: "StackLens Error Suggestion Model AI model",
-                version: "1.0",
-                accuracy: suggestionModelAccuracy,
-                trainedAt: lastTrainingDate,
-              }
+              name: "StackLens Error Suggestion Model AI model",
+              version: "1.0",
+              accuracy: suggestionModelAccuracy,
+              trainedAt: lastTrainingDate,
+            }
             : null,
         };
 
@@ -2139,9 +2139,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const avgAccuracy =
         userAnalyses.length > 0
           ? userAnalyses.reduce(
-              (sum, analysis) => sum + (analysis.modelAccuracy || 0),
-              0
-            ) / userAnalyses.length
+            (sum, analysis) => sum + (analysis.modelAccuracy || 0),
+            0
+          ) / userAnalyses.length
           : 0;
 
       res.json({
@@ -2151,10 +2151,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         lastTrainingDate:
           userAnalyses.length > 0
             ? Math.max(
-                ...userAnalyses.map((a) =>
-                  new Date(a.analysisTimestamp).getTime()
-                )
+              ...userAnalyses.map((a) =>
+                new Date(a.analysisTimestamp).getTime()
               )
+            )
             : null,
       });
     } catch (error) {
@@ -2183,11 +2183,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             avgAccuracy:
               userAnalyses.length > 0
                 ? (
-                    userAnalyses.reduce(
-                      (sum, analysis) => sum + (analysis.modelAccuracy || 0),
-                      0
-                    ) / userAnalyses.length
-                  ).toFixed(2)
+                  userAnalyses.reduce(
+                    (sum, analysis) => sum + (analysis.modelAccuracy || 0),
+                    0
+                  ) / userAnalyses.length
+                ).toFixed(2)
                 : "0.0",
           },
           recentTraining: userAnalyses.slice(-5).map((analysis) => ({
@@ -2392,9 +2392,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Manual training error:", error);
       res.status(500).json({
-        error: `Failed to train model manually: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
+        error: `Failed to train model manually: ${error instanceof Error ? error.message : "Unknown error"
+          }`,
       });
     }
   });
@@ -2776,23 +2775,23 @@ Format as JSON with the following structure:
       const modelStatus = {
         enhancedMlModel: enhancedMlModel
           ? {
-              id: enhancedMlModel.id,
-              name: enhancedMlModel.name,
-              version: enhancedMlModel.version,
-              accuracy: enhancedMlModel.accuracy,
-              isActive: enhancedMlModel.isActive,
-              trainedAt: enhancedMlModel.trainedAt,
-            }
+            id: enhancedMlModel.id,
+            name: enhancedMlModel.name,
+            version: enhancedMlModel.version,
+            accuracy: enhancedMlModel.accuracy,
+            isActive: enhancedMlModel.isActive,
+            trainedAt: enhancedMlModel.trainedAt,
+          }
           : null,
         suggestionModel: suggestionModel
           ? {
-              id: suggestionModel.id,
-              name: suggestionModel.name,
-              version: suggestionModel.version,
-              accuracy: suggestionModel.accuracy,
-              isActive: suggestionModel.isActive,
-              trainedAt: suggestionModel.trainedAt,
-            }
+            id: suggestionModel.id,
+            name: suggestionModel.name,
+            version: suggestionModel.version,
+            accuracy: suggestionModel.accuracy,
+            isActive: suggestionModel.isActive,
+            trainedAt: suggestionModel.trainedAt,
+          }
           : null,
         allActiveModels: activeModels.map((m) => ({
           id: m.id,
@@ -3149,9 +3148,9 @@ Format as JSON with the following structure:
       const avgConfidence =
         errorsWithConfidence.length > 0
           ? errorsWithConfidence.reduce(
-              (sum, error) => sum + ((error as any).mlConfidence || 0),
-              0
-            ) / errorsWithConfidence.length
+            (sum, error) => sum + ((error as any).mlConfidence || 0),
+            0
+          ) / errorsWithConfidence.length
           : 0;
 
       const mlAccuracy = Math.round(avgConfidence * 100);
@@ -3183,9 +3182,9 @@ Format as JSON with the following structure:
         topErrorType:
           userErrors.length > 0
             ? userErrors.reduce((acc, error) => {
-                acc[error.errorType] = (acc[error.errorType] || 0) + 1;
-                return acc;
-              }, {} as any)
+              acc[error.errorType] = (acc[error.errorType] || 0) + 1;
+              return acc;
+            }, {} as any)
             : {},
       });
     } catch (error) {
@@ -3201,8 +3200,8 @@ Format as JSON with the following structure:
       timeframe === "7d"
         ? 24 * 60 * 60 * 1000
         : timeframe === "30d"
-        ? 2 * 24 * 60 * 60 * 1000
-        : 5 * 24 * 60 * 60 * 1000;
+          ? 2 * 24 * 60 * 60 * 1000
+          : 5 * 24 * 60 * 60 * 1000;
 
     const now = new Date();
     const trends = [];
@@ -3238,9 +3237,9 @@ Format as JSON with the following structure:
         identification_accuracy:
           periodErrors.length > 0
             ? ((detection_methods.ml_detected +
-                detection_methods.pattern_matched) /
-                periodErrors.length) *
-              100
+              detection_methods.pattern_matched) /
+              periodErrors.length) *
+            100
             : 0,
       });
     }
@@ -3302,7 +3301,7 @@ Format as JSON with the following structure:
       const avgResolutionTime =
         resolutionTimes.length > 0
           ? resolutionTimes.reduce((a: number, b: number) => a + b, 0) /
-            resolutionTimes.length
+          resolutionTimes.length
           : null;
 
       patternAnalysis.push({
@@ -3458,7 +3457,7 @@ Format as JSON with the following structure:
         acc[severity] =
           severityTimes.length > 0
             ? severityTimes.reduce((sum, r) => sum + r.hours, 0) /
-              severityTimes.length
+            severityTimes.length
             : 0;
         return acc;
       },
@@ -3468,7 +3467,7 @@ Format as JSON with the following structure:
     const averageResolutionTime =
       resolutionTimes.length > 0
         ? resolutionTimes.reduce((sum, r) => sum + r.hours, 0) /
-          resolutionTimes.length
+        resolutionTimes.length
         : 0;
 
     const resolutionRate =
@@ -3492,12 +3491,12 @@ Format as JSON with the following structure:
           resolutionTimes
             .filter((r) => r.hasAiSuggestion)
             .reduce((sum, r) => sum + r.hours, 0) /
-            resolutionTimes.filter((r) => r.hasAiSuggestion).length || 0,
+          resolutionTimes.filter((r) => r.hasAiSuggestion).length || 0,
         without_ai:
           resolutionTimes
             .filter((r) => !r.hasAiSuggestion)
             .reduce((sum, r) => sum + r.hours, 0) /
-            resolutionTimes.filter((r) => !r.hasAiSuggestion).length || 0,
+          resolutionTimes.filter((r) => !r.hasAiSuggestion).length || 0,
       },
     };
   }
@@ -3508,8 +3507,8 @@ Format as JSON with the following structure:
       timeframe === "7d"
         ? 24 * 60 * 60 * 1000
         : timeframe === "30d"
-        ? 2 * 24 * 60 * 60 * 1000
-        : 5 * 24 * 60 * 60 * 1000;
+          ? 2 * 24 * 60 * 60 * 1000
+          : 5 * 24 * 60 * 60 * 1000;
 
     const now = new Date();
     const distribution = [];
@@ -3545,8 +3544,8 @@ Format as JSON with the following structure:
       timeframe === "7d"
         ? 24 * 60 * 60 * 1000
         : timeframe === "30d"
-        ? 2 * 24 * 60 * 60 * 1000
-        : 5 * 24 * 60 * 60 * 1000;
+          ? 2 * 24 * 60 * 60 * 1000
+          : 5 * 24 * 60 * 60 * 1000;
 
     const now = new Date();
     const accuracyTrends = [];
@@ -3567,7 +3566,7 @@ Format as JSON with the following structure:
       const avgConfidence =
         confidenceScores.length > 0
           ? confidenceScores.reduce((a, b) => a + b, 0) /
-            confidenceScores.length
+          confidenceScores.length
           : 0;
 
       const highConfidenceCount = confidenceScores.filter(
@@ -3619,11 +3618,11 @@ Format as JSON with the following structure:
         for (let i = 1; i < sortedOccurrences.length; i++) {
           const prevLevel =
             severityLevels[
-              sortedOccurrences[i - 1].severity as keyof typeof severityLevels
+            sortedOccurrences[i - 1].severity as keyof typeof severityLevels
             ] || 1;
           const currLevel =
             severityLevels[
-              sortedOccurrences[i].severity as keyof typeof severityLevels
+            sortedOccurrences[i].severity as keyof typeof severityLevels
             ] || 1;
           if (currLevel > prevLevel) escalations++;
         }
@@ -4034,9 +4033,27 @@ Format as JSON with the following structure:
       const limit = parseInt(req.query.limit) || 20;
       const search = req.query.search || "";
       const type = req.query.type;
+      const userId = req.query.userId;
 
-      // Get files from storage (using existing log files table)
-      const userFiles = await storage.getLogFilesByUser(req.user.id);
+      // Check if admin is requesting files for specific user or all users
+      let userFiles;
+      if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
+        // Admin requesting specific user's files
+        const targetUserId = parseInt(userId);
+        if (isNaN(targetUserId)) {
+          return res.status(400).json({ message: "Invalid userId parameter" });
+        }
+        userFiles = await storage.getLogFilesByUser(targetUserId);
+      } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
+        // Admin requesting all files
+        userFiles = await storage.getAllLogFiles();
+      } else if (userId && req.user.role === "user") {
+        // Regular user trying to access other user's files - deny
+        return res.status(403).json({ message: "Access denied" });
+      } else {
+        // Default: get current user's files
+        userFiles = await storage.getLogFilesByUser(req.user.id);
+      }
 
       let filteredFiles = userFiles;
 
@@ -4769,9 +4786,8 @@ Format as JSON with the following structure:
             "Often resolved by code review",
           ],
           relatedErrors: [], // Mock for now - can implement later
-          historicalContext: `Similar errors: ${
-            Math.floor(Math.random() * 10) + 1
-          }`,
+          historicalContext: `Similar errors: ${Math.floor(Math.random() * 10) + 1
+            }`,
         },
       });
     } catch (error) {
@@ -4789,10 +4805,27 @@ Format as JSON with the following structure:
       const search = req.query.search as string;
       const fileFilter = req.query.fileFilter as string;
       const errorTypeFilter = req.query.errorType as string;
+      const userId = req.query.userId as string;
 
-      // For now, get all user errors and filter in memory
-      // TODO: Implement proper SQL filtering in the storage layer
-      const allUserErrors = await storage.getErrorsByUser(req.user.id);
+      // Check if admin is requesting errors for specific user or all users
+      let allUserErrors;
+      if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
+        // Admin requesting specific user's errors
+        const targetUserId = parseInt(userId);
+        if (isNaN(targetUserId)) {
+          return res.status(400).json({ message: "Invalid userId parameter" });
+        }
+        allUserErrors = await storage.getErrorsByUser(targetUserId);
+      } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
+        // Admin requesting all errors
+        allUserErrors = await storage.getAllErrors();
+      } else if (userId && req.user.role === "user") {
+        // Regular user trying to access other user's errors - deny
+        return res.status(403).json({ message: "Access denied" });
+      } else {
+        // Default: get current user's errors
+        allUserErrors = await storage.getErrorsByUser(req.user.id);
+      }
 
       console.log(`🔍 [DEBUG] Total user errors: ${allUserErrors.length}`);
       if (errorTypeFilter && errorTypeFilter !== "all") {
@@ -4825,11 +4858,13 @@ Format as JSON with the following structure:
       }
 
       if (search) {
+        const searchLower = search.toLowerCase();
         filteredErrors = filteredErrors.filter(
           (error) =>
-            error.message.toLowerCase().includes(search.toLowerCase()) ||
+            error.message.toLowerCase().includes(searchLower) ||
             (error.fullText &&
-              error.fullText.toLowerCase().includes(search.toLowerCase()))
+              error.fullText.toLowerCase().includes(searchLower)) ||
+            error.errorType.toLowerCase().includes(searchLower)
         );
       }
 
@@ -5104,10 +5139,10 @@ Format as JSON with the following structure:
               0) > 0.8
               ? "High"
               : (parsedMLPrediction?.confidence ||
-                  (error as any).mlConfidence ||
-                  0) > 0.6
-              ? "Medium"
-              : "Low",
+                (error as any).mlConfidence ||
+                0) > 0.6
+                ? "Medium"
+                : "Low",
         };
       });
 
@@ -5725,12 +5760,12 @@ Format as JSON with the following structure:
         range === "7d"
           ? 7
           : range === "30d"
-          ? 30
-          : range === "90d"
-          ? 90
-          : range === "1y"
-          ? 365
-          : 30;
+            ? 30
+            : range === "90d"
+              ? 90
+              : range === "1y"
+                ? 365
+                : 30;
       const previousFromDate = new Date(
         fromDate.getTime() - rangeDays * 24 * 60 * 60 * 1000
       );
@@ -5750,20 +5785,20 @@ Format as JSON with the following structure:
       const filesTrend =
         prevFiles.length > 0
           ? Math.round(
-              ((totalFiles - prevFiles.length) / prevFiles.length) * 100 * 10
-            ) / 10
+            ((totalFiles - prevFiles.length) / prevFiles.length) * 100 * 10
+          ) / 10
           : totalFiles > 0
-          ? 100
-          : 0;
+            ? 100
+            : 0;
 
       const errorsTrend =
         prevErrors.length > 0
           ? Math.round(
-              ((totalErrors - prevErrors.length) / prevErrors.length) * 100 * 10
-            ) / 10
+            ((totalErrors - prevErrors.length) / prevErrors.length) * 100 * 10
+          ) / 10
           : totalErrors > 0
-          ? 100
-          : 0;
+            ? 100
+            : 0;
 
       const prevCriticalErrors = prevErrors.filter(
         (e) => e.severity === "critical"
@@ -5771,13 +5806,13 @@ Format as JSON with the following structure:
       const criticalTrendPercent =
         prevCriticalErrors > 0
           ? Math.round(
-              ((criticalErrors - prevCriticalErrors) / prevCriticalErrors) *
-                100 *
-                10
-            ) / 10
+            ((criticalErrors - prevCriticalErrors) / prevCriticalErrors) *
+            100 *
+            10
+          ) / 10
           : criticalErrors > 0
-          ? 100
-          : 0;
+            ? 100
+            : 0;
 
       // Calculate resolution trend
       const prevResolvedErrors = prevErrors.filter((e) => e.resolved).length;
@@ -5788,13 +5823,13 @@ Format as JSON with the following structure:
       const resolutionTrend =
         prevResolutionRate > 0
           ? Math.round(
-              ((resolutionRate - prevResolutionRate) / prevResolutionRate) *
-                100 *
-                10
-            ) / 10
+            ((resolutionRate - prevResolutionRate) / prevResolutionRate) *
+            100 *
+            10
+          ) / 10
           : resolutionRate > 0
-          ? 100
-          : 0;
+            ? 100
+            : 0;
 
       // Error types distribution
       const errorTypesMap = new Map();
@@ -5855,9 +5890,9 @@ Format as JSON with the following structure:
       const avgProcessingTime =
         analysisHistory.length > 0
           ? analysisHistory.reduce(
-              (sum, analysis) => sum + (analysis.processingTime || 0),
-              0
-            ) / analysisHistory.length
+            (sum, analysis) => sum + (analysis.processingTime || 0),
+            0
+          ) / analysisHistory.length
           : 0;
 
       // Calculate actual success rate based on analysis history
@@ -6097,14 +6132,13 @@ Format as JSON with the following structure:
                 </thead>
                 <tbody>
                   ${exportData
-                    .map(
-                      (error) => `
+              .map(
+                (error) => `
                     <tr>
                       <td>${error.id}</td>
                       <td>${new Date(error.timestamp).toLocaleString()}</td>
-                      <td class="severity-${error.severity}">${
-                        error.severity
-                      }</td>
+                      <td class="severity-${error.severity}">${error.severity
+                  }</td>
                       <td>${error.errorType}</td>
                       <td>${error.message.substring(0, 100)}...</td>
                       <td>${error.resolved}</td>
@@ -6113,8 +6147,8 @@ Format as JSON with the following structure:
                       <td>${error.mlConfidence}</td>
                     </tr>
                   `
-                    )
-                    .join("")}
+              )
+              .join("")}
                 </tbody>
               </table>
             </body>
@@ -6427,31 +6461,28 @@ Format as JSON with the following structure:
 
         // Generate AI suggestion based on error context
         const suggestion = {
-          rootCause: `Error type "${error.errorType}" detected in line ${
-            error.lineNumber
-          }. This typically indicates: ${
-            error.errorType.toLowerCase().includes("syntax")
+          rootCause: `Error type "${error.errorType}" detected in line ${error.lineNumber
+            }. This typically indicates: ${error.errorType.toLowerCase().includes("syntax")
               ? "a syntax or formatting issue"
               : error.errorType.toLowerCase().includes("reference")
-              ? "an undefined variable or function reference"
-              : error.errorType.toLowerCase().includes("type")
-              ? "a type mismatch or casting issue"
-              : error.errorType.toLowerCase().includes("null")
-              ? "a null pointer or undefined value access"
-              : "a runtime execution issue"
-          }.`,
+                ? "an undefined variable or function reference"
+                : error.errorType.toLowerCase().includes("type")
+                  ? "a type mismatch or casting issue"
+                  : error.errorType.toLowerCase().includes("null")
+                    ? "a null pointer or undefined value access"
+                    : "a runtime execution issue"
+            }.`,
           resolutionSteps: [
             `Examine line ${error.lineNumber} in the log file for the specific error context`,
-            `Check for ${
-              error.errorType.toLowerCase().includes("syntax")
-                ? "missing semicolons, brackets, or quotes"
-                : error.errorType.toLowerCase().includes("reference")
+            `Check for ${error.errorType.toLowerCase().includes("syntax")
+              ? "missing semicolons, brackets, or quotes"
+              : error.errorType.toLowerCase().includes("reference")
                 ? "undefined variables or missing imports"
                 : error.errorType.toLowerCase().includes("type")
-                ? "incorrect data types or casting operations"
-                : error.errorType.toLowerCase().includes("null")
-                ? "null checks and proper initialization"
-                : "proper error handling and validation"
+                  ? "incorrect data types or casting operations"
+                  : error.errorType.toLowerCase().includes("null")
+                    ? "null checks and proper initialization"
+                    : "proper error handling and validation"
             }`,
             "Review related code dependencies and configurations",
             "Test the fix with sample data to ensure resolution",
@@ -6517,31 +6548,28 @@ Format as JSON with the following structure:
 
             // Generate AI suggestion based on error context
             const suggestion = {
-              rootCause: `Error type "${error.errorType}" detected in line ${
-                error.lineNumber
-              }. This typically indicates: ${
-                error.errorType.toLowerCase().includes("syntax")
+              rootCause: `Error type "${error.errorType}" detected in line ${error.lineNumber
+                }. This typically indicates: ${error.errorType.toLowerCase().includes("syntax")
                   ? "a syntax or formatting issue"
                   : error.errorType.toLowerCase().includes("reference")
-                  ? "an undefined variable or function reference"
-                  : error.errorType.toLowerCase().includes("type")
-                  ? "a type mismatch or casting issue"
-                  : error.errorType.toLowerCase().includes("null")
-                  ? "a null pointer or undefined value access"
-                  : "a runtime execution issue"
-              }.`,
+                    ? "an undefined variable or function reference"
+                    : error.errorType.toLowerCase().includes("type")
+                      ? "a type mismatch or casting issue"
+                      : error.errorType.toLowerCase().includes("null")
+                        ? "a null pointer or undefined value access"
+                        : "a runtime execution issue"
+                }.`,
               resolutionSteps: [
                 `Examine line ${error.lineNumber} in the log file for the specific error context`,
-                `Check for ${
-                  error.errorType.toLowerCase().includes("syntax")
-                    ? "missing semicolons, brackets, or quotes"
-                    : error.errorType.toLowerCase().includes("reference")
+                `Check for ${error.errorType.toLowerCase().includes("syntax")
+                  ? "missing semicolons, brackets, or quotes"
+                  : error.errorType.toLowerCase().includes("reference")
                     ? "undefined variables or missing imports"
                     : error.errorType.toLowerCase().includes("type")
-                    ? "incorrect data types or casting operations"
-                    : error.errorType.toLowerCase().includes("null")
-                    ? "null checks and proper initialization"
-                    : "proper error handling and validation"
+                      ? "incorrect data types or casting operations"
+                      : error.errorType.toLowerCase().includes("null")
+                        ? "null checks and proper initialization"
+                        : "proper error handling and validation"
                 }`,
                 "Review related code dependencies and configurations",
                 "Test the fix with sample data to ensure resolution",
@@ -7378,9 +7406,9 @@ Format as JSON with the following structure:
             enhancedMicroservicesProxy.getServiceStatistics(),
             recentErrors.length > 0
               ? enhancedMicroservicesProxy.analyzeEnterpriseIntelligence({
-                  errors: recentErrors,
-                  analysis_type: "quick",
-                })
+                errors: recentErrors,
+                analysis_type: "quick",
+              })
               : null,
           ]);
 
@@ -7488,10 +7516,9 @@ Format as JSON with the following structure:
         },
         recommendation:
           vectorResults.length > 0
-            ? `Based on ${vectorResults.length} similar cases: ${
-                vectorResults[0]?.metadata?.solution ||
-                "Check system logs and verify configuration"
-              }`
+            ? `Based on ${vectorResults.length} similar cases: ${vectorResults[0]?.metadata?.solution ||
+            "Check system logs and verify configuration"
+            }`
             : "No similar cases found. Please check error logs and documentation.",
         confidence:
           vectorResults.length > 0
@@ -7515,6 +7542,22 @@ Format as JSON with the following structure:
         error: "RAG test failed",
         details: error instanceof Error ? error.message : "Unknown error",
       });
+    }
+  });
+
+  // Admin endpoints for cross-user visibility
+  app.get("/api/admin/users", requireAuth, requireAdmin, async (req: any, res: any) => {
+    try {
+      // Get all users but return only safe data
+      const allUsers = await db.select({
+        id: users.id,
+        username: users.username
+      }).from(users).where(eq(users.isActive, true));
+
+      res.json(allUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).json({ message: "Failed to fetch users" });
     }
   });
 

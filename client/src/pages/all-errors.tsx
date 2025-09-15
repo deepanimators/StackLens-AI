@@ -93,9 +93,31 @@ export default function AllErrors() {
   const [searchQuery, setSearchQuery] = useState("");
   const [fileFilter, setFileFilter] = useState<string>("all");
   const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
+  const [userFilter, setUserFilter] = useState<string>("all");
   const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [showAISuggestionModal, setShowAISuggestionModal] = useState(false);
+
+  // Get current user info to check admin status
+  const { data: currentUser } = useQuery({
+    queryKey: ["/api/auth/me"],
+    queryFn: async () => {
+      const data = await authenticatedRequest("GET", "/api/auth/me");
+      return data;
+    },
+  });
+
+  const isAdmin = currentUser?.role === "admin" || currentUser?.role === "super_admin";
+
+  // Get users list for admin users
+  const { data: users } = useQuery({
+    queryKey: ["/api/admin/users"],
+    queryFn: async () => {
+      const data = await authenticatedRequest("GET", "/api/admin/users");
+      return data || [];
+    },
+    enabled: isAdmin,
+  });
 
   const {
     data: errorsData,
@@ -112,6 +134,7 @@ export default function AllErrors() {
         search: searchQuery,
         fileFilter,
         errorType: errorTypeFilter,
+        userId: userFilter,
       },
     ],
     queryFn: async (): Promise<ErrorsResponse> => {
@@ -132,6 +155,7 @@ export default function AllErrors() {
         ...(fileFilter && fileFilter !== "all" && { fileFilter }),
         ...(errorTypeFilter &&
           errorTypeFilter !== "all" && { errorType: errorTypeFilter }),
+        ...(userFilter && userFilter !== "all" && { userId: userFilter }),
       });
 
       try {
@@ -154,9 +178,14 @@ export default function AllErrors() {
 
   // Get files for the file filter dropdown
   const { data: files } = useQuery({
-    queryKey: ["/api/files"],
+    queryKey: ["/api/files", { userId: userFilter }],
     queryFn: async () => {
-      const data = await authenticatedRequest("GET", "/api/files");
+      const params = new URLSearchParams();
+      if (userFilter && userFilter !== "all") {
+        params.append("userId", userFilter);
+      }
+      const query = params.toString() ? `?${params.toString()}` : "";
+      const data = await authenticatedRequest("GET", `/api/files${query}`);
       // Handle the actual API response structure: { files: [...] }
       return data.files || [];
     },
@@ -189,6 +218,12 @@ export default function AllErrors() {
 
   const handleErrorTypeFilter = (newErrorType: string) => {
     setErrorTypeFilter(newErrorType);
+    setPage(1);
+  };
+
+  const handleUserFilter = (newUserFilter: string) => {
+    setUserFilter(newUserFilter);
+    setFileFilter("all"); // Reset file filter when user changes
     setPage(1);
   };
 
@@ -324,6 +359,22 @@ export default function AllErrors() {
                 />
               </div>
             </form>
+
+            {isAdmin && (
+              <Select value={userFilter} onValueChange={handleUserFilter}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Filter by user" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Users</SelectItem>
+                  {users?.map((user: any) => (
+                    <SelectItem key={user.id} value={user.id.toString()}>
+                      {user.username}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
 
             <Select value={severity} onValueChange={handleSeverityFilter}>
               <SelectTrigger className="w-48">
