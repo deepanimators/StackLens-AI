@@ -4833,11 +4833,14 @@ Format as JSON with the following structure:
         );
       }
 
-      if (fileFilter) {
+      if (fileFilter && fileFilter !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by fileId: ${fileFilter}`);
+        const beforeFiltering = filteredErrors.length;
         filteredErrors = filteredErrors.filter(
-          (error) =>
-            error.fullText &&
-            error.fullText.toLowerCase().includes(fileFilter.toLowerCase())
+          (error) => error.fileId && error.fileId.toString() === fileFilter
+        );
+        console.log(
+          `🔍 [DEBUG] File filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
         );
       }
 
