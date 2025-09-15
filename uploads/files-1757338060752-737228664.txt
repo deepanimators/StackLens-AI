@@ -1,0 +1,47 @@
+2025 - 09 - 06 / 17: 17: 10.197 / PDT INFO NCRAlohaRestPOSOrderpoint: 1601: [-exec - 3]: [210890199218608f2f613c4229bef708] - POS calcTotals response: {
+    "Message": "Error code: 52008.  Message: Cannot add a product with ID '12090' to POS order. COM error: Item unavailable. POS error code: 26",
+    "IsSuccess": false,
+    "ErrorCode": "52008"
+}
+
+2025 - 09 - 06 / 17: 17: 10.197 / PDT INFO NCRAlohaRestPOSOrderpoint: 620: [-exec - 3]: [210890199218608f2f613c4229bef708] - POS calcTotals execution time: 4023 ms
+
+2025 - 09 - 06 / 17: 17: 10.197 / PDT ERROR NCRAlohaRestPOSOrderpoint: 662: [-exec - 3]: [210890199218608f2f613c4229bef708] - An error occurred while sending calcTotals
+
+2025 - 09 - 06 / 17: 17: 10.202 / PDT ERROR AbstractPosHandler: 742: [-exec - 3]: [210890199218608f2f613c4229bef708] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12090' to POS order.COM error: Item unavailable.POS error code: 26
+
+2025 - 09 - 06 / 17: 17: 10.202 / PDT ERROR CalcTotalsHelper: 31: [-exec - 3]: [210890199218608f2f613c4229bef708] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12090' to POS order.COM error: Item unavailable.POS error code: 26
+
+2025 - 09 - 06 / 17: 17: 10.227 / PDT INFO MobileM8WebService: 1224: [-exec - 3]: [210890199218608f2f613c4229bef708] - Calculate Totals Returning with {
+    "calculateTotalsResult": {
+        "resultDescription": "POS order failure; Error code: 52008.  Message: Cannot add a product with ID '12090' to POS order. COM error: Item unavailable. POS error code: 26",
+        "statusCode": 1,
+        "localizedDisplayKey": "calculatetotals.failure",
+        "lineItems": [{
+                "name": "Classic Chicken Sandwich Large Combo",
+                "quantity": 1,
+                "price": 16.99,
+                "id": "1da14922-399f-4e8a-b2bb-5627b404d3ac",
+                "receiptDescription": "Classic Chicken Sandwich Large Combo",
+                "type": "COMBO",
+                "itemMatchKey": "d33ab476-0f5a-43dc-95c5-d7c0fd95c1cc",
+                "rolledUpPrice": 16.99,
+                "priceToDisplayInPortal": 16.99,
+                "tokenName": "Classic",
+                "favoriteId": 0,
+                "count": 0,
+                "metaData": {
+                    "calorieUnit": "***",
+                    "caloriesMinimum": "920",
+                    "caloriesMaximum": "1730",
+                    "sodiumWarning": "true",
+                    "itemType": "MEAL",
+                    "ComboCrossSell": "true",
+                    "size": "L",
+                    "menuItemName": "Classic Chicken Sandwich Large Combo New",
+                    "category": "CHICKEN SANDWICH",
+                    "customCategoryName": "Chicken Sandwich",
+                    "rootMenuItemStepType": "ComboSizeCategoryStep",
+                    "menuItemQuantity": "1"

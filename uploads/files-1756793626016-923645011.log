@@ -1,0 +1,1144 @@
+2025 - 07 - 25 / 20: 24: 39.467 / EDT INFO MobileM8WebService: 1106: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Calculate Total Request: {
+    "sessionId": "2347101984419a072057831cf1e704c8",
+    "orderUUID": "2347101984419a072057831cf1e704c8",
+    "userName": "*********************************************",
+    "storeName": "BK-30541",
+    "lineItems": [{
+            "name": "Donation",
+            "quantity": 1,
+            "price": 0.00,
+            "id": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29",
+            "receiptDescription": "Donation",
+            "type": "PRODUCT",
+            "itemMatchKey": "fd7b1ca6-1144-43ec-8d1a-7f153d25be08",
+            "tokenName": "Donation",
+            "favoriteId": 0,
+            "count": 0,
+            "metaData": {
+                "itemCategory": "Toys",
+                "menuItemName": "Charity Donation",
+                "appliedOffer": "CART_LEVEL_ROUND_UP"
+            },
+            "shouldOverridePrice": false,
+            "sku": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29",
+            "available": false,
+            "quantityUpdated": false,
+            "couponItem": false,
+            "orderDiscount": false,
+            "skuMappingCompleted": false
+        }, {
+            "name": "Monster Energy  Zero Ultra Drink",
+            "quantity": 1,
+            "price": 2.69,
+            "id": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "receiptDescription": "Monster Energy  Zero Ultra Drink",
+            "type": "PRODUCT",
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "tokenName": "Monster",
+            "favoriteId": 0,
+            "count": 0,
+            "metaData": {
+                "calorieUnit": "Cals",
+                "caloriesMinimum": "10",
+                "subcategory": "ColdDrinks",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra"
+            },
+            "shouldOverridePrice": false,
+            "sku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "available": false,
+            "quantityUpdated": false,
+            "couponItem": false,
+            "orderDiscount": false,
+            "skuMappingCompleted": false
+        }, {
+            "name": "Monster Energy  Drink",
+            "quantity": 1,
+            "price": 2.69,
+            "id": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "receiptDescription": "Monster Energy  Drink",
+            "type": "PRODUCT",
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "tokenName": "Monster",
+            "favoriteId": 0,
+            "count": 0,
+            "metaData": {
+                "calorieUnit": "Cals",
+                "caloriesMinimum": "170",
+                "subcategory": "ColdDrinks",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy "
+            },
+            "shouldOverridePrice": false,
+            "sku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "available": false,
+            "quantityUpdated": false,
+            "couponItem": false,
+            "orderDiscount": false,
+            "skuMappingCompleted": false
+        }
+    ],
+    "disposition": "FOR_HERE",
+    "kioskId": 23471,
+    "customer": {
+        "name": "Test"
+    }
+}
+
+2025 - 07 - 25 / 20: 24: 39.475 / EDT INFO StoreManager: 146: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Calculating totals on endpoint
+
+2025 - 07 - 25 / 20: 24: 39.476 / EDT INFO SicomEndpoint: 98: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Entering: SicomEndpoint.calculateTotals()
+
+2025 - 07 - 25 / 20: 24: 39.479 / EDT INFO SicomSL19XmlPosOrderpoint: 271: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Skumapped OrderDetails: {
+    "sourceId": "KIOSK",
+    "kioskId": 23471,
+    "disablePayAtCounter": false,
+    "pricingErrorDetected": false,
+    "customer": {
+        "name": "Test"
+    },
+    "startTime": "2025-07-26T00:24:39.476+0000",
+    "updatedOn": "2025-07-26T00:24:39.476+0000",
+    "lineItems": [{
+            "sku": "82385",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "850f4351-4e4e-46fc-9894-ab2a0ec1f2f6",
+            "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "posPlu": "82385",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "170",
+                "posPlu": "82385",
+                "lineItemId": "fe72d5d1-2c11-457f-bfc1-1ae07e5a8cea",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy ",
+                "name": "82385",
+                "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "82376",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "850f4351-4e4e-46fc-9894-ab2a0ec1f2f6",
+            "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "posPlu": "82376",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "10",
+                "posPlu": "82376",
+                "lineItemId": "35987a43-203b-4ee8-a6f1-8095811bc0e3",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra",
+                "name": "82376",
+                "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "30000026",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "fd7b1ca6-1144-43ec-8d1a-7f153d25be08",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "850f4351-4e4e-46fc-9894-ab2a0ec1f2f6",
+            "tillsterSku": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29",
+            "posPlu": "30000026",
+            "lineItemProperties": {
+                "itemType": "ENTREE",
+                "appliedOffer": "CART_LEVEL_ROUND_UP",
+                "posPlu": "30000026",
+                "lineItemId": "7f90fdfa-7fa2-47de-bc50-2933e4e3fa51",
+                "itemCategory": "Toys",
+                "posTag": "SyncToZero",
+                "menuItemName": "Charity Donation",
+                "name": "30000026",
+                "tillsterSku": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29"
+            },
+            "tagName": "SyncToZero",
+            "value": 0.00,
+            "orderDiscount": false
+        }
+    ],
+    "orderProperties": [{
+            "key": "OrderSource",
+            "value": "KIOSK"
+        }, {
+            "key": "SESSION_ID",
+            "value": "2347101984419a072057831cf1e704c8"
+        }
+    ],
+    "status": "OPEN",
+    "cacheLookUpKey": " [2347101984419a072057831cf1e704c8] , [23471] , [ [ [ [] , [71298fa1-55fa-4976-80d8-fc3e364b54bd] , [1] , [2.69] , [] ] , [bae6dd4f-087a-4c38-b4d5-1de9aefdcc29] , [1] , [0.00] , [] ] , [e02e951f-4fb1-407e-aab5-988e270386a6] , [1] , [2.69] , [] ] ",
+    "id": "666",
+    "sessionId": "2347101984419a072057831cf1e704c8",
+    "orderDestinationId": "1",
+    "posOrderId": "666",
+    "uuid": "850f4351-4e4e-46fc-9894-ab2a0ec1f2f6",
+    "mutableLineItems": [{
+            "sku": "82385",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "850f4351-4e4e-46fc-9894-ab2a0ec1f2f6",
+            "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "posPlu": "82385",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "170",
+                "posPlu": "82385",
+                "lineItemId": "fe72d5d1-2c11-457f-bfc1-1ae07e5a8cea",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy ",
+                "name": "82385",
+                "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "82376",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "850f4351-4e4e-46fc-9894-ab2a0ec1f2f6",
+            "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "posPlu": "82376",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "10",
+                "posPlu": "82376",
+                "lineItemId": "35987a43-203b-4ee8-a6f1-8095811bc0e3",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra",
+                "name": "82376",
+                "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "30000026",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "fd7b1ca6-1144-43ec-8d1a-7f153d25be08",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "850f4351-4e4e-46fc-9894-ab2a0ec1f2f6",
+            "tillsterSku": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29",
+            "posPlu": "30000026",
+            "lineItemProperties": {
+                "itemType": "ENTREE",
+                "appliedOffer": "CART_LEVEL_ROUND_UP",
+                "posPlu": "30000026",
+                "lineItemId": "7f90fdfa-7fa2-47de-bc50-2933e4e3fa51",
+                "itemCategory": "Toys",
+                "posTag": "SyncToZero",
+                "menuItemName": "Charity Donation",
+                "name": "30000026",
+                "tillsterSku": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29"
+            },
+            "tagName": "SyncToZero",
+            "value": 0.00,
+            "orderDiscount": false
+        }
+    ],
+    "orderPropertyNames": ["OrderSource", "SESSION_ID"],
+    "zeroTotal": false,
+    "prePaidOrder": false,
+    "payAtCounter": true,
+    "payAtKiosk": false,
+    "calculateTaxRequired": true
+}
+
+2025 - 07 - 25 / 20: 24: 39.483 / EDT INFO SocketTransport: 68: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Sending GETINSERTNUMBER message on socket: ip = 192.168.1.80, port = 3000, timeout = 180000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "GETINSERTNUMBER" terminal = "50" vendor = "TILLSTER" >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 39.486 / EDT INFO CommonDebugParser: 116: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "GETINSERTNUMBER" POSVersion = "6.49.0" time = "1753493071" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Insert logon_state = "1" insert_number = "4" /  >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 39.490 / EDT INFO SicomSL19XmlPosOrderpoint: 800: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Calculating totals with insert no.4
+
+    2025 - 07 - 25 / 20: 24: 39.492 / EDT INFO SocketTransport: 68: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Sending CALCULATE_TOTALS message on socket: ip = 192.168.1.80, port = 3000, timeout = 180000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "CALCULATETAX" terminal = "50" vendor = "TILLSTER" insert = "4" reference = "2347101984419a072057831cf1e704c8" >
+     < Order destination = "1" >
+     < MainOrder >
+     < ProductDetail >
+     < Product price = "269" qty = "1" plu = "82385" item_uuid = "fe72d5d1-2c11-457f-bfc1-1ae07e5a8cea" >
+     <  / Product >
+     < Product price = "269" qty = "1" plu = "82376" item_uuid = "35987a43-203b-4ee8-a6f1-8095811bc0e3" >
+     <  / Product >
+     < Product price = "0" qty = "1" plu = "30000026" item_uuid = "7f90fdfa-7fa2-47de-bc50-2933e4e3fa51" >
+     <  / Product >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < SubTotal value = "538" /  >
+     < OrderDiscounts >
+     <  / OrderDiscounts >
+     < Customer name = "Test" /  >
+     <  / Order >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 39.501 / EDT INFO CommonDebugParser: 116: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "CALCULATETAX" POSVersion = "6.49.0" time = "1753493071" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Order >
+     < MainOrder >
+     < ProductDetail >
+     < Product plu = "82385" qty = "1" price = "269" name = "STRAW LEM" available = "true" poll_id = "112200" item_uuid = "fe72d5d1-2c11-457f-bfc1-1ae07e5a8cea" /  >
+     < Product plu = "82376" qty = "1" price = "269" name = "MANGO PEA LM" available = "true" poll_id = "112206" item_uuid = "35987a43-203b-4ee8-a6f1-8095811bc0e3" /  >
+     < Product plu = "30000026" qty = "1" price = "0" name = "ROUND UP DONATION" available = "true" poll_id = "104472" item_uuid = "7f90fdfa-7fa2-47de-bc50-2933e4e3fa51" /  >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < Subtotal value = "538" /  >
+     < Taxes >
+     < Tax plu = "20000005" value = "0" long_name = "HST ONT FOOD 5% TAX" externally_collected = "false" /  >
+     < Tax plu = "20000006" value = "70" long_name = "HST ONT 13% Soda TAX" externally_collected = "false" /  >
+     < Tax plu = "20000007" value = "0" long_name = "HST ONT 13% Non-Food TAX" externally_collected = "false" /  >
+     <  / Taxes >
+     < Total value = "608" /  >
+     <  / Order >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 39.502 / EDT INFO AbstractPosHandler: 534: [-exec - 6]: [2347101984419a072057831cf1e704c8] - posSubtotal = 5.38, discount = 0, tax = 0.7, tip = 0, total = 6.08, order.tax.type = TAX_NOT_INCLUDED
+
+    2025 - 07 - 25 / 20: 24: 39.503 / EDT INFO AbstractPosHandler: 631: [-exec - 6]: [2347101984419a072057831cf1e704c8] - posSubTotal = 5.38, originalSubTotal = 5.38, difference = 0.00
+
+    2025 - 07 - 25 / 20: 24: 39.508 / EDT INFO MobileM8WebService: 1163: [-exec - 6]: [2347101984419a072057831cf1e704c8] - Calculate Totals Returning with {
+    "calculateTotalsResult": {
+        "statusCode": 0,
+        "subtotal": "5.38",
+        "tax": "0.70",
+        "total": "6.08",
+        "taxMap": {
+            "20000005": 0,
+            "20000007": 0,
+            "20000006": 0.7
+        },
+        "lineItems": [{
+                "name": "Donation",
+                "quantity": 1,
+                "price": 0.00,
+                "id": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29",
+                "receiptDescription": "Donation",
+                "type": "PRODUCT",
+                "itemMatchKey": "fd7b1ca6-1144-43ec-8d1a-7f153d25be08",
+                "rolledUpPrice": 0.00,
+                "priceToDisplayInPortal": 0.00,
+                "tokenName": "Donation",
+                "favoriteId": 0,
+                "count": 0,
+                "metaData": {
+                    "itemCategory": "Toys",
+                    "menuItemName": "Charity Donation",
+                    "appliedOffer": "CART_LEVEL_ROUND_UP"
+                },
+                "shouldOverridePrice": false,
+                "lineItemProperties": {
+                    "itemType": "ENTREE",
+                    "appliedOffer": "CART_LEVEL_ROUND_UP",
+                    "originalPrice": "0",
+                    "lineItemId": "7f90fdfa-7fa2-47de-bc50-2933e4e3fa51",
+                    "itemCategory": "Toys",
+                    "menuItemName": "Charity Donation",
+                    "itemPosPrice": "0",
+                    "posPlu": "30000026",
+                    "posTag": "SyncToZero",
+                    "name": "30000026",
+                    "matched": "0",
+                    "tillsterSku": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29"
+                },
+                "sku": "bae6dd4f-087a-4c38-b4d5-1de9aefdcc29",
+                "posPlu": "30000026",
+                "available": false,
+                "quantityUpdated": false,
+                "couponItem": false,
+                "orderDiscount": false,
+                "skuMappingCompleted": false
+            }, {
+                "name": "Monster Energy  Zero Ultra Drink",
+                "quantity": 1,
+                "price": 2.69,
+                "id": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "receiptDescription": "Monster Energy  Zero Ultra Drink",
+                "type": "PRODUCT",
+                "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+                "rolledUpPrice": 2.69,
+                "priceToDisplayInPortal": 2.69,
+                "tokenName": "Monster",
+                "favoriteId": 0,
+                "count": 0,
+                "metaData": {
+                    "calorieUnit": "Cals",
+                    "caloriesMinimum": "10",
+                    "subcategory": "ColdDrinks",
+                    "itemCategory": "Cold Beverages",
+                    "menuItemName": "Monster Energy  Zero Ultra"
+                },
+                "shouldOverridePrice": false,
+                "lineItemProperties": {
+                    "calorieUnit": "Cals",
+                    "itemType": "DRINK",
+                    "originalPrice": "2.69",
+                    "lineItemId": "35987a43-203b-4ee8-a6f1-8095811bc0e3",
+                    "itemCategory": "Cold Beverages",
+                    "menuItemName": "Monster Energy  Zero Ultra",
+                    "itemPosPrice": "2.69",
+                    "caloriesMinimum": "10",
+                    "posPlu": "82376",
+                    "name": "82376",
+                    "matched": "0",
+                    "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                    "subcategory": "ColdDrinks"
+                },
+                "sku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "posPlu": "82376",
+                "available": false,
+                "quantityUpdated": false,
+                "couponItem": false,
+                "orderDiscount": false,
+                "skuMappingCompleted": false
+            }, {
+                "name": "Monster Energy  Drink",
+                "quantity": 1,
+                "price": 2.69,
+                "id": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "receiptDescription": "Monster Energy  Drink",
+                "type": "PRODUCT",
+                "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+                "rolledUpPrice": 2.69,
+                "priceToDisplayInPortal": 2.69,
+                "tokenName": "Monster",
+                "favoriteId": 0,
+                "count": 0,
+                "metaData": {
+                    "calorieUnit": "Cals",
+                    "caloriesMinimum": "170",
+                    "subcategory": "ColdDrinks",
+                    "itemCategory": "Cold Beverages",
+                    "menuItemName": "Monster Energy "
+                },
+                "shouldOverridePrice": false,
+                "lineItemProperties": {
+                    "calorieUnit": "Cals",
+                    "itemType": "DRINK",
+                    "originalPrice": "2.69",
+                    "lineItemId": "fe72d5d1-2c11-457f-bfc1-1ae07e5a8cea",
+                    "itemCategory": "Cold Beverages",
+                    "menuItemName": "Monster Energy ",
+                    "itemPosPrice": "2.69",
+                    "caloriesMinimum": "170",
+                    "posPlu": "82385",
+                    "name": "82385",
+                    "matched": "0",
+                    "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                    "subcategory": "ColdDrinks"
+                },
+                "sku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "posPlu": "82385",
+                "available": false,
+                "quantityUpdated": false,
+                "couponItem": false,
+                "orderDiscount": false,
+                "skuMappingCompleted": false
+            }
+        ],
+        "customer": {},
+        "orderProperties": {
+            "posOrderStatusCode": "0",
+            "orderStatusCode": "0"
+        }
+    }
+}
+
+2025 - 07 - 25 / 20: 24: 52.656 / EDT INFO MobileM8WebService: 710: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Place Order Request: {
+    "sessionId": "2347101984419a072057831cf1e704c8",
+    "orderUUID": "2347101984419a072057831cf1e704c8",
+    "userName": "*********************************************",
+    "storeName": "BK-30541",
+    "orderValue": 6.08,
+    "orderSubtotal": 5.38,
+    "payType": "CASH",
+    "lineItems": [{
+            "name": "Monster Energy  Zero Ultra Drink",
+            "quantity": 1,
+            "price": 2.69,
+            "id": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "receiptDescription": "Monster Energy  Zero Ultra Drink",
+            "type": "PRODUCT",
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "tokenName": "Monster",
+            "favoriteId": 0,
+            "count": 0,
+            "metaData": {
+                "calorieUnit": "Cals",
+                "caloriesMinimum": "10",
+                "subcategory": "ColdDrinks",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra"
+            },
+            "shouldOverridePrice": false,
+            "sku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "available": false,
+            "quantityUpdated": false,
+            "couponItem": false,
+            "orderDiscount": false,
+            "skuMappingCompleted": false
+        }, {
+            "name": "Monster Energy  Drink",
+            "quantity": 1,
+            "price": 2.69,
+            "id": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "receiptDescription": "Monster Energy  Drink",
+            "type": "PRODUCT",
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "tokenName": "Monster",
+            "favoriteId": 0,
+            "count": 0,
+            "metaData": {
+                "calorieUnit": "Cals",
+                "caloriesMinimum": "170",
+                "subcategory": "ColdDrinks",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy "
+            },
+            "shouldOverridePrice": false,
+            "sku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "available": false,
+            "quantityUpdated": false,
+            "couponItem": false,
+            "orderDiscount": false,
+            "skuMappingCompleted": false
+        }
+    ],
+    "disposition": "FOR_HERE",
+    "setFavorite": false,
+    "locale": "en-us",
+    "kioskId": 23471,
+    "kioskName": "K1",
+    "customer": {
+        "name": "Test"
+    },
+    "futureOrder": false
+}
+
+2025 - 07 - 25 / 20: 24: 52.667 / EDT INFO MobileM8WebService: 1632: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Placing verified order called by[2347101984419a072057831cf1e704c8 @ tillster.com]
+
+2025 - 07 - 25 / 20: 24: 52.668 / EDT INFO MobileM8WebService: 2669: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Cache Calc Total Response Enabled, Getting Response for LookupKey: [2347101984419a072057831cf1e704c8], [23471], [[[], [71298fa1 - 55fa - 4976 - 80d8 - fc3e364b54bd], [1], [2.69], []], [e02e951f - 4fb1 - 407e-aab5 - 988e270386a6], [1], [2.69], []]
+
+2025 - 07 - 25 / 20: 24: 52.669 / EDT INFO StoreManager: 146: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Calculating totals on endpoint
+
+2025 - 07 - 25 / 20: 24: 52.669 / EDT INFO SicomEndpoint: 98: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Entering: SicomEndpoint.calculateTotals()
+
+2025 - 07 - 25 / 20: 24: 52.671 / EDT INFO SicomSL19XmlPosOrderpoint: 271: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Skumapped OrderDetails: {
+    "sourceId": "KIOSK",
+    "kioskId": 23471,
+    "disablePayAtCounter": false,
+    "pricingErrorDetected": false,
+    "customer": {
+        "name": "Test"
+    },
+    "startTime": "2025-07-26T00:24:52.670+0000",
+    "updatedOn": "2025-07-26T00:24:52.670+0000",
+    "lineItems": [{
+            "sku": "82376",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "7369a111-6158-4c2d-b82e-a46119232e3c",
+            "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "posPlu": "82376",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "10",
+                "posPlu": "82376",
+                "lineItemId": "81018489-2d13-4116-83bd-4c0148bf0011",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra",
+                "name": "82376",
+                "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "82385",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "7369a111-6158-4c2d-b82e-a46119232e3c",
+            "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "posPlu": "82385",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "170",
+                "posPlu": "82385",
+                "lineItemId": "1621c805-2564-42cc-8e1f-20233dc15994",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy ",
+                "name": "82385",
+                "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }
+    ],
+    "orderProperties": [{
+            "key": "OrderSource",
+            "value": "KIOSK"
+        }, {
+            "key": "SESSION_ID",
+            "value": "2347101984419a072057831cf1e704c8"
+        }
+    ],
+    "status": "OPEN",
+    "cacheLookUpKey": " [2347101984419a072057831cf1e704c8] , [23471] , [ [ [] , [71298fa1-55fa-4976-80d8-fc3e364b54bd] , [1] , [2.69] , [] ] , [e02e951f-4fb1-407e-aab5-988e270386a6] , [1] , [2.69] , [] ] ",
+    "id": "666",
+    "sessionId": "2347101984419a072057831cf1e704c8",
+    "orderDestinationId": "1",
+    "posOrderId": "666",
+    "uuid": "7369a111-6158-4c2d-b82e-a46119232e3c",
+    "mutableLineItems": [{
+            "sku": "82376",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "7369a111-6158-4c2d-b82e-a46119232e3c",
+            "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "posPlu": "82376",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "10",
+                "posPlu": "82376",
+                "lineItemId": "81018489-2d13-4116-83bd-4c0148bf0011",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra",
+                "name": "82376",
+                "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "82385",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "7369a111-6158-4c2d-b82e-a46119232e3c",
+            "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "posPlu": "82385",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "caloriesMinimum": "170",
+                "posPlu": "82385",
+                "lineItemId": "1621c805-2564-42cc-8e1f-20233dc15994",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy ",
+                "name": "82385",
+                "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }
+    ],
+    "orderPropertyNames": ["OrderSource", "SESSION_ID"],
+    "zeroTotal": false,
+    "prePaidOrder": false,
+    "payAtCounter": true,
+    "payAtKiosk": false,
+    "calculateTaxRequired": true
+}
+
+2025 - 07 - 25 / 20: 24: 52.673 / EDT INFO SocketTransport: 68: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sending GETINSERTNUMBER message on socket: ip = 192.168.1.80, port = 3000, timeout = 180000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "GETINSERTNUMBER" terminal = "50" vendor = "TILLSTER" >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 52.676 / EDT INFO CommonDebugParser: 116: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "GETINSERTNUMBER" POSVersion = "6.49.0" time = "1753493084" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Insert logon_state = "1" insert_number = "4" /  >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 52.679 / EDT INFO SicomSL19XmlPosOrderpoint: 800: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Calculating totals with insert no.4
+
+    2025 - 07 - 25 / 20: 24: 52.680 / EDT INFO SocketTransport: 68: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sending CALCULATE_TOTALS message on socket: ip = 192.168.1.80, port = 3000, timeout = 180000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "CALCULATETAX" terminal = "50" vendor = "TILLSTER" insert = "4" reference = "2347101984419a072057831cf1e704c8" >
+     < Order destination = "1" >
+     < MainOrder >
+     < ProductDetail >
+     < Product price = "269" qty = "1" plu = "82376" item_uuid = "81018489-2d13-4116-83bd-4c0148bf0011" >
+     <  / Product >
+     < Product price = "269" qty = "1" plu = "82385" item_uuid = "1621c805-2564-42cc-8e1f-20233dc15994" >
+     <  / Product >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < SubTotal value = "538" /  >
+     < OrderDiscounts >
+     <  / OrderDiscounts >
+     < Customer name = "Test" /  >
+     <  / Order >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 52.687 / EDT INFO CommonDebugParser: 116: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "CALCULATETAX" POSVersion = "6.49.0" time = "1753493084" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Order >
+     < MainOrder >
+     < ProductDetail >
+     < Product plu = "82376" qty = "1" price = "269" name = "MANGO PEA LM" available = "true" poll_id = "112206" item_uuid = "81018489-2d13-4116-83bd-4c0148bf0011" /  >
+     < Product plu = "82385" qty = "1" price = "269" name = "STRAW LEM" available = "true" poll_id = "112200" item_uuid = "1621c805-2564-42cc-8e1f-20233dc15994" /  >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < Subtotal value = "538" /  >
+     < Taxes >
+     < Tax plu = "20000005" value = "0" long_name = "HST ONT FOOD 5% TAX" externally_collected = "false" /  >
+     < Tax plu = "20000006" value = "70" long_name = "HST ONT 13% Soda TAX" externally_collected = "false" /  >
+     < Tax plu = "20000007" value = "0" long_name = "HST ONT 13% Non-Food TAX" externally_collected = "false" /  >
+     <  / Taxes >
+     < Total value = "608" /  >
+     <  / Order >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 52.688 / EDT INFO AbstractPosHandler: 534: [-exec - 4]: [2347101984419a072057831cf1e704c8] - posSubtotal = 5.38, discount = 0, tax = 0.7, tip = 0, total = 6.08, order.tax.type = TAX_NOT_INCLUDED
+
+    2025 - 07 - 25 / 20: 24: 52.688 / EDT INFO AbstractPosHandler: 631: [-exec - 4]: [2347101984419a072057831cf1e704c8] - posSubTotal = 5.38, originalSubTotal = 5.38, difference = 0.00
+
+    2025 - 07 - 25 / 20: 24: 52.705 / EDT INFO SicomSL19XmlPosOrderpoint: 271: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Skumapped OrderDetails: {
+    "kioskId": 23471,
+    "disablePayAtCounter": false,
+    "pricingErrorDetected": false,
+    "customer": {
+        "name": "Test"
+    },
+    "startTime": "2025-07-26T00:24:52.704+0000",
+    "updatedOn": "2025-07-26T00:24:52.704+0000",
+    "lineItems": [{
+            "sku": "82376",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "98e82e9e-2f9c-4831-900c-7b68f7ae7ecf",
+            "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "posPlu": "82376",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "originalPrice": "2.69",
+                "lineItemId": "81018489-2d13-4116-83bd-4c0148bf0011",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra",
+                "itemPosPrice": "2.69",
+                "caloriesMinimum": "10",
+                "posPlu": "82376",
+                "name": "82376",
+                "matched": "0",
+                "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "82385",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "98e82e9e-2f9c-4831-900c-7b68f7ae7ecf",
+            "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "posPlu": "82385",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "originalPrice": "2.69",
+                "lineItemId": "1621c805-2564-42cc-8e1f-20233dc15994",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy ",
+                "itemPosPrice": "2.69",
+                "caloriesMinimum": "170",
+                "posPlu": "82385",
+                "name": "82385",
+                "matched": "0",
+                "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }
+    ],
+    "status": "OPEN",
+    "id": "666",
+    "sessionId": "2347101984419a072057831cf1e704c8",
+    "orderDestinationId": "1",
+    "posOrderId": "666",
+    "uuid": "98e82e9e-2f9c-4831-900c-7b68f7ae7ecf",
+    "mutableLineItems": [{
+            "sku": "82376",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "98e82e9e-2f9c-4831-900c-7b68f7ae7ecf",
+            "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "posPlu": "82376",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "originalPrice": "2.69",
+                "lineItemId": "81018489-2d13-4116-83bd-4c0148bf0011",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra",
+                "itemPosPrice": "2.69",
+                "caloriesMinimum": "10",
+                "posPlu": "82376",
+                "name": "82376",
+                "matched": "0",
+                "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }, {
+            "sku": "82385",
+            "type": "PRODUCT",
+            "quantity": 1,
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "isCouponItem": false,
+            "shouldOverridePrice": false,
+            "orderUUID": "98e82e9e-2f9c-4831-900c-7b68f7ae7ecf",
+            "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "posPlu": "82385",
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "originalPrice": "2.69",
+                "lineItemId": "1621c805-2564-42cc-8e1f-20233dc15994",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy ",
+                "itemPosPrice": "2.69",
+                "caloriesMinimum": "170",
+                "posPlu": "82385",
+                "name": "82385",
+                "matched": "0",
+                "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "subcategory": "ColdDrinks"
+            },
+            "value": 2.69,
+            "orderDiscount": false
+        }
+    ],
+    "zeroTotal": false,
+    "prePaidOrder": false,
+    "payAtCounter": true,
+    "payAtKiosk": false,
+    "calculateTaxRequired": true
+}
+
+2025 - 07 - 25 / 20: 24: 52.708 / EDT INFO SocketTransport: 68: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sending GETINSERTNUMBER message on socket: ip = 192.168.1.80, port = 3000, timeout = 180000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "GETINSERTNUMBER" terminal = "50" vendor = "TILLSTER" >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 52.710 / EDT INFO CommonDebugParser: 116: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "GETINSERTNUMBER" POSVersion = "6.49.0" time = "1753493084" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Insert logon_state = "1" insert_number = "4" /  >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 52.713 / EDT INFO SicomSL19XmlPosOrderpoint: 800: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Calculating totals with insert no.4
+
+    2025 - 07 - 25 / 20: 24: 52.714 / EDT INFO SocketTransport: 68: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sending CALCULATE_TOTALS message on socket: ip = 192.168.1.80, port = 3000, timeout = 180000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "CALCULATETAX" terminal = "50" vendor = "TILLSTER" insert = "4" reference = "2347101984419a072057831cf1e704c8" >
+     < Order destination = "1" >
+     < MainOrder >
+     < ProductDetail >
+     < Product price = "269" qty = "1" plu = "82376" item_uuid = "81018489-2d13-4116-83bd-4c0148bf0011" >
+     <  / Product >
+     < Product price = "269" qty = "1" plu = "82385" item_uuid = "1621c805-2564-42cc-8e1f-20233dc15994" >
+     <  / Product >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < SubTotal value = "538" /  >
+     < OrderDiscounts >
+     <  / OrderDiscounts >
+     < Customer name = "Test" /  >
+     <  / Order >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 52.721 / EDT INFO CommonDebugParser: 116: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "CALCULATETAX" POSVersion = "6.49.0" time = "1753493084" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Order >
+     < MainOrder >
+     < ProductDetail >
+     < Product plu = "82376" qty = "1" price = "269" name = "MANGO PEA LM" available = "true" poll_id = "112206" item_uuid = "81018489-2d13-4116-83bd-4c0148bf0011" /  >
+     < Product plu = "82385" qty = "1" price = "269" name = "STRAW LEM" available = "true" poll_id = "112200" item_uuid = "1621c805-2564-42cc-8e1f-20233dc15994" /  >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < Subtotal value = "538" /  >
+     < Taxes >
+     < Tax plu = "20000005" value = "0" long_name = "HST ONT FOOD 5% TAX" externally_collected = "false" /  >
+     < Tax plu = "20000006" value = "70" long_name = "HST ONT 13% Soda TAX" externally_collected = "false" /  >
+     < Tax plu = "20000007" value = "0" long_name = "HST ONT 13% Non-Food TAX" externally_collected = "false" /  >
+     <  / Taxes >
+     < Total value = "608" /  >
+     <  / Order >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 52.722 / EDT INFO AbstractPosHandler: 534: [-exec - 4]: [2347101984419a072057831cf1e704c8] - posSubtotal = 5.38, discount = 0, tax = 0.7, tip = 0, total = 6.08, order.tax.type = TAX_NOT_INCLUDED
+
+    2025 - 07 - 25 / 20: 24: 52.722 / EDT INFO AbstractPosHandler: 631: [-exec - 4]: [2347101984419a072057831cf1e704c8] - posSubTotal = 5.38, originalSubTotal = 5.38, difference = 0.00
+
+    2025 - 07 - 25 / 20: 24: 52.722 / EDT INFO SicomSL19PosHandler: 391: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sicom order total validation successful.The calculated sum of line items[6.03]is less than the input subtotal.[6.08]
+
+    2025 - 07 - 25 / 20: 24: 52.723 / EDT INFO SicomSL19PosHandler: 323: [-exec - 4]: [2347101984419a072057831cf1e704c8] - blindBurgerFeatureEnabled = false
+
+    2025 - 07 - 25 / 20: 24: 52.723 / EDT INFO SicomSL19XmlPosOrderpoint: 438: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Skipping ORDERVALIDATE per configuration
+
+    2025 - 07 - 25 / 20: 24: 52.725 / EDT INFO SocketTransport: 68: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sending GETINSERTNUMBER message on socket: ip = 192.168.1.80, port = 3000, timeout = 180000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "GETINSERTNUMBER" terminal = "50" vendor = "TILLSTER" >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 52.728 / EDT INFO CommonDebugParser: 116: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "GETINSERTNUMBER" POSVersion = "6.49.0" time = "1753493084" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Insert logon_state = "1" insert_number = "4" /  >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 52.730 / EDT INFO SicomSL19XmlPosOrderpoint: 552: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Placing order with insert no.4
+
+    2025 - 07 - 25 / 20: 24: 52.732 / EDT INFO SocketTransport: 68: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sending PLACE_ORDER message on socket: ip = 192.168.1.80, port = 3000, timeout = 90000, message =
+     <  ? xml version = "1.0" ?  >
+     < POSRequest action = "ORDER" terminal = "50" vendor = "TILLSTER" insert = "4" reference = "2347101984419a072057831cf1e704c8" >
+     < Order destination = "1" payment_status = "PAYMENTDUE" >
+     < MainOrder >
+     < ProductDetail >
+     < Product price = "269" qty = "1" plu = "82376" >
+     <  / Product >
+     < Product price = "269" qty = "1" plu = "82385" >
+     <  / Product >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < SubTotal value = "538" /  >
+     < Taxes >
+     < Tax plu = "20000005" value = "0" /  >
+     < Tax plu = "20000007" value = "0" /  >
+     < Tax plu = "20000006" value = "70" /  >
+     <  / Taxes >
+     < OrderDiscounts >
+     <  / OrderDiscounts >
+     < Payments >
+     < Payment plu = "30000000" value = "0" /  >
+     <  / Payments >
+     < Change value = "0" /  >
+     < Total value = "608" /  >
+     < Customer name = "Test" /  >
+     <  / Order >
+     <  / POSRequest >
+
+    2025 - 07 - 25 / 20 : 24 : 52.746 / EDT INFO CommonDebugParser: 116: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Sicom Response:  <  ? xml version = "1.0" ?  >
+     < !DOCTYPE pos >
+     < POSResponse type = "ORDER" POSVersion = "6.49.0" time = "1753493084" last_update_time = "1753475656" terminal = "50" update_needed = "false" sync_checksum = "ee6da201f1d462803fe50bd6539f4388c2db4196" >
+     < Order number = "3739" uuid = "a993068b-4430-415f-913c-b8b97b71122c" pos_uuid = "a993068b-4430-415f-913c-b8b97b71122c" >
+     < MainOrder >
+     < ProductDetail >
+     < Product plu = "82376" qty = "1" price = "269" name = "MANGO PEA LM" available = "true" poll_id = "112206" item_uuid = "84036e30-5d53-4923-a5be-353da5634362" /  >
+     < Product plu = "82385" qty = "1" price = "269" name = "STRAW LEM" available = "true" poll_id = "112200" item_uuid = "f85834f8-e40a-4600-81b5-63a0e0922edf" /  >
+     <  / ProductDetail >
+     <  / MainOrder >
+     < Subtotal value = "538" /  >
+     < Taxes >
+     < Tax plu = "20000005" value = "0" long_name = "HST ONT FOOD 5% TAX" externally_collected = "false" /  >
+     < Tax plu = "20000006" value = "70" long_name = "HST ONT 13% Soda TAX" externally_collected = "false" /  >
+     < Tax plu = "20000007" value = "0" long_name = "HST ONT 13% Non-Food TAX" externally_collected = "false" /  >
+     <  / Taxes >
+     < Total value = "610" /  >
+     < CurrencyRounding value = "2" /  >
+     <  / Order >
+     <  / POSResponse >
+
+    2025 - 07 - 25 / 20 : 24 : 52.747 / EDT INFO SicomSL19PosHandler: 149: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Perform Order success: true
+
+    2025 - 07 - 25 / 20: 24: 52.747 / EDT INFO SicomEndpoint: 57: [-exec - 4]: [2347101984419a072057831cf1e704c8] - perform order on handler 1 Called and the result is true
+
+    2025 - 07 - 25 / 20: 24: 52.752 / EDT INFO SicomEndpoint: 83: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Order was successfully placed with POS.
+
+    2025 - 07 - 25 / 20: 24: 52.762 / EDT INFO MobileM8WebService: 2502: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Performing post POS injection tasks
+
+    2025 - 07 - 25 / 20: 24: 52.766 / EDT INFO MobileM8WebService: 2525: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Updated tax_tbl with [orderId = 29510, taxId = 1, amount = 0.00]
+
+    2025 - 07 - 25 / 20: 24: 52.770 / EDT INFO MobileM8WebService: 2525: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Updated tax_tbl with [orderId = 29510, taxId = 3, amount = 0.00]
+
+    2025 - 07 - 25 / 20: 24: 52.773 / EDT INFO MobileM8WebService: 2525: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Updated tax_tbl with [orderId = 29510, taxId = 2, amount = 0.70]
+
+    2025 - 07 - 25 / 20: 24: 52.789 / EDT INFO MobileM8WebService: 773: [-exec - 4]: [2347101984419a072057831cf1e704c8] - Place Order Returning with {
+    "orderId": "29510",
+    "orderInvoiceTime": "2025-07-25 08:24:53 PM",
+    "remoteOrderId": "3739",
+    "displayNumber": "39",
+    "orderStatus": "PLACED",
+    "resultDescription": "Successfully placed order on POS and MobileM8",
+    "statusCode": 0,
+    "shouldRetry": false,
+    "localizedDisplayKey": "placeorder.ok.pickuporder",
+    "orderUUID": "2347101984419a072057831cf1e704c8",
+    "lineItems": [{
+            "name": "Monster Energy  Zero Ultra Drink",
+            "quantity": 1,
+            "price": 2.69,
+            "id": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "receiptDescription": "Monster Energy  Zero Ultra Drink",
+            "type": "PRODUCT",
+            "itemMatchKey": "6c7c7987-0021-47e9-b521-f9e2008f38b2",
+            "rolledUpPrice": 2.69,
+            "priceToDisplayInPortal": 2.69,
+            "tokenName": "Monster",
+            "favoriteId": 0,
+            "count": 0,
+            "orderUUID": "2347101984419a072057831cf1e704c8",
+            "metaData": {
+                "calorieUnit": "Cals",
+                "caloriesMinimum": "10",
+                "subcategory": "ColdDrinks",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra"
+            },
+            "shouldOverridePrice": false,
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "originalPrice": "2.69",
+                "lineItemId": "81018489-2d13-4116-83bd-4c0148bf0011",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy  Zero Ultra",
+                "itemPosPrice": "2.69",
+                "caloriesMinimum": "10",
+                "posPlu": "82376",
+                "name": "82376",
+                "matched": "0",
+                "tillsterSku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+                "subcategory": "ColdDrinks"
+            },
+            "sku": "e02e951f-4fb1-407e-aab5-988e270386a6",
+            "posPlu": "82376",
+            "available": false,
+            "quantityUpdated": false,
+            "couponItem": false,
+            "orderDiscount": false,
+            "skuMappingCompleted": false
+        }, {
+            "name": "Monster Energy  Drink",
+            "quantity": 1,
+            "price": 2.69,
+            "id": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "receiptDescription": "Monster Energy  Drink",
+            "type": "PRODUCT",
+            "itemMatchKey": "008a4d68-946f-4cdd-9e93-8d416e497e0b",
+            "rolledUpPrice": 2.69,
+            "priceToDisplayInPortal": 2.69,
+            "tokenName": "Monster",
+            "favoriteId": 0,
+            "count": 0,
+            "orderUUID": "2347101984419a072057831cf1e704c8",
+            "metaData": {
+                "calorieUnit": "Cals",
+                "caloriesMinimum": "170",
+                "subcategory": "ColdDrinks",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy "
+            },
+            "shouldOverridePrice": false,
+            "lineItemProperties": {
+                "calorieUnit": "Cals",
+                "itemType": "DRINK",
+                "originalPrice": "2.69",
+                "lineItemId": "1621c805-2564-42cc-8e1f-20233dc15994",
+                "itemCategory": "Cold Beverages",
+                "menuItemName": "Monster Energy ",
+                "itemPosPrice": "2.69",
+                "caloriesMinimum": "170",
+                "posPlu": "82385",
+                "name": "82385",
+                "matched": "0",
+                "tillsterSku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+                "subcategory": "ColdDrinks"
+            },
+            "sku": "71298fa1-55fa-4976-80d8-fc3e364b54bd",
+            "posPlu": "82385",
+            "available": false,
+            "quantityUpdated": false,
+            "couponItem": false,
+            "orderDiscount": false,
+            "skuMappingCompleted": false
+        }
+    ],
+    "taxes": [{
+            "taxGroup": "20000005",
+            "taxAmount": 0.00
+        }, {
+            "taxGroup": "20000007",
+            "taxAmount": 0.00
+        }, {
+            "taxGroup": "20000006",
+            "taxAmount": 0.70
+        }
+    ],
+    "orderProperties": {
+        "posOrderStatusCode": "1",
+        "originalDisplayNumber": "3739",
+        "orderStatusCode": "0",
+        "AUTH_TICKET": "TICKET_2ff44d86-bdf2-4787-a17d-7c6c52646ac0",
+        "PayType": "CASH",
+        "CustomerName": "Test",
+        "POS_FULL_ORDER_ID": "a993068b-4430-415f-913c-b8b97b71122c",
+        "SESSION_ID": "2347101984419a072057831cf1e704c8",
+        "OrderSource": "KIOSK",
+        "posOrderStatusMsg": "Place order successful"
+    }
+}

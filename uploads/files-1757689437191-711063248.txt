@@ -1,0 +1,34 @@
+2025-07-23/00:55:33.443/PDT  INFO ConfigurationScheduleService:134:[tStop-7]: - Refreshed menu items availability
+
+2025-07-23/00:55:35.138/PDT  INFO KioskWebServiceConfig:336:[tStop-7]: - External API not defined to publish kiosk status.
+
+2025-07-23/00:55:37.633/PDT  INFO BrinkAPIUtils:42:[-exec-5]: - POS Api Endpoint Url: https://api25tablets.brinkpos.net:443
+
+2025-07-23/00:55:37.675/PDT  INFO PosHealthCheckHelper:32:[-exec-5]: - Scheduling PosHealthCheckMonitor
+
+2025-07-23/00:55:42.762/PDT  INFO BrinkPosOrderpoint:111:[thcheck]: - Last modified time request: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> <soap:Body><GetLastModifiedTime xmlns="http://www.brinksoftware.com/webservices/settings/v2"/></soap:Body> </soap:Envelope>
+
+2025-07-23/00:55:43.404/PDT  INFO BrinkPosOrderpoint:132:[thcheck]: - Last modified time response: <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetLastModifiedTimeResponse xmlns="http://www.brinksoftware.com/webservices/settings/v2"><GetLastModifiedTimeResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><Message xmlns="http://schemas.datacontract.org/2004/07/Pos.Web.Service">Access denied</Message><ResultCode xmlns="http://schemas.datacontract.org/2004/07/Pos.Web.Service">4</ResultCode><EmployeesOnlyLastModifiedTime i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/System"/><SettingsLastModified i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/System"/><SettingsOnlyLastModifiedTime i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/System"/></GetLastModifiedTimeResult></GetLastModifiedTimeResponse></s:Body></s:Envelope>
+
+2025-07-23/00:55:43.404/PDT  INFO AbstractEndpoint:192:[thcheck]: - POS for BK-4991 is online. Handler=BrinkPosHandler
+
+2025-07-23/00:57:09.071/PDT  INFO ConfigurationScheduleService:134:[tStop-7]: - Refreshed menu items availability
+
+2025-07-23/00:57:10.817/PDT  INFO KioskWebServiceConfig:341:[tStop-7]: - External API not defined to publish kiosk status.
+
+2025-07-23/00:57:12.628/PDT  INFO BrinkAPIUtils:42:[-exec-6]: - POS Api Endpoint Url: https://api25tablets.brinkpos.net:443
+
+2025-07-23/00:57:12.678/PDT  INFO PosHealthCheckHelper:32:[-exec-6]: - Scheduling PosHealthCheckMonitor
+
+2025-07-23/00:57:12.703/PDT  INFO MobileM8WebService:4098:[-exec-3]: - Flushing skumap
+
+2025-07-23/00:57:13.143/PDT  INFO BrinkPosOrderpoint:111:[-exec-9]: - Last modified time request: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> <soap:Body><GetLastModifiedTime xmlns="http://www.brinksoftware.com/webservices/settings/v2"/></soap:Body> </soap:Envelope>
+
+2025-07-23/00:57:13.750/PDT  INFO BrinkPosOrderpoint:132:[-exec-9]: - Last modified time response: <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetLastModifiedTimeResponse xmlns="http://www.brinksoftware.com/webservices/settings/v2"><GetLastModifiedTimeResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><Message xmlns="http://schemas.datacontract.org/2004/07/Pos.Web.Service">Access denied</Message><ResultCode xmlns="http://schemas.datacontract.org/2004/07/Pos.Web.Service">4</ResultCode><EmployeesOnlyLastModifiedTime i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/System"/><SettingsLastModified i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/System"/><SettingsOnlyLastModifiedTime i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/System"/></GetLastModifiedTimeResult></GetLastModifiedTimeResponse></s:Body></s:Envelope>
+
+2025-07-23/00:57:13.755/PDT  INFO AbstractEndpoint:192:[-exec-9]: - POS for BK-4991 is online. Handler=BrinkPosHandler
+
+2025-07-23/00:57:13.775/PDT  INFO BrinkPosOrderpoint:150:[-exec-9]: - Attempting to persist POS offering
+
+2025-07-23/00:57:13.877/PDT ERROR BrinkPosOrderpoint:201:[-exec-9]: - Exception occurred during persist pos offering: HTTP 500 Internal Server Error
+

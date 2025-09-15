@@ -1,0 +1,12 @@
+UPDATE `mobilem8`.`store_day_part_tbl` SET `day_part_id`='2' WHERE `end_time`='10:30:00';
+
+
+
+
+UPDATE `mobilem8`.`store_day_part_tbl` SET `start_time`='02:00:01' WHERE `day_part_id`='1';
+
+
+
+PLK-12079
+PLK-14771
+PLK-13882

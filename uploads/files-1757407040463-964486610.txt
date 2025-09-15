@@ -1,0 +1,106 @@
+2025 - 08 - 11 / 11: 22: 01.810 / PDT INFO MicrosSimphonyV2PosOrderpoint: 294: [-exec - 5]: [2621601989a2de3429c36b3ca7ea9a27] - Simphony calculate totals request: {
+    "header": {
+        "orgShortName": "PLK",
+        "locRef": "13745",
+        "rvcRef": 101,
+        "idempotencyId": "fe72b172ef9340d1a24b8d299b73be1f",
+        "checkEmployeeRef": 9980,
+        "checkName": "Test",
+        "orderTypeRef": 6,
+        "language": "en-US"
+    },
+    "comboMeals": [{
+            "comboMealId": "5002061",
+            "comboItem": {
+                "menuItemId": "5002061",
+                "quantity": 1,
+                "referenceText": "22116ff4-a45a-4695-9271-5ef927532259",
+                "priceSequence": 1,
+                "definitionSequence": 1
+            },
+            "mainItem": {
+                "menuItemId": "5002611",
+                "quantity": 1,
+                "referenceText": "0333fa3e-ade6-4539-8ed7-60c11b7b64fa",
+                "priceSequence": 1,
+                "definitionSequence": 1,
+                "condiments": [{
+                        "condimentId": "9015999",
+                        "quantity": 1,
+                        "referenceText": "84178fd9-1896-40b4-bc4d-d804d86268a2",
+                        "priceSequence": 1,
+                        "definitionSequence": 1
+                    }
+                ]
+            }
+        }
+    ]
+}
+
+2025 - 08 - 11 / 11: 22: 01.884 / PDT INFO MicrosSimphonyV2PosOrderpoint: 311: [-exec - 5]: [2621601989a2de3429c36b3ca7ea9a27] - Simphony calculate totals status: OK response: {
+    "header": {
+        "orgShortName": "PLK",
+        "locRef": "13745",
+        "rvcRef": 101,
+        "idempotencyId": "fe72b172ef9340d1a24b8d299b73be1f",
+        "checkEmployeeRef": 9980,
+        "checkNumber": "0",
+        "orderTypeRef": 6,
+        "openTime": "2025-08-11T18:21:34.960722Z",
+        "language": "en-US",
+        "status": "open"
+    },
+    "comboMeals": [{
+            "comboMealId": "5002061",
+            "comboItem": {
+                "menuItemId": "5002061",
+                "name": "6 Pc. Wings",
+                "quantity": 1,
+                "referenceText": "22116ff4-a45a-4695-9271-5ef927532259",
+                "unitPrice": 8.9900,
+                "total": 8.9900,
+                "surcharge": 0,
+                "priceSequence": 1,
+                "definitionSequence": 1
+            },
+            "mainItem": {
+                "menuItemId": "5002611",
+                "name": "6 Ghost Pepper Wings",
+                "quantity": 1,
+                "referenceText": "0333fa3e-ade6-4539-8ed7-60c11b7b64fa",
+                "unitPrice": 0,
+                "total": 0,
+                "surcharge": 0,
+                "priceSequence": 1,
+                "definitionSequence": 1,
+                "condiments": [{
+                        "condimentId": "9015999",
+                        "name": "No Sauce",
+                        "quantity": 1,
+                        "referenceText": "84178fd9-1896-40b4-bc4d-d804d86268a2",
+                        "unitPrice": 0,
+                        "total": 0,
+                        "surcharge": 0,
+                        "priceSequence": 1,
+                        "definitionSequence": 1
+                    }
+                ]
+            }
+        }
+    ],
+    "taxes": [{
+            "taxRateId": 1,
+            "name": "Tax",
+            "total": 0.42
+        }
+    ],
+    "totals": {
+        "subtotal": 8.9900,
+        "subtotalDiscountTotal": 0,
+        "autoServiceChargeTotal": 0,
+        "serviceChargeTotal": 0,
+        "taxTotal": 0.42,
+        "paymentTotal": 0,
+        "totalDue": 9.4100
+    }
+}
