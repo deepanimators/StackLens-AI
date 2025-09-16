@@ -45,6 +45,7 @@ import {
   mlModels,
   modelTrainingSessions,
   modelDeployments,
+  InsertAuditLog,
 } from "@shared/sqlite-schema";
 import { ErrorPatternAnalyzer } from "./error-pattern-analyzer";
 import { createRAGRoutes } from "./routes/rag-routes.js";
@@ -374,8 +375,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.createAuditLog({
           userId: req.user.id,
           action: "delete",
-          entityType: "user",
-          entityId: userId,
+          resourceType: "user",
+          resourceId: userId,
           oldValues: user,
           ipAddress: req.ip,
           userAgent: req.get("User-Agent"),
@@ -4034,6 +4035,7 @@ Format as JSON with the following structure:
       const search = req.query.search || "";
       const type = req.query.type;
       const userId = req.query.userId;
+      const includeAll = req.query.includeAll === "true"; // For dropdown usage - bypass pagination
 
       // Check if admin is requesting files for specific user or all users
       let userFiles;
@@ -4057,11 +4059,14 @@ Format as JSON with the following structure:
 
       let filteredFiles = userFiles;
 
-      // Apply search filter
+      // Apply search filter with enhanced matching
       if (search) {
-        filteredFiles = filteredFiles.filter((file: any) =>
-          file.filename.toLowerCase().includes(search.toLowerCase())
-        );
+        const searchLower = search.toLowerCase();
+        filteredFiles = filteredFiles.filter((file: any) => {
+          const filename = (file.filename || file.originalName || "").toLowerCase();
+          const fileType = (file.fileType || "").toLowerCase();
+          return filename.includes(searchLower) || fileType.includes(searchLower);
+        });
       }
 
       // Apply type filter
@@ -4071,13 +4076,34 @@ Format as JSON with the following structure:
         );
       }
 
-      // Pagination
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
-      const paginatedFiles = filteredFiles.slice(startIndex, endIndex);
+      // Pagination (skip if includeAll is true for dropdown usage)
+      let finalFiles;
+      let paginationInfo;
+
+      if (includeAll) {
+        // Return all files for dropdown usage
+        finalFiles = filteredFiles;
+        paginationInfo = {
+          page: 1,
+          limit: filteredFiles.length,
+          total: filteredFiles.length,
+          pages: 1,
+        };
+      } else {
+        // Apply normal pagination
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        finalFiles = filteredFiles.slice(startIndex, endIndex);
+        paginationInfo = {
+          page,
+          limit,
+          total: filteredFiles.length,
+          pages: Math.ceil(filteredFiles.length / limit),
+        };
+      }
 
       // Map fields to match frontend expectations
-      const mappedFiles = paginatedFiles.map((file: any) => ({
+      const mappedFiles = finalFiles.map((file: any) => ({
         ...file,
         analysisStatus: file.status, // Map status to analysisStatus for frontend compatibility
         uploadedAt: file.uploadTimestamp || file.upload_timestamp,
@@ -4085,12 +4111,7 @@ Format as JSON with the following structure:
 
       res.json({
         files: mappedFiles,
-        pagination: {
-          page,
-          limit,
-          total: filteredFiles.length,
-          pages: Math.ceil(filteredFiles.length / limit),
-        },
+        pagination: paginationInfo,
       });
     } catch (error) {
       console.error("Error fetching files:", error);
@@ -4869,13 +4890,20 @@ Format as JSON with the following structure:
       }
 
       if (fileFilter && fileFilter !== "all") {
-        console.log(`🔍 [DEBUG] Filtering by fileId: ${fileFilter}`);
+        console.log(`🔍 [DEBUG] Filtering by fileId(s): ${fileFilter}`);
         const beforeFiltering = filteredErrors.length;
-        filteredErrors = filteredErrors.filter(
-          (error) => error.fileId && error.fileId.toString() === fileFilter
-        );
+
+        // Handle multiple file IDs (comma-separated)
+        const fileIds = fileFilter.split(",").map(id => id.trim()).filter(id => id);
+
+        if (fileIds.length > 0) {
+          filteredErrors = filteredErrors.filter(
+            (error) => error.fileId && fileIds.includes(error.fileId.toString())
+          );
+        }
+
         console.log(
-          `🔍 [DEBUG] File filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
+          `🔍 [DEBUG] File filter: ${beforeFiltering} -> ${filteredErrors.length} errors (filtering by ${fileIds.length} file(s))`
         );
       }
 

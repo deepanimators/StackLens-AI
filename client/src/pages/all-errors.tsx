@@ -15,6 +15,7 @@ import AdaptiveLayout from "@/components/adaptive-layout";
 import ErrorTable from "@/components/error-table";
 import AnalysisModal from "@/components/analysis-modal";
 import AISuggestionModal from "@/components/ai-suggestion-modal";
+import MultiSelectDropdown from "@/components/multi-select-dropdown";
 import { authenticatedRequest, authManager } from "@/lib/auth";
 import { Search, Filter, Download, RefreshCw } from "lucide-react";
 import { SEVERITY_LABELS } from "@/lib/constants";
@@ -91,7 +92,7 @@ export default function AllErrors() {
   const [limit, setLimit] = useState(25);
   const [severity, setSeverity] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [fileFilter, setFileFilter] = useState<string>("all");
+  const [fileFilter, setFileFilter] = useState<string[]>([]); // Changed to array for multi-select
   const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
   const [userFilter, setUserFilter] = useState<string>("all");
   const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
@@ -147,16 +148,26 @@ export default function AllErrors() {
         errorTypeFilter,
       });
 
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        ...(severity && severity !== "all" && { severity }),
-        ...(searchQuery && { search: searchQuery }),
-        ...(fileFilter && fileFilter !== "all" && { fileFilter }),
-        ...(errorTypeFilter &&
-          errorTypeFilter !== "all" && { errorType: errorTypeFilter }),
-        ...(userFilter && userFilter !== "all" && { userId: userFilter }),
-      });
+      const params = new URLSearchParams();
+      params.append("page", page.toString());
+      params.append("limit", limit.toString());
+      
+      if (severity && severity !== "all") {
+        params.append("severity", severity);
+      }
+      if (searchQuery) {
+        params.append("search", searchQuery);
+      }
+      if (fileFilter && fileFilter.length > 0) {
+        // Join multiple file IDs with commas for backend processing
+        params.append("fileFilter", fileFilter.join(","));
+      }
+      if (errorTypeFilter && errorTypeFilter !== "all") {
+        params.append("errorType", errorTypeFilter);
+      }
+      if (userFilter && userFilter !== "all") {
+        params.append("userId", userFilter);
+      }
 
       try {
         const data = await authenticatedRequest("GET", `/api/errors?${params}`);
@@ -178,9 +189,10 @@ export default function AllErrors() {
 
   // Get files for the file filter dropdown
   const { data: files } = useQuery({
-    queryKey: ["/api/files", { userId: userFilter }],
+    queryKey: ["/api/files", { userId: userFilter, includeAll: true }],
     queryFn: async () => {
       const params = new URLSearchParams();
+      params.append("includeAll", "true"); // Get all files for dropdown
       if (userFilter && userFilter !== "all") {
         params.append("userId", userFilter);
       }
@@ -211,7 +223,7 @@ export default function AllErrors() {
     setPage(1);
   };
 
-  const handleFileFilter = (newFileFilter: string) => {
+  const handleFileFilter = (newFileFilter: string[]) => {
     setFileFilter(newFileFilter);
     setPage(1);
   };
@@ -223,7 +235,7 @@ export default function AllErrors() {
 
   const handleUserFilter = (newUserFilter: string) => {
     setUserFilter(newUserFilter);
-    setFileFilter("all"); // Reset file filter when user changes
+    setFileFilter([]); // Reset file filter when user changes
     setPage(1);
   };
 
@@ -392,24 +404,23 @@ export default function AllErrors() {
               </SelectContent>
             </Select>
 
-            <Select value={fileFilter} onValueChange={handleFileFilter}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by file" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Files</SelectItem>
-                {(files || [])
-                  .filter(
-                    (file: any) =>
-                      file && file.id && file.id.toString().trim() !== ""
-                  )
-                  .map((file: any) => (
-                    <SelectItem key={file.id} value={file.id.toString()}>
-                      {file.originalName || `File ${file.id}`}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+            <MultiSelectDropdown
+              options={(files || [])
+                .filter(
+                  (file: any) =>
+                    file && file.id && file.id.toString().trim() !== ""
+                )
+                .map((file: any) => ({
+                  id: file.id.toString(),
+                  label: file.originalName || `File ${file.id}`,
+                  value: file.id.toString(),
+                }))}
+              selectedValues={fileFilter}
+              onSelectionChange={handleFileFilter}
+              placeholder="Filter by files..."
+              searchPlaceholder="Search files..."
+              className="w-64"
+            />
 
             <Select
               value={errorTypeFilter}
