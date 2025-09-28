@@ -1,0 +1,34 @@
+2025 - 09 - 24 / 18: 20: 21.119 / VET INFO SiTefUtil: 136: [-exec - 8]: [2087001997dce7a716c28cc2f0e75e85] - ConversionRate from web service 169.98
+
+2025 - 09 - 24 / 18: 20: 21.119 / VET INFO SiTefSaleHandler: 58: [-exec - 8]: [2087001997dce7a716c28cc2f0e75e85] - Sale Request Object Json: {
+    "continuityFlag": 0,
+    "transferBuffer": "",
+    "sitefFunction": 0,
+    "value": 467.45,
+    "saleInvoice": "20250924182021K2",
+    "invoiceDate": "20250924",
+    "invoiceTime": "182021",
+    "tarjeta": "",
+    "cedula": "15630715",
+    "tipo": "1"
+}
+2025-09-24/18:20:28.121/VET  INFO SiTefProtocol:143:[Timer-1]: - Unable to get Status Lock
+
+2025-09-24/18:20:42.160/VET ERROR SiTefSaleHandler:91:[-exec-8]:[2087001997dce7a716c28cc2f0e75e85] - Exception during sale transaction
+
+javax.ws.rs.ProcessingException: java.net.ConnectException: Connection timed out: connect
+(edited)
+4:03
+2025 - 09 - 24 / 18: 21: 03.189 / VET INFO SiTefProtocol: 169: [-exec - 8]: [2087001997dce7a716c28cc2f0e75e85] - AuthResponse: {
+    "containsCardData": false,
+    "paymentModuleAvailable": false,
+    "amount": 0.0,
+    "printData": "Transacci\\u00F3n tiene error.",
+    "contactless": false,
+    "signatureRequired": false,
+    "errorCause": "UnExpected Error",
+    "errorCode": "Failed",
+    "authorized": false,
+    "cardStillIn": false,
+    "moneyReturned": false
+}

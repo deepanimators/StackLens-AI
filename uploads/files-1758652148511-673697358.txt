@@ -1,0 +1,23 @@
+2025 - 09 - 22 / 02: 27: 15.445 / EDT ERROR AbstractPosHandler: 742: [exec - 10]: [203640199700cd31fef4dec71a59a776] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12055' to POS order.COM error: Item unavailable.POS error code: 26
+
+2025 - 09 - 22 / 02: 27: 15.445 / EDT ERROR CalcTotalsHelper: 31: [exec - 10]: [203640199700cd31fef4dec71a59a776] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12055' to POS order.COM error: Item unavailable.POS error code: 26
+---------
+2025 - 09 - 22 / 02: 27: 55.716 / EDT ERROR AbstractPosHandler: 742: [-exec - 1]: [203640199701afc717682ae3cd6e3045] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12060' to POS order.COM error: Item unavailable.POS error code: 26
+
+2025 - 09 - 22 / 02: 27: 55.716 / EDT ERROR CalcTotalsHelper: 31: [-exec - 1]: [203640199701afc717682ae3cd6e3045] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12060' to POS order.COM error: Item unavailable.POS error code: 26
+---------
+2025 - 09 - 22 / 02: 28: 30.443 / EDT ERROR AbstractPosHandler: 742: [-exec - 6]: [203640199701b8b48447f1503fe82fae] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12070' to POS order.COM error: Item unavailable.POS error code: 26
+
+2025 - 09 - 22 / 02: 28: 30.443 / EDT ERROR CalcTotalsHelper: 31: [-exec - 6]: [203640199701b8b48447f1503fe82fae] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12070' to POS order.COM error: Item unavailable.POS error code: 26
+---------
+2025 - 09 - 22 / 02: 29: 17.426 / EDT ERROR AbstractPosHandler: 742: [-exec - 4]: [203640199701c14b8195325ec0acc792] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12043' to POS order.COM error: Item unavailable.POS error code: 26
+
+2025 - 09 - 22 / 02: 29: 17.426 / EDT ERROR CalcTotalsHelper: 31: [-exec - 4]: [203640199701c14b8195325ec0acc792] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '12043' to POS order.COM error: Item unavailable.POS error code: 26

@@ -1,0 +1,196 @@
+2025-09-24/16:23:26.850/CDT  INFO ConfigurationScheduleService:152:[tStop-7]: - Refreshed menu items availability
+
+2025-09-24/16:23:28.385/CDT  INFO KioskWebServiceConfig:341:[tStop-7]: - External API not defined to publish kiosk status.
+
+2025-09-24/16:23:30.585/CDT  INFO MobileM8WebService:4100:[-exec-3]: - Flushing skumap
+
+2025-09-24/16:23:31.370/CDT  INFO PosHealthCheckHelper:32:[-exec-5]: - Scheduling PosHealthCheckMonitor
+
+2025-09-24/16:23:31.378/CDT  INFO AbstractEndpoint:192:[exec-10]: - POS for BK-10203 is online. Handler=CashPaymentHandler
+
+2025-09-24/16:23:52.456/CDT ERROR AbstractEndpoint:179:[exec-10]: - POS for BK-10203 is offline. Handler=SicomSL19PosHandler
+
+2025-09-24/16:24:13.538/CDT ERROR MobileM8WebService:2941:[exec-10]: - Caught CommunicationException while persisting POS offering
+
+com.tillster.kiosk.interfaces.pos.exception.CommunicationException: java.net.ConnectException: Connection timed out: connect
+	at com.tillster.kiosk.interfaces.pos.freemarkerxmlclient.transport.socket.SocketTransport.sendAndReceive(SocketTransport.java:89)
+	at com.tillster.kiosk.interfaces.pos.freemarker.sicom.sl19.SicomSL19XmlPosOrderpoint.persistPosOffering(SicomSL19XmlPosOrderpoint.java:754)
+	at com.tillster.kiosk.store.handlers.pos.SicomSL19PosHandler.persistPosOffering(SicomSL19PosHandler.java:458)
+	at com.tillster.kiosk.store.endpoints.SicomEndpoint.persistPosOffering(SicomEndpoint.java:238)
+	at com.tillster.kiosk.store.StoreManager.persistPosOffering(StoreManager.java:492)
+	at com.tillster.kiosk.service.MobileM8WebService.persistPosOffering(MobileM8WebService.java:2918)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:76)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory$$Lambda$2409/1669413557.invoke(Unknown Source)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:148)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:191)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$TypeOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:243)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:103)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:493)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:415)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:104)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:277)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:272)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:268)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:316)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:298)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:268)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:289)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:256)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:703)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:416)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:370)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:389)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:342)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:229)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.filters.CorsFilter.handleNonCORS(CorsFilter.java:439)
+	at org.apache.catalina.filters.CorsFilter.doFilter(CorsFilter.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:100)
+	at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:953)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:409)
+	at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1044)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:607)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:313)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:345)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.tillster.kiosk.interfaces.pos.freemarkerxmlclient.transport.socket.SocketTransport.getSocket(SocketTransport.java:96)
+	at com.tillster.kiosk.interfaces.pos.freemarkerxmlclient.transport.socket.SocketTransport.sendAndReceive(SocketTransport.java:56)
+	... 55 common frames omitted
+2025-09-24/16:32:50.476/CDT  INFO ConfigurationScheduleService:152:[tStop-7]: - Refreshed menu items availability
+
+2025-09-24/16:32:52.294/CDT  INFO KioskWebServiceConfig:341:[tStop-7]: - External API not defined to publish kiosk status.
+
+2025-09-24/16:32:55.317/CDT  INFO PosHealthCheckHelper:32:[-exec-5]: - Scheduling PosHealthCheckMonitor
+
+2025-09-24/16:33:00.325/CDT  INFO AbstractEndpoint:192:[thcheck]: - POS for BK-10203 is online. Handler=CashPaymentHandler
+
+2025-09-24/16:33:21.385/CDT ERROR AbstractEndpoint:179:[thcheck]: - POS for BK-10203 is offline. Handler=SicomSL19PosHandler
+
+2025-09-24/17:49:06.274/CDT  INFO ConfigurationScheduleService:152:[tStop-7]: - Refreshed menu items availability
+
+2025-09-24/17:49:07.809/CDT  INFO KioskWebServiceConfig:341:[tStop-7]: - External API not defined to publish kiosk status.
+
+2025-09-24/17:49:10.843/CDT  INFO PosHealthCheckHelper:32:[-exec-5]: - Scheduling PosHealthCheckMonitor
+
+2025-09-24/17:49:15.851/CDT  INFO AbstractEndpoint:192:[thcheck]: - POS for BK-10203 is online. Handler=CashPaymentHandler
+
+2025-09-24/17:49:36.990/CDT ERROR AbstractEndpoint:179:[thcheck]: - POS for BK-10203 is offline. Handler=SicomSL19PosHandler
+
+2025-09-24/18:45:04.481/CDT  INFO ConfigurationScheduleService:152:[tStop-7]: - Refreshed menu items availability
+
+2025-09-24/18:45:06.665/CDT  INFO KioskWebServiceConfig:341:[tStop-7]: - External API not defined to publish kiosk status.
+
+2025-09-24/18:45:10.331/CDT  INFO PosHealthCheckHelper:32:[-exec-5]: - Scheduling PosHealthCheckMonitor
+
+2025-09-24/18:45:15.340/CDT  INFO AbstractEndpoint:192:[thcheck]: - POS for BK-10203 is online. Handler=CashPaymentHandler
+
+2025-09-24/18:45:36.489/CDT ERROR AbstractEndpoint:179:[thcheck]: - POS for BK-10203 is offline. Handler=SicomSL19PosHandler
+
+2025-09-24/18:47:21.392/CDT  INFO MobileM8WebService:4100:[-exec-6]: - Flushing skumap
+
+2025-09-24/18:48:03.733/CDT ERROR MobileM8WebService:2941:[-exec-2]: - Caught CommunicationException while persisting POS offering
+
+com.tillster.kiosk.interfaces.pos.exception.CommunicationException: java.net.ConnectException: Connection timed out: connect
+	at com.tillster.kiosk.interfaces.pos.freemarkerxmlclient.transport.socket.SocketTransport.sendAndReceive(SocketTransport.java:89)
+	at com.tillster.kiosk.interfaces.pos.freemarker.sicom.sl19.SicomSL19XmlPosOrderpoint.persistPosOffering(SicomSL19XmlPosOrderpoint.java:754)
+	at com.tillster.kiosk.store.handlers.pos.SicomSL19PosHandler.persistPosOffering(SicomSL19PosHandler.java:458)
+	at com.tillster.kiosk.store.endpoints.SicomEndpoint.persistPosOffering(SicomEndpoint.java:238)
+	at com.tillster.kiosk.store.StoreManager.persistPosOffering(StoreManager.java:492)
+	at com.tillster.kiosk.service.MobileM8WebService.persistPosOffering(MobileM8WebService.java:2918)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:76)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory$$Lambda$2450/1043668994.invoke(Unknown Source)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:148)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:191)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$TypeOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:243)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:103)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:493)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:415)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:104)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:277)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:272)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:268)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:316)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:298)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:268)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:289)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:256)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:703)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:416)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:370)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:389)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:342)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:229)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.filters.CorsFilter.handleNonCORS(CorsFilter.java:439)
+	at org.apache.catalina.filters.CorsFilter.doFilter(CorsFilter.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:100)
+	at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:953)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:409)
+	at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1044)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:607)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:313)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:345)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.tillster.kiosk.interfaces.pos.freemarkerxmlclient.transport.socket.SocketTransport.getSocket(SocketTransport.java:96)
+	at com.tillster.kiosk.interfaces.pos.freemarkerxmlclient.transport.socket.SocketTransport.sendAndReceive(SocketTransport.java:56)
+	... 55 common frames omitted
+2025-09-24/18:50:39.195/CDT  INFO ConfigurationScheduleService:152:[tStop-7]: - Refreshed menu items availability
+
+2025-09-24/18:50:40.839/CDT  INFO KioskWebServiceConfig:341:[tStop-7]: - External API not defined to publish kiosk status.
+
+2025-09-24/18:50:43.697/CDT  INFO PosHealthCheckHelper:32:[-exec-4]: - Scheduling PosHealthCheckMonitor
+
+2025-09-24/18:50:48.706/CDT  INFO AbstractEndpoint:192:[thcheck]: - POS for BK-10203 is online. Handler=CashPaymentHandler
+
+2025-09-24/18:51:09.775/CDT ERROR AbstractEndpoint:179:[thcheck]: - POS for BK-10203 is offline. Handler=SicomSL19PosHandler
+

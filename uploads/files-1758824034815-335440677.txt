@@ -1,0 +1,58 @@
+2025 - 09 - 24 / 13: 39: 38.074 / PDT ERROR AbstractPosHandler: 742: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '6090' to POS order.COM error: Modifier requirements not met.POS error code: 29
+
+2025 - 09 - 24 / 13: 39: 33.510 / PDT INFO NCRAlohaRestPOSOrderpoint: 1601: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - POS calcTotals request: {
+    "ReferenceId": "74ff347c-da9d-42de-a7a4-dc87450975b9",
+    "TableId": 2222,
+    "FirstName": "******",
+    "LastName": "*****",
+    "PhoneNumber": "8587840800",
+    "Address": "5959 Cornerstone Court West, San Diego, CA 92129",
+    "OrderModeId": 108,
+    "TerminalId": 302,
+    "EmployeeId": 402,
+    "OrderName": "Walker",
+    "Promos": [{
+            "PromoId": 1092,
+            "Items": [{
+                    "ItemId": 5564,
+                    "ModeCode": 0,
+                    "SubItems": [{
+                            "ItemId": 10205,
+                            "ModeCode": 0
+                        }
+                    ],
+                    "SelectionGroup": 0
+                }, {
+                    "ItemId": 6687,
+                    "ModeCode": 0,
+                    "SelectionGroup": 0
+                }, {
+                    "ItemId": 6090,
+                    "ModeCode": 0,
+                    "SelectionGroup": 0
+                }
+            ]
+        }
+    ]
+}
+
+2025 - 09 - 24 / 13: 39: 38.074 / PDT INFO NCRAlohaRestPOSOrderpoint: 1601: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - POS calcTotals response: {
+    "Message": "Error code: 52008.  Message: Cannot add a product with ID '6090' to POS order. COM error: Modifier requirements not met. POS error code: 29",
+    "IsSuccess": false,
+    "ErrorCode": "52008"
+}
+
+2025 - 09 - 24 / 13: 39: 38.074 / PDT INFO NCRAlohaRestPOSOrderpoint: 620: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - POS calcTotals execution time: 4564 ms
+
+2025 - 09 - 24 / 13: 39: 38.074 / PDT ERROR NCRAlohaRestPOSOrderpoint: 662: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - An error occurred while sending calcTotals
+
+2025 - 09 - 24 / 13: 39: 38.074 / PDT ERROR AbstractPosHandler: 742: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '6090' to POS order.COM error: Modifier requirements not met.POS error code: 29
+
+2025 - 09 - 24 / 13: 39: 38.074 / PDT ERROR CalcTotalsHelper: 31: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - POS order failure;
+Error code: 52008.Message: Cannot add a product with ID '6090' to POS order.COM error: Modifier requirements not met.POS error code: 29
+
+2025 - 09 - 24 / 13: 39: 38.074 / PDT INFO MobileM8WebService: 1224: [-exec - 1]: [1989101997d62195f08d7a00cb89f512] - Calculate Totals Returning with {
+    "calculateTotalsResult": {
+        "resultDescription": "POS order failure; Error code: 52008.  Message: Cannot add a product with ID '6090' to POS order. COM error: Modifier requirements not met. POS error 
