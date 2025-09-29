@@ -2,6 +2,7 @@ import React, { useState, useEffect, startTransition } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import styles from "./reports.module.css";
 import { Pie, Doughnut, Line, Bar } from "react-chartjs-2";
 
@@ -1115,6 +1116,7 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
 export default function Reports() {
   const [dateRange, setDateRange] = useState("7d");
   const [reportType, setReportType] = useState("summary");
+  const { toast } = useToast();
 
   type ReportSummary = {
     totalFiles: number;
@@ -1146,8 +1148,81 @@ export default function Reports() {
     queryFn: fetchReportData,
   });
 
-  const handleExportReport = (type: string) => {
-    alert(`Exporting report as ${type.toUpperCase()}`);
+  const handleExportReport = async (type: string) => {
+    try {
+      console.log(`🔽 Exporting report as ${type.toUpperCase()}`);
+      
+      // Show loading state
+      const loadingToast = toast({
+        title: "Exporting Report...",
+        description: `Generating ${type.toUpperCase()} report`,
+        duration: 0, // Don't auto-dismiss
+      });
+
+      // Make API call to export endpoint
+      const response = await authenticatedRequest(
+        "GET", 
+        `/api/reports/export?format=${type}&range=${dateRange}&reportType=${reportType}`
+      );
+
+      // Handle different response types
+      if (type === 'csv') {
+        const csvContent = await response.text();
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `stacklens-error-analysis-${dateRange}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else if (type === 'pdf') {
+        // For PDF, we get HTML that can be printed to PDF by browser
+        const htmlContent = await response.text();
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = window.URL.createObjectURL(blob);
+        
+        // Open in new window for print-to-PDF
+        const printWindow = window.open(url, '_blank');
+        if (printWindow) {
+          printWindow.onload = () => {
+            // Auto-trigger print dialog after short delay
+            setTimeout(() => {
+              printWindow.print();
+            }, 500);
+          };
+        }
+        
+        // Also provide download option
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `stacklens-error-analysis-${dateRange}.html`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else if (type === 'xlsx') {
+        const excelContent = await response.blob();
+        const url = window.URL.createObjectURL(excelContent);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `stacklens-error-analysis-${dateRange}.xlsx`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+
+      // Dismiss loading toast and show success
+      loadingToast.dismiss();
+      toast({
+        title: "Export Successful",
+        description: `${type.toUpperCase()} report downloaded successfully`,
+      });
+
+    } catch (error) {
+      console.error('Export failed:', error);
+      toast({
+        title: "Export Failed",
+        description: `Failed to export ${type.toUpperCase()} report. Please try again.`,
+        variant: "destructive",
+      });
+    }
   };
 
   return (

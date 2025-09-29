@@ -26,12 +26,14 @@ import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
 
 function Router() {
-  const { data: user, isLoading } = useQuery({
+  const { data: user, isLoading, refetch } = useQuery({
     queryKey: ["/api/auth/me"],
     queryFn: () => authManager.getCurrentUser(),
     retry: false,
     staleTime: 0, // Always check for fresh auth state
     gcTime: 0, // Don't cache auth state
+    refetchOnWindowFocus: true, // Refetch when window gains focus
+    refetchOnMount: true, // Always refetch on mount
   });
 
   useEffect(() => {
@@ -39,7 +41,13 @@ function Router() {
     document.documentElement.classList.add("dark");
   }, []);
 
+  // Debug logging
+  useEffect(() => {
+    console.log("🔍 Auth Query State:", { user, isLoading, hasUser: !!user });
+  }, [user, isLoading]);
+
   if (isLoading) {
+    console.log("🔍 Showing loading screen - auth query is loading");
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex items-center space-x-2">
@@ -52,8 +60,11 @@ function Router() {
   }
 
   if (!user) {
+    console.log("🔍 Showing login screen - no user found");
     return <Login />;
   }
+
+  console.log("🔍 Showing main app - user authenticated:", user.username);
 
   return (
     <Switch>

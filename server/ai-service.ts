@@ -19,6 +19,11 @@ interface AISuggestion {
   confidence: number;
 }
 
+interface CachedAISuggestion extends AISuggestion {
+  timestamp: number;
+  cacheKey: string;
+}
+
 interface TrainingResult {
   accuracy: number;
   precision: number;
@@ -37,17 +42,37 @@ export class AIService {
   private model: any;
   private lastApiCall: number = 0;
   private minDelay: number =
-    process.env.NODE_ENV === "development" ? 1000 : 6000; // 1s in dev, 6s in production
+    process.env.NODE_ENV === "development" ? 1000 : 2000; // Reduced from 6s to 2s in production
+
+  // AI suggestion caching
+  private cache: Map<string, CachedAISuggestion> = new Map();
+  private readonly CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  private readonly MAX_CACHE_SIZE = 1000; // Maximum number of cached suggestions
 
   constructor() {
     if (!process.env.GEMINI_API_KEY) {
       throw new Error("GEMINI_API_KEY is required");
     }
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+
+    // Clean up expired cache entries on startup
+    this.cleanupExpiredCache();
   }
 
   async generateErrorSuggestion(errorLog: ErrorLog): Promise<AISuggestion> {
+    // Generate cache key based on error characteristics
+    const cacheKey = this.generateCacheKey(errorLog);
+
+    // Check cache first
+    const cachedSuggestion = this.getCachedSuggestion(cacheKey);
+    if (cachedSuggestion) {
+      console.log(`🎯 AI Cache hit for error ${errorLog.id}: ${cacheKey.substring(0, 16)}...`);
+      return cachedSuggestion;
+    }
+
+    console.log(`🔄 AI Cache miss for error ${errorLog.id}: ${cacheKey.substring(0, 16)}... - fetching from API`);
+
     // Rate limiting: ensure minimum delay between API calls
     const now = Date.now();
     const timeSinceLastCall = now - this.lastApiCall;
@@ -73,7 +98,12 @@ export class AIService {
       console.log("✅ Gemini AI response received, length:", text.length);
       console.log("🔍 First 200 chars:", text.substring(0, 200));
 
-      return this.parseAISuggestion(text, errorLog);
+      const suggestion = this.parseAISuggestion(text, errorLog);
+
+      // Cache the successful response
+      this.setCachedSuggestion(cacheKey, suggestion);
+
+      return suggestion;
     } catch (error: any) {
       console.error("Error generating AI suggestion:", error);
 
@@ -84,7 +114,10 @@ export class AIService {
         console.log(`Suggested retry delay: ${retryDelay}ms`);
       }
 
-      return this.getFallbackSuggestion(errorLog);
+      const fallback = this.getFallbackSuggestion(errorLog);
+      // Cache fallback suggestions too (with lower TTL)
+      this.setCachedSuggestion(cacheKey, fallback);
+      return fallback;
     }
   }
 
@@ -261,21 +294,21 @@ Simulate realistic ML training results.
           resolutionSteps.length > 0
             ? resolutionSteps
             : [
-                "Review the error context and related code",
-                "Check system configuration and dependencies",
-                "Apply appropriate fixes based on error type",
-                "Test the resolution thoroughly",
-              ],
+              "Review the error context and related code",
+              "Check system configuration and dependencies",
+              "Apply appropriate fixes based on error type",
+              "Test the resolution thoroughly",
+            ],
         codeExample: codeExample || undefined,
         preventionMeasures:
           preventionMeasures.length > 0
             ? preventionMeasures
             : [
-                "Implement proper error handling",
-                "Add comprehensive logging",
-                "Set up monitoring and alerts",
-                "Regular code reviews and testing",
-              ],
+              "Implement proper error handling",
+              "Add comprehensive logging",
+              "Set up monitoring and alerts",
+              "Regular code reviews and testing",
+            ],
         confidence: Math.min(Math.max(confidence, 0), 100),
       };
     } catch (error) {
@@ -337,7 +370,7 @@ Simulate realistic ML training results.
       Math.round(
         ((2 * defaultPrecision * defaultRecall) /
           (defaultPrecision + defaultRecall)) *
-          1000
+        1000
       ) / 1000;
 
     // Parse from AI response if available, otherwise use realistic defaults
@@ -494,6 +527,145 @@ Simulate realistic ML training results.
     };
 
     return suggestions[errorLog.errorType] || suggestions["runtime_error"];
+  }
+
+  private generateCacheKey(errorLog: ErrorLog): string {
+    // Normalize error message for better cache hits
+    const normalizedMessage = errorLog.message
+      .toLowerCase()
+      .replace(/\d+/g, 'X') // Replace numbers with X
+      .replace(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/gi, 'UUID') // Replace UUIDs
+      .replace(/\/[^\s]+/g, '/PATH') // Replace file paths
+      .replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, 'IP') // Replace IP addresses
+      .trim();
+
+    // Create a hash-like key from the normalized components
+    const keyString = `${normalizedMessage}|${errorLog.errorType}|${errorLog.severity}`;
+    return Buffer.from(keyString).toString('base64').substring(0, 32);
+  }
+
+  private getCachedSuggestion(cacheKey: string): AISuggestion | null {
+    const cached = this.cache.get(cacheKey);
+    if (!cached) {
+      return null;
+    }
+
+    // Check if cache entry has expired
+    if (Date.now() - cached.timestamp > this.CACHE_TTL) {
+      this.cache.delete(cacheKey);
+      return null;
+    }
+
+    // Return the suggestion without cache metadata
+    const { timestamp, cacheKey: _, ...suggestion } = cached;
+    return suggestion;
+  }
+
+  private setCachedSuggestion(cacheKey: string, suggestion: AISuggestion): void {
+    // Implement LRU-style eviction if cache is full
+    if (this.cache.size >= this.MAX_CACHE_SIZE) {
+      // Remove the oldest entry
+      const oldestKey = this.cache.keys().next().value;
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
+      }
+    }
+
+    const cachedSuggestion: CachedAISuggestion = {
+      ...suggestion,
+      timestamp: Date.now(),
+      cacheKey
+    };
+
+    this.cache.set(cacheKey, cachedSuggestion);
+    console.log(`🎯 AI Cache stored suggestion for key: ${cacheKey.substring(0, 16)}... (cache size: ${this.cache.size})`);
+  }
+
+  private cleanupExpiredCache(): void {
+    const now = Date.now();
+    const keysToDelete: string[] = [];
+
+    this.cache.forEach((cached, key) => {
+      if (now - cached.timestamp > this.CACHE_TTL) {
+        keysToDelete.push(key);
+      }
+    });
+
+    keysToDelete.forEach(key => this.cache.delete(key));
+    console.log(`🧹 AI Cache cleanup completed. Current cache size: ${this.cache.size}`);
+  }
+
+  // Method to get cache statistics for monitoring
+  getCacheStats(): { size: number; maxSize: number; hitRate?: number } {
+    return {
+      size: this.cache.size,
+      maxSize: this.MAX_CACHE_SIZE
+    };
+  }
+
+  // Batch processing method for multiple errors
+  async generateBatchSuggestions(errorLogs: ErrorLog[]): Promise<AISuggestion[]> {
+    console.log(`🚀 AI Batch processing ${errorLogs.length} errors`);
+
+    // Separate cached and uncached errors
+    const cachedResults: Array<{ index: number, suggestion: AISuggestion }> = [];
+    const uncachedErrors: Array<{ index: number, errorLog: ErrorLog }> = [];
+
+    errorLogs.forEach((errorLog, index) => {
+      const cacheKey = this.generateCacheKey(errorLog);
+      const cached = this.getCachedSuggestion(cacheKey);
+
+      if (cached) {
+        cachedResults.push({ index, suggestion: cached });
+        console.log(`🎯 AI Cache hit for batch item ${index}: ${cacheKey.substring(0, 16)}...`);
+      } else {
+        uncachedErrors.push({ index, errorLog });
+      }
+    });
+
+    console.log(`🚀 AI Batch: ${cachedResults.length} cache hits, ${uncachedErrors.length} API calls needed`);
+
+    // Initialize results array
+    const results: AISuggestion[] = new Array(errorLogs.length);
+
+    // Fill in cached results
+    cachedResults.forEach(({ index, suggestion }) => {
+      results[index] = suggestion;
+    });
+
+    // Process uncached errors in parallel (with concurrency limit)
+    if (uncachedErrors.length > 0) {
+      const CONCURRENT_BATCH_SIZE = 3; // Process 3 at a time to avoid API rate limits
+
+      for (let i = 0; i < uncachedErrors.length; i += CONCURRENT_BATCH_SIZE) {
+        const batch = uncachedErrors.slice(i, i + CONCURRENT_BATCH_SIZE);
+
+        // Process batch in parallel
+        const batchPromises = batch.map(async ({ index, errorLog }) => {
+          try {
+            const suggestion = await this.generateErrorSuggestion(errorLog);
+            return { index, suggestion };
+          } catch (error) {
+            console.error(`❌ AI batch error for error ${errorLog.id}:`, error);
+            return {
+              index,
+              suggestion: this.getFallbackSuggestion(errorLog)
+            };
+          }
+        });
+
+        const batchResults = await Promise.all(batchPromises);
+
+        // Fill in batch results
+        batchResults.forEach(({ index, suggestion }) => {
+          results[index] = suggestion;
+        });
+
+        console.log(`✅ Completed AI batch ${Math.floor(i / CONCURRENT_BATCH_SIZE) + 1}/${Math.ceil(uncachedErrors.length / CONCURRENT_BATCH_SIZE)}`);
+      }
+    }
+
+    return results;
   }
 }
 

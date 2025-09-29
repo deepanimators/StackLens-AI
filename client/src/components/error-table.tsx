@@ -55,9 +55,32 @@ export default function ErrorTable({
   const formatTimestamp = (timestamp: string | null) => {
     if (!timestamp) return "N/A";
     try {
-      return new Date(timestamp).toLocaleString();
-    } catch {
-      return timestamp;
+      // Handle multiple timestamp formats
+      let date: Date;
+      
+      // Check if it's already a valid date string
+      if (timestamp.includes('T') || timestamp.includes('-')) {
+        date = new Date(timestamp);
+      } else {
+        // Handle Unix timestamp (seconds or milliseconds)
+        const numTimestamp = parseInt(timestamp);
+        if (!isNaN(numTimestamp)) {
+          // If timestamp is in seconds (10 digits), convert to milliseconds
+          date = new Date(numTimestamp < 10000000000 ? numTimestamp * 1000 : numTimestamp);
+        } else {
+          throw new Error('Invalid timestamp format');
+        }
+      }
+      
+      // Verify the date is valid
+      if (isNaN(date.getTime())) {
+        throw new Error('Invalid date');
+      }
+      
+      return date.toLocaleString();
+    } catch (error) {
+      console.warn('Failed to parse timestamp:', timestamp, error);
+      return "Invalid Date";
     }
   };
 

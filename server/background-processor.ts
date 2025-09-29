@@ -115,13 +115,34 @@ class BackgroundJobProcessor {
         "Reading file content"
       );
 
-      // Read file content
+      // Read file content with size validation and streaming for large files
       const filePath = path.join("uploads", logFile.filename);
       if (!fs.existsSync(filePath)) {
         throw new Error("File not found on disk");
       }
 
-      const fileContent = fs.readFileSync(filePath, "utf8");
+      // File size validation (limit to 50MB for performance)
+      const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+      const fileStats = fs.statSync(filePath);
+
+      if (fileStats.size > MAX_FILE_SIZE) {
+        console.log(`⚠️ Large file detected: ${(fileStats.size / 1024 / 1024).toFixed(2)}MB`);
+        await this.updateJobStatus(
+          job.id,
+          "processing",
+          15,
+          `Processing large file (${(fileStats.size / 1024 / 1024).toFixed(2)}MB)`
+        );
+      }
+
+      // Use streaming for large files, direct read for smaller ones
+      let fileContent: string;
+      if (fileStats.size > 10 * 1024 * 1024) { // 10MB threshold for streaming
+        console.log(`📂 Using streaming for large file: ${logFile.originalName}`);
+        fileContent = await this.readFileWithStreaming(filePath);
+      } else {
+        fileContent = fs.readFileSync(filePath, "utf8");
+      }
 
       await this.updateJobStatus(
         job.id,
@@ -211,46 +232,111 @@ class BackgroundJobProcessor {
         "Generating AI suggestions"
       );
 
-      // Generate AI suggestions for critical and high severity errors
+      // Generate AI suggestions for critical and high severity errors using batch processing
       const criticalAndHighErrors = errorLogs.filter((e) =>
         ["critical", "high"].includes(e.severity)
       );
       const maxSuggestions = Math.min(criticalAndHighErrors.length, 10); // Limit to avoid API quota issues
 
-      for (let i = 0; i < maxSuggestions; i++) {
-        const error = criticalAndHighErrors[i];
+      if (maxSuggestions > 0) {
+        console.log(`🚀 Processing ${maxSuggestions} AI suggestions using batch processing`);
+
+        const errorsToProcess = criticalAndHighErrors.slice(0, maxSuggestions).map(error => ({
+          ...error,
+          mlConfidence: 0,
+          createdAt: error.createdAt || new Date(),
+        }));
+
         try {
-          // Add missing mlConfidence property for type compatibility
-          const errorWithConfidence = {
-            ...error,
-            mlConfidence: 0,
-            createdAt: error.createdAt || new Date(),
-          };
-
-          const suggestion = await aiService.generateErrorSuggestion(
-            errorWithConfidence
+          // Update progress
+          await this.updateJobStatus(
+            job.id,
+            "processing",
+            82,
+            `Generating AI suggestions (0/${maxSuggestions})`
           );
-          await storage.updateErrorLog(error.id, {
-            aiSuggestion: {
-              rootCause: suggestion.rootCause,
-              resolutionSteps: suggestion.resolutionSteps,
-              codeExample: suggestion.codeExample,
-              preventionMeasures: suggestion.preventionMeasures,
-              confidence: suggestion.confidence,
-            },
-          });
-        } catch (aiError) {
-          console.error("AI suggestion error:", aiError);
-        }
 
-        // Update progress
-        const suggestionProgress = 80 + Math.floor((i / maxSuggestions) * 15);
-        await this.updateJobStatus(
-          job.id,
-          "processing",
-          suggestionProgress,
-          `Generating AI suggestions (${i + 1}/${maxSuggestions})`
-        );
+          // Use batch processing for AI suggestions
+          const suggestions = await aiService.generateBatchSuggestions(errorsToProcess);
+
+          // Update progress
+          await this.updateJobStatus(
+            job.id,
+            "processing",
+            88,
+            `Saving AI suggestions to database`
+          );
+
+          // Bulk update database with all AI suggestions
+          const bulkUpdates = suggestions.map((suggestion, index) => ({
+            id: errorsToProcess[index].id,
+            data: {
+              aiSuggestion: {
+                rootCause: suggestion.rootCause,
+                resolutionSteps: suggestion.resolutionSteps,
+                codeExample: suggestion.codeExample,
+                preventionMeasures: suggestion.preventionMeasures,
+                confidence: suggestion.confidence,
+              },
+            }
+          }));
+
+          // Process updates in batches of 5 to avoid database lock issues
+          const UPDATE_BATCH_SIZE = 5;
+          for (let i = 0; i < bulkUpdates.length; i += UPDATE_BATCH_SIZE) {
+            const batch = bulkUpdates.slice(i, i + UPDATE_BATCH_SIZE);
+
+            // Use Promise.all for parallel database updates within each batch
+            const batchPromises = batch.map(({ id, data }) =>
+              storage.updateErrorLog(id, data)
+            );
+
+            await Promise.all(batchPromises);
+
+            // Update progress
+            const completedUpdates = Math.min(i + UPDATE_BATCH_SIZE, bulkUpdates.length);
+            const progressPercent = 88 + Math.floor((completedUpdates / bulkUpdates.length) * 7);
+            await this.updateJobStatus(
+              job.id,
+              "processing",
+              progressPercent,
+              `Saved AI suggestions (${completedUpdates}/${bulkUpdates.length})`
+            );
+          }
+
+          console.log(`✅ Successfully processed ${maxSuggestions} AI suggestions using batch processing`);
+        } catch (aiError) {
+          console.error("❌ Batch AI suggestion error:", aiError);
+          // Fallback to individual processing if batch fails
+          console.log("🔄 Falling back to individual AI processing");
+
+          for (let i = 0; i < maxSuggestions; i++) {
+            const error = errorsToProcess[i];
+            try {
+              const suggestion = await aiService.generateErrorSuggestion(error);
+              await storage.updateErrorLog(error.id, {
+                aiSuggestion: {
+                  rootCause: suggestion.rootCause,
+                  resolutionSteps: suggestion.resolutionSteps,
+                  codeExample: suggestion.codeExample,
+                  preventionMeasures: suggestion.preventionMeasures,
+                  confidence: suggestion.confidence,
+                },
+              });
+            } catch (individualError) {
+              console.error(`❌ Individual AI suggestion error for ${error.id}:`, individualError);
+            }
+
+            // Update progress
+            const suggestionProgress = 80 + Math.floor((i / maxSuggestions) * 15);
+            await this.updateJobStatus(
+              job.id,
+              "processing",
+              suggestionProgress,
+              `Generating AI suggestions (${i + 1}/${maxSuggestions})`
+            );
+          }
+        }
       }
 
       await this.updateJobStatus(
@@ -425,6 +511,29 @@ class BackgroundJobProcessor {
     } catch (error) {
       console.error("Error fixing stuck jobs:", error);
     }
+  }
+
+  private async readFileWithStreaming(filePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const chunks: string[] = [];
+      const readStream = fs.createReadStream(filePath, {
+        encoding: 'utf8',
+        highWaterMark: 64 * 1024 // 64KB chunks for better memory management
+      });
+
+      readStream.on('data', (chunk) => {
+        chunks.push(chunk as string);
+      });
+
+      readStream.on('end', () => {
+        resolve(chunks.join(''));
+      });
+
+      readStream.on('error', (error) => {
+        console.error('Error reading file with streaming:', error);
+        reject(error);
+      });
+    });
   }
 }
 
