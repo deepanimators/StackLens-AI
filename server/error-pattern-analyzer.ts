@@ -1,5 +1,5 @@
 import { DatabaseStorage } from "./database-storage";
-import { AIService } from "./ai-service";
+import { aiService } from "./ai-service";
 
 interface ErrorPattern {
   pattern: string;
@@ -25,11 +25,11 @@ interface DiscoveredPattern {
 
 export class ErrorPatternAnalyzer {
   private db: DatabaseStorage;
-  private aiService: AIService;
+  private aiService: typeof aiService;
 
   constructor() {
     this.db = new DatabaseStorage();
-    this.aiService = new AIService();
+    this.aiService = aiService;
   }
 
   /**
@@ -352,9 +352,8 @@ export class ErrorPatternAnalyzer {
       return "Product mapping issue";
     }
 
-    return `Recurring ${
-      message.includes("error") ? "error" : "warning"
-    } pattern detected`;
+    return `Recurring ${message.includes("error") ? "error" : "warning"
+      } pattern detected`;
   }
 
   /**

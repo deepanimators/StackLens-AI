@@ -1,6 +1,6 @@
 import * as XLSX from 'xlsx';
 import { DatabaseStorage } from './database-storage';
-import { AIService } from './ai-service';
+import { aiService } from './ai-service';
 import path from 'path';
 
 interface TrainingData {
@@ -25,11 +25,11 @@ interface ProcessedTrainingData extends TrainingData {
 
 export class ExcelTrainingDataProcessor {
   private db: DatabaseStorage;
-  private aiService: AIService;
+  private aiService: typeof aiService;
 
   constructor() {
     this.db = new DatabaseStorage();
-    this.aiService = new AIService();
+    this.aiService = aiService;
   }
 
   /**
@@ -38,26 +38,26 @@ export class ExcelTrainingDataProcessor {
   async processExcelFile(filePath: string): Promise<TrainingData[]> {
     try {
       console.log(`Processing Excel file: ${filePath}`);
-      
+
       const workbook = XLSX.readFile(filePath);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
       const trainingData: TrainingData[] = [];
-      
+
       // Skip header row, process data rows
       for (let i = 1; i < data.length; i++) {
         const row = data[i] as any[];
-        
+
         // Column D (index 3) = Error, Column F (index 5) = Suggestion
         const error = row[3]?.toString()?.trim();
         const suggestion = row[5]?.toString()?.trim();
-        
+
         if (error && suggestion && error.length > 10 && suggestion.length > 10) {
           const errorType = this.categorizeError(error);
           const severity = this.determineSeverity(error);
           const category = this.determineCategory(error);
-          
+
           trainingData.push({
             error,
             suggestion,
@@ -100,7 +100,7 @@ export class ExcelTrainingDataProcessor {
     // Remove duplicates based on error content
     const uniqueData = this.removeDuplicates(allTrainingData);
     console.log(`Total unique training examples: ${uniqueData.length}`);
-    
+
     return uniqueData;
   }
 
@@ -112,7 +112,7 @@ export class ExcelTrainingDataProcessor {
 
     for (const item of trainingData) {
       const features = this.extractFeatures(item.error);
-      
+
       processedData.push({
         ...item,
         features
@@ -127,7 +127,7 @@ export class ExcelTrainingDataProcessor {
    */
   private extractFeatures(error: string): ProcessedTrainingData['features'] {
     const errorLower = error.toLowerCase();
-    
+
     return {
       errorKeywords: this.extractKeywords(error),
       errorLength: error.length,
@@ -148,7 +148,7 @@ export class ExcelTrainingDataProcessor {
       .replace(/[^\w\s]/g, ' ')
       .split(/\s+/)
       .filter(word => word.length > 2 && !stopWords.includes(word));
-    
+
     return Array.from(new Set(words)).slice(0, 10); // Top 10 unique keywords
   }
 
@@ -179,7 +179,7 @@ export class ExcelTrainingDataProcessor {
       /(\w+Client)/gi,
       /(\w+Adapter)/gi
     ];
-    
+
     const components: string[] = [];
     for (const pattern of componentPatterns) {
       const matches = error.match(pattern);
@@ -187,7 +187,7 @@ export class ExcelTrainingDataProcessor {
         components.push(...matches);
       }
     }
-    
+
     return Array.from(new Set(components)).slice(0, 5);
   }
 
@@ -203,11 +203,11 @@ export class ExcelTrainingDataProcessor {
       'configuration', 'property', 'parameter', 'variable', 'environment',
       'exception', 'error', 'failure', 'warning', 'critical'
     ];
-    
-    const foundTerms = technicalTerms.filter(term => 
+
+    const foundTerms = technicalTerms.filter(term =>
       error.toLowerCase().includes(term)
     );
-    
+
     return foundTerms.slice(0, 8);
   }
 
@@ -216,7 +216,7 @@ export class ExcelTrainingDataProcessor {
    */
   private categorizeError(error: string): string {
     const errorLower = error.toLowerCase();
-    
+
     if (errorLower.includes('database') || errorLower.includes('sql') || errorLower.includes('connection')) {
       return 'Database';
     } else if (errorLower.includes('network') || errorLower.includes('timeout') || errorLower.includes('socket')) {
@@ -230,7 +230,7 @@ export class ExcelTrainingDataProcessor {
     } else if (errorLower.includes('api') || errorLower.includes('service') || errorLower.includes('endpoint')) {
       return 'API';
     }
-    
+
     return 'Application';
   }
 
@@ -239,7 +239,7 @@ export class ExcelTrainingDataProcessor {
    */
   private determineSeverity(error: string): string {
     const errorLower = error.toLowerCase();
-    
+
     if (errorLower.includes('critical') || errorLower.includes('fatal') || errorLower.includes('severe')) {
       return 'Critical';
     } else if (errorLower.includes('error') || errorLower.includes('exception') || errorLower.includes('failed')) {
@@ -247,7 +247,7 @@ export class ExcelTrainingDataProcessor {
     } else if (errorLower.includes('warn') || errorLower.includes('warning')) {
       return 'Medium';
     }
-    
+
     return 'Low';
   }
 
@@ -256,7 +256,7 @@ export class ExcelTrainingDataProcessor {
    */
   private determineCategory(error: string): string {
     const errorLower = error.toLowerCase();
-    
+
     if (errorLower.includes('pos') || errorLower.includes('payment') || errorLower.includes('transaction')) {
       return 'POS System';
     } else if (errorLower.includes('order') || errorLower.includes('menu') || errorLower.includes('item')) {
@@ -264,7 +264,7 @@ export class ExcelTrainingDataProcessor {
     } else if (errorLower.includes('tax') || errorLower.includes('pricing') || errorLower.includes('discount')) {
       return 'Financial';
     }
-    
+
     return this.categorizeError(error);
   }
 
@@ -289,7 +289,7 @@ export class ExcelTrainingDataProcessor {
   async saveTrainingData(trainingData: ProcessedTrainingData[]): Promise<void> {
     try {
       console.log('Saving training data to database...');
-      
+
       for (const item of trainingData) {
         // Save as a training example in the database
         await this.db.createTrainingExample({
@@ -302,7 +302,7 @@ export class ExcelTrainingDataProcessor {
           createdAt: new Date()
         });
       }
-      
+
       console.log(`Saved ${trainingData.length} training examples to database`);
     } catch (error) {
       console.error('Error saving training data:', error);

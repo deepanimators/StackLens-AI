@@ -1,5 +1,5 @@
 import { DatabaseStorage } from './database-storage';
-import { AIService } from './ai-service';
+import { aiService } from './ai-service';
 import { ExcelTrainingDataProcessor } from './excel-training-processor';
 import { ErrorPatternAnalyzer } from './error-pattern-analyzer';
 
@@ -58,13 +58,13 @@ interface PatternAnalysisResult {
 
 export class EnhancedMLTrainingService {
   private db: DatabaseStorage;
-  private aiService: AIService;
+  private aiService: typeof aiService;
   private excelProcessor: ExcelTrainingDataProcessor;
   private patternAnalyzer: ErrorPatternAnalyzer;
 
   constructor() {
     this.db = new DatabaseStorage();
-    this.aiService = new AIService();
+    this.aiService = aiService;
     this.excelProcessor = new ExcelTrainingDataProcessor();
     this.patternAnalyzer = new ErrorPatternAnalyzer();
   }
@@ -118,7 +118,7 @@ export class EnhancedMLTrainingService {
 
     // Simulate advanced ML training with real data
     const trainingMetrics = await this.simulateMLTraining(trainingData);
-    
+
     // Perform trend analysis
     const trendAnalysis = await this.analyzeTrends(trainingData);
 
@@ -156,11 +156,11 @@ export class EnhancedMLTrainingService {
    */
   private async simulateMLTraining(trainingData: any[]): Promise<any> {
     const dataSize = trainingData.length;
-    
+
     // Calculate realistic metrics based on data size and quality
     const baseAccuracy = Math.min(0.95, 0.65 + (dataSize / 1000) * 0.3);
     const accuracy = baseAccuracy + (Math.random() * 0.1 - 0.05);
-    
+
     const precision = accuracy * (0.9 + Math.random() * 0.1);
     const recall = accuracy * (0.85 + Math.random() * 0.15);
     const f1Score = 2 * (precision * recall) / (precision + recall);
@@ -209,7 +209,7 @@ export class EnhancedMLTrainingService {
 
     // Common error types with trends
     const commonErrorTypes = Object.entries(errorTypeFreq)
-      .sort(([,a], [,b]) => (b as number) - (a as number))
+      .sort(([, a], [, b]) => (b as number) - (a as number))
       .slice(0, 10)
       .map(([type, frequency]) => ({
         type,
@@ -260,7 +260,7 @@ export class EnhancedMLTrainingService {
     try {
       // Get all error logs for analysis
       const errorLogs = await this.db.getErrorLogs(5000); // Get recent errors
-      
+
       if (!errorLogs || errorLogs.length === 0) {
         return this.getEmptyPatternResult();
       }
