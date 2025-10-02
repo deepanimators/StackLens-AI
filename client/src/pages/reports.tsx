@@ -116,8 +116,8 @@ type Performance = {
   successRate: number;
 };
 
-// Import the authenticatedRequest function
-import { authenticatedRequest } from "@/lib/auth";
+// Import the authenticatedRequest and authenticatedFetch functions
+import { authenticatedRequest, authenticatedFetch } from "@/lib/auth";
 
 // Fetch real report data from API
 const fetchReportData = async () => {
@@ -1138,7 +1138,7 @@ export default function Reports() {
     data: reportData = {
       summary: defaultSummary,
       errorTypes: [] as ErrorTypeData[],
-      resolutionRate: 0.88, // Example value, adjust as necessary
+      resolutionRate: 0,
       severityDistribution: { critical: 0, high: 0, medium: 0, low: 0 },
       topFiles: [] as TopFile[],
       performance: { avgProcessingTime: "0.0s", successRate: 0 },
@@ -1159,11 +1159,19 @@ export default function Reports() {
         duration: 0, // Don't auto-dismiss
       });
 
-      // Make API call to export endpoint
-      const response = await authenticatedRequest(
+      // Make API call to export endpoint using raw fetch for non-JSON responses
+      const response = await authenticatedFetch(
         "GET", 
         `/api/reports/export?format=${type}&range=${dateRange}&reportType=${reportType}`
       );
+
+      // Check if response is ok
+      if (!response.ok) {
+        throw new Error(`Export failed: ${response.status} ${response.statusText}`);
+      }
+
+      // Generate timestamp for filename
+      const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
       // Handle different response types
       if (type === 'csv') {
@@ -1172,7 +1180,7 @@ export default function Reports() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `stacklens-error-analysis-${dateRange}.csv`;
+        a.download = `stacklens-error-analysis-${dateRange}-${timestamp}.csv`;
         a.click();
         window.URL.revokeObjectURL(url);
       } else if (type === 'pdf') {
@@ -1195,7 +1203,7 @@ export default function Reports() {
         // Also provide download option
         const a = document.createElement('a');
         a.href = url;
-        a.download = `stacklens-error-analysis-${dateRange}.html`;
+        a.download = `stacklens-error-analysis-${dateRange}-${timestamp}.html`;
         a.click();
         window.URL.revokeObjectURL(url);
       } else if (type === 'xlsx') {
@@ -1203,7 +1211,7 @@ export default function Reports() {
         const url = window.URL.createObjectURL(excelContent);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `stacklens-error-analysis-${dateRange}.xlsx`;
+        a.download = `stacklens-error-analysis-${dateRange}-${timestamp}.xlsx`;
         a.click();
         window.URL.revokeObjectURL(url);
       }
