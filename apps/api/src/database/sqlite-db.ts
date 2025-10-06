@@ -8,7 +8,7 @@ export { db, sqlite };
 try {
   // For SQLite, we'll use db.run to create tables directly
   console.log('Setting up SQLite database...');
-  
+
   // Create tables if they don't exist
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS users (

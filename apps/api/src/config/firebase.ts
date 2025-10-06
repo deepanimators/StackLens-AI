@@ -32,7 +32,7 @@ export async function verifyFirebaseToken(idToken: string): Promise<FirebaseUser
 
   try {
     const decodedToken = await firebaseAuth.verifyIdToken(idToken);
-    
+
     return {
       uid: decodedToken.uid,
       email: decodedToken.email || '',
@@ -49,7 +49,7 @@ export async function syncFirebaseUser(firebaseUser: FirebaseUser): Promise<any>
   try {
     // Check if user exists in our database
     let user = await storage.getUserByEmail(firebaseUser.email);
-    
+
     if (!user) {
       // Create new user
       user = await storage.createUser({
@@ -70,7 +70,7 @@ export async function syncFirebaseUser(firebaseUser: FirebaseUser): Promise<any>
         lastLogin: new Date()
       });
     }
-    
+
     return user;
   } catch (error) {
     console.error("User sync failed:", error);
