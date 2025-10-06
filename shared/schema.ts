@@ -54,6 +54,8 @@ export const logFiles = sqliteTable("log_files", {
 export const errorLogs = sqliteTable("error_logs", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   fileId: integer("file_id").references(() => logFiles.id),
+  storeNumber: text("store_number"), // Store identifier from log file
+  kioskNumber: text("kiosk_number"), // Kiosk identifier from log file
   lineNumber: integer("line_number").notNull(),
   timestamp: integer("timestamp", { mode: "timestamp" }),
   severity: text("severity").notNull(),

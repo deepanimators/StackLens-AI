@@ -95,7 +95,7 @@ export class AnalysisService {
     uploadedBy: number;
   }): Promise<AnalysisOutput> {
     const startTime = new Date();
-    
+
     try {
       // Create log file record
       const logFile: InsertLogFile = {
@@ -118,14 +118,14 @@ export class AnalysisService {
 
       // Parse the file content
       const parseResult = await this.logParser.parseLogFile(fileData.content, fileData.mimeType);
-      
+
       if (!parseResult.success) {
         await storage.updateLogFile(createdLogFile.id, {
           status: 'failed',
           errorMessage: parseResult.error,
           analysisTimestamp: new Date(),
         });
-        
+
         return this.createFailedAnalysis(createdLogFile, parseResult.error);
       }
 
@@ -136,6 +136,8 @@ export class AnalysisService {
       for (const error of parseResult.errors || []) {
         const errorLog: InsertErrorLog = {
           fileId: createdLogFile.id,
+          storeNumber: createdLogFile.storeNumber || null,
+          kioskNumber: createdLogFile.kioskNumber || null,
           lineNumber: error.lineNumber,
           timestamp: error.timestamp,
           severity: error.severity,
@@ -147,7 +149,7 @@ export class AnalysisService {
         };
 
         const createdError = await storage.createErrorLog(errorLog);
-        
+
         // Create enhanced error detection
         const errorDetection: ErrorDetection = {
           id: createdError.id,
@@ -198,7 +200,7 @@ export class AnalysisService {
         try {
           const features = this.featureEngineer.extractFeatures(error);
           const prediction = await predictor.predict(features);
-          
+
           const predictionResult: Prediction = {
             id: predictions.length + 1,
             category: prediction.category,
@@ -243,7 +245,7 @@ export class AnalysisService {
 
     } catch (error) {
       console.error('Analysis error:', error);
-      
+
       await storage.updateLogFile(createdLogFile.id, {
         status: 'failed',
         errorMessage: error instanceof Error ? error.message : 'Unknown error',
@@ -264,7 +266,7 @@ export class AnalysisService {
       'application/yaml': 'yaml',
       'text/csv': 'csv',
     };
-    
+
     return typeMap[mimeType] || 'text';
   }
 
@@ -275,13 +277,13 @@ export class AnalysisService {
       'medium': '4-8 hours',
       'low': '1-2 days',
     };
-    
+
     return timeMap[severity.toLowerCase()] || '1-2 hours';
   }
 
   private async detectAnomalies(errors: any[]): Promise<Anomaly[]> {
     const anomalies: Anomaly[] = [];
-    
+
     // Group errors by type and detect patterns
     const errorsByType = new Map<string, any[]>();
     errors.forEach(error => {
@@ -313,7 +315,7 @@ export class AnalysisService {
       const timestamps = timeBasedErrors.map(e => new Date(e.timestamp).getTime());
       const timeDiffs = timestamps.slice(1).map((t, i) => t - timestamps[i]);
       const avgTimeDiff = timeDiffs.reduce((a, b) => a + b, 0) / timeDiffs.length;
-      
+
       const rapidErrors = timeDiffs.filter(diff => diff < avgTimeDiff * 0.1);
       if (rapidErrors.length > 3) {
         anomalies.push({
@@ -396,7 +398,7 @@ export class AnalysisService {
 
   async getAllAnalyses(userId?: number): Promise<AnalysisOutput[]> {
     const logFiles = userId ? await storage.getLogFilesByUser(userId) : await storage.getAllLogFiles();
-    
+
     const analyses: AnalysisOutput[] = [];
     for (const logFile of logFiles) {
       const analysis = await this.getAnalysisById(logFile.id);
@@ -404,7 +406,7 @@ export class AnalysisService {
         analyses.push(analysis);
       }
     }
-    
+
     return analyses;
   }
 }

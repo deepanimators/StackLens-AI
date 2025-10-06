@@ -67,6 +67,25 @@ export class LogParser {
   }
 
   private isErrorLine(line: string): boolean {
+    // First check the log level - if it's explicitly INFO, DEBUG, or TRACE, it's not an error
+    const logLevelMatch = line.match(/\b(INFO|DEBUG|TRACE)\b/i);
+    if (logLevelMatch) {
+      // Check if INFO/DEBUG/TRACE log contains actual error indicators
+      const errorIndicators = [
+        /\bexception\b/i,
+        /\berror\s*:/i,
+        /\bfailed\s*:/i,
+        /\bfailure\s*:/i,
+        /stack\s*trace/i,
+        /\bcritical\s*:/i,
+        /\bfatal\s*:/i,
+      ];
+
+      // Only treat as error if it has explicit error indicators
+      return errorIndicators.some(pattern => pattern.test(line));
+    }
+
+    // For lines without explicit log level, check for error keywords
     const errorKeywords = [
       "error",
       "exception",
@@ -81,7 +100,6 @@ export class LogParser {
       "warn",
       "warning",
       "alert",
-      "info", // Added 'info'
     ];
 
     const lowerLine = line.toLowerCase();
@@ -89,6 +107,30 @@ export class LogParser {
   }
 
   private detectSeverity(line: string): string {
+    // First extract the actual log level
+    const logLevelMatch = line.match(/\b(FATAL|CRITICAL|ERROR|WARN|WARNING|INFO|DEBUG|TRACE)\b/i);
+
+    if (logLevelMatch) {
+      const logLevel = logLevelMatch[1].toUpperCase();
+
+      // Use log level for severity classification
+      switch (logLevel) {
+        case "FATAL":
+        case "CRITICAL":
+          return "critical";
+        case "ERROR":
+          return "high";
+        case "WARN":
+        case "WARNING":
+          return "medium";
+        case "INFO":
+        case "DEBUG":
+        case "TRACE":
+          return "low";
+      }
+    }
+
+    // Fallback to keyword-based detection if no log level found
     const lowerLine = line.toLowerCase();
 
     if (
@@ -108,10 +150,7 @@ export class LogParser {
     if (lowerLine.includes("warn") || lowerLine.includes("warning")) {
       return "medium";
     }
-    // INFO patterns should be marked as low priority
-    if (lowerLine.includes("info")) {
-      return "low";
-    }
+
     return "low";
   }
 

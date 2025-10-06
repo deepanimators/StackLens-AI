@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,8 @@ interface ErrorLog {
   resolved: boolean;
   aiSuggestion?: any;
   mlPrediction?: any;
+  storeNumber?: string | null;
+  kioskNumber?: string | null;
 }
 
 interface ErrorsResponse {
@@ -110,6 +112,8 @@ const transformErrorLog = (apiError: any): ErrorLog => {
     resolved: Boolean(apiError.resolved),
     aiSuggestion: aiSuggestion,
     mlPrediction: mlPrediction,
+    storeNumber: apiError.storeNumber || null,
+    kioskNumber: apiError.kioskNumber || null,
   };
 };
 
@@ -122,6 +126,8 @@ export default function AllErrors() {
   const [fileFilter, setFileFilter] = useState<string[]>([]); // Changed to array for multi-select
   const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
   const [userFilter, setUserFilter] = useState<string>("all");
+  const [storeFilter, setStoreFilter] = useState<string>("all");
+  const [kioskFilter, setKioskFilter] = useState<string>("all");
   const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [showAISuggestionModal, setShowAISuggestionModal] = useState(false);
@@ -163,6 +169,8 @@ export default function AllErrors() {
         fileFilter,
         errorType: errorTypeFilter,
         userId: userFilter,
+        storeFilter,
+        kioskFilter,
       },
     ],
     queryFn: async (): Promise<ErrorsResponse> => {
@@ -173,6 +181,8 @@ export default function AllErrors() {
         searchQuery,
         fileFilter,
         errorTypeFilter,
+        storeFilter,
+        kioskFilter,
       });
 
       const params = new URLSearchParams();
@@ -195,6 +205,12 @@ export default function AllErrors() {
       if (userFilter && userFilter !== "all") {
         params.append("userId", userFilter);
       }
+      if (storeFilter && storeFilter !== "all") {
+        params.append("storeNumber", storeFilter);
+      }
+      if (kioskFilter && kioskFilter !== "all") {
+        params.append("kioskNumber", kioskFilter);
+      }
 
       try {
         const data = await authenticatedRequest("GET", `/api/errors?${params}`);
@@ -214,9 +230,9 @@ export default function AllErrors() {
     },
   });
 
-  // Get files for the file filter dropdown
+  // Get files for the file filter dropdown - filtered by store and kiosk
   const { data: files } = useQuery({
-    queryKey: ["/api/files", { userId: userFilter, includeAll: true }],
+    queryKey: ["/api/files", { userId: userFilter, storeFilter, kioskFilter, includeAll: true }],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.append("includeAll", "true"); // Get all files for dropdown
@@ -225,8 +241,17 @@ export default function AllErrors() {
       }
       const query = params.toString() ? `?${params.toString()}` : "";
       const data = await authenticatedRequest("GET", `/api/files${query}`);
-      // Handle the actual API response structure: { files: [...] }
-      return data.files || [];
+      let allFiles = data.files || [];
+      
+      // Filter files by store and kiosk on the client side
+      if (storeFilter && storeFilter !== "all") {
+        allFiles = allFiles.filter((file: any) => file.storeNumber === storeFilter);
+      }
+      if (kioskFilter && kioskFilter !== "all") {
+        allFiles = allFiles.filter((file: any) => file.kioskNumber === kioskFilter);
+      }
+      
+      return allFiles;
     },
   });
 
@@ -238,6 +263,36 @@ export default function AllErrors() {
       return data || [];
     },
   });
+
+  // Get stores for store filter dropdown
+  const { data: stores } = useQuery({
+    queryKey: ["/api/stores"],
+    queryFn: async () => {
+      const data = await authenticatedRequest("GET", "/api/stores");
+      return data || [];
+    },
+  });
+
+  // Get kiosks for kiosk filter dropdown (filtered by selected store)
+  const { data: allKiosks } = useQuery({
+    queryKey: ["/api/kiosks"],
+    queryFn: async () => {
+      const data = await authenticatedRequest("GET", "/api/kiosks");
+      return data || [];
+    },
+  });
+
+  // Filter kiosks based on selected store
+  const filteredKiosks = useMemo(() => {
+    if (!allKiosks) return [];
+    if (storeFilter && storeFilter !== "all") {
+      const store = (stores || []).find((s: any) => s.storeNumber === storeFilter);
+      if (store) {
+        return allKiosks.filter((k: any) => k.storeId === store.id);
+      }
+    }
+    return allKiosks;
+  }, [allKiosks, storeFilter, stores]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -263,6 +318,19 @@ export default function AllErrors() {
   const handleUserFilter = (newUserFilter: string) => {
     setUserFilter(newUserFilter);
     setFileFilter([]); // Reset file filter when user changes
+    setPage(1);
+  };
+
+  const handleStoreFilter = (newStoreFilter: string) => {
+    setStoreFilter(newStoreFilter);
+    setKioskFilter("all"); // Reset kiosk filter when store changes
+    setFileFilter([]); // Reset file filter when store changes
+    setPage(1);
+  };
+
+  const handleKioskFilter = (newKioskFilter: string) => {
+    setKioskFilter(newKioskFilter);
+    setFileFilter([]); // Reset file filter when kiosk changes
     setPage(1);
   };
 
@@ -419,113 +487,195 @@ export default function AllErrors() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>Filter & Search</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Filter className="h-5 w-5" />
+            Filter & Search
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-col md:flex-row gap-4">
-            <form onSubmit={handleSearch} className="flex-1">
+        <CardContent className="space-y-4">
+          {/* Row 1: Search */}
+          <div className="w-full">
+            <form onSubmit={handleSearch}>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search error messages..."
+                  placeholder="Search error messages, types, or content..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 w-full"
                 />
               </div>
             </form>
+          </div>
 
+          {/* Row 2: User, Store, Kiosk, File Name */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
             {isAdmin && (
-              <Select value={userFilter} onValueChange={handleUserFilter}>
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Filter by user" />
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-muted-foreground">User</label>
+                <MultiSelectDropdown
+                  options={[
+                    { id: "all", label: "All Users", value: "all" },
+                    ...(users || []).map((user: any) => ({
+                      id: user.id.toString(),
+                      label: user.username,
+                      value: user.id.toString(),
+                    }))
+                  ]}
+                  selectedValues={userFilter === "all" ? [] : [userFilter]}
+                  onSelectionChange={(values) => {
+                    // Single select behavior - only keep the most recent selection
+                    const newValue = values.length > 0 ? values[values.length - 1] : "all";
+                    handleUserFilter(newValue);
+                  }}
+                  placeholder="All Users"
+                  searchPlaceholder="Search users..."
+                  className="w-full"
+                />
+              </div>
+            )}
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-muted-foreground">Store</label>
+              <MultiSelectDropdown
+                options={[
+                  { id: "all", label: "All Stores", value: "all" },
+                  ...(stores || []).map((store: any) => ({
+                    id: store.id.toString(),
+                    label: `${store.storeNumber} - ${store.name}`,
+                    value: store.storeNumber,
+                  }))
+                ]}
+                selectedValues={storeFilter === "all" ? [] : [storeFilter]}
+                onSelectionChange={(values) => {
+                  // Single select behavior - only keep the most recent selection
+                  const newValue = values.length > 0 ? values[values.length - 1] : "all";
+                  handleStoreFilter(newValue);
+                }}
+                placeholder="All Stores"
+                searchPlaceholder="Search stores..."
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-muted-foreground">Kiosk</label>
+              <MultiSelectDropdown
+                options={[
+                  { id: "all", label: "All Kiosks", value: "all" },
+                  ...(filteredKiosks || []).map((kiosk: any) => ({
+                    id: kiosk.id.toString(),
+                    label: `${kiosk.kioskNumber} - ${kiosk.name}`,
+                    value: kiosk.kioskNumber,
+                  }))
+                ]}
+                selectedValues={kioskFilter === "all" ? [] : [kioskFilter]}
+                onSelectionChange={(values) => {
+                  // Single select behavior - only keep the most recent selection
+                  const newValue = values.length > 0 ? values[values.length - 1] : "all";
+                  handleKioskFilter(newValue);
+                }}
+                placeholder={storeFilter === "all" ? "Select store first" : "All Kiosks"}
+                searchPlaceholder="Search kiosks..."
+                className="w-full"
+                disabled={storeFilter === "all"}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-muted-foreground">File Name</label>
+              <MultiSelectDropdown
+                options={(files || [])
+                  .filter(
+                    (file: any) =>
+                      file && file.id && file.id.toString().trim() !== ""
+                  )
+                  .map((file: any) => ({
+                    id: file.id.toString(),
+                    label: file.originalName || `File ${file.id}`,
+                    value: file.id.toString(),
+                  }))}
+                selectedValues={fileFilter}
+                onSelectionChange={handleFileFilter}
+                placeholder="All Files"
+                searchPlaceholder="Search files..."
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          {/* Row 3: Severities, Types, Item Count, Actions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-muted-foreground">Severity</label>
+              <Select value={severity} onValueChange={handleSeverityFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All Severities" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Users</SelectItem>
-                  {users?.map((user: any) => (
-                    <SelectItem key={user.id} value={user.id.toString()}>
-                      {user.username}
+                  <SelectItem value="all">All Severities</SelectItem>
+                  {Object.entries(SEVERITY_LABELS)
+                    .filter(([value]) => value && value.trim() !== "")
+                    .map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-muted-foreground">Error Type</label>
+              <Select
+                value={errorTypeFilter}
+                onValueChange={handleErrorTypeFilter}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  {(errorTypes || []).map((type: string) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            )}
+            </div>
 
-            <Select value={severity} onValueChange={handleSeverityFilter}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by severity" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Severities</SelectItem>
-                {Object.entries(SEVERITY_LABELS)
-                  .filter(([value]) => value && value.trim() !== "")
-                  .map(([value, label]) => (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-muted-foreground">Items per page</label>
+              <Select
+                value={limit.toString()}
+                onValueChange={(value) => setLimit(parseInt(value))}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10 rows</SelectItem>
+                  <SelectItem value="25">25 rows</SelectItem>
+                  <SelectItem value="50">50 rows</SelectItem>
+                  <SelectItem value="100">100 rows</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-            <MultiSelectDropdown
-              options={(files || [])
-                .filter(
-                  (file: any) =>
-                    file && file.id && file.id.toString().trim() !== ""
-                )
-                .map((file: any) => ({
-                  id: file.id.toString(),
-                  label: file.originalName || `File ${file.id}`,
-                  value: file.id.toString(),
-                }))}
-              selectedValues={fileFilter}
-              onSelectionChange={handleFileFilter}
-              placeholder="Filter by files..."
-              searchPlaceholder="Search files..."
-              className="w-64"
-            />
-
-            <Select
-              value={errorTypeFilter}
-              onValueChange={handleErrorTypeFilter}
-            >
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                {(errorTypes || []).map((type: string) => (
-                  <SelectItem key={type} value={type}>
-                    {type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={limit.toString()}
-              onValueChange={(value) => setLimit(parseInt(value))}
-            >
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10 rows</SelectItem>
-                <SelectItem value="25">25 rows</SelectItem>
-                <SelectItem value="50">50 rows</SelectItem>
-                <SelectItem value="100">100 rows</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button variant="outline" onClick={() => refetch()}>
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </Button>
-
-            <Button variant="outline" onClick={handleExport}>
-              <Download className="h-4 w-4 mr-2" />
-              Export
-            </Button>
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-muted-foreground">Actions</label>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => refetch()} className="flex-1">
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Refresh
+                </Button>
+                <Button variant="outline" onClick={handleExport} className="flex-1">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export
+                </Button>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

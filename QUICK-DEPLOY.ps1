@@ -43,7 +43,7 @@ if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
 
 if ($needsInstall) {
     Write-Host "Running prerequisite installation..." -ForegroundColor Yellow
-    powershell -ExecutionPolicy Bypass -File "01-INSTALL.ps1"
+    powershell -ExecutionPolicy Bypass -File ".\01-INSTALL.ps1"
     Write-Host "Prerequisites installed, please restart this script." -ForegroundColor Green
     pause
     exit 0
@@ -55,13 +55,13 @@ if ($needsInstall) {
 Write-Host ""
 Write-Host "STEP 2: Setting up Application..." -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Gray
-powershell -ExecutionPolicy Bypass -File "02-SETUP.ps1" -ServerIP $ServerIP -Port $Port
+powershell -ExecutionPolicy Bypass -File ".\02-SETUP.ps1" -ServerIP $ServerIP -Port $Port
 
 # Step 3: Start Application
 Write-Host ""
 Write-Host "STEP 3: Starting Application..." -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Gray
-powershell -ExecutionPolicy Bypass -File "03-START-APP.ps1" -ServerIP $ServerIP -Port $Port
+powershell -ExecutionPolicy Bypass -File ".\03-START-APP.ps1" -ServerIP $ServerIP -Port $Port
 
 Write-Host ""
 Write-Host "=====================================" -ForegroundColor Green

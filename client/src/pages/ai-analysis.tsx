@@ -45,6 +45,9 @@ interface ErrorLog {
   resolved: boolean;
   aiSuggestion?: any;
   mlPrediction?: any;
+  storeNumber?: string | null;
+  kioskNumber?: string | null;
+  filename?: string;
 }
 
 interface MLStatus {

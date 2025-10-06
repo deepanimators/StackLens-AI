@@ -384,14 +384,43 @@ export class EnhancedErrorDetectionService {
    * Check if a log line is informational (not an error)
    */
   private isInformationalLog(line: string): boolean {
-    // Only exclude logs that are purely informational with no error indicators
-    const pureInfoPatterns = [
-      /^[^|]*INFO(?:[^|]*?\||[\s:]+).*(?:started successfully|completed successfully|initialized|listening on|connected to|user logged in|request received|response sent)/i,
-      /^[^|]*DEBUG(?:[^|]*?\||[\s:]+).*(?:started successfully|completed successfully|initialized|listening on|connected to|user logged in|request received|response sent)/i,
-      /^[^|]*TRACE(?:[^|]*?\||[\s:]+)/i,
-    ];
+    // Extract the log level first
+    const logLevel = this.extractLogLevel(line);
 
-    return pureInfoPatterns.some((pattern) => pattern.test(line.trim()));
+    // TRACE and DEBUG logs are always informational
+    if (logLevel === "TRACE" || logLevel === "DEBUG") {
+      return true;
+    }
+
+    // INFO logs are informational UNLESS they contain explicit error keywords
+    if (logLevel === "INFO") {
+      const errorKeywords = [
+        /exception/i,
+        /\berror\s*:/i,  // "error:" or "Error:"
+        /\bfailed\s*:/i,  // "failed:" or "Failed:"
+        /\bfailure\s*:/i, // "failure:" or "Failure:"
+        /stack\s*trace/i,
+        /\bcritical\s*:/i,
+        /\bfatal\s*:/i,
+        /null\s*pointer/i,
+        /out\s*of\s*memory/i,
+        /access\s*denied/i,
+        /permission\s*denied/i,
+        /\btimeout\b/i,
+        /\bdeadlock\b/i,
+        /\baborted\b/i,
+        /\bcrashed\b/i,
+      ];
+
+      // If INFO log contains explicit error keywords, it's an error
+      const hasErrorKeyword = errorKeywords.some(pattern => pattern.test(line));
+
+      // INFO logs without error keywords are informational
+      return !hasErrorKeyword;
+    }
+
+    // WARN and ERROR logs are not informational
+    return false;
   }
 
   /**
