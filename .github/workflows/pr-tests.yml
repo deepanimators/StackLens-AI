@@ -31,10 +31,9 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: Run TypeScript type checking
               run: npm run check
@@ -61,10 +60,9 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: Build client
               run: npm run build:client
@@ -94,10 +92,9 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: Install Playwright browsers
               run: npx playwright install --with-deps chromium
@@ -130,16 +127,14 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Setup Python
               uses: actions/setup-python@v5
               with:
                   python-version: ${{ env.PYTHON_VERSION }}
-                  cache: "pip"
 
             - name: Install Node dependencies
-              run: npm ci
+              run: npm install
 
             - name: Install Python dependencies
               run: |
@@ -211,10 +206,9 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: Install Playwright browsers
               run: npx playwright install --with-deps chromium
@@ -270,10 +264,9 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: Install Playwright browsers
               run: npx playwright install --with-deps ${{ matrix.browser }}
@@ -348,10 +341,9 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: Install Playwright browsers
               run: npx playwright install --with-deps chromium
@@ -403,10 +395,9 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: Install Playwright browsers
               run: npx playwright install --with-deps chromium
