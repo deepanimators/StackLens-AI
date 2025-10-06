@@ -268,9 +268,8 @@ export class EnhancedRAGSuggestor {
 
       solution = bestPattern.suggestedFix;
       category = bestPattern.errorType;
-      reasoning = `Based on ${bestPattern.pattern} pattern with ${
-        bestPattern.metrics?.successRate || "unknown"
-      }% success rate`;
+      reasoning = `Based on ${bestPattern.pattern} pattern with ${bestPattern.metrics?.successRate || "unknown"
+        }% success rate`;
 
       insights.push(`Pattern match: ${bestPattern.pattern}`);
       if (bestPattern.metrics) {
@@ -536,7 +535,7 @@ export class EnhancedRAGSuggestor {
             newAvgResolutionTime = Math.round(
               (current.avgResolutionTime * current.totalOccurrences +
                 resolutionTime) /
-                newTotal
+              newTotal
             );
           } else {
             newAvgResolutionTime = resolutionTime;

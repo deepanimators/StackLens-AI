@@ -151,9 +151,8 @@ export class ModelTrainer {
         metrics: this.getEmptyMetrics(),
         modelId: -1,
         sessionId: -1,
-        message: `Training failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        message: `Training failed: ${error instanceof Error ? error.message : String(error)
+          }`,
       };
     }
   }
@@ -262,9 +261,8 @@ export class ModelTrainer {
         metrics: this.getEmptyMetrics(),
         modelId: modelId,
         sessionId: -1,
-        message: `Update failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        message: `Update failed: ${error instanceof Error ? error.message : String(error)
+          }`,
       };
     }
   }

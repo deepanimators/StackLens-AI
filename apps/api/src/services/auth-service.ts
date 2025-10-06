@@ -22,20 +22,20 @@ export class AuthService {
   async login(credentials: LoginCredentials): Promise<User | null> {
     try {
       const user = await storage.getUserByUsername(credentials.username);
-      
+
       if (!user) {
         return null;
       }
 
       const isValidPassword = await bcrypt.compare(credentials.password, user.password);
-      
+
       if (!isValidPassword) {
         return null;
       }
 
       // Update last login
-      await storage.updateUser(user.id, { 
-        lastLogin: new Date() 
+      await storage.updateUser(user.id, {
+        lastLogin: new Date()
       });
 
       return user;

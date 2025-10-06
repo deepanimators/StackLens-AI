@@ -42,10 +42,10 @@ export class Predictor {
 
       // Extract features
       const features = FeatureEngineer.extractFeatures(error);
-      
+
       // Make prediction
       const prediction = await this.makePrediction(features, activeModel);
-      
+
       return prediction;
     } catch (err) {
       console.error('Prediction failed:', err);
@@ -55,7 +55,7 @@ export class Predictor {
 
   async predictBatch(errors: ErrorLog[]): Promise<BatchPredictionResult> {
     const startTime = Date.now();
-    
+
     try {
       const activeModel = await storage.getActiveMlModel();
       if (!activeModel) {
@@ -68,7 +68,7 @@ export class Predictor {
 
       const processingTime = Date.now() - startTime;
       const avgConfidence = predictions.reduce((sum, p) => sum + p.confidence, 0) / predictions.length;
-      
+
       return {
         predictions,
         modelMetrics: {
@@ -80,9 +80,9 @@ export class Predictor {
       };
     } catch (error) {
       console.error('Batch prediction failed:', error);
-      
+
       const fallbackPredictions = errors.map(err => this.getFallbackPrediction(err));
-      
+
       return {
         predictions: fallbackPredictions,
         modelMetrics: {
@@ -99,18 +99,18 @@ export class Predictor {
     // Simulate ML model prediction logic
     const severityProbabilities = this.calculateSeverityProbabilities(features);
     const errorTypeProbabilities = this.calculateErrorTypeProbabilities(features);
-    
+
     const predictedSeverity = this.getPredictedClass(severityProbabilities);
     const predictedErrorType = this.getPredictedClass(errorTypeProbabilities);
-    
+
     const confidence = Math.max(
       severityProbabilities[predictedSeverity] || 0,
       errorTypeProbabilities[predictedErrorType] || 0
     );
-    
-    const probability = (severityProbabilities[predictedSeverity] || 0) * 
-                       (errorTypeProbabilities[predictedErrorType] || 0);
-    
+
+    const probability = (severityProbabilities[predictedSeverity] || 0) *
+      (errorTypeProbabilities[predictedErrorType] || 0);
+
     return {
       predictedSeverity,
       predictedErrorType,
@@ -201,26 +201,26 @@ export class Predictor {
 
   private getPredictedClass(probabilities: Record<string, number>): string {
     return Object.entries(probabilities)
-      .sort(([,a], [,b]) => b - a)[0][0];
+      .sort(([, a], [, b]) => b - a)[0][0];
   }
 
   private generateReasoning(features: ExtractedFeatures, severity: string, errorType: string): string {
     const reasons = [];
-    
+
     if (features.hasException) reasons.push('Exception keywords detected');
     if (features.keywordScore > 6) reasons.push('High keyword severity score');
     if (features.contextualPatterns.includes('stack_trace')) reasons.push('Stack trace pattern found');
     if (features.hasTimeout) reasons.push('Timeout-related keywords present');
     if (features.hasMemory) reasons.push('Memory-related indicators detected');
-    
-    return reasons.length > 0 
+
+    return reasons.length > 0
       ? `Predicted as ${severity} ${errorType} based on: ${reasons.join(', ')}`
       : `Predicted as ${severity} ${errorType} based on message analysis`;
   }
 
   private generateSuggestedActions(severity: string, errorType: string): string[] {
     const actions = [];
-    
+
     switch (severity) {
       case 'critical':
         actions.push('Immediate investigation required');
@@ -241,7 +241,7 @@ export class Predictor {
         actions.push('Log for future analysis');
         break;
     }
-    
+
     // Add error type specific actions
     switch (errorType) {
       case 'Database Error':
@@ -261,7 +261,7 @@ export class Predictor {
         actions.push('Check file system permissions');
         break;
     }
-    
+
     return actions;
   }
 
@@ -275,7 +275,7 @@ export class Predictor {
       { feature: 'hasDatabase', contribution: features.hasDatabase ? 0.15 : 0 },
       { feature: 'contextualPatterns', contribution: features.contextualPatterns.length * 0.05 }
     ];
-    
+
     return contributions
       .filter(c => c.contribution > 0)
       .sort((a, b) => b.contribution - a.contribution);
@@ -286,7 +286,7 @@ export class Predictor {
     const message = error.message.toLowerCase();
     let severity = 'medium';
     let errorType = 'Unknown Error';
-    
+
     // Simple rule-based classification
     if (message.includes('critical') || message.includes('fatal') || message.includes('exception')) {
       severity = 'critical';
@@ -301,7 +301,7 @@ export class Predictor {
       severity = 'low';
       errorType = 'Information';
     }
-    
+
     return {
       predictedSeverity: severity,
       predictedErrorType: errorType,

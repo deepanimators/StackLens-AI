@@ -57,8 +57,7 @@ export function createRAGRoutes(database: Database) {
         const enhancedSuggestion = await enhancedRAG.generateEnhancedSuggestion(
           error.message,
           error.severity || "medium",
-          `File: ${error.filename || "Unknown"}, Line: ${
-            error.lineNumber || "Unknown"
+          `File: ${error.filename || "Unknown"}, Line: ${error.lineNumber || "Unknown"
           }`
         );
 

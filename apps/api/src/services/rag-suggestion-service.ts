@@ -62,8 +62,7 @@ export class RAGSuggestionService {
   ): Promise<EnhancedSuggestionResult> {
     try {
       console.log(
-        `🔍 RAG: Processing error ID ${
-          error.id
+        `🔍 RAG: Processing error ID ${error.id
         } with message: ${error.message.substring(0, 100)}...`
       );
 
@@ -230,11 +229,9 @@ export class RAGSuggestionService {
       .slice(0, k);
 
     console.log(
-      `🔎 RAG: Found ${
-        rankedResults.length
-      } similar patterns with avg similarity ${
-        rankedResults.reduce((sum, r) => sum + r.similarity, 0) /
-        rankedResults.length
+      `🔎 RAG: Found ${rankedResults.length
+      } similar patterns with avg similarity ${rankedResults.reduce((sum, r) => sum + r.similarity, 0) /
+      rankedResults.length
       }`
     );
 
@@ -292,8 +289,8 @@ Based on ${context.similarPatterns.length} similar past cases:
 
 SUCCESSFUL RESOLUTIONS:
 ${context.historicalSolutions
-  .map((solution, i) => `${i + 1}. ${solution}`)
-  .join("\n")}
+        .map((solution, i) => `${i + 1}. ${solution}`)
+        .join("\n")}
 
 COMMON ROOT CAUSES:
 ${context.commonCauses.map((cause, i) => `- ${cause}`).join("\n")}
@@ -304,16 +301,15 @@ ${context.preventiveMeasures.map((measure, i) => `- ${measure}`).join("\n")}
 PATTERN ANALYSIS:
 - Similar cases resolved: ${context.similarPatterns.length}
 - Average success rate: ${(
-      (context.similarPatterns.reduce(
-        (sum, p) => sum + p.solution.successRate,
-        0
-      ) /
-        context.similarPatterns.length) *
-      100
-    ).toFixed(1)}%
-- Typical resolution time: ${
-      context.similarPatterns[0]?.solution.avgResolutionTime || "varies"
-    }
+        (context.similarPatterns.reduce(
+          (sum, p) => sum + p.solution.successRate,
+          0
+        ) /
+          context.similarPatterns.length) *
+        100
+      ).toFixed(1)}%
+- Typical resolution time: ${context.similarPatterns[0]?.solution.avgResolutionTime || "varies"
+      }
 
 Please provide:
 1. Root cause analysis based on historical patterns
@@ -378,11 +374,10 @@ Format your response with clear sections for each component.`;
       resolutionSteps: suggestion.resolutionSteps,
       codeExample: suggestion.codeExample,
       preventionMeasures: suggestion.preventionMeasures,
-      reasoning: `RAG-enhanced suggestion based on ${
-        context.similarPatterns.length
-      } similar historical patterns with ${historicalContext.avgSuccessRate.toFixed(
-        1
-      )}% average success rate`,
+      reasoning: `RAG-enhanced suggestion based on ${context.similarPatterns.length
+        } similar historical patterns with ${historicalContext.avgSuccessRate.toFixed(
+          1
+        )}% average success rate`,
       relatedPatterns: context.similarPatterns.map((p) =>
         p.pattern.substring(0, 100)
       ),
@@ -505,8 +500,8 @@ Format your response with clear sections for each component.`;
 
 // Mock classes that would need to be implemented
 class VectorDatabaseClient {
-  constructor(config: any) {}
-  async indexPatterns(patterns: any[]) {}
+  constructor(config: any) { }
+  async indexPatterns(patterns: any[]) { }
   async search(
     embedding: number[],
     options: any
@@ -516,7 +511,7 @@ class VectorDatabaseClient {
 }
 
 class EmbeddingService {
-  constructor(config: any) {}
+  constructor(config: any) { }
   async encode(text: string): Promise<number[]> {
     return new Array(384).fill(0).map(() => Math.random());
   }

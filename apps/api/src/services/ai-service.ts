@@ -40,7 +40,7 @@ export class AIService {
 
       const data = await response.json();
       const generatedText = data.candidates[0]?.content?.parts[0]?.text || '';
-      
+
       return this.parseAIResponse(generatedText);
     } catch (error) {
       console.error('AI Service Error:', error);

@@ -32,7 +32,7 @@ export class ExcelTrainingDataProcessor {
     "attached_assets"
   );
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Process all Excel files in the attached_assets directory
@@ -210,7 +210,7 @@ export class ExcelTrainingDataProcessor {
       this.inferErrorType(errorMessage);
     const severity = this.normalizeSeverity(
       this.getCellValue(row, mapping.severity) ||
-        this.inferSeverity(errorMessage)
+      this.inferSeverity(errorMessage)
     );
     const rootCause =
       this.getCellValue(row, mapping.rootCause) ||
