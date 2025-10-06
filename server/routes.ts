@@ -476,9 +476,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return default API settings since the schema mismatch is causing issues
-        // This will be resolved when the schema is properly unified
-        const apiSettings = {
+        const userId = req.user?.id;
+
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        // Get user settings
+        const userSettings = await storage.getUserSettings(userId);
+
+        let apiSettings = {
           geminiApiKey: process.env.GEMINI_API_KEY || "",
           webhookUrl: "",
           maxFileSize: "10",
@@ -489,7 +496,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           weeklyReports: false,
         };
 
-        console.log("Returning default API settings due to schema mismatch");
+        if (userSettings && userSettings.apiSettings) {
+          const savedApiSettings = typeof userSettings.apiSettings === 'string'
+            ? JSON.parse(userSettings.apiSettings)
+            : userSettings.apiSettings;
+
+          apiSettings = {
+            ...apiSettings,
+            ...savedApiSettings,
+          };
+        }
+
         res.json(apiSettings);
       } catch (error) {
         console.error("Error fetching API settings:", error);
@@ -505,22 +522,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        const { geminiApiKey, webhookUrl, maxFileSize, autoAnalysis } =
-          req.body;
+        const { geminiApiKey, webhookUrl, maxFileSize, autoAnalysis } = req.body;
+        const userId = req.user?.id;
 
-        // For now, just return success without saving due to schema mismatch
-        // This should be fixed when schemas are unified
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        // Get or create user settings
+        let userSettings = await storage.getUserSettings(userId);
+
+        if (!userSettings) {
+          // Create default settings
+          await storage.createUserSettings({
+            userId,
+            denseMode: false,
+            autoRefresh: false,
+            refreshInterval: 30,
+            theme: "light",
+            language: "en",
+            timezone: "UTC",
+            notificationPreferences: JSON.stringify({ email: true, push: true, sms: false }),
+            displayPreferences: JSON.stringify({ itemsPerPage: 10, defaultView: "grid" }),
+            navigationPreferences: JSON.stringify({ topNav: { logo: true, search: true, notifications: true, userMenu: true }, sideNav: { collapsed: false, showLabels: true, groupItems: true } }),
+            apiSettings: JSON.stringify({ geminiApiKey: "", webhookUrl: "", maxFileSize: "10", autoAnalysis: true }),
+          });
+          userSettings = await storage.getUserSettings(userId);
+        }
+
+        // Update API settings
+        const currentApiSettings = typeof userSettings.apiSettings === 'string'
+          ? JSON.parse(userSettings.apiSettings)
+          : userSettings.apiSettings || {};
+
         const updatedApiSettings = {
+          ...currentApiSettings,
           geminiApiKey: geminiApiKey || "",
           webhookUrl: webhookUrl || "",
           maxFileSize: maxFileSize || "10",
           autoAnalysis: autoAnalysis ?? true,
         };
 
-        console.log(
-          "API settings update received (not persisted due to schema mismatch):",
-          updatedApiSettings
-        );
+        await storage.updateUserSettings(userId, {
+          apiSettings: JSON.stringify(updatedApiSettings),
+        });
 
         res.json({
           message: "API settings updated successfully",
@@ -547,18 +592,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
           weeklyReports,
         } = req.body;
 
-        // For now, just return success without saving due to schema mismatch
+        const userId = req.user?.id;
+
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        // Get or create user settings
+        let userSettings = await storage.getUserSettings(userId);
+
+        if (!userSettings) {
+          // Create default settings
+          await storage.createUserSettings({
+            userId,
+            denseMode: false,
+            autoRefresh: false,
+            refreshInterval: 30,
+            theme: "light",
+            language: "en",
+            timezone: "UTC",
+            notificationPreferences: JSON.stringify({ email: true, push: true, sms: false }),
+            displayPreferences: JSON.stringify({ itemsPerPage: 10, defaultView: "grid" }),
+            navigationPreferences: JSON.stringify({ topNav: { logo: true, search: true, notifications: true, userMenu: true }, sideNav: { collapsed: false, showLabels: true, groupItems: true } }),
+            apiSettings: JSON.stringify({ geminiApiKey: "", webhookUrl: "", maxFileSize: "10", autoAnalysis: true }),
+          });
+          userSettings = await storage.getUserSettings(userId);
+        }
+
+        // Update timezone and language directly
+        const updates: any = {};
+        if (defaultTimezone) updates.timezone = defaultTimezone;
+        if (defaultLanguage) updates.language = defaultLanguage;
+
+        // Update notification preferences
+        const currentNotifPrefs = typeof userSettings.notificationPreferences === 'string'
+          ? JSON.parse(userSettings.notificationPreferences)
+          : userSettings.notificationPreferences || {};
+
+        updates.notificationPreferences = JSON.stringify({
+          ...currentNotifPrefs,
+          email: emailNotifications ?? true,
+          weeklyReports: weeklyReports ?? false,
+        });
+
+        await storage.updateUserSettings(userId, updates);
+
         const updatedSystemSettings = {
           defaultTimezone: defaultTimezone || "UTC",
           defaultLanguage: defaultLanguage || "English",
           emailNotifications: emailNotifications ?? true,
           weeklyReports: weeklyReports ?? false,
         };
-
-        console.log(
-          "System settings update received (not persisted due to schema mismatch):",
-          updatedSystemSettings
-        );
 
         res.json({
           message: "System settings updated successfully",
@@ -3006,11 +3090,11 @@ Format as JSON with the following structure:
     try {
       const id = parseInt(req.params.id);
       const store = await storage.getStore(id);
-      
+
       if (!store) {
         return res.status(404).json({ message: "Store not found" });
       }
-      
+
       res.json(store);
     } catch (error) {
       console.error("Error fetching store:", error);
@@ -3045,11 +3129,11 @@ Format as JSON with the following structure:
         const id = parseInt(req.params.id);
         const storeData = req.body;
         const store = await storage.updateStore(id, storeData);
-        
+
         if (!store) {
           return res.status(404).json({ message: "Store not found" });
         }
-        
+
         res.json(store);
       } catch (error) {
         console.error("Error updating store:", error);
@@ -3067,11 +3151,11 @@ Format as JSON with the following structure:
       try {
         const id = parseInt(req.params.id);
         const success = await storage.deleteStore(id);
-        
+
         if (!success) {
           return res.status(404).json({ message: "Store not found" });
         }
-        
+
         res.json({ message: "Store deleted successfully" });
       } catch (error) {
         console.error("Error deleting store:", error);
@@ -3084,14 +3168,14 @@ Format as JSON with the following structure:
   app.get("/api/kiosks", requireAuth, async (req: any, res: any) => {
     try {
       const storeId = req.query.storeId;
-      
+
       let kiosks;
       if (storeId) {
         kiosks = await storage.getKiosksByStore(parseInt(storeId));
       } else {
         kiosks = await storage.getAllKiosks();
       }
-      
+
       res.json(kiosks);
     } catch (error) {
       console.error("Error fetching kiosks:", error);
@@ -3104,11 +3188,11 @@ Format as JSON with the following structure:
     try {
       const id = parseInt(req.params.id);
       const kiosk = await storage.getKiosk(id);
-      
+
       if (!kiosk) {
         return res.status(404).json({ message: "Kiosk not found" });
       }
-      
+
       res.json(kiosk);
     } catch (error) {
       console.error("Error fetching kiosk:", error);
@@ -3143,11 +3227,11 @@ Format as JSON with the following structure:
         const id = parseInt(req.params.id);
         const kioskData = req.body;
         const kiosk = await storage.updateKiosk(id, kioskData);
-        
+
         if (!kiosk) {
           return res.status(404).json({ message: "Kiosk not found" });
         }
-        
+
         res.json(kiosk);
       } catch (error) {
         console.error("Error updating kiosk:", error);
@@ -3165,11 +3249,11 @@ Format as JSON with the following structure:
       try {
         const id = parseInt(req.params.id);
         const success = await storage.deleteKiosk(id);
-        
+
         if (!success) {
           return res.status(404).json({ message: "Kiosk not found" });
         }
-        
+
         res.json({ message: "Kiosk deleted successfully" });
       } catch (error) {
         console.error("Error deleting kiosk:", error);

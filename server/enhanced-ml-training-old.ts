@@ -126,13 +126,14 @@ export class EnhancedMLTrainingService {
 
     // Save training session
     await this.db.createModelTrainingSession({
+      sessionName: `suggestion_model_${Date.now()}`, // Required field
       modelId: 1, // Default suggestion model
       initiatedBy: 1, // System user
       status: 'completed',
       trainingData: JSON.stringify(trainingData),
-      startedAt: new Date(startTime),
-      completedAt: new Date(),
-      metrics: trainingMetrics
+      startedAt: new Date(startTime).toISOString(), // Convert to ISO string for DATETIME
+      completedAt: new Date().toISOString(), // Convert to ISO string for DATETIME
+      metrics: JSON.stringify(trainingMetrics) // Convert to JSON string
     });
 
     return {
@@ -437,7 +438,7 @@ export class EnhancedMLTrainingService {
         progress: 100,
         currentStep: 'Ready for training',
         estimatedCompletion: null,
-        lastTrainingDate: lastSession?.completedAt || null,
+        lastTrainingDate: lastSession?.completedAt ? new Date(lastSession.completedAt) : null, // Convert ISO string to Date
         trainingDataStats: stats
       };
     } catch (error) {

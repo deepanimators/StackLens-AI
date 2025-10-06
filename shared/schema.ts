@@ -259,26 +259,16 @@ export const userTraining = sqliteTable("user_training", {
 export const modelTrainingSessions = sqliteTable("model_training_sessions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   modelId: integer("model_id").references(() => mlModels.id),
-  sessionName: text("session_name"), // Add missing session_name field
+  sessionName: text("session_name").notNull(), // Matches database: NOT NULL
   initiatedBy: integer("initiated_by")
     .references(() => users.id)
     .notNull(),
   status: text("status").notNull().default("pending"), // pending, running, completed, failed
-  trainingData: text("training_data"), // Add missing training_data field
-  trainingDataSize: integer("training_data_size"),
-  epochs: integer("epochs"),
-  batchSize: integer("batch_size"),
-  learningRate: real("learning_rate"),
-  hyperparameters: text("hyperparameters"), // Add missing hyperparameters field
-  metrics: text("metrics", { mode: "json" }), // Training metrics and results
-  logs: text("logs"), // Training logs
-  startedAt: integer("started_at", { mode: "timestamp" }),
-  completedAt: integer("completed_at", { mode: "timestamp" }),
-  duration: integer("duration"), // in seconds
-  errorMessage: text("error_message"),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(
-    sql`(unixepoch() * 1000)`
-  ),
+  trainingData: text("training_data").notNull(), // Matches database: NOT NULL
+  hyperparameters: text("hyperparameters"), // Optional in database
+  metrics: text("metrics"), // Optional in database (not JSON mode - just TEXT)
+  startedAt: text("started_at").default(sql`CURRENT_TIMESTAMP`), // DATETIME in DB, not integer timestamp
+  completedAt: text("completed_at"), // DATETIME in DB
 });
 
 export const modelDeployments = sqliteTable("model_deployments", {
@@ -353,19 +343,17 @@ export const userSettings = sqliteTable("user_settings", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id")
     .references(() => users.id)
-    .notNull()
-    .unique(),
-  theme: text("theme").default("system"), // light, dark, system
-  language: text("language").default("en"), // en, es, fr, hi
-  notifications: text("notifications", { mode: "json" }).default("{}"), // Notification preferences
-  dashboardLayout: text("dashboard_layout", { mode: "json" }), // Custom dashboard config
-  autoRefresh: integer("auto_refresh", { mode: "boolean" }).default(true),
-  refreshInterval: integer("refresh_interval").default(30000), // in milliseconds
-  emailNotifications: integer("email_notifications", { mode: "boolean" }).default(true),
-  pushNotifications: integer("push_notifications", { mode: "boolean" }).default(true),
+    .notNull(),
+  denseMode: integer("dense_mode", { mode: "boolean" }).default(false),
+  autoRefresh: integer("auto_refresh", { mode: "boolean" }).default(false),
+  refreshInterval: integer("refresh_interval").default(30),
+  theme: text("theme").default("light"),
+  language: text("language").default("en"),
   timezone: text("timezone").default("UTC"),
-  dateFormat: text("date_format").default("MM/DD/YYYY"),
-  timeFormat: text("time_format").default("12h"), // 12h or 24h
+  notificationPreferences: text("notification_preferences", { mode: "json" }).default('{"email": true, "push": true, "sms": false}'),
+  displayPreferences: text("display_preferences", { mode: "json" }).default('{"itemsPerPage": 10, "defaultView": "grid"}'),
+  navigationPreferences: text("navigation_preferences", { mode: "json" }).default('{"topNav": {"logo": true, "search": true, "notifications": true, "userMenu": true}, "sideNav": {"collapsed": false, "showLabels": true, "groupItems": true}}'),
+  apiSettings: text("api_settings", { mode: "json" }).default('{"geminiApiKey": "", "webhookUrl": "", "maxFileSize": "10", "autoAnalysis": true}'),
   createdAt: integer("created_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
@@ -502,7 +490,7 @@ export const insertModelTrainingSessionSchema = createInsertSchema(
   modelTrainingSessions
 ).omit({
   id: true,
-  createdAt: true,
+  // No createdAt field in actual database table
 });
 
 export const insertModelDeploymentSchema = createInsertSchema(

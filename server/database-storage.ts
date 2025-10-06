@@ -928,7 +928,7 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(modelTrainingSessions)
       .where(eq(modelTrainingSessions.modelId, modelId))
-      .orderBy(desc(modelTrainingSessions.createdAt));
+      .orderBy(desc(modelTrainingSessions.startedAt)); // Fixed: use startedAt instead of createdAt
   }
 
   async createModelTrainingSession(
@@ -1385,7 +1385,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   // ============= STORE MANAGEMENT =============
-  
+
   async getAllStores(): Promise<Store[]> {
     return await db.select().from(stores).orderBy(asc(stores.name));
   }
