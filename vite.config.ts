@@ -6,13 +6,10 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 export default defineConfig(async () => {
   const plugins = [
     react(),
-    runtimeErrorOverlay(),
-  ];
+    runtimeErrorOverlay()];
 
-  // Only load cartographer in Replit development environment
   if (process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined) {
-    const cartographerModule = await import("@replit/vite-plugin-cartographer");
-    plugins.push(cartographerModule.cartographer());
+
   }
 
   return {
@@ -21,26 +18,19 @@ export default defineConfig(async () => {
       alias: {
         "@": path.resolve(import.meta.dirname, "client", "src"),
         "@shared": path.resolve(import.meta.dirname, "shared"),
-        "@assets": path.resolve(import.meta.dirname, "attached_assets"),
-      },
-    },
+        "@assets": path.resolve(import.meta.dirname, "attached_assets")}},
     root: path.resolve(import.meta.dirname, "client"),
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
-      emptyOutDir: true,
-    },
+      emptyOutDir: true},
     server: {
       fs: {
         strict: true,
-        deny: ["**/.*"],
-      },
+        deny: ["**/.*"]},
       proxy: {
         "/api": {
           target: "http://localhost:4000",
           changeOrigin: true,
-          secure: false,
-        },
-      },
-    },
-  };
+          secure: false}}}};
 });
+
