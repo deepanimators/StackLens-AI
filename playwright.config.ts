@@ -19,7 +19,7 @@ export default defineConfig({
 
     // Reporter configuration
     reporter: [
-        ['html', { outputFolder: 'test-results/html' }],
+        ['html', { outputFolder: 'playwright-report' }],
         ['json', { outputFile: 'test-results/results.json' }],
         ['junit', { outputFile: 'test-results/junit.xml' }],
         ['list'],
@@ -27,7 +27,7 @@ export default defineConfig({
 
     // Shared settings for all projects
     use: {
-        baseURL: process.env.VITE_API_URL || 'http://localhost:4000',
+        baseURL: 'http://localhost:5173',
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
@@ -55,7 +55,7 @@ export default defineConfig({
             name: 'api-tests',
             testMatch: /tests\/api\/.*\.test\.ts/,
             use: {
-                baseURL: 'http://localhost:4000',
+                baseURL: 'http://localhost:5000',
             },
             dependencies: ['setup'],
         },
@@ -131,11 +131,15 @@ export default defineConfig({
         },
     ],
 
-    // Web server configuration
-    webServer: {
-        command: 'npm run dev',
+    // Web server configuration - use existing servers
+    // To run tests: start servers with 'npm run dev' in another terminal, then run 'npm test'
+    // Or use 'npm run test:with-servers' to auto-start servers
+    webServer: process.env.SKIP_SERVER ? undefined : {
+        command: 'npm run dev:client',
         url: 'http://localhost:5173',
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: true,
         timeout: 120 * 1000,
+        stdout: 'ignore',
+        stderr: 'pipe',
     },
 });

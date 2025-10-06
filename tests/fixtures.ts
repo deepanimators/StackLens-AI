@@ -1,5 +1,6 @@
 import { test as base, expect } from '@playwright/test';
-import type { Page } from '@playwright/test';
+import type { Page, APIRequestContext } from '@playwright/test';
+import type { Playwright } from 'playwright-core';
 
 /**
  * StackLens AI - Test Fixtures
@@ -37,9 +38,12 @@ export const test = base.extend<StackLensFixtures>({
     },
 
     // API context fixture
-    apiContext: async ({ request }, use) => {
+    apiContext: async ({ playwright }: { playwright: Playwright }, use) => {
+        // Create new request context
+        const apiContext = await playwright.request.newContext();
+
         // Login and get token
-        const response = await request.post('/api/auth/firebase-signin', {
+        const response = await apiContext.post('/api/auth/firebase-signin', {
             data: {
                 token: process.env.TEST_FIREBASE_TOKEN,
             },
@@ -47,15 +51,17 @@ export const test = base.extend<StackLensFixtures>({
 
         const { token } = await response.json();
 
-        // Create authenticated API context
-        const apiContext = await request.newContext({
+        // Dispose current context and create authenticated one
+        await apiContext.dispose();
+        const authenticatedContext = await playwright.request.newContext({
             extraHTTPHeaders: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         });
 
-        await use(apiContext);
+        await use(authenticatedContext);
+        await authenticatedContext.dispose();
     },
 
     // Test user fixture

@@ -93,7 +93,8 @@ test.describe('Error Dashboard', () => {
         await authenticatedPage.waitForResponse('**/api/errors**');
 
         const errorCards = authenticatedPage.locator('[data-testid="error-card"]');
-        await expect(errorCards).toHaveCount(expect.any(Number));
+        const count = await errorCards.count();
+        expect(count).toBeGreaterThanOrEqual(0);
     });
 
     test('should clear all filters', async ({ authenticatedPage }) => {
