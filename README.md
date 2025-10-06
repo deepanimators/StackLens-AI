@@ -398,3 +398,5 @@ sqlite3 db/stacklens.db "SELECT 'STORES' as Type, COUNT(*) as Count FROM stores 
 
 forget everything!
 
+sqlite3 db/stacklens.db "SELECT 'STORES' as Type, COUNT(*) as Count FROM stores WHERE store_number LIKE 'BK-%' UNION ALL SELECT 'KIOSKS' as Type, COUNT(*) as Count FROM kiosks WHERE kiosk_number LIKE 'BK-%';"
+
