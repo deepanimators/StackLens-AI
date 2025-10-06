@@ -148,7 +148,7 @@ jobs:
 
             - name: Start backend server
               run: |
-                  npm run dev:server &
+                  PORT=5000 npm run dev:server &
                   echo $! > server.pid
                   # Wait for server to be ready
                   for i in {1..30}; do
@@ -219,7 +219,7 @@ jobs:
 
             - name: Start backend server
               run: |
-                  npm run dev:server &
+                  PORT=5000 npm run dev:server &
                   echo $! > server.pid
                   # Wait for server to be ready
                   for i in {1..30}; do
@@ -279,7 +279,7 @@ jobs:
 
             - name: Start backend server
               run: |
-                  npm run dev:server &
+                  PORT=5000 npm run dev:server &
                   echo $! > server.pid
                   # Wait for server to be ready
                   for i in {1..30}; do
@@ -304,6 +304,11 @@ jobs:
                     echo "Waiting for client... ($i/30)"
                     sleep 2
                   done
+
+            - name: Setup auth state
+              run: |
+                  mkdir -p tests/.auth
+                  echo '{"cookies":[],"origins":[]}' > tests/.auth/user.json
 
             - name: Run E2E tests
               run: playwright test tests/e2e --project=e2e-${{ matrix.browser }}
@@ -371,7 +376,9 @@ jobs:
                   done
 
             - name: Run UI tests
-              run: SKIP_SERVER=true npx playwright test tests/ui
+              run: playwright test tests/ui
+              env:
+                  CI: true
 
             - name: Stop servers
               if: always()
@@ -412,7 +419,7 @@ jobs:
 
             - name: Start backend server
               run: |
-                  npm run dev:server &
+                  PORT=5000 npm run dev:server &
                   echo $! > server.pid
                   # Wait for server to be ready
                   for i in {1..30}; do
