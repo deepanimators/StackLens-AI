@@ -1,16 +1,15 @@
 {
   "include": [
-    "apps/web/src/**/*",
-    "apps/api/src/**/*",
     "packages/shared/**/*",
-    "packages/database/**/*",
-    "tests/**/*"
+    "packages/database/**/*"
   ],
   "exclude": [
     "node_modules",
     "build",
     "dist",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "tests/**/*",
+    "apps/api/src/database/storage.ts"
   ],
   "compilerOptions": {
     "incremental": true,
