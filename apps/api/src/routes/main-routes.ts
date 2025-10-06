@@ -1,23 +1,23 @@
 import type { Express } from "express";
 // FORCE RESTART COMMENT
 import { createServer, type Server } from "http";
-import { storage } from "./database-storage";
-import { db, sqlite } from "./db";
+import { storage } from "../database/database-storage.js";
+import { db, sqlite } from "../database/db.js";
 import { desc, eq, sql } from "drizzle-orm";
-import { LogParser } from "./services/log-parser";
-import { aiService } from "./ai-service";
-import { MLService } from "./services/ml-service";
-import { AuthService } from "./services/auth-service";
-import { modelTrainer } from "./services/model-trainer";
-import { predictor } from "./services/predictor";
-import { suggestor } from "./services/suggestor";
-import { FeatureEngineer } from "./services/feature-engineer";
-import { ExcelTrainingDataProcessor } from "./services/excel-processor";
-import { EnhancedMLTrainingService } from "./services/enhanced-ml-training";
-import { backgroundJobProcessor } from "./background-processor";
-import { verifyFirebaseToken, syncFirebaseUser } from "./firebase-auth";
-import { microservicesProxy } from "./services/microservices-proxy";
-import { enhancedMicroservicesProxy } from "./services/enhanced-microservices-proxy";
+import { LogParser } from "../services/log-parser.js";
+import { aiService } from "../services/ai-service.js";
+import { MLService } from "../services/ml-service.js";
+import { AuthService } from "../services/auth-service.js";
+import { modelTrainer } from "../services/model-trainer.js";
+import { predictor } from "../services/predictor.js";
+import { suggestor } from "../services/suggestor.js";
+import { FeatureEngineer } from "../services/feature-engineer.js";
+import { ExcelTrainingDataProcessor } from "../services/excel-processor.js";
+import { EnhancedMLTrainingService } from "../services/enhanced-ml-training.js";
+import { backgroundJobProcessor } from "../processors/background-processor.js";
+import { verifyFirebaseToken, syncFirebaseUser } from "../services/auth/firebase-auth.js";
+import { microservicesProxy } from "../services/microservices-proxy.js";
+import { enhancedMicroservicesProxy } from "../services/enhanced-microservices-proxy.js";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -26,7 +26,7 @@ import * as genai from "@google/genai";
 import fs from "fs";
 import os from "os";
 import { errorLogs, analysisHistory, logFiles, users } from "@shared/sqlite-schema";
-import { errorEmbeddings, suggestionFeedback } from "../shared/schema";
+import { errorEmbeddings, suggestionFeedback } from "@shared/schema";
 import {
   insertUserSchema,
   insertLogFileSchema,
@@ -48,8 +48,8 @@ import {
   modelDeployments,
   InsertAuditLog,
 } from "@shared/sqlite-schema";
-import { ErrorPatternAnalyzer } from "./error-pattern-analyzer";
-import { createRAGRoutes } from "./routes/rag-routes.js";
+import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
+import { createRAGRoutes } from "./rag-routes.js";
 import crypto from "crypto";
 
 const upload = multer({
