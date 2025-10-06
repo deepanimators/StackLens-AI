@@ -302,6 +302,7 @@ export class ErrorPatternAnalyzer {
         resolved: false,
         aiSuggestion: null,
         mlPrediction: null,
+        mlConfidence: null,
       };
 
       const response = await this.aiService.generateErrorSuggestion(

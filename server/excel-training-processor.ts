@@ -291,15 +291,22 @@ export class ExcelTrainingDataProcessor {
       console.log('Saving training data to database...');
 
       for (const item of trainingData) {
-        // Save as a training example in the database
-        await this.db.createTrainingExample({
-          errorText: item.error,
-          suggestion: item.suggestion,
+        // Save as training data in the database
+        await this.db.createTrainingData({
           errorType: item.errorType || 'Unknown',
           severity: item.severity || 'Medium',
-          category: item.category || 'Application',
-          features: JSON.stringify(item.features),
-          createdAt: new Date()
+          suggestedSolution: item.suggestion,
+          sourceFile: 'Excel Import',
+          confidence: 0.8,
+          source: 'excel_import',
+          isValidated: true,
+          validatedBy: 'system',
+          validatedAt: Date.now(),
+          features: item.features,
+          originalData: {
+            error: item.error,
+            category: item.category
+          }
         });
       }
 

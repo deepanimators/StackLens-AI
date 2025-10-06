@@ -5923,7 +5923,7 @@ Format as JSON with the following structure:
       const previousToDate = new Date(fromDate);
 
       const prevFiles = userFiles.filter((file) => {
-        const uploadDate = new Date(file.uploadTimestamp);
+        const uploadDate = new Date(file.uploadTimestamp || new Date());
         return uploadDate >= previousFromDate && uploadDate < previousToDate;
       });
 
@@ -6480,7 +6480,7 @@ Format as JSON with the following structure:
       // Prepare export data
       const exportData = errors.map((error) => ({
         id: error.id,
-        timestamp: error.timestamp || new Date(error.createdAt).toISOString(),
+        timestamp: error.timestamp || new Date(error.createdAt || Date.now()).toISOString(),
         severity: error.severity,
         errorType: error.errorType,
         message: error.message,
@@ -6872,7 +6872,7 @@ Format as JSON with the following structure:
             results.push({
               errorId,
               success: false,
-              error: error.message,
+              error: error instanceof Error ? error.message : "Unknown error",
             });
             failureCount++;
           }
