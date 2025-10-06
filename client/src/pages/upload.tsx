@@ -1,10 +1,18 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import AdaptiveLayout from "@/components/adaptive-layout";
 import { authenticatedRequest } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
@@ -16,8 +24,25 @@ import {
   CheckCircle,
   AlertTriangle,
   Loader2,
+  Store as StoreIcon,
+  Monitor,
 } from "lucide-react";
 import { SUPPORTED_FILE_TYPES, MAX_FILE_SIZE } from "@/lib/constants";
+
+interface Store {
+  id: number;
+  storeNumber: string;
+  name: string;
+  isActive: boolean;
+}
+
+interface Kiosk {
+  id: number;
+  kioskNumber: string;
+  storeId: number;
+  name: string;
+  isActive: boolean;
+}
 
 interface UploadFile {
   id: string;
@@ -33,8 +58,55 @@ interface UploadFile {
 
 export default function UploadPage() {
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const [stores, setStores] = useState<Store[]>([]);
+  const [kiosks, setKiosks] = useState<Kiosk[]>([]);
+  const [selectedStore, setSelectedStore] = useState<string>("");
+  const [selectedKiosk, setSelectedKiosk] = useState<string>("");
+  const [filteredKiosks, setFilteredKiosks] = useState<Kiosk[]>([]);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Fetch stores on mount
+  useEffect(() => {
+    fetchStores();
+    fetchKiosks();
+  }, []);
+
+  // Filter kiosks when store changes
+  useEffect(() => {
+    if (selectedStore) {
+      const store = stores.find((s) => s.storeNumber === selectedStore);
+      if (store) {
+        const filtered = kiosks.filter((k) => k.storeId === store.id);
+        setFilteredKiosks(filtered);
+        // Reset kiosk selection if current kiosk not in filtered list
+        if (selectedKiosk && !filtered.find((k) => k.kioskNumber === selectedKiosk)) {
+          setSelectedKiosk("");
+        }
+      }
+    } else {
+      setFilteredKiosks([]);
+      setSelectedKiosk("");
+    }
+  }, [selectedStore, stores, kiosks, selectedKiosk]);
+
+  const fetchStores = async () => {
+    try {
+      const data = await authenticatedRequest("GET", "/api/stores");
+      setStores(data.filter((s: Store) => s.isActive));
+    } catch (error) {
+      console.error("Failed to fetch stores:", error);
+    }
+  };
+
+  const fetchKiosks = async () => {
+    try {
+      const data = await authenticatedRequest("GET", "/api/kiosks");
+      setKiosks(data.filter((k: Kiosk) => k.isActive));
+    } catch (error) {
+      console.error("Failed to fetch kiosks:", error);
+    }
+  };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newFiles = acceptedFiles.map((file) => ({
@@ -63,6 +135,14 @@ export default function UploadPage() {
     mutationFn: async (uploadFile: UploadFile) => {
       const formData = new FormData();
       formData.append("files", uploadFile.file);
+      
+      // Add store/kiosk metadata
+      if (selectedStore) {
+        formData.append("storeNumber", selectedStore);
+      }
+      if (selectedKiosk) {
+        formData.append("kioskNumber", selectedKiosk);
+      }
 
       const response = await authenticatedRequest(
         "POST",
@@ -195,6 +275,89 @@ export default function UploadPage() {
       title="Upload Files"
       subtitle="Upload log files for AI-powered analysis"
     >
+      {/* Store/Kiosk Selection */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <StoreIcon className="h-5 w-5" />
+            Select Store and Kiosk
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Store Selector */}
+            <div className="space-y-2">
+              <Label htmlFor="store-select">
+                Store <span className="text-red-500">*</span>
+              </Label>
+              <Select value={selectedStore} onValueChange={setSelectedStore}>
+                <SelectTrigger id="store-select">
+                  <SelectValue placeholder="Select a store" />
+                </SelectTrigger>
+                <SelectContent>
+                  {stores.map((store) => (
+                    <SelectItem key={store.id} value={store.storeNumber}>
+                      {store.storeNumber} - {store.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                {stores.length === 0
+                  ? "No stores available"
+                  : `${stores.length} active stores`}
+              </p>
+            </div>
+
+            {/* Kiosk Selector */}
+            <div className="space-y-2">
+              <Label htmlFor="kiosk-select">
+                Kiosk <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={selectedKiosk}
+                onValueChange={setSelectedKiosk}
+                disabled={!selectedStore || filteredKiosks.length === 0}
+              >
+                <SelectTrigger id="kiosk-select">
+                  <SelectValue placeholder="Select a kiosk" />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredKiosks.map((kiosk) => (
+                    <SelectItem key={kiosk.id} value={kiosk.kioskNumber}>
+                      {kiosk.kioskNumber} - {kiosk.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                {!selectedStore
+                  ? "Select a store first"
+                  : filteredKiosks.length === 0
+                  ? "No kiosks available for this store"
+                  : `${filteredKiosks.length} active kiosks`}
+              </p>
+            </div>
+          </div>
+
+          {!selectedStore || !selectedKiosk ? (
+            <Alert className="mt-4">
+              <Monitor className="h-4 w-4" />
+              <AlertDescription>
+                Please select both a store and kiosk before uploading files. This metadata will be associated with all uploaded log files.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <Alert className="mt-4 bg-green-50 border-green-200">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <AlertDescription className="text-green-800">
+                Files will be uploaded for: <strong>{selectedStore}</strong> / <strong>{selectedKiosk}</strong>
+              </AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Upload Area */}
       <Card>
         <CardHeader>
@@ -203,16 +366,22 @@ export default function UploadPage() {
         <CardContent>
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
+            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+              !selectedStore || !selectedKiosk
+                ? "cursor-not-allowed opacity-50"
+                : "cursor-pointer"
+            } ${
               isDragActive
                 ? "border-primary bg-primary/5"
                 : "border-muted-foreground/25 hover:border-primary/50"
             }`}
           >
-            <input {...getInputProps()} />
+            <input {...getInputProps()} disabled={!selectedStore || !selectedKiosk} />
             <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
             <p className="text-lg font-medium mb-2">
-              {isDragActive
+              {!selectedStore || !selectedKiosk
+                ? "Select store and kiosk above to enable upload"
+                : isDragActive
                 ? "Drop files here"
                 : "Drop files here or click to browse"}
             </p>
@@ -230,7 +399,11 @@ export default function UploadPage() {
                 <h3 className="text-lg font-medium">Files to Upload</h3>
                 <Button
                   onClick={handleUploadAll}
-                  disabled={files.every((f) => f.status !== "pending")}
+                  disabled={
+                    files.every((f) => f.status !== "pending") ||
+                    !selectedStore ||
+                    !selectedKiosk
+                  }
                 >
                   Upload All
                 </Button>
@@ -268,7 +441,11 @@ export default function UploadPage() {
                           <Button
                             size="sm"
                             onClick={() => handleUpload(uploadFile)}
-                            disabled={uploadMutation.isPending}
+                            disabled={
+                              uploadMutation.isPending ||
+                              !selectedStore ||
+                              !selectedKiosk
+                            }
                           >
                             Upload
                           </Button>

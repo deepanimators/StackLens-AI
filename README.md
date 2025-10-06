@@ -379,3 +379,9 @@ Updates: Re-run deployment script with -UpdateOnly flag
 Your StackLens AI platform is now production-ready for Windows server deployment with automated setup, team access, and easy future updates! 🚀
 
 The deployment package includes comprehensive documentation in README.md and DEPLOYMENT-INSTRUCTIONS.md for detailed guidance.
+
+verify the final Store and Kiosk data:
+sqlite3 db/stacklens.db -header -column "SELECT s.store_number AS 'Store #', s.name AS 'Franchise Name', COUNT(k.id) AS 'Kiosks' FROM stores s LEFT JOIN kiosks k ON k.store_id = s.id WHERE s.store_number LIKE 'BK-%' GROUP BY s.id ORDER BY s.store_number;"
+
+
+sqlite3 db/stacklens.db "SELECT 'STORES' as Type, COUNT(*) as Count FROM stores WHERE store_number LIKE 'BK-%' UNION ALL SELECT 'KIOSKS' as Type, COUNT(*) as Count FROM kiosks WHERE kiosk_number LIKE 'BK-%';"

@@ -2,6 +2,7 @@ import React, { useState, useEffect, startTransition } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import styles from "./reports.module.css";
 import { Pie, Doughnut, Line, Bar } from "react-chartjs-2";
 
@@ -115,8 +116,8 @@ type Performance = {
   successRate: number;
 };
 
-// Import the authenticatedRequest function
-import { authenticatedRequest } from "@/lib/auth";
+// Import the authenticatedRequest and authenticatedFetch functions
+import { authenticatedRequest, authenticatedFetch } from "@/lib/auth";
 
 // Fetch real report data from API
 const fetchReportData = async () => {
@@ -226,19 +227,51 @@ const fetchReportData = async () => {
     console.log("✅ Real report data calculated:", realData);
     return realData;
   } catch (error) {
-    console.error(
-      "❌ Failed to fetch real report data, falling back to mock:",
-      error
-    );
+    console.error("❌ Failed to fetch real report data:", error);
 
-    // Fallback to basic mock data if API fails
-    const errorTypes: ErrorTypeData[] = [
-      { type: "Unknown", count: 1, percentage: 100 },
-    ];
+    // In production, show error state - NO MOCK DATA
+    if (import.meta.env.PROD) {
+      toast({
+        title: "Error Loading Report Data",
+        description: "Unable to fetch report data. Please try again later.",
+        variant: "destructive",
+      });
+      // Return empty data structure to trigger "No data" UI
+      const errorTypes: ErrorTypeData[] = [];
+      const severityDistribution: SeverityDistribution = {
+        critical: 0,
+        high: 0,
+        medium: 0,
+        low: 0,
+      };
+      const topFiles: TopFile[] = [];
+      const performance: Performance = {
+        avgProcessingTime: "0.0s",
+        successRate: 0,
+      };
+
+      return {
+        summary: {
+          totalFiles: 0,
+          totalErrors: 0,
+          criticalErrors: 0,
+          resolvedErrors: 0,
+          resolutionRate: 0,
+        },
+        errorTypes,
+        severityDistribution,
+        topFiles,
+        performance,
+      };
+    }
+
+    // In development, log warning but still show empty state
+    console.warn("⚠️ DEV MODE: Showing empty state instead of mock data");
+    const errorTypes: ErrorTypeData[] = [];
     const severityDistribution: SeverityDistribution = {
       critical: 0,
       high: 0,
-      medium: 1,
+      medium: 0,
       low: 0,
     };
     const topFiles: TopFile[] = [];
@@ -334,28 +367,53 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
       if (response.ok) {
         const data = await response.json();
         console.log(`✅ Successfully fetched trends data:`, data);
-        setTrendsData(data);
+        
+        // Check if we got real data or empty results
+        if (!data || (Array.isArray(data.errorIdentificationTrends) && data.errorIdentificationTrends.length === 0)) {
+          console.log("ℹ️ No trends data available for selected timeframe");
+          setTrendsData(null);
+        } else {
+          setTrendsData(data);
+        }
       } else {
-        // API call failed (auth error, server error, etc.) - use mock data
-        console.log(
-          "🚨 API call failed, using mock data:",
+        // API call failed (auth error, server error, etc.)
+        console.error(
+          "🚨 API call failed:",
           response.status,
           response.statusText
         );
         const errorText = await response.text();
-        console.log("Error details:", errorText);
-        setTrendsData(generateMockTrendsData(selectedTimeframe));
+        console.error("Error details:", errorText);
+        
+        // In production, show error instead of mock
+        if (import.meta.env.PROD) {
+          toast({
+            title: "Error Loading Trends",
+            description: "Unable to fetch trend data. Please try again.",
+            variant: "destructive",
+          });
+          setTrendsData(null);
+        } else {
+          console.warn("⚠️ DEV MODE: Showing empty state");
+          setTrendsData(null);
+        }
       }
     } catch (error) {
       console.error("💥 Failed to fetch trends data:", error);
       if (error instanceof Error) {
         console.error("Error type:", error.constructor.name);
         console.error("Error message:", error.message);
-        console.error("Error stack:", error.stack);
       }
 
-      // Generate mock data for demo purposes
-      setTrendsData(generateMockTrendsData(selectedTimeframe));
+      // No mock data - show error or empty state
+      if (import.meta.env.PROD) {
+        toast({
+          title: "Network Error",
+          description: "Failed to load trends data. Check your connection.",
+          variant: "destructive",
+        });
+      }
+      setTrendsData(null);
     }
     setIsLoading(false);
   };
@@ -1115,6 +1173,7 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
 export default function Reports() {
   const [dateRange, setDateRange] = useState("7d");
   const [reportType, setReportType] = useState("summary");
+  const { toast } = useToast();
 
   type ReportSummary = {
     totalFiles: number;
@@ -1136,7 +1195,7 @@ export default function Reports() {
     data: reportData = {
       summary: defaultSummary,
       errorTypes: [] as ErrorTypeData[],
-      resolutionRate: 0.88, // Example value, adjust as necessary
+      resolutionRate: 0,
       severityDistribution: { critical: 0, high: 0, medium: 0, low: 0 },
       topFiles: [] as TopFile[],
       performance: { avgProcessingTime: "0.0s", successRate: 0 },
@@ -1146,8 +1205,89 @@ export default function Reports() {
     queryFn: fetchReportData,
   });
 
-  const handleExportReport = (type: string) => {
-    alert(`Exporting report as ${type.toUpperCase()}`);
+  const handleExportReport = async (type: string) => {
+    try {
+      console.log(`🔽 Exporting report as ${type.toUpperCase()}`);
+      
+      // Show loading state
+      const loadingToast = toast({
+        title: "Exporting Report...",
+        description: `Generating ${type.toUpperCase()} report`,
+        duration: 0, // Don't auto-dismiss
+      });
+
+      // Make API call to export endpoint using raw fetch for non-JSON responses
+      const response = await authenticatedFetch(
+        "GET", 
+        `/api/reports/export?format=${type}&range=${dateRange}&reportType=${reportType}`
+      );
+
+      // Check if response is ok
+      if (!response.ok) {
+        throw new Error(`Export failed: ${response.status} ${response.statusText}`);
+      }
+
+      // Generate timestamp for filename
+      const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+
+      // Handle different response types
+      if (type === 'csv') {
+        const csvContent = await response.text();
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `stacklens-error-analysis-${dateRange}-${timestamp}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else if (type === 'pdf') {
+        // For PDF, we get HTML that can be printed to PDF by browser
+        const htmlContent = await response.text();
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = window.URL.createObjectURL(blob);
+        
+        // Open in new window for print-to-PDF
+        const printWindow = window.open(url, '_blank');
+        if (printWindow) {
+          printWindow.onload = () => {
+            // Auto-trigger print dialog after short delay
+            setTimeout(() => {
+              printWindow.print();
+            }, 500);
+          };
+        }
+        
+        // Also provide download option
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `stacklens-error-analysis-${dateRange}-${timestamp}.html`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else if (type === 'xlsx') {
+        const excelContent = await response.blob();
+        const url = window.URL.createObjectURL(excelContent);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `stacklens-error-analysis-${dateRange}-${timestamp}.xlsx`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+
+      // Dismiss loading toast and show success
+      loadingToast.dismiss();
+      toast({
+        title: "Export Successful",
+        description: `${type.toUpperCase()} report downloaded successfully`,
+      });
+
+    } catch (error) {
+      console.error('Export failed:', error);
+      toast({
+        title: "Export Failed",
+        description: `Failed to export ${type.toUpperCase()} report. Please try again.`,
+        variant: "destructive",
+      });
+    }
   };
 
   return (

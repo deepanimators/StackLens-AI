@@ -75,13 +75,14 @@ export default function Login() {
         description: "Logged in successfully",
       });
 
-      // Invalidate auth queries and navigate
+      // Invalidate and refetch auth queries
       await queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/auth/me"] });
 
-      // Add a small delay to ensure state updates, then navigate
+      // Add a longer delay to ensure auth state is properly updated
       setTimeout(() => {
         setLocation("/dashboard");
-      }, 100);
+      }, 500);
     } catch (error) {
       toast({
         title: "Error",
@@ -107,13 +108,14 @@ export default function Login() {
         description: "Account created successfully",
       });
 
-      // Invalidate auth queries and navigate
+      // Invalidate and refetch auth queries
       await queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/auth/me"] });
 
-      // Add a small delay to ensure state updates, then navigate
+      // Add a longer delay to ensure auth state is properly updated
       setTimeout(() => {
         setLocation("/dashboard");
-      }, 100);
+      }, 500);
     } catch (error) {
       toast({
         title: "Error",

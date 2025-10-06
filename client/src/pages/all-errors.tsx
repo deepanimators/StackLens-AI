@@ -16,9 +16,10 @@ import ErrorTable from "@/components/error-table";
 import AnalysisModal from "@/components/analysis-modal";
 import AISuggestionModal from "@/components/ai-suggestion-modal";
 import MultiSelectDropdown from "@/components/multi-select-dropdown";
-import { authenticatedRequest, authManager } from "@/lib/auth";
+import { authenticatedRequest, authenticatedFetch, authManager } from "@/lib/auth";
 import { Search, Filter, Download, RefreshCw } from "lucide-react";
 import { SEVERITY_LABELS } from "@/lib/constants";
+import { useToast } from "@/hooks/use-toast";
 
 // UI-compatible interface for ErrorLog
 interface ErrorLog {
@@ -67,16 +68,41 @@ const transformErrorLog = (apiError: any): ErrorLog => {
     }
   }
 
+  // Standardize timestamp format
+  let standardizedTimestamp: string | null = null;
+  if (apiError.timestamp) {
+    try {
+      if (typeof apiError.timestamp === "string") {
+        // Try to parse as-is first
+        const date = new Date(apiError.timestamp);
+        if (!isNaN(date.getTime())) {
+          standardizedTimestamp = date.toISOString();
+        } else {
+          // Try as Unix timestamp
+          const numTimestamp = parseInt(apiError.timestamp);
+          if (!isNaN(numTimestamp)) {
+            const timestamp = numTimestamp < 10000000000 ? numTimestamp * 1000 : numTimestamp;
+            standardizedTimestamp = new Date(timestamp).toISOString();
+          }
+        }
+      } else if (typeof apiError.timestamp === "number") {
+        const timestamp = apiError.timestamp < 10000000000 ? apiError.timestamp * 1000 : apiError.timestamp;
+        standardizedTimestamp = new Date(timestamp).toISOString();
+      } else {
+        standardizedTimestamp = new Date(apiError.timestamp).toISOString();
+      }
+    } catch (error) {
+      console.warn('Failed to parse timestamp for error', apiError.id, ':', apiError.timestamp, error);
+      standardizedTimestamp = null;
+    }
+  }
+
   return {
     id: apiError.id,
     fileId: apiError.fileId || undefined,
     filename: apiError.filename || apiError.file_path || "Unknown",
     lineNumber: apiError.lineNumber || apiError.line_number,
-    timestamp: apiError.timestamp
-      ? typeof apiError.timestamp === "string"
-        ? apiError.timestamp
-        : new Date(apiError.timestamp).toISOString()
-      : null,
+    timestamp: standardizedTimestamp,
     severity: apiError.severity,
     errorType: apiError.errorType || "Unknown",
     message: apiError.message,
@@ -88,6 +114,7 @@ const transformErrorLog = (apiError: any): ErrorLog => {
 };
 
 export default function AllErrors() {
+  const { toast } = useToast();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [severity, setSeverity] = useState<string>("all");
@@ -251,29 +278,65 @@ export default function AllErrors() {
 
   const handleExport = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:4000/api/export/errors?format=csv`,
-        {
-          method: "GET",
-          headers: {
-            ...authManager.getAuthHeaders(),
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Request failed: ${response.statusText}`);
+      console.log("📤 Starting error export...");
+      
+      // Show loading toast
+      const loadingToast = toast({
+        title: "Exporting Errors...",
+        description: "Generating CSV file with current filters",
+        duration: 0, // Don't auto-dismiss
+      });
+      
+      // Build query parameters based on current filters
+      const exportParams = new URLSearchParams();
+      exportParams.append("format", "csv");
+      
+      if (severity && severity !== "all") {
+        exportParams.append("severity", severity);
+      }
+      if (searchQuery) {
+        exportParams.append("search", searchQuery);
+      }
+      if (fileFilter && fileFilter.length > 0) {
+        exportParams.append("fileFilter", fileFilter.join(","));
+      }
+      if (errorTypeFilter && errorTypeFilter !== "all") {
+        exportParams.append("errorType", errorTypeFilter);
+      }
+      if (userFilter && userFilter !== "all") {
+        exportParams.append("userId", userFilter);
       }
 
-      const blob = await response.blob();
+      const response = await authenticatedFetch(
+        "GET", 
+        `/api/export/errors?${exportParams.toString()}`
+      );
+
+      // Handle the CSV response
+      const csvContent = await response.text();
+      const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "all-errors.csv";
+      a.download = `all-errors-${new Date().toISOString().split('T')[0]}.csv`;
       a.click();
       window.URL.revokeObjectURL(url);
+      
+      // Dismiss loading and show success
+      loadingToast.dismiss();
+      toast({
+        title: "Export Successful",
+        description: "Error data exported to CSV file",
+      });
+      
+      console.log("✅ Export completed successfully");
     } catch (error) {
-      console.error("Export failed:", error);
+      console.error("❌ Export failed:", error);
+      toast({
+        title: "Export Failed",
+        description: "Failed to export error data. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 

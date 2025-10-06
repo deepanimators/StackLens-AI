@@ -31,6 +31,8 @@ export const logFiles = sqliteTable("log_files", {
   fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),
   uploadedBy: integer("uploaded_by").references(() => users.id),
+  storeNumber: text("store_number"), // NEW: Store identifier
+  kioskNumber: text("kiosk_number"), // NEW: Kiosk identifier
   uploadTimestamp: integer("upload_timestamp", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
@@ -257,26 +259,16 @@ export const userTraining = sqliteTable("user_training", {
 export const modelTrainingSessions = sqliteTable("model_training_sessions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   modelId: integer("model_id").references(() => mlModels.id),
-  sessionName: text("session_name"), // Add missing session_name field
+  sessionName: text("session_name").notNull(), // Matches database: NOT NULL
   initiatedBy: integer("initiated_by")
     .references(() => users.id)
     .notNull(),
   status: text("status").notNull().default("pending"), // pending, running, completed, failed
-  trainingData: text("training_data"), // Add missing training_data field
-  trainingDataSize: integer("training_data_size"),
-  epochs: integer("epochs"),
-  batchSize: integer("batch_size"),
-  learningRate: real("learning_rate"),
-  hyperparameters: text("hyperparameters"), // Add missing hyperparameters field
-  metrics: text("metrics", { mode: "json" }), // Training metrics and results
-  logs: text("logs"), // Training logs
-  startedAt: integer("started_at", { mode: "timestamp" }),
-  completedAt: integer("completed_at", { mode: "timestamp" }),
-  duration: integer("duration"), // in seconds
-  errorMessage: text("error_message"),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(
-    sql`(unixepoch() * 1000)`
-  ),
+  trainingData: text("training_data").notNull(), // Matches database: NOT NULL
+  hyperparameters: text("hyperparameters"), // Optional in database
+  metrics: text("metrics"), // Optional in database (not JSON mode - just TEXT)
+  startedAt: text("started_at").default(sql`CURRENT_TIMESTAMP`), // DATETIME in DB, not integer timestamp
+  completedAt: text("completed_at"), // DATETIME in DB
 });
 
 export const modelDeployments = sqliteTable("model_deployments", {
@@ -341,6 +333,72 @@ export const settings = sqliteTable("settings", {
   description: text("description"),
   isActive: integer("is_active", { mode: "boolean" }).default(true),
   updatedBy: integer("updated_by").references(() => users.id),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+// User-specific settings (preferences, theme, language, etc.)
+export const userSettings = sqliteTable("user_settings", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id")
+    .references(() => users.id)
+    .notNull(),
+  denseMode: integer("dense_mode", { mode: "boolean" }).default(false),
+  autoRefresh: integer("auto_refresh", { mode: "boolean" }).default(false),
+  refreshInterval: integer("refresh_interval").default(30),
+  theme: text("theme").default("light"),
+  language: text("language").default("en"),
+  timezone: text("timezone").default("UTC"),
+  notificationPreferences: text("notification_preferences", { mode: "json" }).default('{"email": true, "push": true, "sms": false}'),
+  displayPreferences: text("display_preferences", { mode: "json" }).default('{"itemsPerPage": 10, "defaultView": "grid"}'),
+  navigationPreferences: text("navigation_preferences", { mode: "json" }).default('{"topNav": {"logo": true, "search": true, "notifications": true, "userMenu": true}, "sideNav": {"collapsed": false, "showLabels": true, "groupItems": true}}'),
+  apiSettings: text("api_settings", { mode: "json" }).default('{"geminiApiKey": "", "webhookUrl": "", "maxFileSize": "10", "autoAnalysis": true}'),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+// Stores table - Physical store locations
+export const stores = sqliteTable("stores", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  storeNumber: text("store_number").notNull().unique(),
+  name: text("name").notNull(),
+  location: text("location"),
+  address: text("address"),
+  city: text("city"),
+  state: text("state"),
+  zipCode: text("zip_code"),
+  country: text("country").default("USA"),
+  phoneNumber: text("phone_number"),
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+// Kiosks table - Kiosks within stores
+export const kiosks = sqliteTable("kiosks", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  kioskNumber: text("kiosk_number").notNull().unique(),
+  storeId: integer("store_id")
+    .references(() => stores.id)
+    .notNull(),
+  name: text("name").notNull(),
+  location: text("location"), // Location within store (e.g., "Front entrance", "Section A")
+  deviceType: text("device_type"), // Type of kiosk device
+  ipAddress: text("ip_address"),
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  lastCheckIn: integer("last_check_in", { mode: "timestamp" }),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
   updatedAt: integer("updated_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
@@ -432,7 +490,7 @@ export const insertModelTrainingSessionSchema = createInsertSchema(
   modelTrainingSessions
 ).omit({
   id: true,
-  createdAt: true,
+  // No createdAt field in actual database table
 });
 
 export const insertModelDeploymentSchema = createInsertSchema(
@@ -454,6 +512,24 @@ export const insertNotificationSchema = createInsertSchema(notifications).omit({
 
 export const insertSettingsSchema = createInsertSchema(settings).omit({
   id: true,
+  updatedAt: true,
+});
+
+export const insertUserSettingsSchema = createInsertSchema(userSettings).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertStoreSchema = createInsertSchema(stores).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertKioskSchema = createInsertSchema(kiosks).omit({
+  id: true,
+  createdAt: true,
   updatedAt: true,
 });
 
@@ -497,6 +573,12 @@ export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 export type Setting = typeof settings.$inferSelect;
 export type InsertSetting = z.infer<typeof insertSettingsSchema>;
+export type UserSetting = typeof userSettings.$inferSelect;
+export type InsertUserSetting = z.infer<typeof insertUserSettingsSchema>;
+export type Store = typeof stores.$inferSelect;
+export type InsertStore = z.infer<typeof insertStoreSchema>;
+export type Kiosk = typeof kiosks.$inferSelect;
+export type InsertKiosk = z.infer<typeof insertKioskSchema>;
 export type AiTrainingData = typeof aiTrainingData.$inferSelect;
 export type InsertAiTrainingData = z.infer<typeof insertAiTrainingDataSchema>;
 

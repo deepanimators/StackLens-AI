@@ -383,6 +383,33 @@ export default function AdminDashboard() {
     },
   });
 
+  // Create role mutation
+  const createRoleMutation = useMutation({
+    mutationFn: async (roleData: any) => {
+      const response = await authenticatedRequest(
+        "POST",
+        "/api/admin/roles",
+        roleData
+      );
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/roles"] });
+      setIsCreateRoleOpen(false);
+      toast({
+        title: "Success",
+        description: "Role created successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to create role",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Edit role mutation
   const editRoleMutation = useMutation({
     mutationFn: async (roleData: any) => {
@@ -406,6 +433,35 @@ export default function AdminDashboard() {
       toast({
         title: "Error",
         description: "Failed to update role",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Create training module mutation
+  const createTrainingMutation = useMutation({
+    mutationFn: async (moduleData: any) => {
+      const response = await authenticatedRequest(
+        "POST",
+        "/api/admin/training-modules",
+        moduleData
+      );
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["/api/admin/training-modules"],
+      });
+      setIsCreateTrainingOpen(false);
+      toast({
+        title: "Success",
+        description: "Training module created successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to create training module",
         variant: "destructive",
       });
     },
@@ -660,6 +716,42 @@ export default function AdminDashboard() {
     if (confirm("Are you sure you want to delete this user?")) {
       deleteUserMutation.mutate(userId);
     }
+  };
+
+  const handleCreateRole = (event: React.FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    
+    let permissions;
+    try {
+      const permissionsText = formData.get("permissions") as string;
+      permissions = permissionsText ? JSON.parse(permissionsText) : {};
+    } catch {
+      permissions = {};
+    }
+
+    const roleData = {
+      name: formData.get("name"),
+      description: formData.get("description"),
+      permissions,
+      isActive: formData.get("isActive") === "on",
+    };
+    createRoleMutation.mutate(roleData);
+  };
+
+  const handleCreateTraining = (event: React.FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const moduleData = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      content: formData.get("content"),
+      difficulty: formData.get("difficultyLevel") || "beginner",
+      estimatedDuration: 60, // Default 60 minutes
+      isActive: true,
+      createdBy: 1, // Will be set by backend from auth
+    };
+    createTrainingMutation.mutate(moduleData);
   };
 
   const handleTrainModel = (event: React.FormEvent) => {
@@ -2393,6 +2485,144 @@ export default function AdminDashboard() {
               </Button>
               <Button type="submit" disabled={editModelMutation.isPending}>
                 {editModelMutation.isPending ? "Updating..." : "Update Model"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Role Dialog */}
+      <Dialog open={isCreateRoleOpen} onOpenChange={setIsCreateRoleOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Role</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleCreateRole} className="space-y-4">
+            <div>
+              <label htmlFor="roleName" className="text-sm font-medium">
+                Role Name
+              </label>
+              <Input
+                id="roleName"
+                name="name"
+                placeholder="e.g., Developer, Analyst"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="roleDescription" className="text-sm font-medium">
+                Description
+              </label>
+              <Textarea
+                id="roleDescription"
+                name="description"
+                placeholder="Role description and responsibilities"
+                rows={3}
+              />
+            </div>
+            <div>
+              <label htmlFor="rolePermissions" className="text-sm font-medium">
+                Permissions (JSON)
+              </label>
+              <Textarea
+                id="rolePermissions"
+                name="permissions"
+                placeholder='{"canRead": true, "canWrite": false, "canDelete": false}'
+                rows={4}
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="roleIsActive"
+                name="isActive"
+                defaultChecked
+              />
+              <label htmlFor="roleIsActive" className="text-sm font-medium">
+                Active
+              </label>
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsCreateRoleOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={createRoleMutation.isPending}>
+                {createRoleMutation.isPending ? "Creating..." : "Create Role"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Training Module Dialog */}
+      <Dialog open={isCreateTrainingOpen} onOpenChange={setIsCreateTrainingOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create Training Module</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleCreateTraining} className="space-y-4">
+            <div>
+              <label htmlFor="trainingTitle" className="text-sm font-medium">
+                Module Title
+              </label>
+              <Input
+                id="trainingTitle"
+                name="title"
+                placeholder="e.g., Introduction to Error Analysis"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="trainingDescription" className="text-sm font-medium">
+                Description
+              </label>
+              <Textarea
+                id="trainingDescription"
+                name="description"
+                placeholder="Brief overview of the training module"
+                rows={3}
+              />
+            </div>
+            <div>
+              <label htmlFor="trainingContent" className="text-sm font-medium">
+                Content (Markdown)
+              </label>
+              <Textarea
+                id="trainingContent"
+                name="content"
+                placeholder="Training content in Markdown format..."
+                rows={6}
+              />
+            </div>
+            <div>
+              <label htmlFor="difficultyLevel" className="text-sm font-medium">
+                Difficulty Level
+              </label>
+              <select
+                id="difficultyLevel"
+                name="difficultyLevel"
+                className="w-full p-2 border rounded"
+                defaultValue="beginner"
+              >
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsCreateTrainingOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={createTrainingMutation.isPending}>
+                {createTrainingMutation.isPending ? "Creating..." : "Create Module"}
               </Button>
             </div>
           </form>

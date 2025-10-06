@@ -1,5 +1,5 @@
 import { DatabaseStorage } from "./database-storage";
-import { AIService } from "./ai-service";
+import { aiService } from "./ai-service";
 
 interface ErrorPattern {
   pattern: string;
@@ -25,11 +25,11 @@ interface DiscoveredPattern {
 
 export class ErrorPatternAnalyzer {
   private db: DatabaseStorage;
-  private aiService: AIService;
+  private aiService: typeof aiService;
 
   constructor() {
     this.db = new DatabaseStorage();
-    this.aiService = new AIService();
+    this.aiService = aiService;
   }
 
   /**
@@ -52,7 +52,7 @@ export class ErrorPatternAnalyzer {
       for (const [errorType, errorMessages] of Array.from(
         groupedErrors.entries()
       )) {
-        const pattern = await this.analyzeErrorGroup(errorType, errorMessages);
+        const pattern = await this.analyzeErrorGroup(errorType, errorMessages, fileId);
         if (pattern) {
           discoveredPatterns.push(pattern);
         }
@@ -124,7 +124,8 @@ export class ErrorPatternAnalyzer {
    */
   private async analyzeErrorGroup(
     errorType: string,
-    messages: string[]
+    messages: string[],
+    fileId: number
   ): Promise<DiscoveredPattern | null> {
     try {
       // Determine severity
@@ -134,7 +135,7 @@ export class ErrorPatternAnalyzer {
       const regex = this.createRegexPattern(errorType, messages);
 
       // Use AI to get better description and solution
-      const aiAnalysis = await this.getAIAnalysis(errorType, messages);
+      const aiAnalysis = await this.getAIAnalysis(errorType, messages, fileId);
 
       return {
         errorType: errorType,
@@ -284,28 +285,46 @@ export class ErrorPatternAnalyzer {
    */
   private async getAIAnalysis(
     errorType: string,
-    messages: string[]
+    messages: string[],
+    fileId: number
   ): Promise<{ description: string; solution: string }> {
     try {
-      // Create a mock error log for AI analysis
-      const mockErrorLog = {
-        id: 0,
-        timestamp: new Date(),
-        createdAt: new Date(),
-        fileId: 0,
-        lineNumber: 1,
-        severity: this.determineSeverity(errorType, messages),
-        errorType: errorType,
-        message: messages[0],
-        fullText: messages[0],
-        pattern: null,
-        resolved: false,
-        aiSuggestion: null,
-        mlPrediction: null,
-      };
+      // Fetch REAL error logs from database instead of using mock data
+      const allErrors = await this.db.getErrorLogsByFile(fileId);
+
+      // Find errors matching this type for context
+      const matchingErrors = allErrors.filter(
+        (err) => this.extractErrorKey(err.message) === errorType
+      );
+
+      // Use first matching error with real data, or create minimal fallback
+      const errorLog = matchingErrors.length > 0
+        ? matchingErrors[0]
+        : {
+          // Fallback only if absolutely no matching errors exist
+          id: 0,
+          timestamp: new Date(),
+          createdAt: new Date(),
+          fileId: fileId,
+          lineNumber: 1,
+          severity: this.determineSeverity(errorType, messages),
+          errorType: errorType,
+          message: messages[0],
+          fullText: messages[0],
+          pattern: null,
+          resolved: false,
+          aiSuggestion: null,
+          mlPrediction: null,
+          mlConfidence: null,
+        };
+
+      console.log(
+        `🧠 AI Analysis using ${matchingErrors.length > 0 ? "REAL" : "FALLBACK"
+        } error data for pattern: ${errorType.substring(0, 50)}...`
+      );
 
       const response = await this.aiService.generateErrorSuggestion(
-        mockErrorLog
+        errorLog
       );
 
       if (response) {
@@ -352,9 +371,8 @@ export class ErrorPatternAnalyzer {
       return "Product mapping issue";
     }
 
-    return `Recurring ${
-      message.includes("error") ? "error" : "warning"
-    } pattern detected`;
+    return `Recurring ${message.includes("error") ? "error" : "warning"
+      } pattern detected`;
   }
 
   /**

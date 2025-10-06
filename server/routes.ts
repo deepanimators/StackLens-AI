@@ -26,6 +26,7 @@ import * as genai from "@google/genai";
 import fs from "fs";
 import os from "os";
 import { errorLogs, analysisHistory, logFiles, users } from "@shared/sqlite-schema";
+import { errorEmbeddings, suggestionFeedback } from "../shared/schema";
 import {
   insertUserSchema,
   insertLogFileSchema,
@@ -375,8 +376,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.createAuditLog({
           userId: req.user.id,
           action: "delete",
-          resourceType: "user",
-          resourceId: userId,
+          entityType: "user",
+          entityId: userId,
           oldValues: user,
           ipAddress: req.ip,
           userAgent: req.get("User-Agent"),
@@ -475,9 +476,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return default API settings since the schema mismatch is causing issues
-        // This will be resolved when the schema is properly unified
-        const apiSettings = {
+        const userId = req.user?.id;
+
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        // Get user settings
+        const userSettings = await storage.getUserSettings(userId);
+
+        let apiSettings = {
           geminiApiKey: process.env.GEMINI_API_KEY || "",
           webhookUrl: "",
           maxFileSize: "10",
@@ -488,7 +496,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           weeklyReports: false,
         };
 
-        console.log("Returning default API settings due to schema mismatch");
+        if (userSettings && userSettings.apiSettings) {
+          const savedApiSettings = typeof userSettings.apiSettings === 'string'
+            ? JSON.parse(userSettings.apiSettings)
+            : userSettings.apiSettings;
+
+          apiSettings = {
+            ...apiSettings,
+            ...savedApiSettings,
+          };
+        }
+
         res.json(apiSettings);
       } catch (error) {
         console.error("Error fetching API settings:", error);
@@ -504,22 +522,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        const { geminiApiKey, webhookUrl, maxFileSize, autoAnalysis } =
-          req.body;
+        const { geminiApiKey, webhookUrl, maxFileSize, autoAnalysis } = req.body;
+        const userId = req.user?.id;
 
-        // For now, just return success without saving due to schema mismatch
-        // This should be fixed when schemas are unified
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        // Get or create user settings
+        let userSettings = await storage.getUserSettings(userId);
+
+        if (!userSettings) {
+          // Create default settings
+          await storage.createUserSettings({
+            userId,
+            denseMode: false,
+            autoRefresh: false,
+            refreshInterval: 30,
+            theme: "light",
+            language: "en",
+            timezone: "UTC",
+            notificationPreferences: JSON.stringify({ email: true, push: true, sms: false }),
+            displayPreferences: JSON.stringify({ itemsPerPage: 10, defaultView: "grid" }),
+            navigationPreferences: JSON.stringify({ topNav: { logo: true, search: true, notifications: true, userMenu: true }, sideNav: { collapsed: false, showLabels: true, groupItems: true } }),
+            apiSettings: JSON.stringify({ geminiApiKey: "", webhookUrl: "", maxFileSize: "10", autoAnalysis: true }),
+          });
+          userSettings = await storage.getUserSettings(userId);
+        }
+
+        // Update API settings
+        const currentApiSettings = typeof userSettings.apiSettings === 'string'
+          ? JSON.parse(userSettings.apiSettings)
+          : userSettings.apiSettings || {};
+
         const updatedApiSettings = {
+          ...currentApiSettings,
           geminiApiKey: geminiApiKey || "",
           webhookUrl: webhookUrl || "",
           maxFileSize: maxFileSize || "10",
           autoAnalysis: autoAnalysis ?? true,
         };
 
-        console.log(
-          "API settings update received (not persisted due to schema mismatch):",
-          updatedApiSettings
-        );
+        await storage.updateUserSettings(userId, {
+          apiSettings: JSON.stringify(updatedApiSettings),
+        });
 
         res.json({
           message: "API settings updated successfully",
@@ -546,18 +592,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
           weeklyReports,
         } = req.body;
 
-        // For now, just return success without saving due to schema mismatch
+        const userId = req.user?.id;
+
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        // Get or create user settings
+        let userSettings = await storage.getUserSettings(userId);
+
+        if (!userSettings) {
+          // Create default settings
+          await storage.createUserSettings({
+            userId,
+            denseMode: false,
+            autoRefresh: false,
+            refreshInterval: 30,
+            theme: "light",
+            language: "en",
+            timezone: "UTC",
+            notificationPreferences: JSON.stringify({ email: true, push: true, sms: false }),
+            displayPreferences: JSON.stringify({ itemsPerPage: 10, defaultView: "grid" }),
+            navigationPreferences: JSON.stringify({ topNav: { logo: true, search: true, notifications: true, userMenu: true }, sideNav: { collapsed: false, showLabels: true, groupItems: true } }),
+            apiSettings: JSON.stringify({ geminiApiKey: "", webhookUrl: "", maxFileSize: "10", autoAnalysis: true }),
+          });
+          userSettings = await storage.getUserSettings(userId);
+        }
+
+        // Update timezone and language directly
+        const updates: any = {};
+        if (defaultTimezone) updates.timezone = defaultTimezone;
+        if (defaultLanguage) updates.language = defaultLanguage;
+
+        // Update notification preferences
+        const currentNotifPrefs = typeof userSettings.notificationPreferences === 'string'
+          ? JSON.parse(userSettings.notificationPreferences)
+          : userSettings.notificationPreferences || {};
+
+        updates.notificationPreferences = JSON.stringify({
+          ...currentNotifPrefs,
+          email: emailNotifications ?? true,
+          weeklyReports: weeklyReports ?? false,
+        });
+
+        await storage.updateUserSettings(userId, updates);
+
         const updatedSystemSettings = {
           defaultTimezone: defaultTimezone || "UTC",
           defaultLanguage: defaultLanguage || "English",
           emailNotifications: emailNotifications ?? true,
           weeklyReports: weeklyReports ?? false,
         };
-
-        console.log(
-          "System settings update received (not persisted due to schema mismatch):",
-          updatedSystemSettings
-        );
 
         res.json({
           message: "System settings updated successfully",
@@ -2926,39 +3011,38 @@ Format as JSON with the following structure:
   });
 
   // Settings endpoint for UI configuration
-  app.get("/api/settings", async (req, res) => {
+  app.get("/api/settings", requireAuth, async (req: any, res: any) => {
     try {
-      // Return default UI settings
-      res.json({
-        theme: "light",
-        layout: {
-          showTopNav: true,
-          showSideNav: true,
-          sidebarCollapsed: false,
-          topNavStyle: "fixed",
-          topNavColor: "#1f2937",
-          sideNavStyle: "collapsible",
-          sideNavPosition: "left",
-          sideNavColor: "#374151",
-          enableBreadcrumbs: true,
-        },
-        api: {
-          rateLimitEnabled: true,
-          maxRequestsPerMinute: 100,
-          enableCaching: true,
-          cacheExpiry: 300,
-          enableLogging: true,
-          logLevel: "info",
-        },
-        features: {
-          enableRealTimeUpdates: true,
-          enableNotifications: true,
-          showErrorDetails: true,
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+
+      // Get user-specific settings from database
+      let userSettings = await storage.getUserSettings(userId);
+
+      // If no settings exist, create default settings
+      if (!userSettings) {
+        const defaultSettings = {
+          userId,
+          theme: "system",
+          language: "en",
+          notifications: JSON.stringify({}),
+          dashboardLayout: null,
           autoRefresh: true,
-          refreshInterval: 30,
-          defaultPageSize: 20,
-        },
-      });
+          refreshInterval: 30000,
+          emailNotifications: true,
+          pushNotifications: true,
+          timezone: "UTC",
+          dateFormat: "MM/DD/YYYY",
+          timeFormat: "12h",
+        };
+
+        await storage.createUserSettings(defaultSettings);
+        userSettings = defaultSettings;
+      }
+
+      res.json(userSettings);
     } catch (error) {
       console.error("Error fetching settings:", error);
       res.status(500).json({ message: "Failed to fetch settings" });
@@ -2966,20 +3050,217 @@ Format as JSON with the following structure:
   });
 
   // Update settings endpoint
-  app.put("/api/settings", requireAuth, async (req, res) => {
+  app.put("/api/settings", requireAuth, async (req: any, res: any) => {
     try {
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+
       const settings = req.body;
-      // In a real app, you'd save these to database
-      // For now, just return success
+
+      // Update user settings in database
+      const updatedSettings = await storage.updateUserSettings(userId, settings);
+
       res.json({
         message: "Settings updated successfully",
-        settings,
+        settings: updatedSettings,
       });
     } catch (error) {
       console.error("Error updating settings:", error);
       res.status(500).json({ message: "Failed to update settings" });
     }
   });
+
+  // ============= STORE & KIOSK MANAGEMENT =============
+
+  // Get all stores
+  app.get("/api/stores", requireAuth, async (req: any, res: any) => {
+    try {
+      const stores = await storage.getAllStores();
+      res.json(stores);
+    } catch (error) {
+      console.error("Error fetching stores:", error);
+      res.status(500).json({ message: "Failed to fetch stores" });
+    }
+  });
+
+  // Get store by ID
+  app.get("/api/stores/:id", requireAuth, async (req: any, res: any) => {
+    try {
+      const id = parseInt(req.params.id);
+      const store = await storage.getStore(id);
+
+      if (!store) {
+        return res.status(404).json({ message: "Store not found" });
+      }
+
+      res.json(store);
+    } catch (error) {
+      console.error("Error fetching store:", error);
+      res.status(500).json({ message: "Failed to fetch store" });
+    }
+  });
+
+  // Create store (Admin only)
+  app.post(
+    "/api/stores",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const storeData = req.body;
+        const store = await storage.createStore(storeData);
+        res.status(201).json(store);
+      } catch (error) {
+        console.error("Error creating store:", error);
+        res.status(500).json({ message: "Failed to create store" });
+      }
+    }
+  );
+
+  // Update store (Admin only)
+  app.put(
+    "/api/stores/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const storeData = req.body;
+        const store = await storage.updateStore(id, storeData);
+
+        if (!store) {
+          return res.status(404).json({ message: "Store not found" });
+        }
+
+        res.json(store);
+      } catch (error) {
+        console.error("Error updating store:", error);
+        res.status(500).json({ message: "Failed to update store" });
+      }
+    }
+  );
+
+  // Delete store (Admin only)
+  app.delete(
+    "/api/stores/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const success = await storage.deleteStore(id);
+
+        if (!success) {
+          return res.status(404).json({ message: "Store not found" });
+        }
+
+        res.json({ message: "Store deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting store:", error);
+        res.status(500).json({ message: "Failed to delete store" });
+      }
+    }
+  );
+
+  // Get all kiosks or filter by store
+  app.get("/api/kiosks", requireAuth, async (req: any, res: any) => {
+    try {
+      const storeId = req.query.storeId;
+
+      let kiosks;
+      if (storeId) {
+        kiosks = await storage.getKiosksByStore(parseInt(storeId));
+      } else {
+        kiosks = await storage.getAllKiosks();
+      }
+
+      res.json(kiosks);
+    } catch (error) {
+      console.error("Error fetching kiosks:", error);
+      res.status(500).json({ message: "Failed to fetch kiosks" });
+    }
+  });
+
+  // Get kiosk by ID
+  app.get("/api/kiosks/:id", requireAuth, async (req: any, res: any) => {
+    try {
+      const id = parseInt(req.params.id);
+      const kiosk = await storage.getKiosk(id);
+
+      if (!kiosk) {
+        return res.status(404).json({ message: "Kiosk not found" });
+      }
+
+      res.json(kiosk);
+    } catch (error) {
+      console.error("Error fetching kiosk:", error);
+      res.status(500).json({ message: "Failed to fetch kiosk" });
+    }
+  });
+
+  // Create kiosk (Admin only)
+  app.post(
+    "/api/kiosks",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const kioskData = req.body;
+        const kiosk = await storage.createKiosk(kioskData);
+        res.status(201).json(kiosk);
+      } catch (error) {
+        console.error("Error creating kiosk:", error);
+        res.status(500).json({ message: "Failed to create kiosk" });
+      }
+    }
+  );
+
+  // Update kiosk (Admin only)
+  app.put(
+    "/api/kiosks/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const kioskData = req.body;
+        const kiosk = await storage.updateKiosk(id, kioskData);
+
+        if (!kiosk) {
+          return res.status(404).json({ message: "Kiosk not found" });
+        }
+
+        res.json(kiosk);
+      } catch (error) {
+        console.error("Error updating kiosk:", error);
+        res.status(500).json({ message: "Failed to update kiosk" });
+      }
+    }
+  );
+
+  // Delete kiosk (Admin only)
+  app.delete(
+    "/api/kiosks/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const success = await storage.deleteKiosk(id);
+
+        if (!success) {
+          return res.status(404).json({ message: "Kiosk not found" });
+        }
+
+        res.json({ message: "Kiosk deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting kiosk:", error);
+        res.status(500).json({ message: "Failed to delete kiosk" });
+      }
+    }
+  );
 
   // ============= CORE API ENDPOINTS =============
 
@@ -4235,74 +4516,146 @@ Format as JSON with the following structure:
     }
   });
 
-  // Delete file endpoint
+  // Delete file endpoint with comprehensive cascade deletion
   app.delete("/api/files/:id", requireAuth, async (req: any, res: any) => {
     try {
       const fileId = parseInt(req.params.id);
-      console.log(`Attempting to delete file with ID: ${fileId}`);
+      console.log(`🗑️ Attempting to delete file with ID: ${fileId}`);
+
+      // Validate file ID
+      if (isNaN(fileId) || fileId <= 0) {
+        console.log("❌ Invalid file ID provided");
+        return res.status(400).json({ message: "Invalid file ID" });
+      }
 
       const file = await storage.getLogFile(fileId);
-      console.log(`File found:`, file);
+      console.log(`📁 File found:`, file ? `${file.originalName} (${file.filename})` : 'null');
 
       if (!file) {
-        console.log("File not found in database");
+        console.log("❌ File not found in database");
         return res.status(404).json({ message: "File not found" });
       }
 
+      // Check permissions
       if (file.uploadedBy !== req.user.id) {
         console.log(
-          `Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}`
+          `🚫 Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}`
         );
-        return res.status(404).json({ message: "File not found" });
+        return res.status(403).json({ message: "Access denied: You can only delete files you uploaded" });
       }
 
-      console.log("Starting cascade deletion process...");
+      console.log("🔄 Starting comprehensive cascade deletion process...");
 
-      // Use proper drizzle syntax to delete with correct order to avoid foreign key issues
+      // Use database transaction for atomic operations
+      const deletionResult = await db.transaction(async (tx) => {
+        const deletionStats = {
+          errorEmbeddings: 0,
+          suggestionFeedback: 0,
+          errorLogs: 0,
+          analysisHistory: 0,
+          physicalFile: false,
+          logFile: false
+        };
+
+        try {
+          // Step 1: Get all error IDs for this file to clean up related data
+          console.log("🔍 Finding error logs for file...");
+          const fileErrorLogs = await tx
+            .select({ id: errorLogs.id })
+            .from(errorLogs)
+            .where(eq(errorLogs.fileId, fileId));
+
+          const errorIds = fileErrorLogs.map(error => error.id);
+          console.log(`📊 Found ${errorIds.length} error logs to clean up`);
+
+          // Step 2: Delete error embeddings (references errorLogs.id)
+          if (errorIds.length > 0) {
+            console.log("🧹 Deleting error embeddings...");
+            for (const errorId of errorIds) {
+              const embeddingResult = await tx
+                .delete(errorEmbeddings)
+                .where(eq(errorEmbeddings.errorId, errorId));
+              deletionStats.errorEmbeddings += embeddingResult.changes || 0;
+            }
+          }
+
+          // Step 3: Delete suggestion feedback (references errorLogs.id)
+          if (errorIds.length > 0) {
+            console.log("📝 Deleting suggestion feedback...");
+            for (const errorId of errorIds) {
+              const feedbackResult = await tx
+                .delete(suggestionFeedback)
+                .where(eq(suggestionFeedback.errorId, errorId));
+              deletionStats.suggestionFeedback += feedbackResult.changes || 0;
+            }
+          }
+
+          // Step 4: Delete error logs (references logFiles.id)
+          console.log("📋 Deleting error logs...");
+          const errorLogsResult = await tx
+            .delete(errorLogs)
+            .where(eq(errorLogs.fileId, fileId));
+          deletionStats.errorLogs = errorLogsResult.changes || 0;
+
+          // Step 5: Delete analysis history (references logFiles.id)
+          console.log("📈 Deleting analysis history...");
+          const analysisResult = await tx
+            .delete(analysisHistory)
+            .where(eq(analysisHistory.fileId, fileId));
+          deletionStats.analysisHistory = analysisResult.changes || 0;
+
+          // Step 6: Delete the file record from database
+          console.log("📄 Deleting file record...");
+          const fileResult = await tx
+            .delete(logFiles)
+            .where(eq(logFiles.id, fileId));
+          deletionStats.logFile = (fileResult.changes || 0) > 0;
+
+          return deletionStats;
+        } catch (transactionError) {
+          console.error("❌ Transaction error:", transactionError);
+          throw transactionError;
+        }
+      });
+
+      // Step 7: Delete physical file from disk (outside transaction)
+      console.log("💾 Deleting physical file from disk...");
       try {
-        // Delete error logs first (they reference the file)
-        console.log("Deleting error logs...");
-        await db.delete(errorLogs).where(eq(errorLogs.fileId, fileId));
-
-        // Delete analysis history (it references the file)
-        console.log("Deleting analysis history...");
-        await db
-          .delete(analysisHistory)
-          .where(eq(analysisHistory.fileId, fileId));
-
-        // Delete the physical file from disk if it exists
-        console.log("Deleting physical file...");
         const filePath = path.join("uploads", file.filename);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
-          console.log(`Physical file deleted: ${filePath}`);
+          deletionResult.physicalFile = true;
+          console.log(`✅ Physical file deleted: ${filePath}`);
+        } else {
+          console.log(`⚠️ Physical file not found: ${filePath}`);
         }
-
-        // Finally delete the file record
-        console.log("Deleting file record...");
-        await db.delete(logFiles).where(eq(logFiles.id, fileId));
-
-        console.log("All deletion steps completed successfully");
-        res.json({ message: "File and related data deleted successfully" });
-      } catch (deleteError) {
-        console.error("Error during deletion:", deleteError);
-        res.status(500).json({
-          message: "Failed to delete file",
-          error:
-            deleteError instanceof Error
-              ? deleteError.message
-              : "Unknown error",
-        });
+      } catch (fileError) {
+        console.warn("⚠️ Failed to delete physical file:", fileError);
+        // Don't fail the entire operation if physical file deletion fails
       }
+
+      console.log("✅ Cascade deletion completed successfully");
+      console.log("📊 Deletion statistics:", deletionResult);
+
+      res.json({
+        message: "File and all related data deleted successfully",
+        deletionStats: deletionResult,
+        fileInfo: {
+          id: fileId,
+          originalName: file.originalName,
+          filename: file.filename
+        }
+      });
+
     } catch (error) {
-      console.error("Error deleting file:", error);
-      console.error(
-        "Error stack:",
-        error instanceof Error ? error.stack : "No stack trace"
-      );
+      console.error("❌ Error deleting file:", error);
+      console.error("🔍 Error stack:", error instanceof Error ? error.stack : "No stack trace");
+
       res.status(500).json({
-        message: "Failed to delete file",
+        message: "Failed to delete file due to internal error",
         error: error instanceof Error ? error.message : "Unknown error",
+        fileId: parseInt(req.params.id),
+        timestamp: new Date().toISOString()
       });
     }
   });
@@ -4744,6 +5097,56 @@ Format as JSON with the following structure:
     } catch (error) {
       console.error("Error fetching analysis history:", error);
       res.status(500).json({ error: "Failed to fetch analysis history" });
+    }
+  });
+
+  // Delete analysis history endpoint
+  app.delete("/api/analysis/history/:id", requireAuth, async (req: any, res: any) => {
+    try {
+      const analysisId = parseInt(req.params.id);
+      console.log(`🗑️ Attempting to delete analysis history with ID: ${analysisId}`);
+
+      // Validate analysis ID
+      if (isNaN(analysisId) || analysisId <= 0) {
+        console.log("❌ Invalid analysis ID provided");
+        return res.status(400).json({ message: "Invalid analysis ID" });
+      }
+
+      // Get the analysis record first to check ownership
+      const analysis = await storage.getAnalysisHistory(analysisId);
+      if (!analysis) {
+        console.log("❌ Analysis history not found");
+        return res.status(404).json({ message: "Analysis history not found" });
+      }
+
+      // Check if user owns this analysis
+      if (analysis.userId !== req.user.id) {
+        console.log(`🚫 Access denied: analysis belongs to user ${analysis.userId}, current user is ${req.user.id}`);
+        return res.status(403).json({ message: "Access denied: You can only delete your own analysis history" });
+      }
+
+      // Delete the analysis history record
+      const success = await storage.deleteAnalysisHistory(analysisId);
+
+      if (success) {
+        console.log(`✅ Analysis history ${analysisId} deleted successfully`);
+        res.json({
+          message: "Analysis history deleted successfully",
+          analysisId: analysisId
+        });
+      } else {
+        console.log(`❌ Failed to delete analysis history ${analysisId}`);
+        res.status(500).json({ message: "Failed to delete analysis history" });
+      }
+
+    } catch (error) {
+      console.error("❌ Error deleting analysis history:", error);
+      res.status(500).json({
+        message: "Failed to delete analysis history due to internal error",
+        error: error instanceof Error ? error.message : "Unknown error",
+        analysisId: parseInt(req.params.id),
+        timestamp: new Date().toISOString()
+      });
     }
   });
 
@@ -5800,7 +6203,7 @@ Format as JSON with the following structure:
       const previousToDate = new Date(fromDate);
 
       const prevFiles = userFiles.filter((file) => {
-        const uploadDate = new Date(file.uploadTimestamp);
+        const uploadDate = new Date(file.uploadTimestamp || new Date());
         return uploadDate >= previousFromDate && uploadDate < previousToDate;
       });
 
@@ -6119,59 +6522,160 @@ Format as JSON with the following structure:
 
       if (format === "pdf") {
         try {
-          // Simple PDF generation using HTML to PDF approach
+          console.log("🔄 Generating PDF report...");
+
+          // Create a comprehensive PDF-ready HTML template
           const html = `
             <!DOCTYPE html>
             <html>
             <head>
-              <title>Error Analysis Report</title>
+              <title>StackLens AI - Error Analysis Report</title>
+              <meta charset="UTF-8">
               <style>
-                body { font-family: Arial, sans-serif; margin: 20px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                th { background-color: #f2f2f2; }
-                .header { margin-bottom: 20px; }
+                @page { 
+                  margin: 1in; 
+                  size: A4;
+                  @top-center { content: "StackLens AI Report - Page " counter(page); }
+                }
+                body { 
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                  margin: 0; 
+                  padding: 20px;
+                  font-size: 12px;
+                  line-height: 1.4;
+                }
+                .header { 
+                  border-bottom: 3px solid #3b82f6; 
+                  padding-bottom: 20px; 
+                  margin-bottom: 30px;
+                  text-align: center;
+                }
+                .header h1 { 
+                  color: #1e40af; 
+                  margin: 0 0 10px 0; 
+                  font-size: 24px;
+                }
+                .header p { 
+                  margin: 5px 0; 
+                  color: #6b7280;
+                  font-size: 14px;
+                }
+                .summary { 
+                  background: #f8fafc; 
+                  padding: 15px; 
+                  border-radius: 8px; 
+                  margin-bottom: 25px;
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                  gap: 15px;
+                }
+                .summary-item { 
+                  text-align: center;
+                }
+                .summary-item .value { 
+                  font-size: 20px; 
+                  font-weight: bold; 
+                  margin-bottom: 5px;
+                }
+                .summary-item .label { 
+                  color: #6b7280; 
+                  font-size: 11px;
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
+                }
+                table { 
+                  width: 100%; 
+                  border-collapse: collapse; 
+                  margin-top: 20px;
+                  font-size: 11px;
+                }
+                th, td { 
+                  border: 1px solid #e5e7eb; 
+                  padding: 8px 6px; 
+                  text-align: left;
+                  vertical-align: top;
+                }
+                th { 
+                  background-color: #f3f4f6; 
+                  font-weight: 600;
+                  color: #374151;
+                  text-transform: uppercase;
+                  font-size: 10px;
+                  letter-spacing: 0.5px;
+                }
+                tr:nth-child(even) { 
+                  background-color: #f9fafb; 
+                }
                 .severity-critical { color: #dc2626; font-weight: bold; }
                 .severity-high { color: #ea580c; font-weight: bold; }
                 .severity-medium { color: #ca8a04; font-weight: bold; }
                 .severity-low { color: #16a34a; font-weight: bold; }
+                .message-cell {
+                  max-width: 200px;
+                  word-wrap: break-word;
+                  word-break: break-all;
+                }
+                .footer {
+                  margin-top: 30px;
+                  padding-top: 20px;
+                  border-top: 1px solid #e5e7eb;
+                  text-align: center;
+                  color: #6b7280;
+                  font-size: 10px;
+                }
               </style>
             </head>
             <body>
               <div class="header">
-                <h1>Error Analysis Report</h1>
-                <p>Generated: ${new Date().toLocaleString()}</p>
-                <p>Date Range: ${range}</p>
-                <p>Total Records: ${exportData.length}</p>
+                <h1>🔍 StackLens AI Error Analysis Report</h1>
+                <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                <p><strong>Date Range:</strong> ${range} | <strong>Total Records:</strong> ${exportData.length}</p>
               </div>
+              
+              <div class="summary">
+                <div class="summary-item">
+                  <div class="value" style="color: #dc2626;">${exportData.filter(e => e.severity === 'critical').length}</div>
+                  <div class="label">Critical Errors</div>
+                </div>
+                <div class="summary-item">
+                  <div class="value" style="color: #ea580c;">${exportData.filter(e => e.severity === 'high').length}</div>
+                  <div class="label">High Priority</div>
+                </div>
+                <div class="summary-item">
+                  <div class="value" style="color: #ca8a04;">${exportData.filter(e => e.severity === 'medium').length}</div>
+                  <div class="label">Medium Priority</div>
+                </div>
+                <div class="summary-item">
+                  <div class="value" style="color: #16a34a;">${exportData.filter(e => e.severity === 'low').length}</div>
+                  <div class="label">Low Priority</div>
+                </div>
+              </div>
+
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Timestamp</th>
-                    <th>Severity</th>
-                    <th>Type</th>
-                    <th>Message</th>
-                    <th>Resolved</th>
-                    <th>AI Suggestion</th>
-                    <th>ML Prediction</th>
-                    <th>Confidence</th>
+                    <th style="width: 5%;">ID</th>
+                    <th style="width: 15%;">Timestamp</th>
+                    <th style="width: 8%;">Severity</th>
+                    <th style="width: 12%;">Type</th>
+                    <th style="width: 35%;">Message</th>
+                    <th style="width: 8%;">Resolved</th>
+                    <th style="width: 8%;">AI Assist</th>
+                    <th style="width: 9%;">ML Conf.</th>
                   </tr>
                 </thead>
                 <tbody>
-                  ${exportData
+                  ${exportData.slice(0, 100) // Limit to first 100 for PDF performance
               .map(
                 (error) => `
                     <tr>
                       <td>${error.id}</td>
                       <td>${new Date(error.timestamp).toLocaleString()}</td>
-                      <td class="severity-${error.severity}">${error.severity
-                  }</td>
+                      <td class="severity-${error.severity}">${error.severity.toUpperCase()}</td>
                       <td>${error.errorType}</td>
-                      <td>${error.message.substring(0, 100)}...</td>
+                      <td class="message-cell">${error.message.substring(0, 120)}${error.message.length > 120 ? '...' : ''}</td>
                       <td>${error.resolved}</td>
                       <td>${error.hasAISuggestion}</td>
-                      <td>${error.hasMLPrediction}</td>
                       <td>${error.mlConfidence}</td>
                     </tr>
                   `
@@ -6179,19 +6683,31 @@ Format as JSON with the following structure:
               .join("")}
                 </tbody>
               </table>
+              
+              ${exportData.length > 100 ? `
+                <div style="margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 8px; text-align: center;">
+                  <strong>Note:</strong> This PDF shows the first 100 records. For complete data, please export as CSV or Excel.
+                </div>
+              ` : ''}
+              
+              <div class="footer">
+                <p>Generated by StackLens AI Platform | Confidential Error Analysis Report</p>
+                <p>For technical support, contact your system administrator</p>
+              </div>
             </body>
             </html>
           `;
 
-          // For now, return HTML that can be printed to PDF by browser
-          res.setHeader("Content-Type", "text/html");
+          // Return HTML that browsers can print to PDF using Ctrl+P or "Print to PDF"
+          res.setHeader("Content-Type", "text/html; charset=utf-8");
           res.setHeader(
             "Content-Disposition",
-            `inline; filename="error-analysis-report-${range}.html"`
+            `inline; filename="stacklens-error-analysis-${range}.html"`
           );
+          console.log("✅ PDF-ready HTML generated successfully");
           return res.send(html);
         } catch (pdfError) {
-          console.error("PDF generation failed:", pdfError);
+          console.error("❌ PDF generation failed:", pdfError);
           // Fallback to CSV
           const csvData = convertToCSV(exportData);
           res.setHeader("Content-Type", "text/csv");
@@ -6244,7 +6760,7 @@ Format as JSON with the following structure:
       // Prepare export data
       const exportData = errors.map((error) => ({
         id: error.id,
-        timestamp: error.timestamp || new Date(error.createdAt).toISOString(),
+        timestamp: error.timestamp || new Date(error.createdAt || Date.now()).toISOString(),
         severity: error.severity,
         errorType: error.errorType,
         message: error.message,
@@ -6636,7 +7152,7 @@ Format as JSON with the following structure:
             results.push({
               errorId,
               success: false,
-              error: error.message,
+              error: error instanceof Error ? error.message : "Unknown error",
             });
             failureCount++;
           }
@@ -7458,8 +7974,8 @@ Format as JSON with the following structure:
                 ? enterprise_analysis.value
                 : null,
           },
-          recommendations: [],
-          alerts: [],
+          recommendations: [] as string[],
+          alerts: [] as any[],
         };
 
         // Generate recommendations based on AI insights
