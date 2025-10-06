@@ -13,9 +13,6 @@ node_modules/
 .env.staging
 
 # Database files
-*.sqlite
-*.db
-db/
 
 # Logs
 *.log
