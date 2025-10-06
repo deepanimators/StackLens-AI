@@ -2927,39 +2927,38 @@ Format as JSON with the following structure:
   });
 
   // Settings endpoint for UI configuration
-  app.get("/api/settings", async (req, res) => {
+  app.get("/api/settings", requireAuth, async (req: any, res: any) => {
     try {
-      // Return default UI settings
-      res.json({
-        theme: "light",
-        layout: {
-          showTopNav: true,
-          showSideNav: true,
-          sidebarCollapsed: false,
-          topNavStyle: "fixed",
-          topNavColor: "#1f2937",
-          sideNavStyle: "collapsible",
-          sideNavPosition: "left",
-          sideNavColor: "#374151",
-          enableBreadcrumbs: true,
-        },
-        api: {
-          rateLimitEnabled: true,
-          maxRequestsPerMinute: 100,
-          enableCaching: true,
-          cacheExpiry: 300,
-          enableLogging: true,
-          logLevel: "info",
-        },
-        features: {
-          enableRealTimeUpdates: true,
-          enableNotifications: true,
-          showErrorDetails: true,
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+
+      // Get user-specific settings from database
+      let userSettings = await storage.getUserSettings(userId);
+
+      // If no settings exist, create default settings
+      if (!userSettings) {
+        const defaultSettings = {
+          userId,
+          theme: "system",
+          language: "en",
+          notifications: JSON.stringify({}),
+          dashboardLayout: null,
           autoRefresh: true,
-          refreshInterval: 30,
-          defaultPageSize: 20,
-        },
-      });
+          refreshInterval: 30000,
+          emailNotifications: true,
+          pushNotifications: true,
+          timezone: "UTC",
+          dateFormat: "MM/DD/YYYY",
+          timeFormat: "12h",
+        };
+
+        await storage.createUserSettings(defaultSettings);
+        userSettings = defaultSettings;
+      }
+
+      res.json(userSettings);
     } catch (error) {
       console.error("Error fetching settings:", error);
       res.status(500).json({ message: "Failed to fetch settings" });
@@ -2967,20 +2966,217 @@ Format as JSON with the following structure:
   });
 
   // Update settings endpoint
-  app.put("/api/settings", requireAuth, async (req, res) => {
+  app.put("/api/settings", requireAuth, async (req: any, res: any) => {
     try {
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+
       const settings = req.body;
-      // In a real app, you'd save these to database
-      // For now, just return success
+
+      // Update user settings in database
+      const updatedSettings = await storage.updateUserSettings(userId, settings);
+
       res.json({
         message: "Settings updated successfully",
-        settings,
+        settings: updatedSettings,
       });
     } catch (error) {
       console.error("Error updating settings:", error);
       res.status(500).json({ message: "Failed to update settings" });
     }
   });
+
+  // ============= STORE & KIOSK MANAGEMENT =============
+
+  // Get all stores
+  app.get("/api/stores", requireAuth, async (req: any, res: any) => {
+    try {
+      const stores = await storage.getAllStores();
+      res.json(stores);
+    } catch (error) {
+      console.error("Error fetching stores:", error);
+      res.status(500).json({ message: "Failed to fetch stores" });
+    }
+  });
+
+  // Get store by ID
+  app.get("/api/stores/:id", requireAuth, async (req: any, res: any) => {
+    try {
+      const id = parseInt(req.params.id);
+      const store = await storage.getStore(id);
+      
+      if (!store) {
+        return res.status(404).json({ message: "Store not found" });
+      }
+      
+      res.json(store);
+    } catch (error) {
+      console.error("Error fetching store:", error);
+      res.status(500).json({ message: "Failed to fetch store" });
+    }
+  });
+
+  // Create store (Admin only)
+  app.post(
+    "/api/stores",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const storeData = req.body;
+        const store = await storage.createStore(storeData);
+        res.status(201).json(store);
+      } catch (error) {
+        console.error("Error creating store:", error);
+        res.status(500).json({ message: "Failed to create store" });
+      }
+    }
+  );
+
+  // Update store (Admin only)
+  app.put(
+    "/api/stores/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const storeData = req.body;
+        const store = await storage.updateStore(id, storeData);
+        
+        if (!store) {
+          return res.status(404).json({ message: "Store not found" });
+        }
+        
+        res.json(store);
+      } catch (error) {
+        console.error("Error updating store:", error);
+        res.status(500).json({ message: "Failed to update store" });
+      }
+    }
+  );
+
+  // Delete store (Admin only)
+  app.delete(
+    "/api/stores/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const success = await storage.deleteStore(id);
+        
+        if (!success) {
+          return res.status(404).json({ message: "Store not found" });
+        }
+        
+        res.json({ message: "Store deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting store:", error);
+        res.status(500).json({ message: "Failed to delete store" });
+      }
+    }
+  );
+
+  // Get all kiosks or filter by store
+  app.get("/api/kiosks", requireAuth, async (req: any, res: any) => {
+    try {
+      const storeId = req.query.storeId;
+      
+      let kiosks;
+      if (storeId) {
+        kiosks = await storage.getKiosksByStore(parseInt(storeId));
+      } else {
+        kiosks = await storage.getAllKiosks();
+      }
+      
+      res.json(kiosks);
+    } catch (error) {
+      console.error("Error fetching kiosks:", error);
+      res.status(500).json({ message: "Failed to fetch kiosks" });
+    }
+  });
+
+  // Get kiosk by ID
+  app.get("/api/kiosks/:id", requireAuth, async (req: any, res: any) => {
+    try {
+      const id = parseInt(req.params.id);
+      const kiosk = await storage.getKiosk(id);
+      
+      if (!kiosk) {
+        return res.status(404).json({ message: "Kiosk not found" });
+      }
+      
+      res.json(kiosk);
+    } catch (error) {
+      console.error("Error fetching kiosk:", error);
+      res.status(500).json({ message: "Failed to fetch kiosk" });
+    }
+  });
+
+  // Create kiosk (Admin only)
+  app.post(
+    "/api/kiosks",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const kioskData = req.body;
+        const kiosk = await storage.createKiosk(kioskData);
+        res.status(201).json(kiosk);
+      } catch (error) {
+        console.error("Error creating kiosk:", error);
+        res.status(500).json({ message: "Failed to create kiosk" });
+      }
+    }
+  );
+
+  // Update kiosk (Admin only)
+  app.put(
+    "/api/kiosks/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const kioskData = req.body;
+        const kiosk = await storage.updateKiosk(id, kioskData);
+        
+        if (!kiosk) {
+          return res.status(404).json({ message: "Kiosk not found" });
+        }
+        
+        res.json(kiosk);
+      } catch (error) {
+        console.error("Error updating kiosk:", error);
+        res.status(500).json({ message: "Failed to update kiosk" });
+      }
+    }
+  );
+
+  // Delete kiosk (Admin only)
+  app.delete(
+    "/api/kiosks/:id",
+    requireAuth,
+    requireAdmin,
+    async (req: any, res: any) => {
+      try {
+        const id = parseInt(req.params.id);
+        const success = await storage.deleteKiosk(id);
+        
+        if (!success) {
+          return res.status(404).json({ message: "Kiosk not found" });
+        }
+        
+        res.json({ message: "Kiosk deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting kiosk:", error);
+        res.status(500).json({ message: "Failed to delete kiosk" });
+      }
+    }
+  );
 
   // ============= CORE API ENDPOINTS =============
 

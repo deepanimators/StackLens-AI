@@ -227,19 +227,51 @@ const fetchReportData = async () => {
     console.log("✅ Real report data calculated:", realData);
     return realData;
   } catch (error) {
-    console.error(
-      "❌ Failed to fetch real report data, falling back to mock:",
-      error
-    );
+    console.error("❌ Failed to fetch real report data:", error);
 
-    // Fallback to basic mock data if API fails
-    const errorTypes: ErrorTypeData[] = [
-      { type: "Unknown", count: 1, percentage: 100 },
-    ];
+    // In production, show error state - NO MOCK DATA
+    if (import.meta.env.PROD) {
+      toast({
+        title: "Error Loading Report Data",
+        description: "Unable to fetch report data. Please try again later.",
+        variant: "destructive",
+      });
+      // Return empty data structure to trigger "No data" UI
+      const errorTypes: ErrorTypeData[] = [];
+      const severityDistribution: SeverityDistribution = {
+        critical: 0,
+        high: 0,
+        medium: 0,
+        low: 0,
+      };
+      const topFiles: TopFile[] = [];
+      const performance: Performance = {
+        avgProcessingTime: "0.0s",
+        successRate: 0,
+      };
+
+      return {
+        summary: {
+          totalFiles: 0,
+          totalErrors: 0,
+          criticalErrors: 0,
+          resolvedErrors: 0,
+          resolutionRate: 0,
+        },
+        errorTypes,
+        severityDistribution,
+        topFiles,
+        performance,
+      };
+    }
+
+    // In development, log warning but still show empty state
+    console.warn("⚠️ DEV MODE: Showing empty state instead of mock data");
+    const errorTypes: ErrorTypeData[] = [];
     const severityDistribution: SeverityDistribution = {
       critical: 0,
       high: 0,
-      medium: 1,
+      medium: 0,
       low: 0,
     };
     const topFiles: TopFile[] = [];
@@ -335,28 +367,53 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
       if (response.ok) {
         const data = await response.json();
         console.log(`✅ Successfully fetched trends data:`, data);
-        setTrendsData(data);
+        
+        // Check if we got real data or empty results
+        if (!data || (Array.isArray(data.errorIdentificationTrends) && data.errorIdentificationTrends.length === 0)) {
+          console.log("ℹ️ No trends data available for selected timeframe");
+          setTrendsData(null);
+        } else {
+          setTrendsData(data);
+        }
       } else {
-        // API call failed (auth error, server error, etc.) - use mock data
-        console.log(
-          "🚨 API call failed, using mock data:",
+        // API call failed (auth error, server error, etc.)
+        console.error(
+          "🚨 API call failed:",
           response.status,
           response.statusText
         );
         const errorText = await response.text();
-        console.log("Error details:", errorText);
-        setTrendsData(generateMockTrendsData(selectedTimeframe));
+        console.error("Error details:", errorText);
+        
+        // In production, show error instead of mock
+        if (import.meta.env.PROD) {
+          toast({
+            title: "Error Loading Trends",
+            description: "Unable to fetch trend data. Please try again.",
+            variant: "destructive",
+          });
+          setTrendsData(null);
+        } else {
+          console.warn("⚠️ DEV MODE: Showing empty state");
+          setTrendsData(null);
+        }
       }
     } catch (error) {
       console.error("💥 Failed to fetch trends data:", error);
       if (error instanceof Error) {
         console.error("Error type:", error.constructor.name);
         console.error("Error message:", error.message);
-        console.error("Error stack:", error.stack);
       }
 
-      // Generate mock data for demo purposes
-      setTrendsData(generateMockTrendsData(selectedTimeframe));
+      // No mock data - show error or empty state
+      if (import.meta.env.PROD) {
+        toast({
+          title: "Network Error",
+          description: "Failed to load trends data. Check your connection.",
+          variant: "destructive",
+        });
+      }
+      setTrendsData(null);
     }
     setIsLoading(false);
   };

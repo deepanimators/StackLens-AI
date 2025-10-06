@@ -22,6 +22,7 @@ import AIEnhancedDashboard from "@/pages/ai-enhanced-dashboard";
 import Reports from "@/pages/reports";
 import Settings from "@/pages/settings";
 import Admin from "@/pages/admin";
+import StoreKioskManagement from "@/pages/store-kiosk-management";
 import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
 
@@ -79,6 +80,7 @@ function Router() {
       <Route path="/reports" component={Reports} />
       <Route path="/settings" component={Settings} />
       <Route path="/admin" component={Admin} />
+      <Route path="/store-kiosk-management" component={StoreKioskManagement} />
       <Route component={NotFound} />
     </Switch>
   );

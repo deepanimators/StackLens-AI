@@ -31,6 +31,8 @@ export const logFiles = sqliteTable("log_files", {
   fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),
   uploadedBy: integer("uploaded_by").references(() => users.id),
+  storeNumber: text("store_number"), // NEW: Store identifier
+  kioskNumber: text("kiosk_number"), // NEW: Kiosk identifier
   uploadTimestamp: integer("upload_timestamp", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
@@ -346,6 +348,74 @@ export const settings = sqliteTable("settings", {
   ),
 });
 
+// User-specific settings (preferences, theme, language, etc.)
+export const userSettings = sqliteTable("user_settings", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id")
+    .references(() => users.id)
+    .notNull()
+    .unique(),
+  theme: text("theme").default("system"), // light, dark, system
+  language: text("language").default("en"), // en, es, fr, hi
+  notifications: text("notifications", { mode: "json" }).default("{}"), // Notification preferences
+  dashboardLayout: text("dashboard_layout", { mode: "json" }), // Custom dashboard config
+  autoRefresh: integer("auto_refresh", { mode: "boolean" }).default(true),
+  refreshInterval: integer("refresh_interval").default(30000), // in milliseconds
+  emailNotifications: integer("email_notifications", { mode: "boolean" }).default(true),
+  pushNotifications: integer("push_notifications", { mode: "boolean" }).default(true),
+  timezone: text("timezone").default("UTC"),
+  dateFormat: text("date_format").default("MM/DD/YYYY"),
+  timeFormat: text("time_format").default("12h"), // 12h or 24h
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+// Stores table - Physical store locations
+export const stores = sqliteTable("stores", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  storeNumber: text("store_number").notNull().unique(),
+  name: text("name").notNull(),
+  location: text("location"),
+  address: text("address"),
+  city: text("city"),
+  state: text("state"),
+  zipCode: text("zip_code"),
+  country: text("country").default("USA"),
+  phoneNumber: text("phone_number"),
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+// Kiosks table - Kiosks within stores
+export const kiosks = sqliteTable("kiosks", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  kioskNumber: text("kiosk_number").notNull().unique(),
+  storeId: integer("store_id")
+    .references(() => stores.id)
+    .notNull(),
+  name: text("name").notNull(),
+  location: text("location"), // Location within store (e.g., "Front entrance", "Section A")
+  deviceType: text("device_type"), // Type of kiosk device
+  ipAddress: text("ip_address"),
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  lastCheckIn: integer("last_check_in", { mode: "timestamp" }),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
 // AI/ML Training Data from Excel
 export const aiTrainingData = sqliteTable("ai_training_data", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -457,6 +527,24 @@ export const insertSettingsSchema = createInsertSchema(settings).omit({
   updatedAt: true,
 });
 
+export const insertUserSettingsSchema = createInsertSchema(userSettings).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertStoreSchema = createInsertSchema(stores).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertKioskSchema = createInsertSchema(kiosks).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const insertAiTrainingDataSchema = createInsertSchema(
   aiTrainingData
 ).omit({
@@ -497,6 +585,12 @@ export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 export type Setting = typeof settings.$inferSelect;
 export type InsertSetting = z.infer<typeof insertSettingsSchema>;
+export type UserSetting = typeof userSettings.$inferSelect;
+export type InsertUserSetting = z.infer<typeof insertUserSettingsSchema>;
+export type Store = typeof stores.$inferSelect;
+export type InsertStore = z.infer<typeof insertStoreSchema>;
+export type Kiosk = typeof kiosks.$inferSelect;
+export type InsertKiosk = z.infer<typeof insertKioskSchema>;
 export type AiTrainingData = typeof aiTrainingData.$inferSelect;
 export type InsertAiTrainingData = z.infer<typeof insertAiTrainingDataSchema>;
 

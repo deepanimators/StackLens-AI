@@ -5,6 +5,7 @@ import {
   analysisHistory,
   mlModels,
   errorPatterns,
+  userSettings,
   type User,
   type InsertUser,
   type LogFile,
@@ -17,6 +18,8 @@ import {
   type InsertMlModel,
   type ErrorPattern,
   type InsertErrorPattern,
+  type UserSetting,
+  type InsertUserSetting,
 } from "@shared/schema";
 
 export interface IStorage {
@@ -86,6 +89,14 @@ export interface IStorage {
     pattern: Partial<InsertErrorPattern>
   ): Promise<ErrorPattern | undefined>;
   deleteErrorPattern(id: number): Promise<boolean>;
+
+  // User settings
+  getUserSettings(userId: number): Promise<UserSetting | undefined>;
+  createUserSettings(settings: InsertUserSetting): Promise<UserSetting>;
+  updateUserSettings(
+    userId: number,
+    settings: Partial<InsertUserSetting>
+  ): Promise<UserSetting | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -95,6 +106,7 @@ export class MemStorage implements IStorage {
   private analysisHistory: Map<number, AnalysisHistory>;
   private mlModels: Map<number, MlModel>;
   private errorPatterns: Map<number, ErrorPattern>;
+  private userSettingsMap: Map<number, UserSetting>;
   private currentId: number;
 
   constructor() {
@@ -104,6 +116,7 @@ export class MemStorage implements IStorage {
     this.analysisHistory = new Map();
     this.mlModels = new Map();
     this.errorPatterns = new Map();
+    this.userSettingsMap = new Map();
     this.currentId = 1;
     this.initializeDefaultData();
   }
@@ -433,6 +446,41 @@ export class MemStorage implements IStorage {
 
   async deleteErrorPattern(id: number): Promise<boolean> {
     return this.errorPatterns.delete(id);
+  }
+
+  // User settings methods
+  async getUserSettings(userId: number): Promise<UserSetting | undefined> {
+    return this.userSettingsMap.get(userId);
+  }
+
+  async createUserSettings(insertSettings: InsertUserSetting): Promise<UserSetting> {
+    const id = this.currentId++;
+    const settings: UserSetting = {
+      ...insertSettings,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    if (insertSettings.userId) {
+      this.userSettingsMap.set(insertSettings.userId, settings);
+    }
+    return settings;
+  }
+
+  async updateUserSettings(
+    userId: number,
+    settingsData: Partial<InsertUserSetting>
+  ): Promise<UserSetting | undefined> {
+    const settings = this.userSettingsMap.get(userId);
+    if (!settings) return undefined;
+
+    const updatedSettings: UserSetting = {
+      ...settings,
+      ...settingsData,
+      updatedAt: new Date(),
+    };
+    this.userSettingsMap.set(userId, updatedSettings);
+    return updatedSettings;
   }
 }
 

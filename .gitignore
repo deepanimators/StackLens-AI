@@ -1,11 +1,47 @@
-# Ignore build output
+# Build output
 dist/
 
-# Ignore node_modules
+# Dependencies
 node_modules/
 package-lock.json
 
-# db files
+# Environment files (SECURITY: Never commit secrets)
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.staging
+
+# Database files
 *.sqlite
 *.db
 db/
+
+# Logs
+*.log
+server.log
+test-ml.log
+server-debug.log
+
+# OS files
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

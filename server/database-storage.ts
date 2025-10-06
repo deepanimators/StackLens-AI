@@ -13,7 +13,10 @@ import {
   modelDeployments,
   auditLogs,
   notifications,
-  settings as userSettings,
+  settings,
+  userSettings,
+  stores,
+  kiosks,
   aiTrainingData,
   type User,
   type InsertUser,
@@ -44,6 +47,12 @@ import {
   type Notification,
   type InsertNotification,
   type InsertSetting,
+  type UserSetting,
+  type InsertUserSetting,
+  type Store,
+  type InsertStore,
+  type Kiosk,
+  type InsertKiosk,
   type AiTrainingData,
   type InsertAiTrainingData,
 } from "@shared/schema";
@@ -209,17 +218,31 @@ export interface IStorage {
   markNotificationAsRead(id: number): Promise<boolean>;
   deleteNotification(id: number): Promise<boolean>;
 
-  // User Settings
-  // User Settings
-  getUserSettings(
-    userId: number
-  ): Promise<typeof userSettings.$inferSelect | undefined>;
-  upsertUserSettings(
+  // User Settings (Per-user preferences)
+  getUserSettings(userId: number): Promise<UserSetting | undefined>;
+  createUserSettings(settings: InsertUserSetting): Promise<UserSetting>;
+  updateUserSettings(
     userId: number,
-    settings: Partial<InsertSetting>
-  ): Promise<typeof userSettings.$inferSelect>;
+    settings: Partial<InsertUserSetting>
+  ): Promise<UserSetting | undefined>;
 
-  // UI Settings management
+  // Store Management
+  getAllStores(): Promise<Store[]>;
+  getStore(id: number): Promise<Store | undefined>;
+  getStoreByNumber(storeNumber: string): Promise<Store | undefined>;
+  createStore(store: InsertStore): Promise<Store>;
+  updateStore(id: number, store: Partial<InsertStore>): Promise<Store | undefined>;
+  deleteStore(id: number): Promise<boolean>;
+
+  // Kiosk Management
+  getAllKiosks(): Promise<Kiosk[]>;
+  getKiosk(id: number): Promise<Kiosk | undefined>;
+  getKiosksByStore(storeId: number): Promise<Kiosk[]>;
+  createKiosk(kiosk: InsertKiosk): Promise<Kiosk>;
+  updateKiosk(id: number, kiosk: Partial<InsertKiosk>): Promise<Kiosk | undefined>;
+  deleteKiosk(id: number): Promise<boolean>;
+
+  // Legacy UI Settings management (for backward compatibility)
   getUISettings(): Promise<any | null>;
   saveUISettings(settings: any): Promise<void>;
 
@@ -1043,41 +1066,69 @@ export class DatabaseStorage implements IStorage {
     return result.changes > 0;
   }
 
-  // User Settings
-  // User Settings
-  async getUserSettings(
-    userId: number
-  ): Promise<typeof userSettings.$inferSelect | undefined> {
+  // User Settings (Per-user preferences)
+  async getUserSettings(userId: number): Promise<UserSetting | undefined> {
     const result = await db
       .select()
       .from(userSettings)
-      .where(eq(userSettings.id, userId));
+      .where(eq(userSettings.userId, userId));
     return result[0];
   }
 
+  async createUserSettings(insertSettings: InsertUserSetting): Promise<UserSetting> {
+    const result = await db
+      .insert(userSettings)
+      .values({
+        ...insertSettings,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+    return result[0];
+  }
+
+  async updateUserSettings(
+    userId: number,
+    settingsData: Partial<InsertUserSetting>
+  ): Promise<UserSetting | undefined> {
+    const result = await db
+      .update(userSettings)
+      .set({
+        ...settingsData,
+        updatedAt: new Date(),
+      })
+      .where(eq(userSettings.userId, userId))
+      .returning();
+    return result[0];
+  }
+
+  // Legacy settings table (for backward compatibility)
   async upsertUserSettings(
     userId: number,
-    settings: Partial<InsertSetting>
-  ): Promise<typeof userSettings.$inferSelect> {
-    const existing = await this.getUserSettings(userId);
+    settingsObj: Partial<InsertSetting>
+  ): Promise<typeof settings.$inferSelect> {
+    const existing = await db
+      .select()
+      .from(settings)
+      .where(eq(settings.id, userId));
 
-    if (existing) {
+    if (existing[0]) {
       const result = await db
-        .update(userSettings)
-        .set({ ...settings, updatedAt: new Date() })
-        .where(eq(userSettings.id, userId))
+        .update(settings)
+        .set({ ...settingsObj, updatedAt: new Date() })
+        .where(eq(settings.id, userId))
         .returning();
       return result[0];
     } else {
       const result = await db
-        .insert(userSettings)
+        .insert(settings)
         .values({
-          category: settings.category || "general",
-          key: settings.key || "settings",
-          value: settings.value || null,
-          isActive: settings.isActive ?? true,
-          description: settings.description || null,
-          updatedBy: settings.updatedBy || null,
+          category: settingsObj.category || "general",
+          key: settingsObj.key || "settings",
+          value: settingsObj.value || null,
+          isActive: settingsObj.isActive ?? true,
+          description: settingsObj.description || null,
+          updatedBy: settingsObj.updatedBy || null,
           updatedAt: new Date(),
         })
         .returning();
@@ -1087,19 +1138,22 @@ export class DatabaseStorage implements IStorage {
 
   async deleteUserSettings(userId: number): Promise<boolean> {
     const result = await db
-      .delete(userSettings)
-      .where(eq(userSettings.id, userId));
+      .delete(settings)
+      .where(eq(settings.id, userId));
     return result.changes > 0;
   }
 
-  // UI Settings management
+  // UI Settings management (Legacy - uses old settings table for navigation)
   async getUISettings(): Promise<any | null> {
     console.log("Getting UI settings from database for user ID 1");
 
-    // Get settings for user ID 1 (assuming single user system for now)
-    const userSettingsRecord = await this.getUserSettings(1);
+    // Get settings for user ID 1 (using legacy settings table)
+    const settingsRecord = await db
+      .select()
+      .from(settings)
+      .where(eq(settings.id, 1));
 
-    if (!userSettingsRecord) {
+    if (!settingsRecord[0]) {
       console.log("No user settings found, returning default values");
       return {
         navigationPreferences: {
@@ -1116,18 +1170,18 @@ export class DatabaseStorage implements IStorage {
     }
 
     const navigationPreferences =
-      userSettingsRecord.value && typeof userSettingsRecord.value === "string"
-        ? JSON.parse(userSettingsRecord.value)
-        : {
-            showTopNav: true,
-            topNavStyle: "sticky",
-            topNavColor: "#1f2937",
-            showSideNav: true,
-            sideNavStyle: "overlay",
-            sideNavPosition: "left",
-            sideNavColor: "#374151",
-            enableBreadcrumbs: true,
-          };
+      settingsRecord[0].value && typeof settingsRecord[0].value === "string"
+        ? JSON.parse(settingsRecord[0].value as string)
+        : settingsRecord[0].value || {
+          showTopNav: true,
+          topNavStyle: "sticky",
+          topNavColor: "#1f2937",
+          showSideNav: true,
+          sideNavStyle: "overlay",
+          sideNavPosition: "left",
+          sideNavColor: "#374151",
+          enableBreadcrumbs: true,
+        };
 
     console.log(
       "Returning UI settings from database. Navigation preferences:",
@@ -1180,8 +1234,8 @@ export class DatabaseStorage implements IStorage {
           ? typeof data.validatedAt === "number"
             ? new Date(data.validatedAt)
             : data.validatedAt instanceof Date
-            ? data.validatedAt
-            : null
+              ? data.validatedAt
+              : null
           : null,
         features: data.features ? JSON.stringify(data.features) : null,
         originalData: data.originalData
@@ -1328,6 +1382,108 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTrainingData(id: number): Promise<void> {
     await db.delete(aiTrainingData).where(eq(aiTrainingData.id, id));
+  }
+
+  // ============= STORE MANAGEMENT =============
+  
+  async getAllStores(): Promise<Store[]> {
+    return await db.select().from(stores).orderBy(asc(stores.name));
+  }
+
+  async getStore(id: number): Promise<Store | undefined> {
+    const result = await db.select().from(stores).where(eq(stores.id, id));
+    return result[0];
+  }
+
+  async getStoreByNumber(storeNumber: string): Promise<Store | undefined> {
+    const result = await db
+      .select()
+      .from(stores)
+      .where(eq(stores.storeNumber, storeNumber));
+    return result[0];
+  }
+
+  async createStore(insertStore: InsertStore): Promise<Store> {
+    const result = await db
+      .insert(stores)
+      .values({
+        ...insertStore,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+    return result[0];
+  }
+
+  async updateStore(
+    id: number,
+    storeData: Partial<InsertStore>
+  ): Promise<Store | undefined> {
+    const result = await db
+      .update(stores)
+      .set({
+        ...storeData,
+        updatedAt: new Date(),
+      })
+      .where(eq(stores.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async deleteStore(id: number): Promise<boolean> {
+    const result = await db.delete(stores).where(eq(stores.id, id));
+    return result.changes > 0;
+  }
+
+  // ============= KIOSK MANAGEMENT =============
+
+  async getAllKiosks(): Promise<Kiosk[]> {
+    return await db.select().from(kiosks).orderBy(asc(kiosks.name));
+  }
+
+  async getKiosk(id: number): Promise<Kiosk | undefined> {
+    const result = await db.select().from(kiosks).where(eq(kiosks.id, id));
+    return result[0];
+  }
+
+  async getKiosksByStore(storeId: number): Promise<Kiosk[]> {
+    return await db
+      .select()
+      .from(kiosks)
+      .where(eq(kiosks.storeId, storeId))
+      .orderBy(asc(kiosks.name));
+  }
+
+  async createKiosk(insertKiosk: InsertKiosk): Promise<Kiosk> {
+    const result = await db
+      .insert(kiosks)
+      .values({
+        ...insertKiosk,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+    return result[0];
+  }
+
+  async updateKiosk(
+    id: number,
+    kioskData: Partial<InsertKiosk>
+  ): Promise<Kiosk | undefined> {
+    const result = await db
+      .update(kiosks)
+      .set({
+        ...kioskData,
+        updatedAt: new Date(),
+      })
+      .where(eq(kiosks.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async deleteKiosk(id: number): Promise<boolean> {
+    const result = await db.delete(kiosks).where(eq(kiosks.id, id));
+    return result.changes > 0;
   }
 
   async saveUISettings(settings: any): Promise<void> {
