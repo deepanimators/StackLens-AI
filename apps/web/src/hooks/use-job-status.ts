@@ -21,22 +21,22 @@ export const useJobStatus = (jobId: string | null, pollInterval: number = 2000) 
 
     const fetchJobStatus = async () => {
       if (isCancelled) return;
-      
+
       try {
         setLoading(true);
         setError(null);
-        
+
         const response = await authenticatedRequest('GET', `/api/files/jobs/${jobId}/status`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch job status');
         }
-        
+
         const data = await response.json() as JobStatus;
-        
+
         if (!isCancelled) {
           setJobStatus(data);
-          
+
           // Stop polling if job is completed or failed
           if (data.status === 'completed' || data.status === 'failed') {
             clearInterval(intervalId);
