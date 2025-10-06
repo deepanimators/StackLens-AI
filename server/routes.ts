@@ -4435,7 +4435,7 @@ Format as JSON with the following structure:
             // Get store details
             const stores = await storage.getStores();
             const store = stores.find((s: any) => s.storeNumber === storeNumber);
-            
+
             // Get kiosk details
             const kiosks = await storage.getKiosks();
             const kiosk = kiosks.find((k: any) => k.kioskNumber === kioskNumber);
@@ -4443,17 +4443,17 @@ Format as JSON with the following structure:
             if (store && kiosk) {
               storeName = store.name.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize for filename
               kioskName = kiosk.name.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize for filename
-              
+
               // Create standardized filename: StoreName_KioskName_OriginalFilename
               const originalFileName = uploadedFile.originalname;
               standardizedFilename = `${storeName}_${kioskName}_${originalFileName}`;
-              
+
               // Update the actual file on disk
               const fs = require('fs');
               const path = require('path');
               const oldPath = uploadedFile.path;
               const newPath = path.join(path.dirname(oldPath), standardizedFilename);
-              
+
               if (fs.existsSync(oldPath)) {
                 fs.renameSync(oldPath, newPath);
                 uploadedFile.filename = standardizedFilename;
