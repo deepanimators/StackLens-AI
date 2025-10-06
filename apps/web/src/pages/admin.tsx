@@ -589,26 +589,23 @@ export default function AdminDashboard() {
     );
 
     try {
-      const response = await authenticatedRequest(
+      await authenticatedRequest(
         "PUT",
         "/api/admin/ui-settings",
         uiSettings
       );
-      if (response.ok) {
-        // Refresh the UI settings data
-        queryClient.invalidateQueries({ queryKey: ["/api/admin/ui-settings"] });
-        refetchSettings(); // Apply settings immediately
-        toast({
-          title: "Success",
-          description: "UI settings saved successfully",
-        });
-      } else {
-        throw new Error("Failed to save UI settings");
-      }
-    } catch (error) {
+      
+      // Refresh the UI settings data
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/ui-settings"] });
+      refetchSettings(); // Apply settings immediately
+      toast({
+        title: "Success",
+        description: "UI settings saved successfully",
+      });
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to save UI settings",
+        description: error.message || "Failed to save UI settings",
         variant: "destructive",
       });
     }
@@ -626,33 +623,30 @@ export default function AdminDashboard() {
     };
 
     try {
-      const response = await authenticatedRequest(
+      await authenticatedRequest(
         "PUT",
         "/api/admin/api-settings",
         apiSettings
       );
-      if (response.ok) {
-        // Lock the Gemini API key after successful save
-        if (apiSettings.geminiApiKey) {
-          setIsGeminiApiKeyLocked(true);
-        }
-
-        // Refresh the API settings data
-        queryClient.invalidateQueries({
-          queryKey: ["/api/admin/api-settings"],
-        });
-        refetchSettings(); // Apply settings immediately
-        toast({
-          title: "Success",
-          description: "API settings saved successfully",
-        });
-      } else {
-        throw new Error("Failed to save API settings");
+      
+      // Lock the Gemini API key after successful save
+      if (apiSettings.geminiApiKey) {
+        setIsGeminiApiKeyLocked(true);
       }
-    } catch (error) {
+
+      // Refresh the API settings data
+      queryClient.invalidateQueries({
+        queryKey: ["/api/admin/api-settings"],
+      });
+      refetchSettings(); // Apply settings immediately
+      toast({
+        title: "Success",
+        description: "API settings saved successfully",
+      });
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to save API settings",
+        description: error.message || "Failed to save API settings",
         variant: "destructive",
       });
     }
@@ -670,28 +664,25 @@ export default function AdminDashboard() {
     };
 
     try {
-      const response = await authenticatedRequest(
+      await authenticatedRequest(
         "PUT",
         "/api/admin/system-settings",
         systemSettings
       );
-      if (response.ok) {
-        // Refresh the API settings data
-        queryClient.invalidateQueries({
-          queryKey: ["/api/admin/api-settings"],
-        });
-        refetchSettings(); // Apply settings immediately
-        toast({
-          title: "Success",
-          description: "System settings saved successfully",
-        });
-      } else {
-        throw new Error("Failed to save system settings");
-      }
-    } catch (error) {
+      
+      // Refresh the API settings data
+      queryClient.invalidateQueries({
+        queryKey: ["/api/admin/api-settings"],
+      });
+      refetchSettings(); // Apply settings immediately
+      toast({
+        title: "Success",
+        description: "System settings saved successfully",
+      });
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to save system settings",
+        description: error.message || "Failed to save system settings",
         variant: "destructive",
       });
     }

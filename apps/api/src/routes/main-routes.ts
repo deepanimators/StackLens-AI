@@ -529,6 +529,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(401).json({ message: "User not authenticated" });
         }
 
+        // Validation
+        if (webhookUrl && !webhookUrl.startsWith('https://') && !webhookUrl.startsWith('http://localhost')) {
+          return res.status(400).json({ 
+            message: "Webhook URL must use HTTPS (or http://localhost for development)" 
+          });
+        }
+        
+        const fileSizeNum = parseInt(maxFileSize);
+        if (isNaN(fileSizeNum) || fileSizeNum < 1 || fileSizeNum > 100) {
+          return res.status(400).json({ 
+            message: "File size must be between 1 and 100 MB" 
+          });
+        }
+
         // Get or create user settings
         let userSettings = await storage.getUserSettings(userId);
 
@@ -571,9 +585,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: "API settings updated successfully",
           settings: updatedApiSettings,
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error updating API settings:", error);
-        res.status(500).json({ message: "Failed to update API settings" });
+        res.status(500).json({ 
+          message: error.message || "Failed to update API settings" 
+        });
       }
     }
   );
