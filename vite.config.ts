@@ -19,19 +19,27 @@ export default defineConfig(async () => {
         "@": path.resolve(import.meta.dirname, "apps/web", "src"),
         "@shared": path.resolve(import.meta.dirname, "packages/shared"),
         "@database": path.resolve(import.meta.dirname, "packages/database"),
-        "@assets": path.resolve(import.meta.dirname, "attached_assets")}},
+        "@assets": path.resolve(import.meta.dirname, "attached_assets")
+      }
+    },
     root: path.resolve(import.meta.dirname, "apps/web"),
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
-      emptyOutDir: true},
+      emptyOutDir: true
+    },
     server: {
       fs: {
         strict: true,
-        deny: ["**/.*"]},
+        deny: ["**/.*"]
+      },
       proxy: {
         "/api": {
           target: "http://localhost:5000",
           changeOrigin: true,
-          secure: false}}}};
+          secure: false
+        }
+      }
+    }
+  };
 });
 
