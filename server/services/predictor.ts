@@ -47,8 +47,8 @@ export class Predictor {
       const prediction = await this.makePrediction(features, activeModel);
       
       return prediction;
-    } catch (error) {
-      console.error('Prediction failed:', error);
+    } catch (err) {
+      console.error('Prediction failed:', err);
       return this.getFallbackPrediction(error);
     }
   }
@@ -156,7 +156,7 @@ export class Predictor {
     const total = Object.values(scores).reduce((sum, score) => sum + score, 0);
     if (total > 0) {
       Object.keys(scores).forEach(key => {
-        scores[key] = scores[key] / total;
+        scores[key as keyof typeof scores] = scores[key as keyof typeof scores] / total;
       });
     }
 
@@ -192,7 +192,7 @@ export class Predictor {
     const total = Object.values(types).reduce((sum, score) => sum + score, 0);
     if (total > 0) {
       Object.keys(types).forEach(key => {
-        types[key] = types[key] / total;
+        types[key as keyof typeof types] = types[key as keyof typeof types] / total;
       });
     }
 

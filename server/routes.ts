@@ -376,8 +376,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.createAuditLog({
           userId: req.user.id,
           action: "delete",
-          resourceType: "user",
-          resourceId: userId,
+          entityType: "user",
+          entityId: userId,
           oldValues: user,
           ipAddress: req.ip,
           userAgent: req.get("User-Agent"),
@@ -4847,10 +4847,10 @@ Format as JSON with the following structure:
 
       // Delete the analysis history record
       const success = await storage.deleteAnalysisHistory(analysisId);
-      
+
       if (success) {
         console.log(`✅ Analysis history ${analysisId} deleted successfully`);
-        res.json({ 
+        res.json({
           message: "Analysis history deleted successfully",
           analysisId: analysisId
         });
@@ -7694,8 +7694,8 @@ Format as JSON with the following structure:
                 ? enterprise_analysis.value
                 : null,
           },
-          recommendations: [],
-          alerts: [],
+          recommendations: [] as string[],
+          alerts: [] as any[],
         };
 
         // Generate recommendations based on AI insights
