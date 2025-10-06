@@ -147,7 +147,7 @@ jobs:
               run: npx playwright install --with-deps chromium
 
             - name: Setup database directory
-              run: mkdir -p data/database
+              run: mkdir -p data/Database
 
             - name: Start backend server
               run: |
@@ -221,7 +221,7 @@ jobs:
               run: npx playwright install --with-deps chromium
 
             - name: Setup database directory
-              run: mkdir -p data/database
+              run: mkdir -p data/Database
 
             - name: Start backend server
               run: |
@@ -284,7 +284,7 @@ jobs:
               run: npx playwright install --with-deps ${{ matrix.browser }}
 
             - name: Setup database directory
-              run: mkdir -p data/database
+              run: mkdir -p data/Database
 
             - name: Start backend server
               run: |
@@ -427,7 +427,7 @@ jobs:
               run: npx playwright install --with-deps chromium
 
             - name: Setup database directory
-              run: mkdir -p data/database
+              run: mkdir -p data/Database
 
             - name: Start backend server
               run: |
