@@ -1,6 +1,6 @@
 import { initializeApp, cert } from "firebase-admin/app";
 import { getAuth, UserRecord } from "firebase-admin/auth";
-import { storage } from "./database-storage";
+import { storage } from "../database/database-storage.js";
 
 // Initialize Firebase Admin
 let firebaseApp: any = null;

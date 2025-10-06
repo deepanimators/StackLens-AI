@@ -38,7 +38,7 @@
         "./apps/web/src/*"
       ],
       "@shared/*": [
-        "./packages/shared/*"
+        "./packages/shared/src/*"
       ],
       "@database/*": [
         "./packages/database/*"

@@ -18,9 +18,9 @@ import {
   type InsertMlModel,
   type ErrorPattern,
   type InsertErrorPattern,
-  type UserSetting,
-  type InsertUserSetting,
-} from "@shared/schema";
+  type UserSettings,
+  type InsertUserSettings,
+} from "@shared/sqlite-schema";
 
 export interface IStorage {
   // User management
@@ -91,12 +91,12 @@ export interface IStorage {
   deleteErrorPattern(id: number): Promise<boolean>;
 
   // User settings
-  getUserSettings(userId: number): Promise<UserSetting | undefined>;
-  createUserSettings(settings: InsertUserSetting): Promise<UserSetting>;
+  getUserSettings(userId: number): Promise<UserSettings | undefined>;
+  createUserSettings(settings: InsertUserSettings): Promise<UserSettings>;
   updateUserSettings(
     userId: number,
-    settings: Partial<InsertUserSetting>
-  ): Promise<UserSetting | undefined>;
+    settings: Partial<InsertUserSettings>
+  ): Promise<UserSettings | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -106,7 +106,7 @@ export class MemStorage implements IStorage {
   private analysisHistory: Map<number, AnalysisHistory>;
   private mlModels: Map<number, MlModel>;
   private errorPatterns: Map<number, ErrorPattern>;
-  private userSettingsMap: Map<number, UserSetting>;
+  private userSettingsMap: Map<number, UserSettings>;
   private currentId: number;
 
   constructor() {
@@ -449,13 +449,13 @@ export class MemStorage implements IStorage {
   }
 
   // User settings methods
-  async getUserSettings(userId: number): Promise<UserSetting | undefined> {
+  async getUserSettings(userId: number): Promise<UserSettings | undefined> {
     return this.userSettingsMap.get(userId);
   }
 
-  async createUserSettings(insertSettings: InsertUserSetting): Promise<UserSetting> {
+  async createUserSettings(insertSettings: InsertUserSettings): Promise<UserSettings> {
     const id = this.currentId++;
-    const settings: UserSetting = {
+    const settings: UserSettings = {
       ...insertSettings,
       id,
       createdAt: new Date(),
@@ -469,12 +469,12 @@ export class MemStorage implements IStorage {
 
   async updateUserSettings(
     userId: number,
-    settingsData: Partial<InsertUserSetting>
-  ): Promise<UserSetting | undefined> {
+    settingsData: Partial<InsertUserSettings>
+  ): Promise<UserSettings | undefined> {
     const settings = this.userSettingsMap.get(userId);
     if (!settings) return undefined;
 
-    const updatedSettings: UserSetting = {
+    const updatedSettings: UserSettings = {
       ...settings,
       ...settingsData,
       updatedAt: new Date(),

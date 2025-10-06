@@ -235,5 +235,3 @@ try {
 } catch (error) {
   console.error('❌ Error initializing SQLite database:', error);
 }
-
-export { sqlite };
