@@ -30,27 +30,23 @@ test.describe('Unit Tests - Utilities', () => {
     });
 
     test.describe('buildApiUrl() - API URL Builder', () => {
-        test('should build API URL with path', async ({ page }) => {
-            const buildApiUrl = await page.evaluate(() => {
-                const API_BASE_URL = 'http://localhost:5000';
-                return (path: string) => {
-                    if (!path.startsWith('/')) path = `/${path}`;
-                    return `${API_BASE_URL}${path}`;
-                };
-            });
+        test('should build API URL with path', () => {
+            const API_BASE_URL = 'http://localhost:5000';
+            const buildApiUrl = (path: string) => {
+                if (!path.startsWith('/')) path = `/${path}`;
+                return `${API_BASE_URL}${path}`;
+            };
 
             const url = buildApiUrl('/api/errors');
             expect(url).toBe('http://localhost:5000/api/errors');
         });
 
-        test('should handle paths without leading slash', async ({ page }) => {
-            const buildApiUrl = await page.evaluate(() => {
-                const API_BASE_URL = 'http://localhost:5000';
-                return (path: string) => {
-                    if (!path.startsWith('/')) path = `/${path}`;
-                    return `${API_BASE_URL}${path}`;
-                };
-            });
+        test('should handle paths without leading slash', () => {
+            const API_BASE_URL = 'http://localhost:5000';
+            const buildApiUrl = (path: string) => {
+                if (!path.startsWith('/')) path = `/${path}`;
+                return `${API_BASE_URL}${path}`;
+            };
 
             const url = buildApiUrl('api/upload');
             expect(url).toBe('http://localhost:5000/api/upload');
@@ -298,7 +294,7 @@ test.describe('Unit Tests - Export Functionality', () => {
     });
 
     test('should format timestamps for export', () => {
-        const timestamp = new Date('2025-10-06T10:30:00');
+        const timestamp = new Date('2025-10-06T10:30:00Z'); // Use UTC explicitly
         const formatted = timestamp.toISOString();
 
         expect(formatted).toContain('2025-10-06');
@@ -427,7 +423,8 @@ test.describe('Unit Tests - String Utilities', () => {
 
     test('should sanitize HTML in error messages', () => {
         const dangerousMessage = '<script>alert("xss")</script>Error occurred';
-        const sanitized = dangerousMessage.replace(/<[^>]*>/g, '');
+        // More robust sanitization that removes tags AND their content
+        const sanitized = dangerousMessage.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<[^>]*>/g, '');
 
         expect(sanitized).toBe('Error occurred');
         expect(sanitized).not.toContain('<script>');

@@ -134,6 +134,7 @@ export default defineConfig({
     // Web server configuration - use existing servers
     // To run tests: start servers with 'npm run dev' in another terminal, then run 'npm test'
     // Or use 'npm run test:with-servers' to auto-start servers
+    // In CI, servers are started manually before running tests
     webServer: process.env.SKIP_SERVER ? undefined : {
         command: 'npm run dev:client',
         url: 'http://localhost:5173',

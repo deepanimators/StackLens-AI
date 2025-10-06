@@ -175,7 +175,9 @@ jobs:
                   done
 
             - name: Run integration tests
-              run: npm run test:integration
+              run: playwright test tests/integration
+              env:
+                  CI: true
 
             - name: Stop servers
               if: always()
@@ -230,7 +232,9 @@ jobs:
                   done
 
             - name: Run API tests
-              run: npm run test:api
+              run: playwright test tests/api
+              env:
+                  CI: true
 
             - name: Stop servers
               if: always()
@@ -302,7 +306,9 @@ jobs:
                   done
 
             - name: Run E2E tests
-              run: npm run test:e2e:${{ matrix.browser }}
+              run: playwright test tests/e2e --project=e2e-${{ matrix.browser }}
+              env:
+                  CI: true
 
             - name: Stop servers
               if: always()
