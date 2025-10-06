@@ -24,6 +24,8 @@ interface ErrorLog {
   resolved: boolean;
   aiSuggestion?: any;
   mlPrediction?: any;
+  storeNumber?: string | null;
+  kioskNumber?: string | null;
 }
 
 interface ErrorTableProps {
@@ -33,6 +35,7 @@ interface ErrorTableProps {
   showLineNumbers?: boolean;
   showTimestamp?: boolean;
   showFileName?: boolean;
+  showStoreKiosk?: boolean;
   fileName?: string;
 }
 
@@ -43,6 +46,7 @@ export default function ErrorTable({
   showLineNumbers = true,
   showTimestamp = true,
   showFileName = false,
+  showStoreKiosk = true,
   fileName,
 }: ErrorTableProps) {
   const getSeverityColor = (severity: string) => {
@@ -97,6 +101,8 @@ export default function ErrorTable({
             {showLineNumbers && <TableHead>Line</TableHead>}
             {showTimestamp && <TableHead>Timestamp</TableHead>}
             {showFileName && <TableHead>File</TableHead>}
+            {showStoreKiosk && <TableHead>Store</TableHead>}
+            {showStoreKiosk && <TableHead>Kiosk</TableHead>}
             <TableHead>Severity</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Error Message</TableHead>
@@ -119,6 +125,16 @@ export default function ErrorTable({
               {showFileName && (
                 <TableCell className="text-muted-foreground">
                   {(error as any).filename || "Unknown"}
+                </TableCell>
+              )}
+              {showStoreKiosk && (
+                <TableCell className="text-muted-foreground">
+                  {error.storeNumber || "N/A"}
+                </TableCell>
+              )}
+              {showStoreKiosk && (
+                <TableCell className="text-muted-foreground">
+                  {error.kioskNumber || "N/A"}
                 </TableCell>
               )}
               <TableCell>

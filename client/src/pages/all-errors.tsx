@@ -35,6 +35,8 @@ interface ErrorLog {
   resolved: boolean;
   aiSuggestion?: any;
   mlPrediction?: any;
+  storeNumber?: string | null;
+  kioskNumber?: string | null;
 }
 
 interface ErrorsResponse {
@@ -110,6 +112,8 @@ const transformErrorLog = (apiError: any): ErrorLog => {
     resolved: Boolean(apiError.resolved),
     aiSuggestion: aiSuggestion,
     mlPrediction: mlPrediction,
+    storeNumber: apiError.storeNumber || null,
+    kioskNumber: apiError.kioskNumber || null,
   };
 };
 
@@ -122,6 +126,8 @@ export default function AllErrors() {
   const [fileFilter, setFileFilter] = useState<string[]>([]); // Changed to array for multi-select
   const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
   const [userFilter, setUserFilter] = useState<string>("all");
+  const [storeFilter, setStoreFilter] = useState<string>("all");
+  const [kioskFilter, setKioskFilter] = useState<string>("all");
   const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [showAISuggestionModal, setShowAISuggestionModal] = useState(false);
@@ -163,6 +169,8 @@ export default function AllErrors() {
         fileFilter,
         errorType: errorTypeFilter,
         userId: userFilter,
+        storeFilter,
+        kioskFilter,
       },
     ],
     queryFn: async (): Promise<ErrorsResponse> => {
@@ -173,6 +181,8 @@ export default function AllErrors() {
         searchQuery,
         fileFilter,
         errorTypeFilter,
+        storeFilter,
+        kioskFilter,
       });
 
       const params = new URLSearchParams();
@@ -194,6 +204,12 @@ export default function AllErrors() {
       }
       if (userFilter && userFilter !== "all") {
         params.append("userId", userFilter);
+      }
+      if (storeFilter && storeFilter !== "all") {
+        params.append("storeNumber", storeFilter);
+      }
+      if (kioskFilter && kioskFilter !== "all") {
+        params.append("kioskNumber", kioskFilter);
       }
 
       try {
@@ -239,6 +255,31 @@ export default function AllErrors() {
     },
   });
 
+  // Get stores for store filter dropdown
+  const { data: stores } = useQuery({
+    queryKey: ["/api/stores"],
+    queryFn: async () => {
+      const data = await authenticatedRequest("GET", "/api/stores");
+      return data || [];
+    },
+  });
+
+  // Get kiosks for kiosk filter dropdown (filtered by selected store if applicable)
+  const { data: kiosks } = useQuery({
+    queryKey: ["/api/kiosks", storeFilter],
+    queryFn: async () => {
+      const data = await authenticatedRequest("GET", "/api/kiosks");
+      // Filter kiosks by selected store if a store is selected
+      if (storeFilter && storeFilter !== "all") {
+        const store = (data || []).find((k: any) => k.storeNumber === storeFilter);
+        if (store) {
+          return (data || []).filter((k: any) => k.storeId === store.id);
+        }
+      }
+      return data || [];
+    },
+  });
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
@@ -263,6 +304,17 @@ export default function AllErrors() {
   const handleUserFilter = (newUserFilter: string) => {
     setUserFilter(newUserFilter);
     setFileFilter([]); // Reset file filter when user changes
+    setPage(1);
+  };
+
+  const handleStoreFilter = (newStoreFilter: string) => {
+    setStoreFilter(newStoreFilter);
+    setKioskFilter("all"); // Reset kiosk filter when store changes
+    setPage(1);
+  };
+
+  const handleKioskFilter = (newKioskFilter: string) => {
+    setKioskFilter(newKioskFilter);
     setPage(1);
   };
 
@@ -497,6 +549,38 @@ export default function AllErrors() {
                 {(errorTypes || []).map((type: string) => (
                   <SelectItem key={type} value={type}>
                     {type}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={storeFilter} onValueChange={handleStoreFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by store" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Stores</SelectItem>
+                {(stores || []).map((store: any) => (
+                  <SelectItem key={store.id} value={store.storeNumber}>
+                    {store.storeNumber} - {store.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select 
+              value={kioskFilter} 
+              onValueChange={handleKioskFilter}
+              disabled={storeFilter === "all"}
+            >
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by kiosk" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Kiosks</SelectItem>
+                {(kiosks || []).map((kiosk: any) => (
+                  <SelectItem key={kiosk.id} value={kiosk.kioskNumber}>
+                    {kiosk.kioskNumber} - {kiosk.name}
                   </SelectItem>
                 ))}
               </SelectContent>

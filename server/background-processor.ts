@@ -178,6 +178,8 @@ class BackgroundJobProcessor {
         for (const error of batch) {
           const errorLog = await storage.createErrorLog({
             fileId: job.fileId,
+            storeNumber: logFile.storeNumber || null,
+            kioskNumber: logFile.kioskNumber || null,
             lineNumber: error.lineNumber,
             timestamp: error.timestamp,
             severity: error.severity,

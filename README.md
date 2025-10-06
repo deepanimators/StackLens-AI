@@ -45,18 +45,27 @@ If you prefer manual installation or encounter issues with the automated script:
 ```powershell
 # Run as Administrator
 .\scripts\01-install-prerequisites.ps1
+
+# Run prerequisite installer
+.\01-INSTALL.ps1
 ```
 
 #### Step 2: Setup Application
 
 ```powershell
 .\scripts\02-setup-application.ps1
+
+# Install dependencies and build
+.\02-SETUP.ps1 -ServerIP "0.0.0.0" -Port 4000
 ```
 
 #### Step 3: Start Application
 
 ```powershell
 .\scripts\03-start-application.ps1
+
+# Start the server
+.\03-START-APP.ps1 -ServerIP "0.0.0.0" -Port 4000
 ```
 
 ## 🔧 Configuration
@@ -385,3 +394,7 @@ sqlite3 db/stacklens.db -header -column "SELECT s.store_number AS 'Store #', s.n
 
 
 sqlite3 db/stacklens.db "SELECT 'STORES' as Type, COUNT(*) as Count FROM stores WHERE store_number LIKE 'BK-%' UNION ALL SELECT 'KIOSKS' as Type, COUNT(*) as Count FROM kiosks WHERE kiosk_number LIKE 'BK-%';"
+
+
+forget everything!
+

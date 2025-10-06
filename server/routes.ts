@@ -4421,13 +4421,60 @@ Format as JSON with the following structure:
           return res.status(400).json({ message: "No file uploaded" });
         }
 
+        // Get store and kiosk information from request body
+        const storeNumber = req.body.storeNumber || null;
+        const kioskNumber = req.body.kioskNumber || null;
+
+        // Fetch store and kiosk details for filename standardization
+        let storeName = null;
+        let kioskName = null;
+        let standardizedFilename = uploadedFile.filename;
+
+        if (storeNumber && kioskNumber) {
+          try {
+            // Get store details
+            const stores = await storage.getStores();
+            const store = stores.find((s: any) => s.storeNumber === storeNumber);
+            
+            // Get kiosk details
+            const kiosks = await storage.getKiosks();
+            const kiosk = kiosks.find((k: any) => k.kioskNumber === kioskNumber);
+
+            if (store && kiosk) {
+              storeName = store.name.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize for filename
+              kioskName = kiosk.name.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize for filename
+              
+              // Create standardized filename: StoreName_KioskName_OriginalFilename
+              const originalFileName = uploadedFile.originalname;
+              standardizedFilename = `${storeName}_${kioskName}_${originalFileName}`;
+              
+              // Update the actual file on disk
+              const fs = require('fs');
+              const path = require('path');
+              const oldPath = uploadedFile.path;
+              const newPath = path.join(path.dirname(oldPath), standardizedFilename);
+              
+              if (fs.existsSync(oldPath)) {
+                fs.renameSync(oldPath, newPath);
+                uploadedFile.filename = standardizedFilename;
+                uploadedFile.path = newPath;
+              }
+            }
+          } catch (error) {
+            console.warn("Failed to fetch store/kiosk details for filename standardization:", error);
+            // Continue with original filename if standardization fails
+          }
+        }
+
         const fileData = {
-          filename: uploadedFile.filename,
+          filename: standardizedFilename,
           originalName: uploadedFile.originalname,
           fileSize: uploadedFile.size,
           mimeType: uploadedFile.mimetype,
           uploadedBy: req.user.id,
           fileType: uploadedFile.mimetype.includes("text") ? "log" : "other",
+          storeNumber: storeNumber,
+          kioskNumber: kioskNumber,
         };
 
         const savedFile = await storage.createLogFile(fileData);
@@ -5230,6 +5277,8 @@ Format as JSON with the following structure:
       const fileFilter = req.query.fileFilter as string;
       const errorTypeFilter = req.query.errorType as string;
       const userId = req.query.userId as string;
+      const storeNumber = req.query.storeNumber as string;
+      const kioskNumber = req.query.kioskNumber as string;
 
       // Check if admin is requesting errors for specific user or all users
       let allUserErrors;
@@ -5310,6 +5359,30 @@ Format as JSON with the following structure:
         );
       }
 
+      // Filter by store number
+      if (storeNumber && storeNumber !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by storeNumber: ${storeNumber}`);
+        const beforeFiltering = filteredErrors.length;
+        filteredErrors = filteredErrors.filter(
+          (error: any) => error.storeNumber === storeNumber
+        );
+        console.log(
+          `🔍 [DEBUG] Store filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
+        );
+      }
+
+      // Filter by kiosk number
+      if (kioskNumber && kioskNumber !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by kioskNumber: ${kioskNumber}`);
+        const beforeFiltering = filteredErrors.length;
+        filteredErrors = filteredErrors.filter(
+          (error: any) => error.kioskNumber === kioskNumber
+        );
+        console.log(
+          `🔍 [DEBUG] Kiosk filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
+        );
+      }
+
       // Apply pagination
       const total = filteredErrors.length;
       const offset = (page - 1) * limit;
@@ -5343,6 +5416,8 @@ Format as JSON with the following structure:
           id: error.id,
           fileId: error.fileId,
           filename: (error as any).filename || "Unknown",
+          storeNumber: (error as any).storeNumber || null,
+          kioskNumber: (error as any).kioskNumber || null,
           message: error.message,
           severity: error.severity,
           errorType: error.errorType,

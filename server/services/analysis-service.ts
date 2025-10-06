@@ -136,6 +136,8 @@ export class AnalysisService {
       for (const error of parseResult.errors || []) {
         const errorLog: InsertErrorLog = {
           fileId: createdLogFile.id,
+          storeNumber: createdLogFile.storeNumber || null,
+          kioskNumber: createdLogFile.kioskNumber || null,
           lineNumber: error.lineNumber,
           timestamp: error.timestamp,
           severity: error.severity,
