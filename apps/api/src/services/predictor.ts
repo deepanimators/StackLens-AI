@@ -1,6 +1,6 @@
 import { ErrorLog, MlModel } from "@shared/schema";
-import { storage } from "../storage";
-import { FeatureEngineer, ExtractedFeatures } from "./feature-engineer";
+import { storage } from "../database/database-storage.js";
+import { FeatureEngineer, ExtractedFeatures } from "./feature-engineer.js";
 
 export interface PredictionResult {
   predictedSeverity: string;

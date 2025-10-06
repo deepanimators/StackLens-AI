@@ -1,5 +1,5 @@
 import { ErrorLog, AISuggestion } from "@shared/schema";
-import { storage } from "../storage";
+import { storage } from "../database/database-storage.js";
 
 interface VectorSearchResult {
   pattern: string;
@@ -335,7 +335,7 @@ Format your response with clear sections for each component.`;
     error: ErrorLog
   ): Promise<AISuggestion> {
     // Use existing AI service but with enhanced prompt
-    const aiService = new (await import("../ai-service")).AIService();
+    const aiService = new (await import("../services/ai-service.js")).AIService();
 
     // Create enhanced error object with RAG context
     const enhancedError = {

@@ -164,3 +164,6 @@ Focus on practical, actionable solutions that a developer can implement immediat
     };
   }
 }
+
+// Export singleton instance for convenience
+export const aiService = new AIService();

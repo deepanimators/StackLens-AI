@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { storage } from "../database-storage";
+import { storage } from "../database/database-storage.js";
 
 export interface ExcelTrainingData {
   id?: number;

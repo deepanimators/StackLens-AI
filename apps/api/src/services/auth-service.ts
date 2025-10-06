@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { storage } from '../database-storage';
+import { storage } from '../database/database-storage.js';
 import { type User } from '@shared/sqlite-schema';
 
 export interface LoginCredentials {

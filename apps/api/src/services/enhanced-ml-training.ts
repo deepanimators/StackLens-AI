@@ -1,4 +1,4 @@
-import { storage } from "../database-storage";
+import { storage } from "../database/database-storage.js";
 
 export interface TrainingData {
   errorType: string;

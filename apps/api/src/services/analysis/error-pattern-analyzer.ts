@@ -1,5 +1,5 @@
-import { DatabaseStorage } from "./database-storage";
-import { aiService } from "./ai-service";
+import { DatabaseStorage } from "../../database/database-storage.js";
+import { aiService } from "../ai-service.js";
 
 interface ErrorPattern {
   pattern: string;

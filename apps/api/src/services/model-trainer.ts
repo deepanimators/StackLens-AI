@@ -3,9 +3,9 @@ import {
   InsertMlModel,
   InsertModelTrainingSession,
 } from "@shared/schema";
-import { storage } from "../storage";
-import { FeatureEngineer, ExtractedFeatures } from "./feature-engineer";
-import { aiService } from "../ai-service";
+import { storage } from "../database/database-storage.js";
+import { FeatureEngineer, ExtractedFeatures } from "./feature-engineer.js";
+import { aiService } from "./ai-service.js";
 
 export interface TrainingMetrics {
   accuracy: number;

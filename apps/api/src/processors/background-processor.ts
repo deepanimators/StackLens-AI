@@ -1,7 +1,7 @@
-import { storage } from "./database-storage";
-import { LogParser } from "./services/log-parser";
-import { aiService } from "./ai-service";
-import { MLService } from "./services/ml-service";
+import { storage } from "../database/database-storage.js";
+import { LogParser } from "../services/log-parser.js";
+import { aiService } from "../services/ai-service.js";
+import { MLService } from "../services/ml/ml-service.js";
 import path from "path";
 import fs from "fs";
 
