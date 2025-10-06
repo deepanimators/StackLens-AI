@@ -1,0 +1,118 @@
+# 02 - SETUP APPLICATION (FIXED)
+# Run after 01-INSTALL.ps1
+
+param(
+    [string]$ServerIP = "localhost",
+    [int]$Port = 4000
+)
+
+Write-Host ""
+Write-Host "=====================================" -ForegroundColor Cyan
+Write-Host "    STEP 2: SETUP APPLICATION" -ForegroundColor Yellow
+Write-Host "=====================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Step 1: Setup Python 3.12
+Write-Host "Setting up Python 3.12..." -ForegroundColor Green
+powershell -ExecutionPolicy Bypass -File "SETUP-PYTHON.ps1"
+
+# Step 2: Clean Replit Dependencies
+Write-Host ""
+Write-Host "Cleaning Replit Dependencies..." -ForegroundColor Green
+
+# Clean package.json
+if (Test-Path "package.json") {
+    $packageJson = Get-Content "package.json" -Raw
+    $packageJson = $packageJson -replace '"@replit/vite-plugin-cartographer":\s*"[^"]*",?\s*', ''
+    $packageJson = $packageJson -replace ',(\s*\n\s*})', '$1'
+    Set-Content "package.json" -Value $packageJson
+    Write-Host "package.json cleaned" -ForegroundColor Green
+}
+
+# Clean vite.config.ts
+if (Test-Path "vite.config.ts") {
+    $viteConfig = Get-Content "vite.config.ts" -Raw
+    $viteConfig = $viteConfig -replace "import\s+cartographer\s+from\s+['\"]@replit/vite-plugin-cartographer['\"];?\s*", ""
+    $viteConfig = $viteConfig -replace "cartographer\(\),?\s*", ""
+    Set-Content "vite.config.ts" -Value $viteConfig
+    Write-Host "vite.config.ts cleaned" -ForegroundColor Green
+}
+
+# Step 3: Install Node Dependencies
+Write-Host ""
+Write-Host "Installing Node.js Dependencies..." -ForegroundColor Green
+npm install --legacy-peer-deps
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "Node dependencies installed" -ForegroundColor Green
+} else {
+    Write-Host "Node dependencies had warnings, continuing..." -ForegroundColor Yellow
+}
+
+# Step 4: Install Python Dependencies
+Write-Host ""
+Write-Host "Installing Python Dependencies..." -ForegroundColor Green
+
+# Core packages
+$packages = @(
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0", 
+    "python-multipart==0.0.6",
+    "requests==2.31.0",
+    "aiofiles==23.2.1",
+    "pydantic==2.5.0",
+    "numpy==1.26.2",
+    "pandas==2.1.4"
+)
+
+foreach ($package in $packages) {
+    Write-Host "Installing $package..." -ForegroundColor Gray
+    python -m pip install $package
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "$package installed" -ForegroundColor Green
+    } else {
+        Write-Host "$package failed, continuing..." -ForegroundColor Yellow
+    }
+}
+
+# Step 5: Build Application
+Write-Host ""
+Write-Host "Building Application..." -ForegroundColor Green
+npm run build
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "Application built successfully" -ForegroundColor Green
+} else {
+    Write-Host "Trying alternative build..." -ForegroundColor Yellow
+    npx vite build
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Alternative build successful" -ForegroundColor Green
+    } else {
+        Write-Host "Build issues, continuing..." -ForegroundColor Yellow
+    }
+}
+
+# Step 6: Configure Environment
+Write-Host ""
+Write-Host "Configuring Environment..." -ForegroundColor Green
+$env:SERVER_IP = $ServerIP
+$env:PORT = $Port
+
+# Create .env file
+$envLine1 = "SERVER_IP=" + $ServerIP
+$envLine2 = "PORT=" + $Port
+$envLine3 = "NODE_ENV=production"
+$envContent = $envLine1 + "`n" + $envLine2 + "`n" + $envLine3
+Set-Content ".env" -Value $envContent
+Write-Host "Environment configured" -ForegroundColor Green
+
+Write-Host ""
+Write-Host "=====================================" -ForegroundColor Green
+Write-Host "    APPLICATION SETUP COMPLETE!" -ForegroundColor Yellow
+Write-Host "=====================================" -ForegroundColor Green
+Write-Host ""
+Write-Host "Configuration:" -ForegroundColor Cyan
+Write-Host "  Server IP: $ServerIP" -ForegroundColor White
+Write-Host "  Port: $Port" -ForegroundColor White
+Write-Host ""
+Write-Host "Next step: Run 03-START-APP.ps1 -ServerIP $ServerIP" -ForegroundColor Cyan
+Write-Host ""
+pause

@@ -8,8 +8,8 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import PredictionModelTrainingService from "../services/prediction-model-training";
-import SuggestionModelTrainingService from "../services/suggestion-model-training";
+import PredictionModelTrainingService from "@/services/prediction-model-training";
+import SuggestionModelTrainingService from "@/services/suggestion-model-training";
 
 const router = express.Router();
 

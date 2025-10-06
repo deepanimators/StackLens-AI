@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+  embeddings:
+    build: .
+    command: uvicorn embeddings_service:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+  ner:
+    build: .
+    command: uvicorn ner_service:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+  summarization:
+    build: .
+    command: uvicorn summarization_service:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+    restart: unless-stopped
+  semantic_search:
+    build: .
+    command: uvicorn semantic_search_service:app --host 0.0.0.0 --port 8003
+    ports:
+      - "8003:8003"
+    restart: unless-stopped
+  anomaly:
+    build: .
+    command: uvicorn anomaly_service:app --host 0.0.0.0 --port 8004
+    ports:
+      - "8004:8004"
+    restart: unless-stopped
+  vector_db:
+    build: .
+    command: uvicorn vector_db_service:app --host 0.0.0.0 --port 8005
+    ports:
+      - "8005:8005"
+    restart: unless-stopped
+  deep_learning:
+    build: .
+    command: uvicorn deep_learning_service:app --host 0.0.0.0 --port 8006
+    ports:
+      - "8006:8006"
+    restart: unless-stopped
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+  active_learning:
+    build: .
+    command: uvicorn active_learning_service:app --host 0.0.0.0 --port 8007
+    ports:
+      - "8007:8007"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+  deep_learning:
+    build: .
+    command: uvicorn deep_learning_api:app --host 0.0.0.0 --port 8006
+    ports:
+      - "8006:8006"
+    restart: unless-stopped
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    runtime: nvidia # For GPU support

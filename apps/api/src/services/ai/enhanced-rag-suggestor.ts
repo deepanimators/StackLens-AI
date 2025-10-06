@@ -6,7 +6,7 @@ import {
   errorPatterns,
   suggestionFeedback,
   patternMetrics,
-} from "../../shared/schema.js";
+} from "@shared/schema.js";
 import { eq, desc, and, gte, isNotNull } from "drizzle-orm";
 import crypto from "crypto";
 

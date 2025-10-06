@@ -5,10 +5,10 @@
 
 import { Request, Response, Router } from "express";
 import { Database } from "better-sqlite3";
-import { EnhancedRAGSuggestor } from "../services/enhanced-rag-suggestor-v2.js";
+import { EnhancedRAGSuggestor } from "@/services/enhanced-rag-suggestor-v2.js";
 import { storage } from "../storage";
-import { ragSuggestionService } from "../services/rag-suggestion-service";
-import { Suggestor } from "../services/suggestor";
+import { ragSuggestionService } from "@/services/rag-suggestion-service";
+import { Suggestor } from "@/services/suggestor";
 
 // Simple auth middleware for RAG routes
 const authenticateUser = (req: any, res: any, next: any) => {

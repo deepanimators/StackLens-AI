@@ -1,7 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import { registerRoutes } from "./routes";
+import { registerRoutes } from "@/routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();

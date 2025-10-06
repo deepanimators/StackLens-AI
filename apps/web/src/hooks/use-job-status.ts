@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { authenticatedRequest } from '@/lib/auth';
+import { authenticatedRequest } from "@/lib/auth';
 
 interface JobStatus {
   status: 'pending' | 'processing' | 'completed' | 'failed';
