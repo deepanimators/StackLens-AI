@@ -16,10 +16,11 @@ export default defineConfig(async () => {
     plugins,
     resolve: {
       alias: {
-        "@": path.resolve(import.meta.dirname, "client", "src"),
-        "@shared": path.resolve(import.meta.dirname, "shared"),
+        "@": path.resolve(import.meta.dirname, "apps/web", "src"),
+        "@shared": path.resolve(import.meta.dirname, "packages/shared"),
+        "@database": path.resolve(import.meta.dirname, "packages/database"),
         "@assets": path.resolve(import.meta.dirname, "attached_assets")}},
-    root: path.resolve(import.meta.dirname, "client"),
+    root: path.resolve(import.meta.dirname, "apps/web"),
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
       emptyOutDir: true},
@@ -29,7 +30,7 @@ export default defineConfig(async () => {
         deny: ["**/.*"]},
       proxy: {
         "/api": {
-          target: "http://localhost:4000",
+          target: "http://localhost:5000",
           changeOrigin: true,
           secure: false}}}};
 });
