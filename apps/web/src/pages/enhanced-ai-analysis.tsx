@@ -139,11 +139,7 @@ export default function EnhancedAIAnalysisPage() {
       includeSimilarity?: boolean;
       includeEntities?: boolean;
     }) =>
-      authenticatedRequest("/api/ai/analyze/comprehensive", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }),
+      authenticatedRequest("POST", "/api/ai/analyze/comprehensive", data),
     onSuccess: () => {
       toast({
         title: "Analysis Complete",
@@ -166,11 +162,7 @@ export default function EnhancedAIAnalysisPage() {
       model_type?: string;
       include_explanation?: boolean;
     }) =>
-      authenticatedRequest("/api/ai/analyze/deep-learning", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }),
+      authenticatedRequest("POST", "/api/ai/analyze/deep-learning", data),
   });
 
   // Semantic search mutation
@@ -181,21 +173,13 @@ export default function EnhancedAIAnalysisPage() {
       similarity_threshold?: number;
       include_metadata?: boolean;
     }) =>
-      authenticatedRequest("/api/ai/search/semantic", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }),
+      authenticatedRequest("POST", "/api/ai/search/semantic", data),
   });
 
   // Multi-service analysis mutation
   const multiServiceAnalysisMutation = useMutation({
     mutationFn: (data: { text: string }) =>
-      authenticatedRequest("/api/ai/analyze/multi-service", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }),
+      authenticatedRequest("POST", "/api/ai/analyze/multi-service", data),
   });
 
   const handleAnalyze = () => {
@@ -758,11 +742,8 @@ export default function EnhancedAIAnalysisPage() {
               <CardContent>
                 {healthData?.services && (
                   <div className="space-y-3">
-                    {Array.from(healthData.services.entries()).map(
-                      ([serviceName, serviceData]: [
-                        string,
-                        AIServiceHealth
-                      ]) => (
+                    {(Array.from(healthData.services.entries()) as [string, AIServiceHealth][]).map(
+                      ([serviceName, serviceData]) => (
                         <div
                           key={serviceName}
                           className="flex items-center justify-between p-3 border rounded-lg"
