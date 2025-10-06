@@ -8,7 +8,7 @@ export async function seedSQLiteDatabase() {
 
     // Create super admin user with proper schema fields
     const hashedPassword = await bcrypt.hash('PapuAchu@27', 10);
-    
+
     const adminUser = await storage.createUser({
       username: 'deepanimators',
       email: 'deepanimators@gmail.com',
@@ -28,7 +28,7 @@ export async function seedSQLiteDatabase() {
       description: 'Full system administration access',
       permissions: [
         'user_management',
-        'role_management', 
+        'role_management',
         'system_settings',
         'audit_logs',
         'training_management',

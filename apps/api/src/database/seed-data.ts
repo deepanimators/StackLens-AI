@@ -2,7 +2,7 @@ import { storage } from "./database-storage";
 
 export async function seedDefaultData() {
   console.log("Seeding default data...");
-  
+
   // Create default roles
   const roles = [
     {
@@ -10,7 +10,7 @@ export async function seedDefaultData() {
       description: 'Administrator with full system access',
       permissions: JSON.stringify([
         'user_management',
-        'role_management', 
+        'role_management',
         'ml_model_management',
         'training_management',
         'system_settings',
@@ -34,7 +34,7 @@ export async function seedDefaultData() {
       description: 'Data analyst with advanced analytics access',
       permissions: JSON.stringify([
         'file_upload',
-        'error_analysis', 
+        'error_analysis',
         'ai_suggestions',
         'view_own_data',
         'advanced_analytics',
