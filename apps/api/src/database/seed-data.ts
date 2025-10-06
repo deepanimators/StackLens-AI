@@ -83,8 +83,9 @@ This module covers the fundamentals of log file analysis, including:
 - Practice severity classification
 - Create custom error patterns
       `,
-      difficultyLevel: 'beginner',
-      estimatedDuration: 45
+      difficulty: 'beginner',
+      estimatedDuration: 45,
+      createdBy: 1
     },
     {
       title: 'AI-Powered Error Resolution',
@@ -111,8 +112,9 @@ Learn how to leverage AI and machine learning for automated error resolution:
 - Integration with external systems
 - Real-time error monitoring
       `,
-      difficultyLevel: 'advanced',
-      estimatedDuration: 90
+      difficulty: 'advanced',
+      estimatedDuration: 90,
+      createdBy: 1
     },
     {
       title: 'System Administration',
@@ -139,8 +141,9 @@ Complete guide for administering StackLens AI platform:
 - Performance monitoring
 - Troubleshooting common issues
       `,
-      difficultyLevel: 'intermediate',
-      estimatedDuration: 60
+      difficulty: 'intermediate',
+      estimatedDuration: 60,
+      createdBy: 1
     }
   ];
 

@@ -101,9 +101,10 @@ Apply industry best practices:
 ## Assessment
 Complete the quiz to test your understanding of log analysis fundamentals.
       `,
-      difficultyLevel: 'beginner',
+      difficulty: 'beginner',
       estimatedDuration: 60,
       isActive: true,
+      createdBy: adminUser.id,
     });
 
     const advancedModule = await storage.createTrainingModule({
@@ -154,9 +155,10 @@ Apply knowledge to real scenarios:
 ## Assessment
 Complete the advanced assessment to demonstrate mastery of AI-powered log analysis.
       `,
-      difficultyLevel: 'advanced',
+      difficulty: 'advanced',
       estimatedDuration: 120,
       isActive: true,
+      createdBy: adminUser.id,
     });
 
     console.log('✅ Created training modules');
@@ -165,6 +167,8 @@ Complete the advanced assessment to demonstrate mastery of AI-powered log analys
     const errorPatterns = [
       {
         pattern: 'OutOfMemoryError',
+        errorType: 'memory',
+        regex: '(OutOfMemoryError|heap\\s+space)',
         description: 'Java heap space exhaustion',
         severity: 'critical',
         category: 'memory',
@@ -172,6 +176,8 @@ Complete the advanced assessment to demonstrate mastery of AI-powered log analys
       },
       {
         pattern: 'NullPointerException',
+        errorType: 'runtime',
+        regex: '(NullPointerException|null\\s+pointer)',
         description: 'Null reference access',
         severity: 'high',
         category: 'runtime',
@@ -179,6 +185,8 @@ Complete the advanced assessment to demonstrate mastery of AI-powered log analys
       },
       {
         pattern: 'Connection refused',
+        errorType: 'network',
+        regex: '(Connection\\s+refused|ECONNREFUSED)',
         description: 'Network connection failure',
         severity: 'high',
         category: 'network',
@@ -186,6 +194,8 @@ Complete the advanced assessment to demonstrate mastery of AI-powered log analys
       },
       {
         pattern: 'File not found',
+        errorType: 'filesystem',
+        regex: '(File\\s+not\\s+found|ENOENT|FileNotFoundException)',
         description: 'Missing file or incorrect path',
         severity: 'medium',
         category: 'filesystem',
@@ -203,11 +213,10 @@ Complete the advanced assessment to demonstrate mastery of AI-powered log analys
     const mlModel = await storage.createMlModel({
       name: 'Error Classification Model',
       version: '1.0.0',
-      description: 'Basic error classification using pattern matching',
-      modelType: 'classification',
+      modelPath: '/models/error-classifier-v1.0.0',
       accuracy: 0.85,
-      precisionScore: 0.82,
-      recallScore: 0.88,
+      precision: 0.82,
+      recall: 0.88,
       f1Score: 0.85,
       trainingData: {
         samples: 1000,

@@ -492,6 +492,8 @@ export class DatabaseStorage implements IStorage {
       .select({
         id: errorLogs.id,
         fileId: errorLogs.fileId,
+        storeNumber: errorLogs.storeNumber,
+        kioskNumber: errorLogs.kioskNumber,
         lineNumber: errorLogs.lineNumber,
         timestamp: errorLogs.timestamp,
         severity: errorLogs.severity,
@@ -518,6 +520,8 @@ export class DatabaseStorage implements IStorage {
       .select({
         id: errorLogs.id,
         fileId: errorLogs.fileId,
+        storeNumber: errorLogs.storeNumber,
+        kioskNumber: errorLogs.kioskNumber,
         lineNumber: errorLogs.lineNumber,
         timestamp: errorLogs.timestamp,
         severity: errorLogs.severity,
