@@ -565,9 +565,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
 
         // Update API settings
-        const currentApiSettings = typeof userSettings.apiSettings === 'string'
+        const currentApiSettings = userSettings && typeof userSettings.apiSettings === 'string'
           ? JSON.parse(userSettings.apiSettings)
-          : userSettings.apiSettings || {};
+          : userSettings?.apiSettings || {};
 
         const updatedApiSettings = {
           ...currentApiSettings,

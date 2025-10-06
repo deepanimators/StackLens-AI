@@ -20,6 +20,13 @@ export const users = sqliteTable("users", {
   department: text("department"),
   isActive: integer("is_active", { mode: "boolean" }).default(true),
   lastLogin: integer("last_login", { mode: "timestamp" }),
+  // Two-Factor Authentication fields
+  twoFactorSecret: text("two_factor_secret"),
+  twoFactorEnabled: integer("two_factor_enabled", { mode: "boolean" }).default(false),
+  twoFactorBackupCodes: text("two_factor_backup_codes"), // JSON array of encrypted backup codes
+  // Account Recovery fields
+  recoveryEmail: text("recovery_email"),
+  emailVerified: integer("email_verified", { mode: "boolean" }).default(false),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
@@ -310,6 +317,36 @@ export const aiTrainingData = sqliteTable("ai_training_data", {
     .$defaultFn(() => Date.now()),
 });
 
+// Security tables
+export const userSessions = sqliteTable("user_sessions", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
+  sessionToken: text("session_token").notNull().unique(),
+  deviceInfo: text("device_info"), // JSON: browser, OS, device type
+  browserInfo: text("browser_info"),
+  ipAddress: text("ip_address"),
+  location: text("location"), // City, Country
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  lastActive: integer("last_active", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+});
+
+export const passwordResetTokens = sqliteTable("password_reset_tokens", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
+  token: text("token").notNull().unique(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  used: integer("used", { mode: "boolean" }).default(false),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
@@ -344,6 +381,10 @@ export type UserSettings = typeof userSettings.$inferSelect;
 export type InsertUserSettings = typeof userSettings.$inferInsert;
 export type AiTrainingData = typeof aiTrainingData.$inferSelect;
 export type InsertAiTrainingData = typeof aiTrainingData.$inferInsert;
+export type UserSession = typeof userSessions.$inferSelect;
+export type InsertUserSession = typeof userSessions.$inferInsert;
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+export type InsertPasswordResetToken = typeof passwordResetTokens.$inferInsert;
 
 // Zod schemas
 export const insertUserSchema = createInsertSchema(users);
@@ -364,3 +405,5 @@ export const insertAuditLogSchema = createInsertSchema(auditLogs);
 export const insertNotificationSchema = createInsertSchema(notifications);
 export const insertUserSettingsSchema = createInsertSchema(userSettings);
 export const insertAiTrainingDataSchema = createInsertSchema(aiTrainingData);
+export const insertUserSessionSchema = createInsertSchema(userSessions);
+export const insertPasswordResetTokenSchema = createInsertSchema(passwordResetTokens);
