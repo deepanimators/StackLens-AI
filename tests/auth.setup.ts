@@ -1,11 +1,15 @@
 import { test as setup, expect } from '@playwright/test';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 /**
  * Authentication Setup for Playwright Tests
- * Runs before all tests to establish authentication state
+ * This setup file runs before all tests to establish a Firebase authenticated session.
+ * The authenticated state is saved and reused across all test projects.
  */
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const authFile = path.join(__dirname, '.auth', 'user.json');
 
 setup('authenticate user', async ({ page, context }) => {
@@ -104,7 +108,6 @@ setup('authenticate user', async ({ page, context }) => {
 
 setup('verify auth state', async ({ page }) => {
     // Optional: Verify the auth state file was created
-    const fs = require('fs');
     const authExists = fs.existsSync(authFile);
 
     if (!authExists) {
