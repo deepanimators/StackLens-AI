@@ -56,6 +56,7 @@ export default defineConfig({
             testMatch: /tests\/api\/.*\.test\.ts/,
             use: {
                 baseURL: 'http://localhost:5000',
+                storageState: 'tests/.auth/user.json',
             },
             dependencies: ['setup'],
         },
@@ -64,6 +65,9 @@ export default defineConfig({
         {
             name: 'unit-tests',
             testMatch: /tests\/unit\/.*\.test\.ts/,
+            use: {
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -71,6 +75,9 @@ export default defineConfig({
         {
             name: 'integration-tests',
             testMatch: /tests\/integration\/.*\.test\.ts/,
+            use: {
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -78,7 +85,10 @@ export default defineConfig({
         {
             name: 'e2e-chromium',
             testMatch: /tests\/e2e\/.*\.test\.ts/,
-            use: { ...devices['Desktop Chrome'] },
+            use: {
+                ...devices['Desktop Chrome'],
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -86,7 +96,10 @@ export default defineConfig({
         {
             name: 'e2e-firefox',
             testMatch: /tests\/e2e\/.*\.test\.ts/,
-            use: { ...devices['Desktop Firefox'] },
+            use: {
+                ...devices['Desktop Firefox'],
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -94,7 +107,10 @@ export default defineConfig({
         {
             name: 'e2e-webkit',
             testMatch: /tests\/e2e\/.*\.test\.ts/,
-            use: { ...devices['Desktop Safari'] },
+            use: {
+                ...devices['Desktop Safari'],
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -102,7 +118,10 @@ export default defineConfig({
         {
             name: 'mobile-safari',
             testMatch: /tests\/e2e\/.*\.mobile\.test\.ts/,
-            use: { ...devices['iPhone 13'] },
+            use: {
+                ...devices['iPhone 13'],
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -110,7 +129,10 @@ export default defineConfig({
         {
             name: 'mobile-chrome',
             testMatch: /tests\/e2e\/.*\.mobile\.test\.ts/,
-            use: { ...devices['Pixel 5'] },
+            use: {
+                ...devices['Pixel 5'],
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -118,7 +140,10 @@ export default defineConfig({
         {
             name: 'accessibility',
             testMatch: /tests\/accessibility\/.*\.test\.ts/,
-            use: { ...devices['Desktop Chrome'] },
+            use: {
+                ...devices['Desktop Chrome'],
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
 
@@ -126,21 +151,35 @@ export default defineConfig({
         {
             name: 'performance',
             testMatch: /tests\/performance\/.*\.test\.ts/,
-            use: { ...devices['Desktop Chrome'] },
+            use: {
+                ...devices['Desktop Chrome'],
+                storageState: 'tests/.auth/user.json',
+            },
             dependencies: ['setup'],
         },
     ],
 
-    // Web server configuration - use existing servers
-    // To run tests: start servers with 'npm run dev' in another terminal, then run 'npm test'
-    // Or use 'npm run test:with-servers' to auto-start servers
-    // In CI, servers are started manually before running tests
-    webServer: process.env.SKIP_SERVER ? undefined : {
-        command: 'npm run dev:client',
-        url: 'http://localhost:5173',
-        reuseExistingServer: true,
-        timeout: 120 * 1000,
-        stdout: 'ignore',
-        stderr: 'pipe',
-    },
+    // Web server configuration - auto-start servers for local development
+    // Backend API server runs on port 5000, Frontend client on port 5173
+    // In CI, SKIP_SERVER env var is checked - servers are started manually in workflow
+    webServer: process.env.SKIP_SERVER ? undefined : [
+        // Backend API server
+        {
+            command: 'PORT=5000 npm run dev:server',
+            url: 'http://localhost:5000/health',
+            reuseExistingServer: !process.env.CI,
+            timeout: 120 * 1000,
+            stdout: 'ignore',
+            stderr: 'pipe',
+        },
+        // Frontend client server
+        {
+            command: 'npm run dev:client',
+            url: 'http://localhost:5173',
+            reuseExistingServer: !process.env.CI,
+            timeout: 120 * 1000,
+            stdout: 'ignore',
+            stderr: 'pipe',
+        },
+    ],
 });

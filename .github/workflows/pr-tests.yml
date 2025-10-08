@@ -1,569 +1,580 @@
 name: PR Tests - Required Checks
 
 on:
-    pull_request:
-        branches: [main, develop]
-        types: [opened, synchronize, reopened]
-    push:
-        branches: [main]
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
 
 # Cancel in-progress runs when a new workflow is triggered on the same PR
 concurrency:
-    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-    NODE_VERSION: "22.17.0"
-    PYTHON_VERSION: "3.11"
+  NODE_VERSION: "22.17.0"
+  PYTHON_VERSION: "3.11"
+  # Test environment variables for authentication
+  TEST_USER_EMAIL: "test@stacklens.ai"
+  TEST_USER_PASSWORD: "Test@12345"
 
 jobs:
-    # Job 1: Code Quality Checks
-    code-quality:
-        name: Code Quality & Linting
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Run TypeScript type checking
-              run: npm run check
-              continue-on-error: true
-
-            - name: Run ESLint
-              run: npm run lint
-              continue-on-error: true
-
-            - name: Check for security vulnerabilities
-              run: npm audit --audit-level=high
-              continue-on-error: true
-
-    # Job 2: Build Application
-    build:
-        name: Build Application
-        runs-on: ubuntu-latest
-        timeout-minutes: 15
-        needs: code-quality
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Build client
-              run: npm run build:client
-
-            - name: Build server
-              run: npm run build:server
-
-            - name: Upload build artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                  name: build-artifacts
-                  path: dist/
-                  retention-days: 7
-
-    # Job 3: Unit Tests
-    unit-tests:
-        name: Unit Tests
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
-        needs: code-quality
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Install Playwright browsers
-              run: npx playwright install --with-deps chromium
-
-            - name: Run unit tests
-              run: npm run test:unit
-
-            - name: Upload test results
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: unit-test-results
-                  path: |
-                      test-results/
-                      playwright-report/
-                  retention-days: 30
-
-    # Job 4: Integration Tests
-    integration-tests:
-        name: Integration Tests
-        runs-on: ubuntu-latest
-        timeout-minutes: 15
-        needs: code-quality
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Setup Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
-
-            - name: Install Node dependencies
-              run: npm install
-
-            - name: Install Python dependencies
-              run: |
-                  cd python-services
-                  pip install -r requirements.txt
-
-            - name: Install Playwright browsers
-              run: npx playwright install --with-deps chromium
-
-            - name: Setup database directory
-              run: mkdir -p data/database
-
-            - name: Start backend server
-              run: |
-                  PORT=5000 npm run dev:server &
-                  echo $! > server.pid
-                  # Wait for server to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5000/health > /dev/null; then
-                      echo "Server is ready"
-                      break
-                    fi
-                    echo "Waiting for server... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Start frontend server
-              run: |
-                  npm run dev:client &
-                  echo $! > client.pid
-                  # Wait for client to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5173 > /dev/null; then
-                      echo "Client is ready"
-                      break
-                    fi
-                    echo "Waiting for client... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Run integration tests
-              run: npx playwright test tests/integration
-              env:
-                  CI: true
-
-            - name: Stop servers
-              if: always()
-              run: |
-                  if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
-                  if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
-
-            - name: Upload test results
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: integration-test-results
-                  path: |
-                      test-results/
-                      playwright-report/
-                  retention-days: 30
-
-    # Job 5: API Tests
-    api-tests:
-        name: API Tests
-        runs-on: ubuntu-latest
-        timeout-minutes: 15
-        needs: code-quality
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Install Playwright browsers
-              run: npx playwright install --with-deps chromium
-
-            - name: Setup database directory
-              run: mkdir -p data/database
-
-            - name: Start backend server
-              run: |
-                  PORT=5000 npm run dev:server &
-                  echo $! > server.pid
-                  # Wait for server to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5000/health > /dev/null; then
-                      echo "Server is ready"
-                      break
-                    fi
-                    echo "Waiting for server... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Run API tests
-              run: npx playwright test tests/api
-              env:
-                  CI: true
-
-            - name: Stop servers
-              if: always()
-              run: |
-                  if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
-
-            - name: Upload test results
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: api-test-results
-                  path: |
-                      test-results/
-                      playwright-report/
-                  retention-days: 30
-
-    # Job 6: E2E Tests (Multi-browser)
-    e2e-tests:
-        name: E2E Tests (${{ matrix.browser }})
-        runs-on: ubuntu-latest
-        timeout-minutes: 30
-        needs: [build]
-        strategy:
-            fail-fast: false
-            matrix:
-                browser: [chromium, firefox, webkit]
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Install Playwright browsers
-              run: npx playwright install --with-deps ${{ matrix.browser }}
-
-            - name: Setup database directory
-              run: mkdir -p data/database
-
-            - name: Start backend server
-              run: |
-                  PORT=5000 npm run dev:server &
-                  echo $! > server.pid
-                  # Wait for server to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5000/health > /dev/null; then
-                      echo "Server is ready"
-                      break
-                    fi
-                    echo "Waiting for server... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Start frontend server
-              run: |
-                  npm run dev:client &
-                  echo $! > client.pid
-                  # Wait for client to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5173 > /dev/null; then
-                      echo "Client is ready"
-                      break
-                    fi
-                    echo "Waiting for client... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Setup auth state
-              run: |
-                  mkdir -p tests/.auth
-                  echo '{"cookies":[],"origins":[]}' > tests/.auth/user.json
-
-            - name: Run E2E tests
-              run: npx playwright test tests/e2e --project=e2e-${{ matrix.browser }}
-              env:
-                  CI: true
-
-            - name: Stop servers
-              if: always()
-              run: |
-                  if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
-                  if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
-
-            - name: Upload test results
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: e2e-test-results-${{ matrix.browser }}
-                  path: |
-                      test-results/
-                      playwright-report/
-                  retention-days: 30
-
-            - name: Upload screenshots on failure
-              if: failure()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: e2e-screenshots-${{ matrix.browser }}
-                  path: test-results/**/*.png
-                  retention-days: 7
-
-    # Job 7: UI Component Tests
-    ui-tests:
-        name: UI Component Tests
-        runs-on: ubuntu-latest
-        timeout-minutes: 15
-        needs: code-quality
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Install Playwright browsers
-              run: npx playwright install --with-deps chromium
-
-            - name: Start frontend server
-              run: |
-                  npm run dev:client &
-                  echo $! > client.pid
-                  # Wait for client to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5173 > /dev/null; then
-                      echo "Client is ready"
-                      break
-                    fi
-                    echo "Waiting for client... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Run UI tests
-              run: npx playwright test tests/ui
-              env:
-                  CI: true
-
-            - name: Stop servers
-              if: always()
-              run: |
-                  if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
-
-            - name: Upload test results
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: ui-test-results
-                  path: |
-                      test-results/
-                      playwright-report/
-                  retention-days: 30
-
-    # Job 8: Functional Tests
-    functional-tests:
-        name: Functional Workflow Tests
-        runs-on: ubuntu-latest
-        timeout-minutes: 20
-        needs: [build]
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Install Playwright browsers
-              run: npx playwright install --with-deps chromium
-
-            - name: Setup database directory
-              run: mkdir -p data/database
-
-            - name: Start backend server
-              run: |
-                  PORT=5000 npm run dev:server &
-                  echo $! > server.pid
-                  # Wait for server to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5000/health > /dev/null; then
-                      echo "Server is ready"
-                      break
-                    fi
-                    echo "Waiting for server... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Start frontend server
-              run: |
-                  npm run dev:client &
-                  echo $! > client.pid
-                  # Wait for client to be ready
-                  for i in {1..30}; do
-                    if curl -s http://localhost:5173 > /dev/null; then
-                      echo "Client is ready"
-                      break
-                    fi
-                    echo "Waiting for client... ($i/30)"
-                    sleep 2
-                  done
-
-            - name: Run functional tests
-              run: npx playwright test tests/functional
-              env:
-                  CI: true
-
-            - name: Stop servers
-              if: always()
-              run: |
-                  if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
-                  if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
-
-            - name: Upload test results
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: functional-test-results
-                  path: |
-                      test-results/
-                      playwright-report/
-                  retention-days: 30
-
-    # Job 9: Test Summary & Report
-    test-summary:
-        name: Test Summary & Report
-        runs-on: ubuntu-latest
+  # Job 1: Code Quality Checks
+  code-quality:
+    name: Code Quality & Linting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run TypeScript type checking
+        run: npm run check
+        continue-on-error: true
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Check for security vulnerabilities
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  # Job 2: Build Application
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: code-quality
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build client
+        run: npm run build:client
+
+      - name: Build server
+        run: npm run build:server
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 7
+
+  # Job 3: Unit Tests
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: code-quality
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run unit tests
+        run: npm run test:unit
+        env:
+          CI: true
+          SKIP_SERVER: true
+
+      - name: Upload test results
         if: always()
-        needs:
-            [
-                unit-tests,
-                integration-tests,
-                api-tests,
-                e2e-tests,
-                ui-tests,
-                functional-tests,
-            ]
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
 
-        steps:
-            - name: Download all test results
-              uses: actions/download-artifact@v4
-              with:
-                  path: all-test-results/
+  # Job 4: Integration Tests
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: code-quality
 
-            - name: Display test summary
-              run: |
-                  echo "## 📊 Test Results Summary" >> $GITHUB_STEP_SUMMARY
-                  echo "" >> $GITHUB_STEP_SUMMARY
-                  echo "### Test Categories:" >> $GITHUB_STEP_SUMMARY
-                  echo "- ✅ Unit Tests" >> $GITHUB_STEP_SUMMARY
-                  echo "- ✅ Integration Tests" >> $GITHUB_STEP_SUMMARY
-                  echo "- ✅ API Tests" >> $GITHUB_STEP_SUMMARY
-                  echo "- ✅ E2E Tests (Chromium, Firefox, WebKit)" >> $GITHUB_STEP_SUMMARY
-                  echo "- ✅ UI Component Tests" >> $GITHUB_STEP_SUMMARY
-                  echo "- ✅ Functional Workflow Tests" >> $GITHUB_STEP_SUMMARY
-                  echo "" >> $GITHUB_STEP_SUMMARY
-                  echo "### Artifacts Available:" >> $GITHUB_STEP_SUMMARY
-                  echo "- Test results and reports are available in the workflow artifacts" >> $GITHUB_STEP_SUMMARY
-                  echo "- Screenshots for failed tests are uploaded separately" >> $GITHUB_STEP_SUMMARY
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Check test results
-              id: test-results
-              run: |
-                  # This will fail if any required job failed
-                  echo "All required tests passed successfully!"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-    # Job 10: Required Status Check
-    required-checks:
-        name: All Required Checks Passed
-        runs-on: ubuntu-latest
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Install Python dependencies
+        run: |
+          cd python-services
+          pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Setup database directory
+        run: mkdir -p data/database
+
+      - name: Start backend server
+        run: |
+          PORT=5000 npm run dev:server &
+          echo $! > server.pid
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5000/health > /dev/null; then
+              echo "Server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 2
+          done
+
+      - name: Start frontend server
+        run: |
+          npm run dev:client &
+          echo $! > client.pid
+          # Wait for client to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5173 > /dev/null; then
+              echo "Client is ready"
+              break
+            fi
+            echo "Waiting for client... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run integration tests
+        run: npx playwright test tests/integration
+        env:
+          CI: true
+          SKIP_SERVER: true
+
+      - name: Stop servers
         if: always()
-        needs:
-            [
-                code-quality,
-                build,
-                unit-tests,
-                integration-tests,
-                api-tests,
-                e2e-tests,
-                ui-tests,
-                functional-tests,
-            ]
+        run: |
+          if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
+          if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
 
-        steps:
-            - name: Check all jobs
-              run: |
-                  if [ "${{ needs.code-quality.result }}" != "success" ] || \
-                     [ "${{ needs.build.result }}" != "success" ] || \
-                     [ "${{ needs.unit-tests.result }}" != "success" ] || \
-                     [ "${{ needs.integration-tests.result }}" != "success" ] || \
-                     [ "${{ needs.api-tests.result }}" != "success" ] || \
-                     [ "${{ needs.e2e-tests.result }}" != "success" ] || \
-                     [ "${{ needs.ui-tests.result }}" != "success" ] || \
-                     [ "${{ needs.functional-tests.result }}" != "success" ]; then
-                    echo "❌ One or more required checks failed!"
-                    echo "## ❌ Required Checks Failed" >> $GITHUB_STEP_SUMMARY
-                    echo "" >> $GITHUB_STEP_SUMMARY
-                    echo "- Code Quality: ${{ needs.code-quality.result }}" >> $GITHUB_STEP_SUMMARY
-                    echo "- Build: ${{ needs.build.result }}" >> $GITHUB_STEP_SUMMARY
-                    echo "- Unit Tests: ${{ needs.unit-tests.result }}" >> $GITHUB_STEP_SUMMARY
-                    echo "- Integration Tests: ${{ needs.integration-tests.result }}" >> $GITHUB_STEP_SUMMARY
-                    echo "- API Tests: ${{ needs.api-tests.result }}" >> $GITHUB_STEP_SUMMARY
-                    echo "- E2E Tests: ${{ needs.e2e-tests.result }}" >> $GITHUB_STEP_SUMMARY
-                    echo "- UI Tests: ${{ needs.ui-tests.result }}" >> $GITHUB_STEP_SUMMARY
-                    echo "- Functional Tests: ${{ needs.functional-tests.result }}" >> $GITHUB_STEP_SUMMARY
-                    exit 1
-                  fi
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
 
-                  echo "✅ All required checks passed successfully!"
-                  echo "## ✅ All Required Checks Passed" >> $GITHUB_STEP_SUMMARY
-                  echo "" >> $GITHUB_STEP_SUMMARY
-                  echo "All tests and checks have passed. This PR is ready to merge! 🎉" >> $GITHUB_STEP_SUMMARY
+  # Job 5: API Tests
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: code-quality
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Setup database directory
+        run: mkdir -p data/database
+
+      - name: Start backend server
+        run: |
+          PORT=5000 npm run dev:server &
+          echo $! > server.pid
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5000/health > /dev/null; then
+              echo "Server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run API tests
+        run: npx playwright test tests/api
+        env:
+          CI: true
+          SKIP_SERVER: true
+
+      - name: Stop servers
+        if: always()
+        run: |
+          if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+  # Job 6: E2E Tests (Multi-browser)
+  e2e-tests:
+    name: E2E Tests (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [build]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Setup database directory
+        run: mkdir -p data/database
+
+      - name: Start backend server
+        run: |
+          PORT=5000 npm run dev:server &
+          echo $! > server.pid
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5000/health > /dev/null; then
+              echo "Server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 2
+          done
+
+      - name: Start frontend server
+        run: |
+          npm run dev:client &
+          echo $! > client.pid
+          # Wait for client to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5173 > /dev/null; then
+              echo "Client is ready"
+              break
+            fi
+            echo "Waiting for client... ($i/30)"
+            sleep 2
+          done
+
+      - name: Setup auth state
+        run: |
+          mkdir -p tests/.auth
+          echo '{"cookies":[],"origins":[]}' > tests/.auth/user.json
+
+      - name: Run E2E tests
+        run: npx playwright test tests/e2e --project=e2e-${{ matrix.browser }}
+        env:
+          CI: true
+          SKIP_SERVER: true
+
+      - name: Stop servers
+        if: always()
+        run: |
+          if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
+          if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results-${{ matrix.browser }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots-${{ matrix.browser }}
+          path: test-results/**/*.png
+          retention-days: 7
+
+  # Job 7: UI Component Tests
+  ui-tests:
+    name: UI Component Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: code-quality
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start frontend server
+        run: |
+          npm run dev:client &
+          echo $! > client.pid
+          # Wait for client to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5173 > /dev/null; then
+              echo "Client is ready"
+              break
+            fi
+            echo "Waiting for client... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run UI tests
+        run: npx playwright test tests/ui
+        env:
+          CI: true
+          SKIP_SERVER: true
+
+      - name: Stop servers
+        if: always()
+        run: |
+          if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+  # Job 8: Functional Tests
+  functional-tests:
+    name: Functional Workflow Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Setup database directory
+        run: mkdir -p data/database
+
+      - name: Start backend server
+        run: |
+          PORT=5000 npm run dev:server &
+          echo $! > server.pid
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5000/health > /dev/null; then
+              echo "Server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 2
+          done
+
+      - name: Start frontend server
+        run: |
+          npm run dev:client &
+          echo $! > client.pid
+          # Wait for client to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5173 > /dev/null; then
+              echo "Client is ready"
+              break
+            fi
+            echo "Waiting for client... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run functional tests
+        run: npx playwright test tests/functional
+        env:
+          CI: true
+          SKIP_SERVER: true
+
+      - name: Stop servers
+        if: always()
+        run: |
+          if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
+          if [ -f client.pid ]; then kill $(cat client.pid) || true; fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: functional-test-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+  # Job 9: Test Summary & Report
+  test-summary:
+    name: Test Summary & Report
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      [
+        unit-tests,
+        integration-tests,
+        api-tests,
+        e2e-tests,
+        ui-tests,
+        functional-tests,
+      ]
+
+    steps:
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          path: all-test-results/
+
+      - name: Display test summary
+        run: |
+          echo "## 📊 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Categories:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Unit Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Integration Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ API Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ E2E Tests (Chromium, Firefox, WebKit)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ UI Component Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Functional Workflow Tests" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts Available:" >> $GITHUB_STEP_SUMMARY
+          echo "- Test results and reports are available in the workflow artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- Screenshots for failed tests are uploaded separately" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check test results
+        id: test-results
+        run: |
+          # This will fail if any required job failed
+          echo "All required tests passed successfully!"
+
+  # Job 10: Required Status Check
+  required-checks:
+    name: All Required Checks Passed
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      [
+        code-quality,
+        build,
+        unit-tests,
+        integration-tests,
+        api-tests,
+        e2e-tests,
+        ui-tests,
+        functional-tests,
+      ]
+
+    steps:
+      - name: Check all jobs
+        run: |
+          if [ "${{ needs.code-quality.result }}" != "success" ] || \
+             [ "${{ needs.build.result }}" != "success" ] || \
+             [ "${{ needs.unit-tests.result }}" != "success" ] || \
+             [ "${{ needs.integration-tests.result }}" != "success" ] || \
+             [ "${{ needs.api-tests.result }}" != "success" ] || \
+             [ "${{ needs.e2e-tests.result }}" != "success" ] || \
+             [ "${{ needs.ui-tests.result }}" != "success" ] || \
+             [ "${{ needs.functional-tests.result }}" != "success" ]; then
+            echo "❌ One or more required checks failed!"
+            echo "## ❌ Required Checks Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- Code Quality: ${{ needs.code-quality.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Build: ${{ needs.build.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Unit Tests: ${{ needs.unit-tests.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Integration Tests: ${{ needs.integration-tests.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- API Tests: ${{ needs.api-tests.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- E2E Tests: ${{ needs.e2e-tests.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- UI Tests: ${{ needs.ui-tests.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Functional Tests: ${{ needs.functional-tests.result }}" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          echo "✅ All required checks passed successfully!"
+          echo "## ✅ All Required Checks Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All tests and checks have passed. This PR is ready to merge! 🎉" >> $GITHUB_STEP_SUMMARY
