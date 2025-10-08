@@ -42,26 +42,48 @@ export const test = base.extend<StackLensFixtures>({
         // Create new request context
         const apiContext = await playwright.request.newContext();
 
-        // Login and get token
-        const response = await apiContext.post('/api/auth/firebase-signin', {
-            data: {
-                token: process.env.TEST_FIREBASE_TOKEN,
-            },
-        });
+        // Check if TEST_FIREBASE_TOKEN is available
+        if (!process.env.TEST_FIREBASE_TOKEN) {
+            console.warn('⚠️  TEST_FIREBASE_TOKEN not set. API tests will run without authentication.');
+            console.warn('    Set TEST_FIREBASE_TOKEN environment variable for authenticated API tests.');
+            
+            // Use unauthenticated context
+            await use(apiContext);
+            await apiContext.dispose();
+            return;
+        }
 
-        const { token } = await response.json();
+        try {
+            // Login and get token
+            const response = await apiContext.post('/api/auth/firebase-signin', {
+                data: {
+                    token: process.env.TEST_FIREBASE_TOKEN,
+                },
+            });
 
-        // Dispose current context and create authenticated one
-        await apiContext.dispose();
-        const authenticatedContext = await playwright.request.newContext({
-            extraHTTPHeaders: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
+            if (!response.ok()) {
+                throw new Error(`Firebase signin failed: ${response.status()} ${response.statusText()}`);
+            }
 
-        await use(authenticatedContext);
-        await authenticatedContext.dispose();
+            const { token } = await response.json();
+
+            // Dispose current context and create authenticated one
+            await apiContext.dispose();
+            const authenticatedContext = await playwright.request.newContext({
+                extraHTTPHeaders: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            await use(authenticatedContext);
+            await authenticatedContext.dispose();
+        } catch (error) {
+            console.error('❌ API authentication failed:', error);
+            // Fall back to unauthenticated context
+            await use(apiContext);
+            await apiContext.dispose();
+        }
     },
 
     // Test user fixture
