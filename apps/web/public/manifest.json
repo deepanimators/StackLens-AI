@@ -1,0 +1,221 @@
+{
+  "name": "StackLens AI - Error Intelligence Platform",
+  "short_name": "StackLens AI",
+  "description": "AI-powered error analysis and intelligent debugging platform with real-time analytics and predictive insights",
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#7c3aed",
+  "background_color": "#ffffff",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop-dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Error Intelligence Dashboard"
+    },
+    {
+      "src": "/screenshots/mobile-dashboard.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Dashboard View"
+    },
+    {
+      "src": "/screenshots/analytics-view.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Real-time Analytics"
+    },
+    {
+      "src": "/screenshots/mobile-search.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Search Interface"
+    }
+  ],
+  
+  "categories": [
+    "productivity",
+    "developer",
+    "utilities",
+    "business"
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View error intelligence dashboard",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/icons/shortcut-dashboard.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Search Errors",
+      "short_name": "Search",
+      "description": "Search and analyze errors",
+      "url": "/search",
+      "icons": [
+        {
+          "src": "/icons/shortcut-search.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "View real-time analytics",
+      "url": "/analytics",
+      "icons": [
+        {
+          "src": "/icons/shortcut-analytics.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Upload Logs",
+      "short_name": "Upload",
+      "description": "Upload and analyze log files",
+      "url": "/upload",
+      "icons": [
+        {
+          "src": "/icons/shortcut-upload.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  
+  "prefer_related_applications": false,
+  
+  "protocol_handlers": [
+    {
+      "protocol": "web+stacklens",
+      "url": "/handle?url=%s"
+    }
+  ],
+  
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "logs",
+          "accept": [".log", ".txt", ".json", "text/plain", "application/json"]
+        }
+      ]
+    }
+  },
+  
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "navigate-new"]
+  },
+  
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  
+  "iarc_rating_id": "",
+  
+  "permissions": [
+    "notifications",
+    "background-sync",
+    "periodic-background-sync"
+  ],
+  
+  "features": [
+    {
+      "name": "Cross Platform",
+      "description": "Works on desktop, mobile, and tablet devices"
+    },
+    {
+      "name": "Offline Support",
+      "description": "Continue working even when offline with local caching"
+    },
+    {
+      "name": "Push Notifications",
+      "description": "Get notified of critical errors and system alerts"
+    },
+    {
+      "name": "Real-time Updates",
+      "description": "Live error monitoring and analytics updates"
+    },
+    {
+      "name": "AI-Powered Analysis",
+      "description": "Intelligent error pattern detection and root cause analysis"
+    }
+  ]
+}

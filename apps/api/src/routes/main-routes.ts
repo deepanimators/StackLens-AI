@@ -8216,6 +8216,10 @@ Format as JSON with the following structure:
   const ragRoutes = createRAGRoutes(sqlite);
   app.use("/api/rag", ragRoutes);
 
+  // Error Intelligence Routes for AI-powered error analysis
+  import errorIntelligenceRoutes from "./error-intelligence.js";
+  app.use("/api/error-intelligence", errorIntelligenceRoutes);
+
   // Create HTTP server
   const httpServer = createServer(app);
 

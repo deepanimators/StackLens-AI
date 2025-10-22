@@ -32,6 +32,7 @@ import RealTimeDashboard from './real-time-dashboard';
 import InteractiveCharts from './interactive-charts';
 import CustomDashboard, { Widget } from './custom-dashboard';
 import { useDashboard } from './dashboard-context';
+import ErrorIntelligenceDashboard from '../error-intelligence/error-intelligence-dashboard';
 
 interface AnalyticsOverviewProps {
   className?: string;
@@ -350,6 +351,7 @@ export function AnalyticsOverview({ className }: AnalyticsOverviewProps) {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="real-time">Real-time</TabsTrigger>
           <TabsTrigger value="charts">Interactive Charts</TabsTrigger>
+          <TabsTrigger value="error-intelligence">AI Error Intelligence</TabsTrigger>
           <TabsTrigger value="custom">Custom Dashboard</TabsTrigger>
         </TabsList>
 
@@ -585,6 +587,13 @@ export function AnalyticsOverview({ className }: AnalyticsOverviewProps) {
                 }))
               }
             ]}
+          />
+        </TabsContent>
+
+        <TabsContent value="error-intelligence">
+          <ErrorIntelligenceDashboard 
+            useMockData={true}
+            className="space-y-6"
           />
         </TabsContent>
 
