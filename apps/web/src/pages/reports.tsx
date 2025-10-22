@@ -159,55 +159,24 @@ const fetchReportData = async () => {
     const resolvedErrors = summary.resolvedErrors || 0;
     const resolutionRate = summary.resolutionRate || 0;
 
-    // Create severity distribution from real data
-    const severityDistribution = {
-      critical:
-        errorsArray?.filter((error: any) => error.severity === "critical")
-          .length || 0,
-      high:
-        errorsArray?.filter((error: any) => error.severity === "high").length ||
-        0,
-      medium:
-        errorsArray?.filter((error: any) => error.severity === "medium")
-          .length || 0,
-      low:
-        errorsArray?.filter((error: any) => error.severity === "low").length ||
-        0,
+    // Use severity distribution from API response
+    const severityDistribution = reportsResponse?.severityDistribution || {
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
     };
 
-    // Group errors by type for real error type distribution
-    const errorTypeMap = new Map();
-    errorsArray?.forEach((error: any) => {
-      const type = error.errorType || "Unknown";
-      errorTypeMap.set(type, (errorTypeMap.get(type) || 0) + 1);
-    });
+    // Use error types from API response 
+    const errorTypes: ErrorTypeData[] = reportsResponse?.errorTypes || [];
 
-    const errorTypes: ErrorTypeData[] = Array.from(errorTypeMap.entries())
-      .map(([type, count]) => ({
-        type,
-        count: count as number,
-        percentage:
-          totalErrors > 0 ? ((count as number) / totalErrors) * 100 : 0,
-      }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5); // Top 5 error types
+    // Use top files from API response
+    const topFiles: TopFile[] = reportsResponse?.topFiles || [];
 
-    // Get top files with most errors (mock for now, would need file-specific data)
-    const topFiles: TopFile[] = [
-      {
-        fileName: "Recent Logs",
-        totalErrors: Math.floor(totalErrors * 0.4),
-        critical: Math.floor(criticalErrors * 0.4),
-        high: Math.floor(severityDistribution.high * 0.4),
-        medium: Math.floor(severityDistribution.medium * 0.4),
-        low: Math.floor(severityDistribution.low * 0.4),
-        analysisDate: new Date().toISOString(),
-      },
-    ];
-
-    const performance: Performance = {
-      avgProcessingTime: dashboardResponse?.avgProcessingTime || "1.2s",
-      successRate: dashboardResponse?.successRate || 95.5,
+    // Use performance data from API response
+    const performance: Performance = reportsResponse?.performance || {
+      avgProcessingTime: "0.0s",
+      successRate: 0,
     };
 
     const realData = {
@@ -232,11 +201,6 @@ const fetchReportData = async () => {
 
     // In production, show error state - NO MOCK DATA
     if (import.meta.env.PROD) {
-      toast({
-        title: "Error Loading Report Data",
-        description: "Unable to fetch report data. Please try again later.",
-        variant: "destructive",
-      });
       // Return empty data structure to trigger "No data" UI
       const errorTypes: ErrorTypeData[] = [];
       const severityDistribution: SeverityDistribution = {
@@ -335,7 +299,7 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any; isActive?: boolean }> 
     }
   }, [trendsData]);
 
-  // Fetch trends data from API
+  // Fetch trends data from API using authenticated request
   const fetchTrendsData = async (selectedTimeframe: string) => {
     setIsLoading(true);
     console.log(
@@ -343,62 +307,19 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any; isActive?: boolean }> 
     );
 
     try {
-      const authToken = localStorage.getItem("auth_token");
-      console.log(
-        `🔑 Auth token exists: ${!!authToken}, length: ${
-          authToken?.length || 0
-        }`
-      );
-
       const url = `/api/trends/analysis?timeframe=${selectedTimeframe}`;
-      console.log(`📡 Making request to: ${url}`);
+      console.log(`📡 Making authenticated request to: ${url}`);
 
-      const response = await fetch(url, {
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${authToken || ""}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log(
-        `📊 Response status: ${response.status} ${response.statusText}`
-      );
-      console.log(`📊 Response ok: ${response.ok}`);
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(`✅ Successfully fetched trends data:`, data);
+      // Use authenticatedRequest instead of fetch
+      const data = await authenticatedRequest("GET", url);
+      console.log(`✅ Successfully fetched trends data:`, data);
         
-        // Check if we got real data or empty results
-        if (!data || (Array.isArray(data.errorIdentificationTrends) && data.errorIdentificationTrends.length === 0)) {
-          console.log("ℹ️ No trends data available for selected timeframe");
-          setTrendsData(null);
-        } else {
-          setTrendsData(data);
-        }
+      // Check if we got real data or empty results
+      if (!data || (Array.isArray(data.errorIdentificationTrends) && data.errorIdentificationTrends.length === 0)) {
+        console.log("ℹ️ No trends data available for selected timeframe");
+        setTrendsData(null);
       } else {
-        // API call failed (auth error, server error, etc.)
-        console.error(
-          "🚨 API call failed:",
-          response.status,
-          response.statusText
-        );
-        const errorText = await response.text();
-        console.error("Error details:", errorText);
-        
-        // In production, show error instead of mock
-        if (import.meta.env.PROD) {
-          toast({
-            title: "Error Loading Trends",
-            description: "Unable to fetch trend data. Please try again.",
-            variant: "destructive",
-          });
-          setTrendsData(null);
-        } else {
-          console.warn("⚠️ DEV MODE: Showing empty state");
-          setTrendsData(null);
-        }
+        setTrendsData(data);
       }
     } catch (error) {
       console.error("💥 Failed to fetch trends data:", error);
@@ -407,14 +328,7 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any; isActive?: boolean }> 
         console.error("Error message:", error.message);
       }
 
-      // No mock data - show error or empty state
-      if (import.meta.env.PROD) {
-        toast({
-          title: "Network Error",
-          description: "Failed to load trends data. Check your connection.",
-          variant: "destructive",
-        });
-      }
+      // Show empty state on error
       setTrendsData(null);
     }
     setIsLoading(false);
@@ -1186,6 +1100,7 @@ export default function Reports() {
     criticalErrors: number;
     resolvedErrors: number;
     resolutionRate: number;
+    trends?: Trends;
   };
 
   const defaultSummary: ReportSummary = {
@@ -1194,6 +1109,12 @@ export default function Reports() {
     criticalErrors: 0,
     resolvedErrors: 0,
     resolutionRate: 0,
+    trends: {
+      files: 0,
+      errors: 0,
+      critical: 0,
+      resolution: 0,
+    },
   };
 
   const {
@@ -1509,7 +1430,7 @@ export default function Reports() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {reportData?.errorTypes.map((type, index) => (
+                    {reportData?.errorTypes.map((type: any, index: number) => (
                       <div
                         key={index}
                         className="flex items-center justify-between"
@@ -1571,7 +1492,7 @@ export default function Reports() {
                 <CardContent>
                   <div className="space-y-4">
                     {Object.entries(reportData?.severityDistribution || {}).map(
-                      ([severity, count]) => (
+                      ([severity, count]: [string, number]) => (
                         <div
                           key={severity}
                           className="flex items-center justify-between"
@@ -1648,7 +1569,7 @@ export default function Reports() {
                       </tr>
                     </thead>
                     <tbody>
-                      {reportData?.topFiles?.map((file, index) => (
+                      {reportData?.topFiles?.map((file: any, index: number) => (
                         <tr key={index} className="border-b hover:bg-muted/50">
                           <td className="py-2 px-4 font-medium">
                             {file.fileName}
@@ -1805,7 +1726,7 @@ export default function Reports() {
                     <div className="space-y-2">
                       {reportData?.errorTypes
                         .slice(0, 5)
-                        .map((errorType, index) => (
+                        .map((errorType: any, index: number) => (
                           <div
                             key={index}
                             className="flex items-center justify-between p-2 rounded border"
