@@ -642,9 +642,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (defaultLanguage) updates.language = defaultLanguage;
 
         // Update notification preferences
-        const currentNotifPrefs = typeof userSettings.notificationPreferences === 'string'
+        const currentNotifPrefs = userSettings && typeof userSettings.notificationPreferences === 'string'
           ? JSON.parse(userSettings.notificationPreferences)
-          : userSettings.notificationPreferences || {};
+          : userSettings?.notificationPreferences || {};
 
         updates.notificationPreferences = JSON.stringify({
           ...currentNotifPrefs,
@@ -1284,11 +1284,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("🤖 Attempting AI service analysis...");
         console.log("🔑 API Key available:", !!process.env.GEMINI_API_KEY);
 
-        const aiSuggestion = await aiService.generateErrorSuggestion({
-          ...error,
-          mlConfidence: (error as any).mlConfidence || 0,
-          createdAt: error.createdAt || new Date(),
-        } as any);
+        const aiSuggestion = await aiService.generateSuggestion(
+          error.message,
+          error.errorType || "unknown",
+          error.severity || "medium"
+        );
 
         if (aiSuggestion) {
           suggestion = {

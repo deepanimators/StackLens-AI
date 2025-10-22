@@ -57,7 +57,7 @@ export function createRAGRoutes(database: Database) {
         const enhancedSuggestion = await enhancedRAG.generateEnhancedSuggestion(
           error.message,
           error.severity || "medium",
-          `File: ${error.filename || "Unknown"}, Line: ${error.lineNumber || "Unknown"
+          `File: ${error.fileId ? `ID:${error.fileId}` : "Unknown"}, Line: ${error.lineNumber || "Unknown"
           }`
         );
 
@@ -80,8 +80,8 @@ export function createRAGRoutes(database: Database) {
             console.log("🔄 RAG fallback failed, using traditional suggestor");
 
             const suggestor = new Suggestor();
-            const traditionalSuggestion = await suggestor.generateSuggestion(
-              error.message
+            const traditionalSuggestion = await suggestor.getSuggestion(
+              error
             );
             if (traditionalSuggestion) {
               fallbackSuggestion = {
@@ -239,7 +239,7 @@ export async function handleRAGEnhancedSuggestion(req: Request, res: Response) {
     } catch (ragError) {
       console.warn(
         "⚠️ RAG: Enhanced suggestion failed, falling back:",
-        ragError.message
+        ragError instanceof Error ? ragError.message : "Unknown error"
       );
     }
 
