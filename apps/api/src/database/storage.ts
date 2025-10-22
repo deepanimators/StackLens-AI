@@ -120,6 +120,47 @@ export class MemStorage implements IStorage {
     this.currentId = 1;
     this.initializeDefaultData();
   }
+  async getResolvedErrorsWithSuggestions(): Promise<ErrorLog[]> {
+    return Array.from(this.errorLogs.values()).filter(
+      (error) => error.resolved && error.aiSuggestion
+    );
+  }
+
+  async countSimilarMessages(message: string): Promise<number> {
+    const normalizedMessage = message.toLowerCase().trim();
+    return Array.from(this.errorLogs.values()).filter((error) => {
+      const errorMessage = error.message?.toLowerCase().trim() || '';
+      // Simple similarity check - could be enhanced with fuzzy matching
+      return errorMessage.includes(normalizedMessage) || 
+             normalizedMessage.includes(errorMessage) ||
+             this.calculateSimilarity(errorMessage, normalizedMessage) > 0.8;
+    }).length;
+  }
+
+  private calculateSimilarity(str1: string, str2: string): number {
+    if (str1.length === 0 || str2.length === 0) return 0;
+    
+    const matrix = Array(str2.length + 1).fill(null).map(() => 
+      Array(str1.length + 1).fill(null)
+    );
+    
+    for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
+    for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
+    
+    for (let j = 1; j <= str2.length; j++) {
+      for (let i = 1; i <= str1.length; i++) {
+        const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+        matrix[j][i] = Math.min(
+          matrix[j][i - 1] + 1,
+          matrix[j - 1][i] + 1,
+          matrix[j - 1][i - 1] + cost
+        );
+      }
+    }
+    
+    const maxLength = Math.max(str1.length, str2.length);
+    return (maxLength - matrix[str2.length][str1.length]) / maxLength;
+  }
 
   private initializeDefaultData() {
     // Create default admin user
@@ -129,6 +170,17 @@ export class MemStorage implements IStorage {
       email: "admin@stacklens.ai",
       password: "admin123", // In production, this should be hashed
       role: "admin",
+      firstName: null,
+      lastName: null,
+      profileImageUrl: null,
+      department: null,
+      isActive: true,
+      lastLogin: null,
+      emailVerified: true,
+      twoFactorEnabled: false,
+      twoFactorSecret: null,
+      twoFactorBackupCodes: null,
+      recoveryEmail: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -145,6 +197,11 @@ export class MemStorage implements IStorage {
         regex: "OutOfMemoryError.*heap space",
         isActive: true,
         createdAt: new Date(),
+        category: null,
+        suggestedFix: null,
+        occurrenceCount: null,
+        successRate: null,
+        avgResolutionTime: null,
       },
       {
         id: this.currentId++,
@@ -155,6 +212,11 @@ export class MemStorage implements IStorage {
         regex: "SQLException|Connection.*timeout",
         isActive: true,
         createdAt: new Date(),
+        category: null,
+        suggestedFix: null,
+        occurrenceCount: null,
+        successRate: null,
+        avgResolutionTime: null,
       },
       {
         id: this.currentId++,
@@ -165,6 +227,11 @@ export class MemStorage implements IStorage {
         regex: "NullPointerException",
         isActive: true,
         createdAt: new Date(),
+        category: null,
+        suggestedFix: null,
+        occurrenceCount: null,
+        successRate: null,
+        avgResolutionTime: null,
       },
       {
         id: this.currentId++,
@@ -175,6 +242,11 @@ export class MemStorage implements IStorage {
         regex: "FileNotFoundException|No such file",
         isActive: true,
         createdAt: new Date(),
+        category: null,
+        suggestedFix: null,
+        occurrenceCount: null,
+        successRate: null,
+        avgResolutionTime: null,
       },
     ];
 
@@ -201,8 +273,22 @@ export class MemStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.currentId++;
     const user: User = {
-      ...insertUser,
       id,
+      username: insertUser.username,
+      email: insertUser.email,
+      password: insertUser.password,
+      role: insertUser.role ?? "user",
+      firstName: insertUser.firstName ?? null,
+      lastName: insertUser.lastName ?? null,
+      profileImageUrl: insertUser.profileImageUrl ?? null,
+      department: insertUser.department ?? null,
+      isActive: insertUser.isActive ?? true,
+      lastLogin: insertUser.lastLogin ?? null,
+      emailVerified: insertUser.emailVerified ?? false,
+      twoFactorEnabled: insertUser.twoFactorEnabled ?? false,
+      twoFactorSecret: insertUser.twoFactorSecret ?? null,
+      twoFactorBackupCodes: insertUser.twoFactorBackupCodes ?? null,
+      recoveryEmail: insertUser.recoveryEmail ?? null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -246,7 +332,12 @@ export class MemStorage implements IStorage {
     const file: LogFile = {
       ...insertFile,
       id,
-      uploadedAt: new Date(),
+      uploadTimestamp: new Date(),
+      uploadedBy: insertFile.uploadedBy ?? null,
+      analysisTimestamp: insertFile.analysisTimestamp ?? null,
+      analysisResult: insertFile.analysisResult ?? null,
+      errorsDetected: insertFile.errorsDetected ?? 0,
+      anomalies: insertFile.anomalies ?? null,
     };
     this.logFiles.set(id, file);
     return file;
@@ -298,6 +389,12 @@ export class MemStorage implements IStorage {
     const error: ErrorLog = {
       ...insertError,
       id,
+      timestamp: insertError.timestamp ?? null,
+      fileId: insertError.fileId ?? null,
+      pattern: insertError.pattern ?? null,
+      resolved: insertError.resolved ?? null,
+      aiSuggestion: insertError.aiSuggestion ?? null,
+      mlPrediction: insertError.mlPrediction ?? null,
       createdAt: new Date(),
     };
     this.errorLogs.set(id, error);
@@ -358,7 +455,12 @@ export class MemStorage implements IStorage {
     const analysis: AnalysisHistory = {
       ...insertAnalysis,
       id,
-      analysisDate: new Date(),
+      createdAt: new Date(),
+      errorsDetected: insertAnalysis.errorsDetected ?? 0,
+      anomalies: insertAnalysis.anomalies ?? null,
+      predictions: insertAnalysis.predictions ?? null,
+      aiSuggestions: insertAnalysis.aiSuggestions ?? null,
+      suggestions: insertAnalysis.suggestions ?? null,
     };
     this.analysisHistory.set(id, analysis);
     return analysis;
@@ -384,8 +486,23 @@ export class MemStorage implements IStorage {
   async createMlModel(insertModel: InsertMlModel): Promise<MlModel> {
     const id = this.currentId++;
     const model: MlModel = {
-      ...insertModel,
       id,
+      name: insertModel.name,
+      version: insertModel.version,
+      modelType: insertModel.modelType,
+      isActive: insertModel.isActive ?? null,
+      createdAt: insertModel.createdAt ?? new Date(),
+      updatedAt: insertModel.updatedAt ?? new Date(),
+      description: insertModel.description ?? null,
+      accuracy: insertModel.accuracy ?? null,
+      precision: insertModel.precision ?? null,
+      recall: insertModel.recall ?? null,
+      f1Score: insertModel.f1Score ?? null,
+      trainingDataSize: insertModel.trainingDataSize ?? null,
+      hyperparameters: insertModel.hyperparameters ?? null,
+      modelSize: insertModel.modelSize ?? null,
+      inferenceTime: insertModel.inferenceTime ?? null,
+      modelPath: insertModel.modelPath ?? null,
       trainedAt: new Date(),
     };
     this.mlModels.set(id, model);

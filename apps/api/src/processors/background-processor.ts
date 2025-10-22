@@ -259,7 +259,9 @@ class BackgroundJobProcessor {
           );
 
           // Use batch processing for AI suggestions
-          const suggestions = await aiService.generateBatchSuggestions(errorsToProcess);
+          const suggestions = await Promise.all(
+            errorsToProcess.map(error => aiService.generateSuggestion(error))
+          );
 
           // Update progress
           await this.updateJobStatus(
@@ -411,33 +413,20 @@ class BackgroundJobProcessor {
       );
 
       // Trigger automatic model retraining with new data
+      // TODO: Implement AdvancedTrainingSystem when available
       try {
         console.log(
-          "Triggering automatic model retraining after file analysis completion..."
+          "Automatic model retraining disabled - AdvancedTrainingSystem not available"
         );
-        const { AdvancedTrainingSystem } = await import(
-          "./advanced-training-system"
-        );
-        const trainingSystem = new AdvancedTrainingSystem();
-
+        
         // Check if enough new data to warrant retraining (e.g., at least 10 new errors)
         if (errorLogs.length >= 10) {
           console.log(
-            `New file has ${errorLogs.length} errors - triggering automatic retraining`
+            `New file has ${errorLogs.length} errors - would trigger automatic retraining if system was available`
           );
-
-          // Start background training (don't wait for completion)
-          trainingSystem
-            .trainSuggestionModel()
-            .then((result) => {
-              console.log("Automatic retraining completed:", result);
-            })
-            .catch((error) => {
-              console.error("Automatic retraining failed:", error);
-            });
         } else {
           console.log(
-            `New file has ${errorLogs.length} errors - skipping automatic retraining (minimum 10 required)`
+            `New file has ${errorLogs.length} errors - would skip automatic retraining (minimum 10 required)`
           );
         }
       } catch (retrainError) {

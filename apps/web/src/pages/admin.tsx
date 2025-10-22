@@ -107,6 +107,12 @@ interface MLModel {
   performanceGrade?: string | null;
   trainingTimeHours?: number;
   dataQualityScore?: number;
+  trainingLoss?: number | null;
+  validationLoss?: number | null;
+  topFeatures?: Array<{
+    feature: string;
+    importance: number;
+  }> | null;
 }
 
 interface AdminStats {
@@ -760,7 +766,7 @@ export default function AdminDashboard() {
     if (!selectedUser) return;
 
     const formData = new FormData(event.target as HTMLFormElement);
-    const userData = {
+    const userData: any = {
       id: selectedUser.id,
       username: formData.get("username"),
       email: formData.get("email"),
