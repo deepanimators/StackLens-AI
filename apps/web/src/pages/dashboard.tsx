@@ -54,6 +54,12 @@ interface DashboardStats {
   lowErrors: number;
   resolutionRate: string;
   mlAccuracy: number;
+  trends?: {
+    files: { value: string; isPositive: boolean };
+    errors: { value: string; isPositive: boolean };
+    criticalErrors: { value: string; isPositive: boolean };
+    resolutionRate: { value: string; isPositive: boolean };
+  };
 }
 
 interface RecentFile {
@@ -263,28 +269,28 @@ export default function Dashboard() {
           title="Total Files"
           value={stats?.totalFiles || 0}
           icon={FileText}
-          trend={{ value: "+12.5%", isPositive: true }}
+          trend={stats?.trends?.files || { value: "0%", isPositive: true }}
           className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200/50 dark:from-blue-950/20 dark:to-blue-900/20 dark:border-blue-800/30"
         />
         <StatsCard
           title="Total Errors"
           value={stats?.totalErrors || 0}
           icon={AlertTriangle}
-          trend={{ value: "-8.2%", isPositive: true }}
+          trend={stats?.trends?.errors || { value: "0%", isPositive: true }}
           className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200/50 dark:from-orange-950/20 dark:to-orange-900/20 dark:border-orange-800/30"
         />
         <StatsCard
           title="Critical Issues"
           value={stats?.criticalErrors || 0}
           icon={Flame}
-          trend={{ value: "+3.1%", isPositive: false }}
+          trend={stats?.trends?.criticalErrors || { value: "0%", isPositive: true }}
           className="bg-gradient-to-br from-red-50 to-red-100 border-red-200/50 dark:from-red-950/20 dark:to-red-900/20 dark:border-red-800/30"
         />
         <StatsCard
           title="Resolution Rate"
           value={stats?.resolutionRate || "0.0%"}
           icon={CheckCircle}
-          trend={{ value: "+2.4%", isPositive: true }}
+          trend={stats?.trends?.resolutionRate || { value: "0%", isPositive: true }}
           className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 dark:from-green-950/20 dark:to-green-900/20 dark:border-green-800/30"
         />
       </div>

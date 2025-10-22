@@ -116,6 +116,13 @@ type Performance = {
   successRate: number;
 };
 
+type Trends = {
+  files?: number;
+  errors?: number;
+  critical?: number;
+  resolution?: number;
+};
+
 // Import the authenticatedRequest and authenticatedFetch functions
 import { authenticatedRequest, authenticatedFetch } from "@/lib/auth";
 
@@ -124,40 +131,33 @@ const fetchReportData = async () => {
   try {
     console.log("🔄 Fetching real report data from API...");
 
-    // Fetch dashboard stats which should have the real numbers
-    const dashboardResponse = await authenticatedRequest(
+    // Use the proper reports API endpoint that includes trends
+    const reportsResponse = await authenticatedRequest(
       "GET",
-      "/api/dashboard"
+      "/api/reports?range=30d"
     );
-    console.log("📊 Dashboard response:", dashboardResponse);
+    console.log("📊 Reports response:", reportsResponse);
 
-    // Fetch error logs to get current statistics
-    const errorsResponse = await authenticatedRequest("GET", "/api/errors");
-    console.log("🐛 Errors response:", errorsResponse);
+    // Fallback to dashboard stats if reports API fails
+    let dashboardResponse = null;
+    try {
+      dashboardResponse = await authenticatedRequest(
+        "GET",
+        "/api/dashboard/stats"
+      );
+    } catch (error) {
+      console.warn("Dashboard API failed, using reports data only:", error);
+    }
 
-    // Fetch log files to get file statistics
-    const filesResponse = await authenticatedRequest("GET", "/api/files");
-    console.log("📁 Files response:", filesResponse);
-
-    // Calculate real statistics from the API responses
-    const totalFiles =
-      dashboardResponse?.totalFiles || filesResponse?.files?.length || 0;
-    const errorsArray = errorsResponse?.errors || [];
-    const filesArray = filesResponse?.files || [];
-
-    const totalErrors =
-      dashboardResponse?.totalErrors || errorsArray?.length || 0;
-    const criticalErrors =
-      dashboardResponse?.criticalErrors ||
-      errorsArray?.filter((error: any) => error.severity === "critical")
-        .length ||
-      0;
-    const resolvedErrors =
-      dashboardResponse?.resolvedErrors ||
-      errorsArray?.filter((error: any) => error.resolved === true).length ||
-      0;
-
-    const resolutionRate = totalErrors > 0 ? resolvedErrors / totalErrors : 0;
+    // Calculate real statistics from the reports API response
+    const summary = reportsResponse?.summary || {};
+    const trends = summary?.trends || {};
+    
+    const totalFiles = summary.totalFiles || 0;
+    const totalErrors = summary.totalErrors || 0;
+    const criticalErrors = summary.criticalErrors || 0;
+    const resolvedErrors = summary.resolvedErrors || 0;
+    const resolutionRate = summary.resolutionRate || 0;
 
     // Create severity distribution from real data
     const severityDistribution = {
@@ -217,11 +217,12 @@ const fetchReportData = async () => {
         criticalErrors,
         resolvedErrors,
         resolutionRate,
+        trends: trends, // Add trends data from the reports API
       },
-      errorTypes,
-      severityDistribution,
-      topFiles,
-      performance,
+      errorTypes: reportsResponse?.errorTypes || errorTypes,
+      severityDistribution: reportsResponse?.severityDistribution || severityDistribution,
+      topFiles: reportsResponse?.topFiles || topFiles,
+      performance: reportsResponse?.performance || performance,
     };
 
     console.log("✅ Real report data calculated:", realData);
@@ -297,8 +298,9 @@ const fetchReportData = async () => {
 };
 
 // Enhanced Trends Analysis Component
-const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
+const EnhancedTrendsAnalysis: React.FC<{ reportData: any; isActive?: boolean }> = ({
   reportData,
+  isActive = false,
 }) => {
   const [trendsData, setTrendsData] = useState<any>(null);
   const [timeframe, setTimeframe] = useState<string>("30d");
@@ -419,8 +421,11 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
   };
 
   useEffect(() => {
-    fetchTrendsData(timeframe);
-  }, [timeframe]);
+    // Only fetch data when component is active and not already loaded
+    if (isActive && !trendsData && !isLoading) {
+      fetchTrendsData(timeframe);
+    }
+  }, [isActive, timeframe]);
 
   // Generate mock trends data for demo
   const generateMockTrendsData = (timeframe: string) => {
@@ -1376,8 +1381,17 @@ export default function Reports() {
                 <FileText className="h-8 w-8 text-blue-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-                <span className="text-sm text-green-600">+12.5%</span>
+                {(reportData?.summary?.trends?.files || 0) >= 0 ? (
+                  <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+                ) : (
+                  <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
+                )}
+                <span className={`text-sm ${(reportData?.summary?.trends?.files || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {reportData?.summary?.trends?.files !== undefined 
+                    ? `${reportData.summary.trends.files >= 0 ? '+' : ''}${reportData.summary.trends.files}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -1393,8 +1407,17 @@ export default function Reports() {
                 <AlertTriangle className="h-8 w-8 text-orange-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
-                <span className="text-sm text-green-600">-8.2%</span>
+                {(reportData?.summary?.trends?.errors || 0) <= 0 ? (
+                  <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
+                ) : (
+                  <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
+                )}
+                <span className={`text-sm ${(reportData?.summary?.trends?.errors || 0) <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {reportData?.summary?.trends?.errors !== undefined 
+                    ? `${reportData.summary.trends.errors >= 0 ? '+' : ''}${reportData.summary.trends.errors}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -1412,8 +1435,17 @@ export default function Reports() {
                 <Activity className="h-8 w-8 text-red-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
-                <span className="text-sm text-red-600">+3.1%</span>
+                {(reportData?.summary?.trends?.critical || 0) >= 0 ? (
+                  <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
+                ) : (
+                  <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
+                )}
+                <span className={`text-sm ${(reportData?.summary?.trends?.critical || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  {reportData?.summary?.trends?.critical !== undefined 
+                    ? `${reportData.summary.trends.critical >= 0 ? '+' : ''}${reportData.summary.trends.critical}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -1436,8 +1468,17 @@ export default function Reports() {
                 <BarChart3 className="h-8 w-8 text-green-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-                <span className="text-sm text-green-600">+2.4%</span>
+                {(reportData?.summary?.trends?.resolution || 0) >= 0 ? (
+                  <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+                ) : (
+                  <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
+                )}
+                <span className={`text-sm ${(reportData?.summary?.trends?.resolution || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {reportData?.summary?.trends?.resolution !== undefined 
+                    ? `${reportData.summary.trends.resolution >= 0 ? '+' : ''}${reportData.summary.trends.resolution}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -1863,7 +1904,7 @@ export default function Reports() {
           </TabsContent>
 
           <TabsContent value="trends" className="space-y-4">
-            <EnhancedTrendsAnalysis reportData={reportData} />
+            <EnhancedTrendsAnalysis reportData={reportData} isActive={reportType === "trends"} />
           </TabsContent>
 
           <TabsContent value="performance" className="space-y-4">

@@ -32,7 +32,27 @@ import {
   Activity,
   FileSpreadsheet,
   Settings,
+  Loader2,
 } from "lucide-react";
+
+// Loading skeleton component for sections
+const SectionSkeleton = ({ title }: { title: string }) => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center space-x-2">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        <span>{title}</span>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
+      </div>
+    </CardContent>
+  </Card>
+);
 
 interface ErrorLog {
   id: number;
@@ -96,7 +116,7 @@ export default function AIAnalysisPage() {
   const [consolidatedItemsPerPage] = useState(10);
 
   // Fast stats query for dashboard (no heavy data loading)
-  const { data: errorStats } = useQuery({
+  const { data: errorStats, isLoading: isLoadingStats } = useQuery({
     queryKey: ["/api/errors/stats"],
     queryFn: async () => {
       return await authenticatedRequest("GET", "/api/errors/stats");
@@ -105,7 +125,7 @@ export default function AIAnalysisPage() {
   });
 
   // Fetch all errors with AI suggestions (only when needed for detailed view)
-  const { data: errors, refetch: refetchErrors } = useQuery({
+  const { data: errors, refetch: refetchErrors, isLoading: isLoadingErrors } = useQuery({
     queryKey: ["/api/errors/enhanced/all"],
     queryFn: async (): Promise<ErrorLog[]> => {
       // Only load first few pages for performance, prioritize errors with AI/ML data
@@ -139,7 +159,7 @@ export default function AIAnalysisPage() {
     staleTime: 5000, // Reduced from 60000ms (60s) to 5000ms (5s) for faster updates
   });
 
-  const { data: consolidatedData, refetch: refetchConsolidated } = useQuery({
+  const { data: consolidatedData, refetch: refetchConsolidated, isLoading: isLoadingConsolidated } = useQuery({
     queryKey: ["/api/errors/consolidated/summary"],
     queryFn: async () => {
       // Load only first few pages for performance
@@ -184,14 +204,14 @@ export default function AIAnalysisPage() {
     staleTime: 10000, // Cache for 10 seconds
   });
 
-  const { data: mlStatus } = useQuery({
+  const { data: mlStatus, isLoading: isLoadingMLStatus } = useQuery({
     queryKey: ["/api/ml/status"],
     queryFn: async (): Promise<MLStatus> => {
       return await authenticatedRequest("GET", "/api/ml/status");
     },
   });
 
-  const { data: suggestionPerformance } = useQuery({
+  const { data: suggestionPerformance, isLoading: isLoadingSuggestions } = useQuery({
     queryKey: ["/api/ai/suggestion-performance"],
     queryFn: async (): Promise<SuggestionPerformance> => {
       // Fixed: Return the authenticated request result directly
@@ -399,61 +419,79 @@ export default function AIAnalysisPage() {
     >
       {/* AI Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Errors</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.totalErrors}
-                </p>
-              </div>
-              <AlertTriangle className="h-8 w-8 text-orange-600" />
-            </div>
-          </CardContent>
-        </Card>
+        {isLoadingStats || isLoadingErrors || isLoadingConsolidated ? (
+          Array.from({ length: 4 }, (_, i) => (
+            <Card key={i}>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="h-4 bg-gray-200 rounded animate-pulse w-16 mb-2"></div>
+                    <div className="h-8 bg-gray-200 rounded animate-pulse w-12"></div>
+                  </div>
+                  <Loader2 className="h-8 w-8 text-gray-400 animate-spin" />
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Total Errors</p>
+                    <p className="text-2xl font-bold">
+                      {aiSuggestionStats.totalErrors}
+                    </p>
+                  </div>
+                  <AlertTriangle className="h-8 w-8 text-orange-600" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">AI Suggestions</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.withAISuggestions}
-                </p>
-              </div>
-              <Brain className="h-8 w-8 text-purple-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">AI Suggestions</p>
+                    <p className="text-2xl font-bold">
+                      {aiSuggestionStats.withAISuggestions}
+                    </p>
+                  </div>
+                  <Brain className="h-8 w-8 text-purple-600" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">ML Predictions</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.withMLPredictions}
-                </p>
-              </div>
-              <Zap className="h-8 w-8 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">ML Predictions</p>
+                    <p className="text-2xl font-bold">
+                      {aiSuggestionStats.withMLPredictions}
+                    </p>
+                  </div>
+                  <Zap className="h-8 w-8 text-blue-600" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Resolved</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.resolvedErrors}
-                </p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-green-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Resolved</p>
+                    <p className="text-2xl font-bold">
+                      {aiSuggestionStats.resolvedErrors}
+                    </p>
+                  </div>
+                  <CheckCircle className="h-8 w-8 text-green-600" />
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       {/* Enhanced ML Training Metrics Dashboard */}
@@ -641,14 +679,17 @@ export default function AIAnalysisPage() {
       )}
 
       {/* Always Visible Suggestion Model Performance Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <TrendingUp className="h-5 w-5" />
-            <span>Suggestion Model Performance</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      {isLoadingSuggestions ? (
+        <SectionSkeleton title="Suggestion Model Performance" />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="h-5 w-5" />
+              <span>Suggestion Model Performance</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Model Accuracy</p>
@@ -781,17 +822,21 @@ export default function AIAnalysisPage() {
             </Button>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
       {/* ML Prediction Model Status */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Activity className="h-5 w-5" />
-            <span>ML Prediction Model Status</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      {isLoadingMLStatus ? (
+        <SectionSkeleton title="ML Prediction Model Status" />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Activity className="h-5 w-5" />
+              <span>ML Prediction Model Status</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Prediction Status</p>
@@ -865,7 +910,8 @@ export default function AIAnalysisPage() {
             </Button>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
       {/* AI Analysis Tabs */}
       <Tabs defaultValue="consolidated" className="w-full">
@@ -876,12 +922,15 @@ export default function AIAnalysisPage() {
         </TabsList>
 
         <TabsContent value="consolidated" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Consolidated Error Analysis</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {sortedConsolidatedErrors.length > 0 ? (
+          {isLoadingConsolidated ? (
+            <SectionSkeleton title="Consolidated Error Analysis" />
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>Consolidated Error Analysis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {sortedConsolidatedErrors.length > 0 ? (
                 <div className="space-y-4">
                   {/* Pagination info */}
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -1062,16 +1111,20 @@ export default function AIAnalysisPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="suggestions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>AI Suggestions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {sortedAISuggestionErrors.length > 0 ? (
+          {isLoadingErrors ? (
+            <SectionSkeleton title="AI Suggestions" />
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>AI Suggestions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {sortedAISuggestionErrors.length > 0 ? (
                 <ErrorTable
                   errors={sortedAISuggestionErrors}
                   onViewDetails={handleViewDetails}
@@ -1092,14 +1145,18 @@ export default function AIAnalysisPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="predictions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>ML Predictions</CardTitle>
-            </CardHeader>
+          {isLoadingErrors ? (
+            <SectionSkeleton title="ML Predictions" />
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>ML Predictions</CardTitle>
+              </CardHeader>
             <CardContent>
               {sortedMLPredictionErrors.length > 0 ? (
                 <div className="space-y-4">
