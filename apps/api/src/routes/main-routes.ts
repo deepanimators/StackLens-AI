@@ -4614,12 +4614,14 @@ Format as JSON with the following structure:
         return res.status(404).json({ message: "File not found" });
       }
 
-      // Check permissions
-      if (file.uploadedBy !== req.user.id) {
+      // Check permissions - allow users to delete their own files, and allow admins to delete any file
+      if (file.uploadedBy !== req.user.id && req.user.role !== "admin" && req.user.role !== "super_admin") {
         console.log(
-          `🚫 Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}`
+          `🚫 Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}, role: ${req.user.role}`
         );
-        return res.status(403).json({ message: "Access denied: You can only delete files you uploaded" });
+        return res.status(403).json({
+          message: "Access denied: You can only delete files you uploaded"
+        });
       }
 
       console.log("🔄 Starting comprehensive cascade deletion process...");
@@ -5040,6 +5042,9 @@ Format as JSON with the following structure:
       res.setHeader("Expires", "0");
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 20;
+      const fileIdFilter = req.query.fileId ? parseInt(req.query.fileId as string) : null;
+
+      console.log("📊 Analysis history request:", { page, limit, fileIdFilter, userId: req.user.id });
 
       // Get analysis history for the user - only completed analyses
       const analysisHistoryArray = await storage.getAnalysisHistoryByUser(
@@ -5047,9 +5052,17 @@ Format as JSON with the following structure:
       );
 
       // Filter to only include completed analyses (no processing/pending)
-      const completedAnalyses = analysisHistoryArray.filter(
+      let completedAnalyses = analysisHistoryArray.filter(
         (analysis: any) => analysis.status === "completed"
       );
+
+      // Apply file ID filter if specified
+      if (fileIdFilter) {
+        completedAnalyses = completedAnalyses.filter(
+          (analysis: any) => analysis.fileId === fileIdFilter
+        );
+        console.log(`📁 Filtered by fileId ${fileIdFilter}: ${completedAnalyses.length} analyses`);
+      }
 
       // Apply pagination
       const total = completedAnalyses.length;
@@ -5061,23 +5074,33 @@ Format as JSON with the following structure:
         )
         .slice(offset, offset + limit);
 
-      // Get corresponding log files to get actual file names
+      // Get corresponding log files to get actual file names and store/kiosk data
       const history = await Promise.all(
         paginatedHistory.map(async (item: any) => {
           let fileName = "Unknown File";
           let uploadDate = item.createdAt;
+          let storeNumber = null;
+          let kioskNumber = null;
 
           // First try to use filename from analysis history record
           if (item.filename) {
             fileName = item.filename;
             uploadDate = item.uploadTimestamp || item.createdAt;
-          } else if (item.fileId) {
-            // Fallback: try to get the actual file name from log files
+          }
+
+          // Always try to get store/kiosk data from log files if fileId exists
+          if (item.fileId) {
             try {
               const logFile = await storage.getLogFile(item.fileId);
               if (logFile) {
-                fileName = logFile.originalName || logFile.filename;
-                uploadDate = logFile.uploadTimestamp || item.createdAt;
+                // Get filename if not already set
+                if (!item.filename) {
+                  fileName = logFile.originalName || logFile.filename;
+                  uploadDate = logFile.uploadTimestamp || item.createdAt;
+                }
+                // Get store and kiosk data
+                storeNumber = logFile.storeNumber;
+                kioskNumber = logFile.kioskNumber;
               }
             } catch (error) {
               console.warn(`Could not fetch log file ${item.fileId}:`, error);
@@ -5102,6 +5125,8 @@ Format as JSON with the following structure:
             fileId: item.fileId, // Add fileId for patterns API
             filename: fileName, // Use filename instead of fileName for frontend consistency
             uploadDate: validUploadDate,
+            storeNumber: storeNumber, // Add store number
+            kioskNumber: kioskNumber, // Add kiosk number
             totalErrors: item.totalErrors || 0,
             criticalErrors: item.criticalErrors || 0,
             highErrors: item.highErrors || 0,
@@ -5421,8 +5446,41 @@ Format as JSON with the following structure:
 
       // Transform to expected format
       const errors = paginatedErrors.map((error) => {
-        // Extract timestamp from message if not available in timestamp field
-        let extractedTimestamp = error.timestamp;
+        // Ensure timestamp is properly formatted and valid
+        let extractedTimestamp = null;
+
+        // First, try to use the existing timestamp field
+        if (error.timestamp) {
+          try {
+            // Handle different timestamp formats
+            if (typeof error.timestamp === 'string') {
+              // Try parsing as-is first
+              const date = new Date(error.timestamp);
+              if (!isNaN(date.getTime())) {
+                extractedTimestamp = date.toISOString();
+              } else {
+                // Try parsing as Unix timestamp (seconds)
+                const numTimestamp = parseInt(error.timestamp);
+                if (!isNaN(numTimestamp)) {
+                  const timestamp = numTimestamp < 10000000000 ? numTimestamp * 1000 : numTimestamp;
+                  extractedTimestamp = new Date(timestamp).toISOString();
+                }
+              }
+            } else if (typeof error.timestamp === 'number') {
+              // Handle numeric timestamps
+              const timestamp = error.timestamp < 10000000000 ? error.timestamp * 1000 : error.timestamp;
+              extractedTimestamp = new Date(timestamp).toISOString();
+            } else {
+              // Try to convert to date directly
+              extractedTimestamp = new Date(error.timestamp).toISOString();
+            }
+          } catch (e) {
+            console.warn('Failed to parse existing timestamp:', error.timestamp, e);
+            extractedTimestamp = null;
+          }
+        }
+
+        // If no valid timestamp found, try extracting from message
         if (!extractedTimestamp && error.message) {
           // Try to extract timestamp from message like "2025-05-31/18:00:03.918/PDT"
           const timestampMatch = error.message.match(
@@ -5434,13 +5492,31 @@ Format as JSON with the following structure:
               const dateStr = timestampMatch[1]
                 .replace("/", " ")
                 .replace(/\/[A-Z]{3}$/, "");
-              extractedTimestamp = new Date(dateStr);
+              const parsedDate = new Date(dateStr);
+              if (!isNaN(parsedDate.getTime())) {
+                extractedTimestamp = parsedDate.toISOString();
+              }
             } catch (e) {
-              extractedTimestamp = null;
+              console.warn('Failed to parse timestamp from message:', timestampMatch[1], e);
             }
-          } else {
-            extractedTimestamp = null;
           }
+        }
+
+        // If still no timestamp, use createdAt or current time as fallback
+        if (!extractedTimestamp) {
+          if (error.createdAt) {
+            try {
+              extractedTimestamp = new Date(error.createdAt).toISOString();
+            } catch (e) {
+              console.warn('Failed to parse createdAt timestamp:', error.createdAt, e);
+            }
+          }
+        }
+
+        // Final fallback - use current time but log it
+        if (!extractedTimestamp) {
+          console.warn('No valid timestamp found for error', error.id, 'using current time as fallback');
+          extractedTimestamp = new Date().toISOString();
         }
 
         return {
@@ -5456,7 +5532,7 @@ Format as JSON with the following structure:
           fullText: error.fullText,
           file_path: (error as any).filename || "Unknown",
           line_number: error.lineNumber,
-          timestamp: extractedTimestamp || "N/A",
+          timestamp: extractedTimestamp,
           stack_trace: error.fullText,
           context: error.pattern || "",
           resolved: error.resolved,
@@ -5466,12 +5542,21 @@ Format as JSON with the following structure:
         };
       });
 
+      // Calculate severity counts from all filtered errors (not just the paginated ones)
+      const severityCounts = {
+        critical: filteredErrors.filter(error => error.severity === "critical").length,
+        high: filteredErrors.filter(error => error.severity === "high").length,
+        medium: filteredErrors.filter(error => error.severity === "medium").length,
+        low: filteredErrors.filter(error => error.severity === "low").length,
+      };
+
       res.json({
         errors: errors,
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit),
+        severityCounts: severityCounts,
       });
     } catch (error) {
       console.error("Error fetching errors:", error);
@@ -6513,6 +6598,9 @@ Format as JSON with the following structure:
     try {
       const range = req.query.range || "30d";
       const format = req.query.format || "json";
+      const reportType = req.query.reportType || "summary";
+
+      console.log("📊 Reports export request:", { range, format, reportType, userId: req.user.id });
 
       // Calculate date range
       const now = new Date();
@@ -6572,6 +6660,8 @@ Format as JSON with the following structure:
 
       if (format === "xlsx") {
         try {
+          console.log("📊 Generating Excel report with", exportData.length, "records");
+
           // Create a proper Excel file using a simple approach
           const XLSX = require("xlsx");
 
@@ -6614,15 +6704,15 @@ Format as JSON with the following structure:
           res.setHeader("Content-Length", buffer.length);
           return res.send(buffer);
         } catch (xlsxError) {
-          console.error("Excel generation failed:", xlsxError);
-          // Fallback to CSV
-          const csvData = convertToCSV(exportData);
-          res.setHeader("Content-Type", "text/csv");
-          res.setHeader(
-            "Content-Disposition",
-            `attachment; filename="error-analysis-report-${range}.csv"`
-          );
-          return res.send(csvData);
+          console.error("❌ Excel generation failed:", xlsxError);
+          console.error("Error details:", xlsxError.message, xlsxError.stack);
+
+          // Return error response instead of silent fallback
+          return res.status(500).json({
+            message: "Excel generation failed",
+            error: xlsxError.message,
+            fallbackFormat: "csv"
+          });
         }
       }
 
@@ -6833,8 +6923,15 @@ Format as JSON with the following structure:
         totalRecords: exportData.length,
       });
     } catch (error) {
-      console.error("Error generating export:", error);
-      res.status(500).json({ message: "Failed to generate export" });
+      console.error("❌ Error generating reports export:", error);
+      console.error("Error details:", error instanceof Error ? error.message : "Unknown error");
+      console.error("Stack trace:", error instanceof Error ? error.stack : "No stack trace");
+
+      res.status(500).json({
+        message: "Failed to generate export",
+        error: error instanceof Error ? error.message : "Unknown error",
+        timestamp: new Date().toISOString()
+      });
     }
   });
 
@@ -6842,7 +6939,15 @@ Format as JSON with the following structure:
   app.get("/api/export/errors", requireAuth, async (req: any, res: any) => {
     try {
       const analysisId = req.query.analysisId;
+      const fileId = req.query.fileId;
       const format = req.query.format || "csv";
+      const severity = req.query.severity as string;
+      const search = req.query.search as string;
+      const fileFilter = req.query.fileFilter as string;
+      const errorTypeFilter = req.query.errorType as string;
+      const userId = req.query.userId as string;
+
+      console.log("📤 Export request:", { analysisId, fileId, format, userId: req.user.id });
 
       let errors;
       let filename;
@@ -6857,28 +6962,120 @@ Format as JSON with the following structure:
           )
           .orderBy(desc(errorLogs.createdAt));
         filename = `analysis-${analysisId}`;
+      } else if (fileId) {
+        // Get errors for the specific file
+        const targetFileId = parseInt(fileId);
+        if (isNaN(targetFileId)) {
+          return res.status(400).json({ message: "Invalid fileId parameter" });
+        }
+
+        // Verify user has access to this file
+        const file = await storage.getLogFile(targetFileId);
+        if (!file) {
+          return res.status(404).json({ message: "File not found" });
+        }
+
+        if (file.uploadedBy !== req.user.id && req.user.role !== "admin" && req.user.role !== "super_admin") {
+          return res.status(403).json({ message: "Access denied" });
+        }
+
+        errors = await storage.getErrorsByFile(targetFileId);
+        filename = `file-${targetFileId}-${file.originalName.replace(/[^a-zA-Z0-9]/g, '_')}`;
       } else {
-        // Get all errors for the user
-        errors = await storage.getErrorsByUser(req.user.id);
-        filename = "all-errors";
+        // Check if admin is requesting errors for specific user or all users
+        let allUserErrors;
+        if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
+          // Admin requesting specific user's errors
+          const targetUserId = parseInt(userId);
+          if (isNaN(targetUserId)) {
+            return res.status(400).json({ message: "Invalid userId parameter" });
+          }
+          allUserErrors = await storage.getErrorsByUser(targetUserId);
+        } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
+          // Admin requesting all errors
+          allUserErrors = await storage.getAllErrors();
+        } else if (userId && req.user.role === "user") {
+          // Regular user trying to access other user's errors - deny
+          return res.status(403).json({ message: "Access denied" });
+        } else {
+          // Default: get current user's errors
+          allUserErrors = await storage.getErrorsByUser(req.user.id);
+        }
+
+        errors = allUserErrors;
+
+        // Apply same filters as the main errors endpoint
+        if (severity && severity !== "all") {
+          errors = errors.filter((error) => error.severity === severity);
+        }
+
+        if (errorTypeFilter && errorTypeFilter !== "all") {
+          errors = errors.filter((error) => error.errorType === errorTypeFilter);
+        }
+
+        if (search) {
+          const searchLower = search.toLowerCase();
+          errors = errors.filter(
+            (error) =>
+              error.message.toLowerCase().includes(searchLower) ||
+              (error.fullText && error.fullText.toLowerCase().includes(searchLower)) ||
+              error.errorType.toLowerCase().includes(searchLower)
+          );
+        }
+
+        if (fileFilter && fileFilter !== "all") {
+          const fileIds = fileFilter.split(",").map(id => id.trim()).filter(id => id);
+          if (fileIds.length > 0) {
+            errors = errors.filter(
+              (error) => error.fileId && fileIds.includes(error.fileId.toString())
+            );
+          }
+        }
+
+        filename = "filtered-errors";
       }
 
-      // Prepare export data
-      const exportData = errors.map((error) => ({
-        id: error.id,
-        timestamp: error.timestamp || new Date(error.createdAt || Date.now()).toISOString(),
-        severity: error.severity,
-        errorType: error.errorType,
-        message: error.message,
-        fullText: error.fullText,
-        resolved: error.resolved ? "Yes" : "No",
-        hasAISuggestion: error.aiSuggestion ? "Yes" : "No",
-        hasMLPrediction: error.mlPrediction ? "Yes" : "No",
-        mlConfidence: (error as any).mlConfidence
-          ? `${((error as any).mlConfidence * 100).toFixed(1)}%`
-          : "N/A",
-        lineNumber: error.lineNumber,
-      }));
+      // Prepare export data with proper timestamp handling
+      const exportData = errors.map((error) => {
+        // Ensure valid timestamp format
+        let formattedTimestamp = null;
+        if (error.timestamp) {
+          try {
+            formattedTimestamp = new Date(error.timestamp).toISOString();
+          } catch (e) {
+            console.warn('Invalid timestamp in export for error', error.id, ':', error.timestamp);
+          }
+        }
+
+        if (!formattedTimestamp && error.createdAt) {
+          try {
+            formattedTimestamp = new Date(error.createdAt).toISOString();
+          } catch (e) {
+            console.warn('Invalid createdAt timestamp in export for error', error.id, ':', error.createdAt);
+          }
+        }
+
+        if (!formattedTimestamp) {
+          formattedTimestamp = new Date().toISOString();
+        }
+
+        return {
+          id: error.id,
+          timestamp: formattedTimestamp,
+          severity: error.severity,
+          errorType: error.errorType,
+          message: error.message,
+          fullText: error.fullText || error.message,
+          resolved: error.resolved ? "Yes" : "No",
+          hasAISuggestion: error.aiSuggestion ? "Yes" : "No",
+          hasMLPrediction: error.mlPrediction ? "Yes" : "No",
+          mlConfidence: (error as any).mlConfidence
+            ? `${((error as any).mlConfidence * 100).toFixed(1)}%`
+            : "N/A",
+          lineNumber: error.lineNumber || "N/A",
+          fileName: (error as any).filename || "Unknown",
+        };
+      });
 
       if (format === "xlsx") {
         try {

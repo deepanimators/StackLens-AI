@@ -44,6 +44,12 @@ interface ErrorsResponse {
   total: number;
   page: number;
   limit: number;
+  severityCounts?: {
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+  };
 }
 
 // Transform API response to UI format
@@ -70,28 +76,42 @@ const transformErrorLog = (apiError: any): ErrorLog => {
     }
   }
 
-  // Standardize timestamp format
+  // Standardize timestamp format with better validation
   let standardizedTimestamp: string | null = null;
-  if (apiError.timestamp) {
+  if (apiError.timestamp && apiError.timestamp !== "N/A") {
     try {
       if (typeof apiError.timestamp === "string") {
-        // Try to parse as-is first
-        const date = new Date(apiError.timestamp);
-        if (!isNaN(date.getTime())) {
-          standardizedTimestamp = date.toISOString();
+        // Check if it's already a valid ISO string
+        if (apiError.timestamp.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/)) {
+          standardizedTimestamp = apiError.timestamp;
         } else {
-          // Try as Unix timestamp
-          const numTimestamp = parseInt(apiError.timestamp);
-          if (!isNaN(numTimestamp)) {
-            const timestamp = numTimestamp < 10000000000 ? numTimestamp * 1000 : numTimestamp;
-            standardizedTimestamp = new Date(timestamp).toISOString();
+          // Try to parse as date
+          const date = new Date(apiError.timestamp);
+          if (!isNaN(date.getTime()) && date.getFullYear() > 1970) {
+            standardizedTimestamp = date.toISOString();
+          } else {
+            // Try as Unix timestamp (seconds)
+            const numTimestamp = parseInt(apiError.timestamp);
+            if (!isNaN(numTimestamp) && numTimestamp > 0) {
+              const timestamp = numTimestamp < 10000000000 ? numTimestamp * 1000 : numTimestamp;
+              const parsedDate = new Date(timestamp);
+              if (!isNaN(parsedDate.getTime()) && parsedDate.getFullYear() > 1970) {
+                standardizedTimestamp = parsedDate.toISOString();
+              }
+            }
           }
         }
       } else if (typeof apiError.timestamp === "number") {
         const timestamp = apiError.timestamp < 10000000000 ? apiError.timestamp * 1000 : apiError.timestamp;
-        standardizedTimestamp = new Date(timestamp).toISOString();
+        const parsedDate = new Date(timestamp);
+        if (!isNaN(parsedDate.getTime()) && parsedDate.getFullYear() > 1970) {
+          standardizedTimestamp = parsedDate.toISOString();
+        }
       } else {
-        standardizedTimestamp = new Date(apiError.timestamp).toISOString();
+        const date = new Date(apiError.timestamp);
+        if (!isNaN(date.getTime()) && date.getFullYear() > 1970) {
+          standardizedTimestamp = date.toISOString();
+        }
       }
     } catch (error) {
       console.warn('Failed to parse timestamp for error', apiError.id, ':', apiError.timestamp, error);
@@ -222,6 +242,12 @@ export default function AllErrors() {
           total: data.total || 0,
           page: data.page || page,
           limit: data.limit || limit,
+          severityCounts: data.severityCounts || {
+            critical: 0,
+            high: 0,
+            medium: 0,
+            low: 0,
+          },
         };
       } catch (error) {
         console.error("🔍 All Errors: API request failed", error);
@@ -680,13 +706,12 @@ export default function AllErrors() {
         </CardContent>
       </Card>
 
-      {/* Summary Stats */}
+      {/* Summary Stats - Now shows totals from all filtered results, not just current page */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-red-600">
-              {errorsData?.errors?.filter((e) => e.severity === "critical")
-                .length || 0}
+              {errorsData?.severityCounts?.critical || 0}
             </div>
             <p className="text-sm text-muted-foreground">Critical</p>
           </CardContent>
@@ -694,8 +719,7 @@ export default function AllErrors() {
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-orange-600">
-              {errorsData?.errors?.filter((e) => e.severity === "high")
-                .length || 0}
+              {errorsData?.severityCounts?.high || 0}
             </div>
             <p className="text-sm text-muted-foreground">High</p>
           </CardContent>
@@ -703,8 +727,7 @@ export default function AllErrors() {
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-yellow-600">
-              {errorsData?.errors?.filter((e) => e.severity === "medium")
-                .length || 0}
+              {errorsData?.severityCounts?.medium || 0}
             </div>
             <p className="text-sm text-muted-foreground">Medium</p>
           </CardContent>
@@ -712,8 +735,7 @@ export default function AllErrors() {
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-blue-600">
-              {errorsData?.errors?.filter((e) => e.severity === "low").length ||
-                0}
+              {errorsData?.severityCounts?.low || 0}
             </div>
             <p className="text-sm text-muted-foreground">Low</p>
           </CardContent>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,8 @@ interface AnalysisHistory {
   lowErrors: number;
   processingTime: number;
   modelAccuracy: number;
+  storeNumber?: string | null; // Store number from log file
+  kioskNumber?: string | null; // Kiosk number from log file
   // Additional fields from API
   analysisDate?: string; // Backward compatibility
   fileName?: string; // From file lookup
@@ -70,8 +72,26 @@ export default function AnalysisHistoryPage() {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [filterFileId, setFilterFileId] = useState<number | null>(null);
+  const [filterFileName, setFilterFileName] = useState<string>("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Handle URL parameters for filtering by file
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const fileIdParam = urlParams.get('fileId');
+    const fileNameParam = urlParams.get('fileName');
+    
+    if (fileIdParam) {
+      const fileId = parseInt(fileIdParam);
+      if (!isNaN(fileId)) {
+        setFilterFileId(fileId);
+        setFilterFileName(fileNameParam ? decodeURIComponent(fileNameParam) : '');
+        console.log("📁 Filtering analysis history by file:", { fileId, fileName: fileNameParam });
+      }
+    }
+  }, []);
 
   // Fetch analysis history (completed analyses)
   const {
@@ -79,13 +99,23 @@ export default function AnalysisHistoryPage() {
     isLoading,
     error: historyError,
   } = useQuery({
-    queryKey: ["/api/analysis/history"],
+    queryKey: ["/api/analysis/history", filterFileId],
     queryFn: async () => {
       try {
+        // Build query parameters
+        const params = new URLSearchParams();
+        params.append("limit", "100");
+        
+        if (filterFileId) {
+          params.append("fileId", filterFileId.toString());
+        }
+        
+        const queryString = params.toString() ? `?${params.toString()}` : "?limit=100";
+        
         // Request with reasonable limit for display but get statistics for all records
         const data = await authenticatedRequest(
           "GET",
-          "/api/analysis/history?limit=100"
+          `/api/analysis/history${queryString}`
         );
         console.log("📊 Analysis history response:", data);
 
@@ -669,8 +699,31 @@ export default function AnalysisHistoryPage() {
   return (
     <AdaptiveLayout
       title="Analysis History"
-      subtitle="Review your past log file analyses"
+      subtitle={filterFileId ? `Showing analysis for: ${filterFileName || `File ID ${filterFileId}`}` : "Review your past log file analyses"}
     >
+      {/* File Filter Alert */}
+      {filterFileId && (
+        <Alert className="mb-4">
+          <AlertDescription className="flex items-center justify-between">
+            <span>
+              Showing analysis results for <strong>{filterFileName || `File ID ${filterFileId}`}</strong>
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setFilterFileId(null);
+                setFilterFileName("");
+                // Clear URL parameters
+                window.history.replaceState({}, '', window.location.pathname);
+              }}
+            >
+              Show All Files
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
@@ -812,6 +865,12 @@ export default function AnalysisHistoryPage() {
                       File Name
                     </th>
                     <th className="py-3 px-4 font-medium text-muted-foreground">
+                      Store
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                      Kiosk
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
                       Progress
                     </th>
                     <th className="py-3 px-4 font-medium text-muted-foreground">
@@ -872,6 +931,16 @@ export default function AnalysisHistoryPage() {
                             {analysis.filename || getFileName(analysis.fileId)}
                           </span>
                         </div>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-muted-foreground">
+                          {analysis.storeNumber || "-"}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-muted-foreground">
+                          {analysis.kioskNumber || "-"}
+                        </span>
                       </td>
                       <td className="py-4 px-4">
                         <div className="w-32">

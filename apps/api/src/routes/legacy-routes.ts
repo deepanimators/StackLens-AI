@@ -4583,12 +4583,14 @@ Format as JSON with the following structure:
         return res.status(404).json({ message: "File not found" });
       }
 
-      // Check permissions
-      if (file.uploadedBy !== req.user.id) {
+      // Check permissions - allow users to delete their own files, and allow admins to delete any file
+      if (file.uploadedBy !== req.user.id && req.user.role !== "admin" && req.user.role !== "super_admin") {
         console.log(
-          `🚫 Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}`
+          `🚫 Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}, role: ${req.user.role}`
         );
-        return res.status(403).json({ message: "Access denied: You can only delete files you uploaded" });
+        return res.status(403).json({
+          message: "Access denied: You can only delete files you uploaded"
+        });
       }
 
       console.log("🔄 Starting comprehensive cascade deletion process...");

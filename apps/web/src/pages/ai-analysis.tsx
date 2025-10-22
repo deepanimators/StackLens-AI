@@ -203,11 +203,21 @@ export default function AIAnalysisPage() {
   });
 
   const handleViewSuggestion = (error: ErrorLog) => {
+    console.log("🤖 handleViewSuggestion called with error:", error);
+    if (!error || !error.id) {
+      console.error("❌ Invalid error data for suggestion:", error);
+      return;
+    }
     setSelectedError(error);
     setShowAISuggestionModal(true);
   };
 
   const handleGenerateSuggestion = (error: ErrorLog) => {
+    console.log("🤖 handleGenerateSuggestion called with error:", error);
+    if (!error || !error.id) {
+      console.error("❌ Invalid error data for suggestion generation:", error);
+      return;
+    }
     setSelectedError(error);
     setShowAISuggestionModal(true);
   };
@@ -950,9 +960,16 @@ export default function AIAnalysisPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() =>
-                              handleViewSuggestion(group.examples[0])
-                            }
+                            onClick={() => {
+                              const firstExample = group.examples && group.examples[0];
+                              if (firstExample && firstExample.id) {
+                                handleViewSuggestion(firstExample);
+                              } else {
+                                console.warn("No valid error example found for suggestion:", group);
+                              }
+                            }}
+                            disabled={!group.examples || !group.examples[0] || !group.examples[0].id}
+                            title={group.examples && group.examples[0] && group.examples[0].id ? "View AI Suggestion" : "No error data available"}
                           >
                             <Bot className="h-4 w-4" />
                           </Button>
@@ -1262,7 +1279,13 @@ export default function AIAnalysisPage() {
 
       {/* Modals */}
 
-      {selectedError && (
+      <AISuggestionModal
+        isOpen={showAISuggestionModal}
+        onClose={() => setShowAISuggestionModal(false)}
+        error={selectedError}
+      />
+
+      {false && selectedError && (
         <Dialog
           open={showAISuggestionModal}
           onOpenChange={setShowAISuggestionModal}

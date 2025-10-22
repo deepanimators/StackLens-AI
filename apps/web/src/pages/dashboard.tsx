@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 import ErrorTable from "@/components/error-table";
-import { authenticatedRequest } from "@/lib/auth";
+import { authenticatedRequest, authenticatedFetch, authManager } from "@/lib/auth";
 import {
   FileText,
   AlertTriangle,
@@ -46,11 +46,14 @@ import { SEVERITY_COLORS } from "@/lib/constants";
 interface DashboardStats {
   totalFiles: number;
   totalErrors: number;
+  resolvedErrors: number;
+  pendingErrors: number;
   criticalErrors: number;
   highErrors: number;
   mediumErrors: number;
   lowErrors: number;
   resolutionRate: string;
+  mlAccuracy: number;
 }
 
 interface RecentFile {
@@ -119,20 +122,26 @@ export default function Dashboard() {
 
   const handleViewAnalysis = (file: RecentFile) => {
     setSelectedFile(file);
-    setLocation(`/analysis-history`);
+    // Navigate to analysis history with file filter
+    setLocation(`/analysis-history?fileId=${file.id}&fileName=${encodeURIComponent(file.originalName)}`);
   };
 
   const handleExportFile = async (file: RecentFile) => {
     try {
-      const response = await authenticatedRequest(
+      const response = await authenticatedFetch(
         "GET",
-        `/api/export/errors?fileId=${file.id}`
+        `/api/export/errors?fileId=${file.id}&format=csv`
       );
+      
+      if (!response.ok) {
+        throw new Error(`Export failed: ${response.status} ${response.statusText}`);
+      }
+      
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${file.originalName}_analysis.json`;
+      a.download = `${file.originalName}_analysis.csv`;
       a.click();
       window.URL.revokeObjectURL(url);
       toast({
@@ -231,7 +240,9 @@ export default function Dashboard() {
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 <span className="text-muted-foreground">
                   Model Accuracy:{" "}
-                  <span className="font-medium text-primary">89%</span>
+                  <span className="font-medium text-primary">
+                    {stats?.mlAccuracy !== undefined ? `${stats.mlAccuracy}%` : "N/A"}
+                  </span>
                 </span>
               </div>
               <div className="flex items-center space-x-2">
