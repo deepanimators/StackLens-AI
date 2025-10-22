@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { usePWA } from '../hooks/use-pwa';
+import { usePWA } from '../../hooks/use-pwa';
 
 // PWA Install Banner Component
 export interface PWAInstallBannerProps {

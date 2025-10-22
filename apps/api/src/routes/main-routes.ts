@@ -51,6 +51,7 @@ import {
 import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
 import { createRAGRoutes } from "./rag-routes.js";
 import { registerAdvancedSearchRoutes } from "./advanced-search-routes.js";
+import errorIntelligenceRoutes from "./error-intelligence.js";
 import crypto from "crypto";
 
 const upload = multer({
@@ -8217,7 +8218,6 @@ Format as JSON with the following structure:
   app.use("/api/rag", ragRoutes);
 
   // Error Intelligence Routes for AI-powered error analysis
-  import errorIntelligenceRoutes from "./error-intelligence.js";
   app.use("/api/error-intelligence", errorIntelligenceRoutes);
 
   // Create HTTP server

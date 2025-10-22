@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { ErrorIntelligenceService, ErrorEvent } from '../../services/error-intelligence';
+import { ErrorIntelligenceService, ErrorEvent } from '../services/error-intelligence.js';
 
 const router = Router();
 const errorIntelligenceService = new ErrorIntelligenceService();
