@@ -57,6 +57,7 @@ If you prefer manual installation or encounter issues with the automated script:
 
 # Install dependencies and build
 .\02-SETUP.ps1 -ServerIP "0.0.0.0" -Port 4000
+.\infrastructure\deployment\windows\scripts\02-SETUP.ps1 -ServerIP "13.235.73.106" -Port 4000
 ```
 
 #### Step 3: Start Application
@@ -66,6 +67,7 @@ If you prefer manual installation or encounter issues with the automated script:
 
 # Start the server
 .\03-START-APP.ps1 -ServerIP "0.0.0.0" -Port 4000
+.\infrastructure\deployment\windows\scripts\03-START-APP.ps1 -ServerIP "13.235.73.106" -Port 4000
 ```
 
 ## 🔧 Configuration

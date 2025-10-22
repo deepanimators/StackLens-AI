@@ -50,6 +50,7 @@ import {
 } from "@shared/sqlite-schema";
 import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
 import { createRAGRoutes } from "./rag-routes.js";
+import { registerAdvancedSearchRoutes } from "./advanced-search-routes.js";
 import crypto from "crypto";
 
 const upload = multer({
