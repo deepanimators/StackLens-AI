@@ -1330,7 +1330,8 @@ export default function AIAnalysisPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
 

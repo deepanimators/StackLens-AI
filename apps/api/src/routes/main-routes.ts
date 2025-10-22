@@ -4309,14 +4309,14 @@ Format as JSON with the following structure:
       const userAnalyses = await storage.getAnalysisHistoryByUser(userId);
 
       // Calculate time boundaries
-      const now = new Date();
+      const currentDate = new Date();
       const timeframes = {
         "7d": 7 * 24 * 60 * 60 * 1000,
         "30d": 30 * 24 * 60 * 60 * 1000,
         "90d": 90 * 24 * 60 * 60 * 1000,
       };
       const timeLimit = new Date(
-        now.getTime() - timeframes[timeframe as keyof typeof timeframes]
+        currentDate.getTime() - timeframes[timeframe as keyof typeof timeframes]
       );
 
       // Filter data by timeframe and limit results for performance
