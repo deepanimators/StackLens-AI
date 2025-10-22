@@ -4,6 +4,7 @@ import { useSettings } from "@/contexts/settings-context";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
 import TopNav from "@/components/top-nav";
+import { VersionFooter } from "@/components/version-footer";
 import { cn } from "@/lib/utils";
 
 interface AdaptiveLayoutProps {
@@ -46,8 +47,8 @@ export default function AdaptiveLayout({
   const showTopNav = uiSettings?.navigationPreferences?.showTopNav ?? true;
   const showSideNav = uiSettings?.navigationPreferences?.showSideNav ?? true;
   const topNavStyle = uiSettings?.navigationPreferences?.topNavStyle ?? "fixed";
-  const sideNavPosition =
-    uiSettings?.navigationPreferences?.sideNavPosition ?? "left";
+  // Force sidebar to always be on the left
+  const sideNavPosition = "left";
 
   console.log("AdaptiveLayout render:", {
     showTopNav,
@@ -94,17 +95,14 @@ export default function AdaptiveLayout({
             {children}
           </div>
         </main>
+        <VersionFooter />
       </div>
     );
   }
 
-  // Default sidebar layout - when sidebar is enabled
+  // Default sidebar layout - when sidebar is enabled  
   return (
-    <div
-      className={`flex h-screen bg-background ${
-        sideNavPosition === "right" ? "flex-row-reverse" : ""
-      }`}
-    >
+    <div className="flex h-screen bg-background">
       {/* Overlay for mobile */}
       {isMobile && isSidebarOpen && (
         <div
@@ -117,8 +115,7 @@ export default function AdaptiveLayout({
         <div
           className={cn(
             "transition-all duration-300 ease-in-out z-50",
-            sideNavPosition === "right" ? "order-2" : "order-1",
-            isMobile ? "fixed inset-y-0 left-0" : "relative",
+            isMobile ? "fixed inset-y-0 left-0 w-64" : "relative w-64",
             isMobile && !isSidebarOpen && "-translate-x-full",
             isMobile && isSidebarOpen && "translate-x-0"
           )}
@@ -138,6 +135,7 @@ export default function AdaptiveLayout({
           />
         )}
         <main className="flex-1 overflow-auto p-6 space-y-6">{children}</main>
+        <VersionFooter />
       </div>
     </div>
   );

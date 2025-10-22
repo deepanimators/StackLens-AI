@@ -2763,6 +2763,21 @@ Format as JSON with the following structure:
     });
   });
 
+  // Version endpoint to get version information from Git-based data
+  app.get("/api/version", async (req, res) => {
+    try {
+      const versionDataPath = path.resolve("./version-data.json");
+      const versionData = JSON.parse(fs.readFileSync(versionDataPath, "utf8"));
+      res.json(versionData);
+    } catch (error) {
+      console.error("Failed to load version data:", error);
+      res.status(500).json({
+        error: "Could not load version data",
+        details: error instanceof Error ? error.message : String(error)
+      });
+    }
+  });
+
   // Test endpoint for debugging ML training and error pattern saves - NO AUTH REQUIRED
   app.post("/api/test/ml-training", async (req: any, res: any) => {
     try {

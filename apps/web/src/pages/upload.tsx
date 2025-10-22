@@ -6,12 +6,9 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  EnhancedSearchableSelect,
+  EnhancedSearchableSelectOption,
+} from "@/components/ui/enhanced-searchable-select";
 import { Label } from "@/components/ui/label";
 import AdaptiveLayout from "@/components/adaptive-layout";
 import { authenticatedRequest } from "@/lib/auth";
@@ -105,6 +102,84 @@ export default function UploadPage() {
       setKiosks(data.filter((k: Kiosk) => k.isActive));
     } catch (error) {
       console.error("Failed to fetch kiosks:", error);
+    }
+  };
+
+  // Add new store functionality
+  const addNewStore = async (storeName: string) => {
+    try {
+      const newStore = await authenticatedRequest("POST", "/api/stores", {
+        name: storeName,
+        storeNumber: `ST-${Date.now()}`, // Generate unique store number
+        isActive: true,
+      });
+      
+      // Refresh stores list
+      await fetchStores();
+      
+      // Auto-select the new store
+      setSelectedStore(newStore.storeNumber);
+      
+      toast({
+        title: "Success",
+        description: `Store "${storeName}" has been added successfully.`,
+      });
+    } catch (error) {
+      console.error("Failed to add new store:", error);
+      toast({
+        title: "Error",
+        description: "Failed to add new store. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Add new kiosk functionality  
+  const addNewKiosk = async (kioskName: string) => {
+    if (!selectedStore) {
+      toast({
+        title: "Error",
+        description: "Please select a store first before adding a kiosk.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const store = stores.find((s) => s.storeNumber === selectedStore);
+    if (!store) {
+      toast({
+        title: "Error", 
+        description: "Invalid store selected. Please select a valid store.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const newKiosk = await authenticatedRequest("POST", "/api/kiosks", {
+        name: kioskName,
+        kioskNumber: `KS-${Date.now()}`, // Generate unique kiosk number
+        storeId: store.id,
+        isActive: true,
+      });
+      
+      // Refresh kiosks list
+      await fetchKiosks();
+      
+      // Auto-select the new kiosk
+      setSelectedKiosk(newKiosk.kioskNumber);
+      
+      toast({
+        title: "Success",
+        description: `Kiosk "${kioskName}" has been added successfully.`,
+      });
+    } catch (error) {
+      console.error("Failed to add new kiosk:", error);
+      toast({
+        title: "Error",
+        description: "Failed to add new kiosk. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -290,18 +365,22 @@ export default function UploadPage() {
               <Label htmlFor="store-select">
                 Store <span className="text-red-500">*</span>
               </Label>
-              <Select value={selectedStore} onValueChange={setSelectedStore}>
-                <SelectTrigger id="store-select">
-                  <SelectValue placeholder="Select a store" />
-                </SelectTrigger>
-                <SelectContent>
-                  {stores.map((store) => (
-                    <SelectItem key={store.id} value={store.storeNumber}>
-                      {store.storeNumber} - {store.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <EnhancedSearchableSelect
+                id="store-select"
+                options={stores.map((store): EnhancedSearchableSelectOption => ({
+                  value: store.storeNumber,
+                  label: `${store.storeNumber} - ${store.name}`,
+                  searchText: `${store.storeNumber} ${store.name}`,
+                }))}
+                value={selectedStore}
+                onValueChange={setSelectedStore}
+                onAddNew={addNewStore}
+                allowAddNew={true}
+                placeholder="Search and select a store"
+                searchPlaceholder="Search stores..."
+                emptyText="No stores found."
+                addNewText="Add New Store"
+              />
               <p className="text-xs text-muted-foreground">
                 {stores.length === 0
                   ? "No stores available"
@@ -314,22 +393,23 @@ export default function UploadPage() {
               <Label htmlFor="kiosk-select">
                 Kiosk <span className="text-red-500">*</span>
               </Label>
-              <Select
+              <EnhancedSearchableSelect
+                id="kiosk-select"
+                options={filteredKiosks.map((kiosk): EnhancedSearchableSelectOption => ({
+                  value: kiosk.kioskNumber,
+                  label: `${kiosk.kioskNumber} - ${kiosk.name}`,
+                  searchText: `${kiosk.kioskNumber} ${kiosk.name}`,
+                }))}
                 value={selectedKiosk}
                 onValueChange={setSelectedKiosk}
-                disabled={!selectedStore || filteredKiosks.length === 0}
-              >
-                <SelectTrigger id="kiosk-select">
-                  <SelectValue placeholder="Select a kiosk" />
-                </SelectTrigger>
-                <SelectContent>
-                  {filteredKiosks.map((kiosk) => (
-                    <SelectItem key={kiosk.id} value={kiosk.kioskNumber}>
-                      {kiosk.kioskNumber} - {kiosk.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                onAddNew={addNewKiosk}
+                allowAddNew={true}
+                disabled={!selectedStore}
+                placeholder="Search and select a kiosk"
+                searchPlaceholder="Search kiosks..."
+                emptyText="No kiosks found for this store."
+                addNewText="Add New Kiosk"
+              />
               <p className="text-xs text-muted-foreground">
                 {!selectedStore
                   ? "Select a store first"

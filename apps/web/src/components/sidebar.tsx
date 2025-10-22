@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { authManager } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
+
 import {
   Search,
   LayoutDashboard,
@@ -49,6 +50,7 @@ export default function Sidebar({ className }: SidebarProps) {
         "w-64 bg-card border-r border-border flex flex-col shadow-lg",
         className
       )}
+      style={{ height: "-webkit-fill-available" }}
     >
       {/* Logo */}
       <div className="p-6 border-b border-border bg-gradient-to-br from-primary to-secondary">
