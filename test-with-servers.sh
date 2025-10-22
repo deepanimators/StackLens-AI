@@ -4,20 +4,20 @@
 
 echo "🚀 Starting StackLens AI Test Environment..."
 
-# Kill any existing processes on ports 5173 and 5000
+# Kill any existing processes on ports 5173 and 4000
 echo "📋 Cleaning up existing processes..."
 lsof -ti:5173 | xargs kill -9 2>/dev/null || true
-lsof -ti:5000 | xargs kill -9 2>/dev/null || true
+lsof -ti:4000 | xargs kill -9 2>/dev/null || true
 
 # Start backend server
-echo "🔧 Starting backend server on port 5000..."
+echo "🔧 Starting backend server on port 4000..."
 NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts > server-test.log 2>&1 &
 BACKEND_PID=$!
 
 # Wait for backend to be ready
 echo "⏳ Waiting for backend server..."
 for i in {1..30}; do
-    if curl -s http://localhost:5000/health > /dev/null 2>&1; then
+    if curl -s http://localhost:4000/health > /dev/null 2>&1; then
         echo "✅ Backend server is ready"
         break
     fi

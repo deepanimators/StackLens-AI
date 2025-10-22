@@ -439,7 +439,7 @@ test.describe('Enhanced E2E Tests - Data Integrity', () => {
         const initialNumber = parseInt(initialCount || '0');
 
         // Create new error via API
-        await page.request.post('http://localhost:5000/api/errors', {
+        await page.request.post('http://localhost:4000/api/errors', {
             data: {
                 message: 'Test error',
                 severity: 'medium',

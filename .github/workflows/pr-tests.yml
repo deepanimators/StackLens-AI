@@ -157,11 +157,11 @@ jobs:
 
       - name: Start backend server
         run: |
-          PORT=5000 npm run dev:server &
+          PORT=4000 npm run dev:server &
           echo $! > server.pid
           # Wait for server to be ready
           for i in {1..30}; do
-            if curl -s http://localhost:5000/health > /dev/null; then
+            if curl -s http://localhost:4000/health > /dev/null; then
               echo "Server is ready"
               break
             fi
@@ -232,11 +232,11 @@ jobs:
 
       - name: Start backend server
         run: |
-          PORT=5000 npm run dev:server &
+          PORT=4000 npm run dev:server &
           echo $! > server.pid
           # Wait for server to be ready
           for i in {1..30}; do
-            if curl -s http://localhost:5000/health > /dev/null; then
+            if curl -s http://localhost:4000/health > /dev/null; then
               echo "Server is ready"
               break
             fi
@@ -296,11 +296,11 @@ jobs:
 
       - name: Start backend server
         run: |
-          PORT=5000 npm run dev:server &
+          PORT=4000 npm run dev:server &
           echo $! > server.pid
           # Wait for server to be ready
           for i in {1..30}; do
-            if curl -s http://localhost:5000/health > /dev/null; then
+            if curl -s http://localhost:4000/health > /dev/null; then
               echo "Server is ready"
               break
             fi
@@ -441,11 +441,11 @@ jobs:
 
       - name: Start backend server
         run: |
-          PORT=5000 npm run dev:server &
+          PORT=4000 npm run dev:server &
           echo $! > server.pid
           # Wait for server to be ready
           for i in {1..30}; do
-            if curl -s http://localhost:5000/health > /dev/null; then
+            if curl -s http://localhost:4000/health > /dev/null; then
               echo "Server is ready"
               break
             fi

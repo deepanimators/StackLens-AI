@@ -1,0 +1,52 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "logo" [ref=e8]
+        - generic [ref=e9]:
+          - heading "StackLens AI" [level=1] [ref=e10]
+          - paragraph [ref=e11]: Intelligent Log Analysis
+      - heading "Transform Your Log Analysis with AI" [level=2] [ref=e12]
+      - paragraph [ref=e13]: Detect, classify, and resolve errors automatically with machine learning and AI-powered insights.
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - img [ref=e17]
+          - generic [ref=e27]: AI-powered error detection and classification
+        - generic [ref=e28]:
+          - img [ref=e30]
+          - generic [ref=e32]: Real-time analysis and resolution suggestions
+        - generic [ref=e33]:
+          - img [ref=e35]
+          - generic [ref=e37]: Comprehensive error pattern detection
+    - generic [ref=e40]:
+      - tablist [ref=e41]:
+        - tab "Login" [selected] [ref=e42] [cursor=pointer]
+        - tab "Register" [ref=e43] [cursor=pointer]
+      - tabpanel "Login" [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e47]: Welcome back
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - generic [ref=e50]:
+                - generic [ref=e51]: Username
+                - textbox "Username" [ref=e52]
+              - generic [ref=e53]:
+                - generic [ref=e54]: Password
+                - textbox "Password" [ref=e55]
+              - button "Sign in" [ref=e56] [cursor=pointer]
+            - generic [ref=e60]: Or continue with
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - generic [ref=e63]: Welcome to StackLens AI
+                - generic [ref=e64]: Sign in to access your log analysis dashboard
+              - generic [ref=e65]:
+                - button "Sign in with Google" [ref=e66] [cursor=pointer]:
+                  - img
+                  - text: Sign in with Google
+                - paragraph [ref=e68]: Sign in with your Google account to access StackLens AI
+```

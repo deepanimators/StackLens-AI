@@ -6,7 +6,7 @@ import { test, expect } from '../fixtures';
  */
 
 test.describe('Authentication API', () => {
-    const API_BASE = process.env.VITE_API_URL || 'http://localhost:5000';
+    const API_BASE = process.env.VITE_API_URL || 'http://localhost:4000';
 
     test('POST /api/auth/firebase-signin - should authenticate user', async ({ request }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
@@ -81,7 +81,7 @@ test.describe('Authentication API', () => {
  */
 
 test.describe('File Upload API', () => {
-    const API_BASE = process.env.VITE_API_URL || 'http://localhost:5000';
+    const API_BASE = process.env.VITE_API_URL || 'http://localhost:4000';
 
     test('POST /api/upload - should upload Excel file', async ({ apiContext }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');

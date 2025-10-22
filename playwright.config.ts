@@ -55,7 +55,7 @@ export default defineConfig({
             name: 'api-tests',
             testMatch: /tests\/api\/.*\.test\.ts/,
             use: {
-                baseURL: 'http://localhost:5000',
+                baseURL: 'http://localhost:4000',
                 storageState: 'tests/.auth/user.json',
             },
             dependencies: ['setup'],

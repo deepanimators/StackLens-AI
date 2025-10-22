@@ -1,17 +1,17 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test.describe('API Tests - Error Management Endpoints', () => {
     test.describe('GET /api/errors', () => {
-        test('should retrieve all errors', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors');
+        test('should retrieve all errors', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors');
 
             expect(response.ok()).toBeTruthy();
             const errors = await response.json();
             expect(Array.isArray(errors)).toBeTruthy();
         });
 
-        test('should support pagination', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?page=1&limit=10');
+        test('should support pagination', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?page=1&limit=10');
 
             expect(response.ok()).toBeTruthy();
             const data = await response.json();
@@ -22,8 +22,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(data.errors.length).toBeLessThanOrEqual(10);
         });
 
-        test('should filter by severity', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?severity=critical');
+        test('should filter by severity', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?severity=critical');
 
             expect(response.ok()).toBeTruthy();
             const errors = await response.json();
@@ -32,8 +32,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             });
         });
 
-        test('should filter by error type', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?errorType=Runtime');
+        test('should filter by error type', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?errorType=Runtime');
 
             expect(response.ok()).toBeTruthy();
             const errors = await response.json();
@@ -42,19 +42,19 @@ test.describe('API Tests - Error Management Endpoints', () => {
             });
         });
 
-        test('should filter by date range', async ({ request }) => {
+        test('should filter by date range', async ({ apiContext }) => {
             const startDate = '2025-01-01';
             const endDate = '2025-12-31';
 
-            const response = await request.get(
-                `http://localhost:5000/api/errors?startDate=${startDate}&endDate=${endDate}`
+            const response = await apiContext.get(
+                `http://localhost:4000/api/errors?startDate=${startDate}&endDate=${endDate}`
             );
 
             expect(response.ok()).toBeTruthy();
         });
 
-        test('should search by message', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?search=database');
+        test('should search by message', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?search=database');
 
             expect(response.ok()).toBeTruthy();
             const errors = await response.json();
@@ -63,8 +63,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             });
         });
 
-        test('should filter by resolved status', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?resolved=false');
+        test('should filter by resolved status', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?resolved=false');
 
             expect(response.ok()).toBeTruthy();
             const errors = await response.json();
@@ -73,8 +73,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             });
         });
 
-        test('should filter by store', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?store=STORE-0001');
+        test('should filter by store', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?store=STORE-0001');
 
             expect(response.ok()).toBeTruthy();
             const errors = await response.json();
@@ -83,8 +83,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             });
         });
 
-        test('should support sorting', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?sortBy=timestamp&order=desc');
+        test('should support sorting', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?sortBy=timestamp&order=desc');
 
             expect(response.ok()).toBeTruthy();
             const errors = await response.json();
@@ -97,8 +97,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             }
         });
 
-        test('should handle invalid query parameters gracefully', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors?page=-1&limit=1000');
+        test('should handle invalid query parameters gracefully', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors?page=-1&limit=1000');
 
             expect(response.status()).toBe(400);
             const error = await response.json();
@@ -107,7 +107,7 @@ test.describe('API Tests - Error Management Endpoints', () => {
     });
 
     test.describe('POST /api/errors', () => {
-        test('should create new error', async ({ request }) => {
+        test('should create new error', async ({ apiContext }) => {
             const newError = {
                 message: 'Test API error',
                 severity: 'high',
@@ -117,7 +117,7 @@ test.describe('API Tests - Error Management Endpoints', () => {
                 store: 'STORE-0001'
             };
 
-            const response = await request.post('http://localhost:5000/api/errors', {
+            const response = await apiContext.post('http://localhost:4000/api/errors', {
                 data: newError
             });
 
@@ -128,13 +128,13 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(created.severity).toBe(newError.severity);
         });
 
-        test('should validate required fields', async ({ request }) => {
+        test('should validate required fields', async ({ apiContext }) => {
             const invalidError = {
                 // Missing required fields
                 severity: 'high'
             };
 
-            const response = await request.post('http://localhost:5000/api/errors', {
+            const response = await apiContext.post('http://localhost:4000/api/errors', {
                 data: invalidError
             });
 
@@ -143,28 +143,28 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(error).toHaveProperty('error');
         });
 
-        test('should validate severity values', async ({ request }) => {
+        test('should validate severity values', async ({ apiContext }) => {
             const invalidError = {
                 message: 'Test error',
                 severity: 'invalid_severity',
                 errorType: 'Runtime'
             };
 
-            const response = await request.post('http://localhost:5000/api/errors', {
+            const response = await apiContext.post('http://localhost:4000/api/errors', {
                 data: invalidError
             });
 
             expect(response.status()).toBe(400);
         });
 
-        test('should set default values for optional fields', async ({ request }) => {
+        test('should set default values for optional fields', async ({ apiContext }) => {
             const minimalError = {
                 message: 'Minimal error',
                 severity: 'medium',
                 errorType: 'Runtime'
             };
 
-            const response = await request.post('http://localhost:5000/api/errors', {
+            const response = await apiContext.post('http://localhost:4000/api/errors', {
                 data: minimalError
             });
 
@@ -177,7 +177,7 @@ test.describe('API Tests - Error Management Endpoints', () => {
     });
 
     test.describe('GET /api/errors/:id', () => {
-        test('should retrieve specific error by ID', async ({ request }) => {
+        test('should retrieve specific error by ID', async ({ apiContext }) => {
             // First create an error
             const newError = {
                 message: 'Specific error test',
@@ -185,14 +185,14 @@ test.describe('API Tests - Error Management Endpoints', () => {
                 errorType: 'Test'
             };
 
-            const createResponse = await request.post('http://localhost:5000/api/errors', {
+            const createResponse = await apiContext.post('http://localhost:4000/api/errors', {
                 data: newError
             });
 
             const created = await createResponse.json();
 
             // Retrieve the error
-            const getResponse = await request.get(`http://localhost:5000/api/errors/${created.id}`);
+            const getResponse = await apiContext.get(`http://localhost:4000/api/errors/${created.id}`);
             expect(getResponse.ok()).toBeTruthy();
 
             const error = await getResponse.json();
@@ -200,19 +200,19 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(error.message).toBe(newError.message);
         });
 
-        test('should return 404 for non-existent error', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors/99999999');
+        test('should return 404 for non-existent error', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors/99999999');
             expect(response.status()).toBe(404);
         });
 
-        test('should return 400 for invalid ID format', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors/invalid-id');
+        test('should return 400 for invalid ID format', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors/invalid-id');
             expect(response.status()).toBe(400);
         });
     });
 
     test.describe('PATCH /api/errors/:id', () => {
-        test('should update error fields', async ({ request }) => {
+        test('should update error fields', async ({ apiContext }) => {
             // Create error
             const newError = {
                 message: 'Error to update',
@@ -220,7 +220,7 @@ test.describe('API Tests - Error Management Endpoints', () => {
                 resolved: false
             };
 
-            const createResponse = await request.post('http://localhost:5000/api/errors', {
+            const createResponse = await apiContext.post('http://localhost:4000/api/errors', {
                 data: newError
             });
 
@@ -233,7 +233,7 @@ test.describe('API Tests - Error Management Endpoints', () => {
                 notes: 'Fixed in production'
             };
 
-            const updateResponse = await request.patch(`http://localhost:5000/api/errors/${created.id}`, {
+            const updateResponse = await apiContext.patch(`http://localhost:4000/api/errors/${created.id}`, {
                 data: updates
             });
 
@@ -245,8 +245,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(updated.notes).toBe('Fixed in production');
         });
 
-        test('should validate updated field values', async ({ request }) => {
-            const createResponse = await request.post('http://localhost:5000/api/errors', {
+        test('should validate updated field values', async ({ apiContext }) => {
+            const createResponse = await apiContext.post('http://localhost:4000/api/errors', {
                 data: { message: 'Test', severity: 'low', errorType: 'Test' }
             });
 
@@ -256,15 +256,15 @@ test.describe('API Tests - Error Management Endpoints', () => {
                 severity: 'invalid_value'
             };
 
-            const updateResponse = await request.patch(`http://localhost:5000/api/errors/${created.id}`, {
+            const updateResponse = await apiContext.patch(`http://localhost:4000/api/errors/${created.id}`, {
                 data: invalidUpdate
             });
 
             expect(updateResponse.status()).toBe(400);
         });
 
-        test('should return 404 when updating non-existent error', async ({ request }) => {
-            const response = await request.patch('http://localhost:5000/api/errors/99999999', {
+        test('should return 404 when updating non-existent error', async ({ apiContext }) => {
+            const response = await apiContext.patch('http://localhost:4000/api/errors/99999999', {
                 data: { resolved: true }
             });
 
@@ -273,7 +273,7 @@ test.describe('API Tests - Error Management Endpoints', () => {
     });
 
     test.describe('DELETE /api/errors/:id', () => {
-        test('should delete error', async ({ request }) => {
+        test('should delete error', async ({ apiContext }) => {
             // Create error
             const newError = {
                 message: 'Error to delete',
@@ -281,36 +281,36 @@ test.describe('API Tests - Error Management Endpoints', () => {
                 errorType: 'Test'
             };
 
-            const createResponse = await request.post('http://localhost:5000/api/errors', {
+            const createResponse = await apiContext.post('http://localhost:4000/api/errors', {
                 data: newError
             });
 
             const created = await createResponse.json();
 
             // Delete error
-            const deleteResponse = await request.delete(`http://localhost:5000/api/errors/${created.id}`);
+            const deleteResponse = await apiContext.delete(`http://localhost:4000/api/errors/${created.id}`);
             expect(deleteResponse.ok()).toBeTruthy();
 
             // Verify deletion
-            const getResponse = await request.get(`http://localhost:5000/api/errors/${created.id}`);
+            const getResponse = await apiContext.get(`http://localhost:4000/api/errors/${created.id}`);
             expect(getResponse.status()).toBe(404);
         });
 
-        test('should return 404 when deleting non-existent error', async ({ request }) => {
-            const response = await request.delete('http://localhost:5000/api/errors/99999999');
+        test('should return 404 when deleting non-existent error', async ({ apiContext }) => {
+            const response = await apiContext.delete('http://localhost:4000/api/errors/99999999');
             expect(response.status()).toBe(404);
         });
     });
 
     test.describe('POST /api/errors/bulk', () => {
-        test('should create multiple errors in bulk', async ({ request }) => {
+        test('should create multiple errors in bulk', async ({ apiContext }) => {
             const errors = [
                 { message: 'Bulk error 1', severity: 'high', errorType: 'Runtime' },
                 { message: 'Bulk error 2', severity: 'medium', errorType: 'Database' },
                 { message: 'Bulk error 3', severity: 'low', errorType: 'Network' }
             ];
 
-            const response = await request.post('http://localhost:5000/api/errors/bulk', {
+            const response = await apiContext.post('http://localhost:4000/api/errors/bulk', {
                 data: { errors }
             });
 
@@ -322,13 +322,13 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(result.ids.length).toBe(3);
         });
 
-        test('should handle validation errors in bulk creation', async ({ request }) => {
+        test('should handle validation errors in bulk creation', async ({ apiContext }) => {
             const errors = [
                 { message: 'Valid error', severity: 'high', errorType: 'Runtime' },
                 { message: 'Invalid error', severity: 'invalid', errorType: 'Runtime' }
             ];
 
-            const response = await request.post('http://localhost:5000/api/errors/bulk', {
+            const response = await apiContext.post('http://localhost:4000/api/errors/bulk', {
                 data: { errors }
             });
 
@@ -339,8 +339,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
     });
 
     test.describe('GET /api/errors/stats', () => {
-        test('should retrieve error statistics', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors/stats');
+        test('should retrieve error statistics', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors/stats');
 
             expect(response.ok()).toBeTruthy();
             const stats = await response.json();
@@ -351,9 +351,9 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(stats).toHaveProperty('unresolved');
         });
 
-        test('should filter statistics by date range', async ({ request }) => {
-            const response = await request.get(
-                'http://localhost:5000/api/errors/stats?startDate=2025-01-01&endDate=2025-12-31'
+        test('should filter statistics by date range', async ({ apiContext }) => {
+            const response = await apiContext.get(
+                'http://localhost:4000/api/errors/stats?startDate=2025-01-01&endDate=2025-12-31'
             );
 
             expect(response.ok()).toBeTruthy();
@@ -361,8 +361,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(stats).toHaveProperty('dateRange');
         });
 
-        test('should provide statistics by store', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/errors/stats/by-store');
+        test('should provide statistics by store', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/errors/stats/by-store');
 
             expect(response.ok()).toBeTruthy();
             const stats = await response.json();
@@ -371,8 +371,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
     });
 
     test.describe('POST /api/errors/export', () => {
-        test('should export errors as CSV', async ({ request }) => {
-            const response = await request.post('http://localhost:5000/api/errors/export', {
+        test('should export errors as CSV', async ({ apiContext }) => {
+            const response = await apiContext.post('http://localhost:4000/api/errors/export', {
                 data: {
                     format: 'csv',
                     filters: { severity: 'critical' }
@@ -384,8 +384,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(contentType).toContain('text/csv');
         });
 
-        test('should export errors as JSON', async ({ request }) => {
-            const response = await request.post('http://localhost:5000/api/errors/export', {
+        test('should export errors as JSON', async ({ apiContext }) => {
+            const response = await apiContext.post('http://localhost:4000/api/errors/export', {
                 data: {
                     format: 'json',
                     filters: {}
@@ -397,8 +397,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             expect(contentType).toContain('application/json');
         });
 
-        test('should export errors as Excel', async ({ request }) => {
-            const response = await request.post('http://localhost:5000/api/errors/export', {
+        test('should export errors as Excel', async ({ apiContext }) => {
+            const response = await apiContext.post('http://localhost:4000/api/errors/export', {
                 data: {
                     format: 'xlsx',
                     filters: { resolved: false }
@@ -414,31 +414,31 @@ test.describe('API Tests - Error Management Endpoints', () => {
 
 test.describe('API Tests - Store & Kiosk Management', () => {
     test.describe('GET /api/stores', () => {
-        test('should retrieve all stores', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/stores');
+        test('should retrieve all stores', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/stores');
 
             expect(response.ok()).toBeTruthy();
             const stores = await response.json();
             expect(Array.isArray(stores)).toBeTruthy();
         });
 
-        test('should support pagination for stores', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/stores?page=1&limit=20');
+        test('should support pagination for stores', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/stores?page=1&limit=20');
 
             expect(response.ok()).toBeTruthy();
             const data = await response.json();
             expect(data.stores.length).toBeLessThanOrEqual(20);
         });
 
-        test('should search stores by name', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/stores?search=test');
+        test('should search stores by name', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/stores?search=test');
 
             expect(response.ok()).toBeTruthy();
         });
     });
 
     test.describe('POST /api/stores', () => {
-        test('should create new store', async ({ request }) => {
+        test('should create new store', async ({ apiContext }) => {
             const newStore = {
                 storeNumber: `STORE-${Date.now()}`,
                 name: 'Test Store',
@@ -446,7 +446,7 @@ test.describe('API Tests - Store & Kiosk Management', () => {
                 region: 'North'
             };
 
-            const response = await request.post('http://localhost:5000/api/stores', {
+            const response = await apiContext.post('http://localhost:4000/api/stores', {
                 data: newStore
             });
 
@@ -455,16 +455,16 @@ test.describe('API Tests - Store & Kiosk Management', () => {
             expect(created.storeNumber).toBe(newStore.storeNumber);
         });
 
-        test('should prevent duplicate store numbers', async ({ request }) => {
+        test('should prevent duplicate store numbers', async ({ apiContext }) => {
             const storeNumber = `STORE-${Date.now()}`;
 
             // Create first store
-            await request.post('http://localhost:5000/api/stores', {
+            await apiContext.post('http://localhost:4000/api/stores', {
                 data: { storeNumber, name: 'Store 1', location: 'Location 1' }
             });
 
             // Attempt to create duplicate
-            const response = await request.post('http://localhost:5000/api/stores', {
+            const response = await apiContext.post('http://localhost:4000/api/stores', {
                 data: { storeNumber, name: 'Store 2', location: 'Location 2' }
             });
 
@@ -473,16 +473,16 @@ test.describe('API Tests - Store & Kiosk Management', () => {
     });
 
     test.describe('GET /api/kiosks', () => {
-        test('should retrieve all kiosks', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/kiosks');
+        test('should retrieve all kiosks', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/kiosks');
 
             expect(response.ok()).toBeTruthy();
             const kiosks = await response.json();
             expect(Array.isArray(kiosks)).toBeTruthy();
         });
 
-        test('should filter kiosks by store', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/kiosks?store=STORE-0001');
+        test('should filter kiosks by store', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/kiosks?store=STORE-0001');
 
             expect(response.ok()).toBeTruthy();
             const kiosks = await response.json();
@@ -493,14 +493,14 @@ test.describe('API Tests - Store & Kiosk Management', () => {
     });
 
     test.describe('POST /api/kiosks', () => {
-        test('should create new kiosk', async ({ request }) => {
+        test('should create new kiosk', async ({ apiContext }) => {
             const newKiosk = {
                 kioskNumber: `KIOSK-${Date.now()}`,
                 storeNumber: 'STORE-0001',
                 status: 'active'
             };
 
-            const response = await request.post('http://localhost:5000/api/kiosks', {
+            const response = await apiContext.post('http://localhost:4000/api/kiosks', {
                 data: newKiosk
             });
 
@@ -509,14 +509,14 @@ test.describe('API Tests - Store & Kiosk Management', () => {
             expect(created.kioskNumber).toBe(newKiosk.kioskNumber);
         });
 
-        test('should validate kiosk belongs to valid store', async ({ request }) => {
+        test('should validate kiosk belongs to valid store', async ({ apiContext }) => {
             const newKiosk = {
                 kioskNumber: `KIOSK-${Date.now()}`,
                 storeNumber: 'INVALID-STORE',
                 status: 'active'
             };
 
-            const response = await request.post('http://localhost:5000/api/kiosks', {
+            const response = await apiContext.post('http://localhost:4000/api/kiosks', {
                 data: newKiosk
             });
 
@@ -527,7 +527,7 @@ test.describe('API Tests - Store & Kiosk Management', () => {
 
 test.describe('API Tests - ML Training Endpoints', () => {
     test.describe('POST /api/ml/train', () => {
-        test('should initiate ML training job', async ({ request }) => {
+        test('should initiate ML training job', async ({ apiContext }) => {
             const trainingConfig = {
                 modelType: 'classification',
                 features: ['severity', 'errorType', 'lineNumber'],
@@ -535,7 +535,7 @@ test.describe('API Tests - ML Training Endpoints', () => {
                 algorithm: 'random_forest'
             };
 
-            const response = await request.post('http://localhost:5000/api/ml/train', {
+            const response = await apiContext.post('http://localhost:4000/api/ml/train', {
                 data: trainingConfig
             });
 
@@ -546,12 +546,12 @@ test.describe('API Tests - ML Training Endpoints', () => {
             expect(result.status).toBe('queued');
         });
 
-        test('should validate training configuration', async ({ request }) => {
+        test('should validate training configuration', async ({ apiContext }) => {
             const invalidConfig = {
                 modelType: 'invalid_type'
             };
 
-            const response = await request.post('http://localhost:5000/api/ml/train', {
+            const response = await apiContext.post('http://localhost:4000/api/ml/train', {
                 data: invalidConfig
             });
 
@@ -560,7 +560,7 @@ test.describe('API Tests - ML Training Endpoints', () => {
     });
 
     test.describe('GET /api/ml/jobs/:jobId', () => {
-        test('should retrieve training job status', async ({ request }) => {
+        test('should retrieve training job status', async ({ apiContext }) => {
             // Create job
             const trainingConfig = {
                 modelType: 'classification',
@@ -568,14 +568,14 @@ test.describe('API Tests - ML Training Endpoints', () => {
                 targetField: 'resolved'
             };
 
-            const createResponse = await request.post('http://localhost:5000/api/ml/train', {
+            const createResponse = await apiContext.post('http://localhost:4000/api/ml/train', {
                 data: trainingConfig
             });
 
             const job = await createResponse.json();
 
             // Check status
-            const statusResponse = await request.get(`http://localhost:5000/api/ml/jobs/${job.jobId}`);
+            const statusResponse = await apiContext.get(`http://localhost:4000/api/ml/jobs/${job.jobId}`);
             expect(statusResponse.ok()).toBeTruthy();
 
             const status = await statusResponse.json();
@@ -586,14 +586,14 @@ test.describe('API Tests - ML Training Endpoints', () => {
     });
 
     test.describe('POST /api/ml/predict', () => {
-        test('should make prediction with trained model', async ({ request }) => {
+        test('should make prediction with trained model', async ({ apiContext }) => {
             const predictionData = {
                 severity: 'high',
                 errorType: 'Runtime',
                 lineNumber: 100
             };
 
-            const response = await request.post('http://localhost:5000/api/ml/predict', {
+            const response = await apiContext.post('http://localhost:4000/api/ml/predict', {
                 data: predictionData
             });
 
@@ -607,16 +607,16 @@ test.describe('API Tests - ML Training Endpoints', () => {
     });
 
     test.describe('GET /api/ml/models', () => {
-        test('should list all trained models', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/ml/models');
+        test('should list all trained models', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/ml/models');
 
             expect(response.ok()).toBeTruthy();
             const models = await response.json();
             expect(Array.isArray(models)).toBeTruthy();
         });
 
-        test('should filter models by status', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/ml/models?status=active');
+        test('should filter models by status', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/ml/models?status=active');
 
             expect(response.ok()).toBeTruthy();
             const models = await response.json();
@@ -629,14 +629,14 @@ test.describe('API Tests - ML Training Endpoints', () => {
 
 test.describe('API Tests - AI Analysis Endpoints', () => {
     test.describe('POST /api/ai/analyze', () => {
-        test('should analyze error with AI', async ({ request }) => {
+        test('should analyze error with AI', async ({ apiContext }) => {
             const errorData = {
                 message: 'Null pointer exception at line 42',
                 errorType: 'Runtime',
                 stackTrace: 'Error at main.js:42'
             };
 
-            const response = await request.post('http://localhost:5000/api/ai/analyze', {
+            const response = await apiContext.post('http://localhost:4000/api/ai/analyze', {
                 data: errorData
             });
 
@@ -647,8 +647,8 @@ test.describe('API Tests - AI Analysis Endpoints', () => {
             expect(result).toHaveProperty('severity');
         });
 
-        test('should handle timeout for long-running analysis', async ({ request }) => {
-            const response = await request.post('http://localhost:5000/api/ai/analyze', {
+        test('should handle timeout for long-running analysis', async ({ apiContext }) => {
+            const response = await apiContext.post('http://localhost:4000/api/ai/analyze', {
                 data: { message: 'Complex error requiring long analysis' },
                 timeout: 30000 // 30 seconds
             });
@@ -658,13 +658,13 @@ test.describe('API Tests - AI Analysis Endpoints', () => {
     });
 
     test.describe('POST /api/ai/suggest', () => {
-        test('should provide fix suggestions', async ({ request }) => {
+        test('should provide fix suggestions', async ({ apiContext }) => {
             const errorData = {
                 message: 'Memory leak detected',
                 errorType: 'Memory'
             };
 
-            const response = await request.post('http://localhost:5000/api/ai/suggest', {
+            const response = await apiContext.post('http://localhost:4000/api/ai/suggest', {
                 data: errorData
             });
 
@@ -677,14 +677,14 @@ test.describe('API Tests - AI Analysis Endpoints', () => {
     });
 
     test.describe('POST /api/ai/summarize', () => {
-        test('should summarize multiple errors', async ({ request }) => {
+        test('should summarize multiple errors', async ({ apiContext }) => {
             const errors = [
                 { message: 'Database timeout', count: 10 },
                 { message: 'Network error', count: 5 },
                 { message: 'Memory leak', count: 3 }
             ];
 
-            const response = await request.post('http://localhost:5000/api/ai/summarize', {
+            const response = await apiContext.post('http://localhost:4000/api/ai/summarize', {
                 data: { errors }
             });
 
@@ -699,10 +699,10 @@ test.describe('API Tests - AI Analysis Endpoints', () => {
 
 test.describe('API Tests - File Upload & Processing', () => {
     test.describe('POST /api/upload', () => {
-        test('should handle Excel file upload', async ({ request }) => {
+        test('should handle Excel file upload', async ({ apiContext }) => {
             const file = Buffer.from('test excel content');
 
-            const response = await request.post('http://localhost:5000/api/upload', {
+            const response = await apiContext.post('http://localhost:4000/api/upload', {
                 multipart: {
                     file: {
                         name: 'test.xlsx',
@@ -718,10 +718,10 @@ test.describe('API Tests - File Upload & Processing', () => {
             expect(result).toHaveProperty('filename');
         });
 
-        test('should reject files exceeding size limit', async ({ request }) => {
+        test('should reject files exceeding size limit', async ({ apiContext }) => {
             const largeFile = Buffer.alloc(11 * 1024 * 1024); // 11MB (exceeds 10MB limit)
 
-            const response = await request.post('http://localhost:5000/api/upload', {
+            const response = await apiContext.post('http://localhost:4000/api/upload', {
                 multipart: {
                     file: {
                         name: 'large.xlsx',
@@ -734,10 +734,10 @@ test.describe('API Tests - File Upload & Processing', () => {
             expect(response.status()).toBe(413); // Payload Too Large
         });
 
-        test('should reject unsupported file types', async ({ request }) => {
+        test('should reject unsupported file types', async ({ apiContext }) => {
             const file = Buffer.from('test content');
 
-            const response = await request.post('http://localhost:5000/api/upload', {
+            const response = await apiContext.post('http://localhost:4000/api/upload', {
                 multipart: {
                     file: {
                         name: 'test.exe',
@@ -752,10 +752,10 @@ test.describe('API Tests - File Upload & Processing', () => {
     });
 
     test.describe('GET /api/uploads/:fileId', () => {
-        test('should retrieve upload status', async ({ request }) => {
+        test('should retrieve upload status', async ({ apiContext }) => {
             // Upload file first
             const file = Buffer.from('test');
-            const uploadResponse = await request.post('http://localhost:5000/api/upload', {
+            const uploadResponse = await apiContext.post('http://localhost:4000/api/upload', {
                 multipart: {
                     file: { name: 'test.csv', mimeType: 'text/csv', buffer: file }
                 }
@@ -764,7 +764,7 @@ test.describe('API Tests - File Upload & Processing', () => {
             const upload = await uploadResponse.json();
 
             // Check status
-            const statusResponse = await request.get(`http://localhost:5000/api/uploads/${upload.fileId}`);
+            const statusResponse = await apiContext.get(`http://localhost:4000/api/uploads/${upload.fileId}`);
             expect(statusResponse.ok()).toBeTruthy();
 
             const status = await statusResponse.json();
@@ -777,8 +777,8 @@ test.describe('API Tests - File Upload & Processing', () => {
 
 test.describe('API Tests - Authentication & Authorization', () => {
     test.describe('POST /api/auth/firebase', () => {
-        test('should authenticate with valid Firebase token', async ({ request }) => {
-            const response = await request.post('http://localhost:5000/api/auth/firebase', {
+        test('should authenticate with valid Firebase token', async ({ apiContext }) => {
+            const response = await apiContext.post('http://localhost:4000/api/auth/firebase', {
                 data: {
                     idToken: 'valid-test-token'
                 }
@@ -791,8 +791,8 @@ test.describe('API Tests - Authentication & Authorization', () => {
             expect(auth).toHaveProperty('sessionToken');
         });
 
-        test('should reject invalid token', async ({ request }) => {
-            const response = await request.post('http://localhost:5000/api/auth/firebase', {
+        test('should reject invalid token', async ({ apiContext }) => {
+            const response = await apiContext.post('http://localhost:4000/api/auth/firebase', {
                 data: {
                     idToken: 'invalid-token'
                 }
@@ -803,16 +803,16 @@ test.describe('API Tests - Authentication & Authorization', () => {
     });
 
     test.describe('POST /api/auth/logout', () => {
-        test('should logout user', async ({ request }) => {
+        test('should logout user', async ({ apiContext }) => {
             // Login first
-            const loginResponse = await request.post('http://localhost:5000/api/auth/firebase', {
+            const loginResponse = await apiContext.post('http://localhost:4000/api/auth/firebase', {
                 data: { idToken: 'valid-token' }
             });
 
             const auth = await loginResponse.json();
 
             // Logout
-            const logoutResponse = await request.post('http://localhost:5000/api/auth/logout', {
+            const logoutResponse = await apiContext.post('http://localhost:4000/api/auth/logout', {
                 headers: {
                     'Authorization': `Bearer ${auth.sessionToken}`
                 }
@@ -823,21 +823,21 @@ test.describe('API Tests - Authentication & Authorization', () => {
     });
 
     test.describe('GET /api/admin/users', () => {
-        test('should require admin role', async ({ request }) => {
-            const response = await request.get('http://localhost:5000/api/admin/users');
+        test('should require admin role', async ({ apiContext }) => {
+            const response = await apiContext.get('http://localhost:4000/api/admin/users');
             expect(response.status()).toBe(401);
         });
 
-        test('should allow access with admin token', async ({ request }) => {
+        test('should allow access with admin token', async ({ apiContext }) => {
             // Login as admin
-            const loginResponse = await request.post('http://localhost:5000/api/auth/firebase', {
+            const loginResponse = await apiContext.post('http://localhost:4000/api/auth/firebase', {
                 data: { idToken: 'admin-token', role: 'admin' }
             });
 
             const auth = await loginResponse.json();
 
             // Access admin endpoint
-            const response = await request.get('http://localhost:5000/api/admin/users', {
+            const response = await apiContext.get('http://localhost:4000/api/admin/users', {
                 headers: {
                     'Authorization': `Bearer ${auth.sessionToken}`
                 }
@@ -849,8 +849,8 @@ test.describe('API Tests - Authentication & Authorization', () => {
 });
 
 test.describe('API Tests - Request Validation', () => {
-    test('should reject requests with invalid Content-Type', async ({ request }) => {
-        const response = await request.post('http://localhost:5000/api/errors', {
+    test('should reject requests with invalid Content-Type', async ({ apiContext }) => {
+        const response = await apiContext.post('http://localhost:4000/api/errors', {
             headers: {
                 'Content-Type': 'text/plain'
             },
@@ -860,8 +860,8 @@ test.describe('API Tests - Request Validation', () => {
         expect([400, 415]).toContain(response.status());
     });
 
-    test('should validate JSON syntax', async ({ request }) => {
-        const response = await request.post('http://localhost:5000/api/errors', {
+    test('should validate JSON syntax', async ({ apiContext }) => {
+        const response = await apiContext.post('http://localhost:4000/api/errors', {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -871,22 +871,22 @@ test.describe('API Tests - Request Validation', () => {
         expect(response.status()).toBe(400);
     });
 
-    test('should enforce maximum payload size', async ({ request }) => {
+    test('should enforce maximum payload size', async ({ apiContext }) => {
         const largePayload = {
             message: 'A'.repeat(1000000), // 1MB of text
             severity: 'high',
             errorType: 'Test'
         };
 
-        const response = await request.post('http://localhost:5000/api/errors', {
+        const response = await apiContext.post('http://localhost:4000/api/errors', {
             data: largePayload
         });
 
         expect([413, 400]).toContain(response.status());
     });
 
-    test('should validate required headers', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors', {
+    test('should validate required headers', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors', {
             headers: {
                 // Missing required headers if any
             }
@@ -896,22 +896,22 @@ test.describe('API Tests - Request Validation', () => {
         expect([200, 400]).toContain(response.status());
     });
 
-    test('should handle missing request body', async ({ request }) => {
-        const response = await request.post('http://localhost:5000/api/errors');
+    test('should handle missing request body', async ({ apiContext }) => {
+        const response = await apiContext.post('http://localhost:4000/api/errors');
 
         expect(response.status()).toBe(400);
     });
 
-    test('should validate URL parameter formats', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors?page=invalid');
+    test('should validate URL parameter formats', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors?page=invalid');
 
         expect([400, 422]).toContain(response.status());
     });
 
-    test('should handle special characters in query params', async ({ request }) => {
+    test('should handle special characters in query params', async ({ apiContext }) => {
         const specialChars = '!@#$%^&*()';
-        const response = await request.get(
-            `http://localhost:5000/api/errors?search=${encodeURIComponent(specialChars)}`
+        const response = await apiContext.get(
+            `http://localhost:4000/api/errors?search=${encodeURIComponent(specialChars)}`
         );
 
         expect([200, 400]).toContain(response.status());
@@ -919,15 +919,15 @@ test.describe('API Tests - Request Validation', () => {
 });
 
 test.describe('API Tests - Response Format Validation', () => {
-    test('should return proper Content-Type headers', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors');
+    test('should return proper Content-Type headers', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors');
 
         const contentType = response.headers()['content-type'];
         expect(contentType).toContain('application/json');
     });
 
-    test('should include CORS headers', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors', {
+    test('should include CORS headers', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors', {
             headers: {
                 'Origin': 'http://localhost:5173'
             }
@@ -937,8 +937,8 @@ test.describe('API Tests - Response Format Validation', () => {
         expect(headers).toHaveProperty('access-control-allow-origin');
     });
 
-    test('should return consistent error response format', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors/999999');
+    test('should return consistent error response format', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors/999999');
 
         expect(response.status()).toBe(404);
         const error = await response.json();
@@ -947,8 +947,8 @@ test.describe('API Tests - Response Format Validation', () => {
         expect(error).toHaveProperty('message');
     });
 
-    test('should include pagination metadata', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors?page=1&limit=5');
+    test('should include pagination metadata', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors?page=1&limit=5');
 
         expect(response.ok()).toBeTruthy();
         const data = await response.json();
@@ -959,8 +959,8 @@ test.describe('API Tests - Response Format Validation', () => {
         expect(data).toHaveProperty('limit');
     });
 
-    test('should return timestamps in ISO format', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors');
+    test('should return timestamps in ISO format', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors');
 
         expect(response.ok()).toBeTruthy();
         const errors = await response.json();
@@ -973,28 +973,28 @@ test.describe('API Tests - Response Format Validation', () => {
 });
 
 test.describe('API Tests - Error Handling', () => {
-    test('should handle database connection errors gracefully', async ({ request }) => {
+    test('should handle database connection errors gracefully', async ({ apiContext }) => {
         // Simulate database error scenario
-        const response = await request.get('http://localhost:5000/api/errors');
+        const response = await apiContext.get('http://localhost:4000/api/errors');
 
         // Should return proper error, not crash
         expect([200, 500, 503]).toContain(response.status());
     });
 
-    test('should return 404 for non-existent routes', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/nonexistent');
+    test('should return 404 for non-existent routes', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/nonexistent');
 
         expect(response.status()).toBe(404);
     });
 
-    test('should handle malformed route parameters', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors/not-a-number');
+    test('should handle malformed route parameters', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors/not-a-number');
 
         expect([400, 404]).toContain(response.status());
     });
 
-    test('should provide helpful error messages', async ({ request }) => {
-        const response = await request.post('http://localhost:5000/api/errors', {
+    test('should provide helpful error messages', async ({ apiContext }) => {
+        const response = await apiContext.post('http://localhost:4000/api/errors', {
             data: { severity: 'invalid' }
         });
 
@@ -1005,9 +1005,9 @@ test.describe('API Tests - Error Handling', () => {
         expect(error.message.length).toBeGreaterThan(0);
     });
 
-    test('should handle concurrent request failures', async ({ request }) => {
+    test('should handle concurrent request failures', async ({ apiContext }) => {
         const requests = Array.from({ length: 20 }, () =>
-            request.get('http://localhost:5000/api/errors/999999')
+            apiContext.get('http://localhost:4000/api/errors/999999')
         );
 
         const responses = await Promise.all(requests);
@@ -1019,9 +1019,9 @@ test.describe('API Tests - Error Handling', () => {
 });
 
 test.describe('API Tests - Rate Limiting', () => {
-    test('should implement rate limiting', async ({ request }) => {
+    test('should implement rate limiting', async ({ apiContext }) => {
         const requests = Array.from({ length: 150 }, () =>
-            request.get('http://localhost:5000/api/errors')
+            apiContext.get('http://localhost:4000/api/errors')
         );
 
         const responses = await Promise.all(requests);
@@ -1033,8 +1033,8 @@ test.describe('API Tests - Rate Limiting', () => {
         expect(successful.length + rateLimited.length).toBe(150);
     });
 
-    test('should include rate limit headers', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors');
+    test('should include rate limit headers', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors');
 
         const headers = response.headers();
         // Check for common rate limit headers
@@ -1049,10 +1049,10 @@ test.describe('API Tests - Rate Limiting', () => {
         }
     });
 
-    test('should reset rate limits after time window', async ({ request }) => {
+    test('should reset rate limits after time window', async ({ apiContext }) => {
         // Make requests to hit limit
         const initialRequests = Array.from({ length: 100 }, () =>
-            request.get('http://localhost:5000/api/errors')
+            apiContext.get('http://localhost:4000/api/errors')
         );
 
         await Promise.all(initialRequests);
@@ -1061,27 +1061,27 @@ test.describe('API Tests - Rate Limiting', () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Should be able to make requests again
-        const response = await request.get('http://localhost:5000/api/errors');
+        const response = await apiContext.get('http://localhost:4000/api/errors');
         expect([200, 429]).toContain(response.status());
     });
 });
 
 test.describe('API Tests - Pagination Edge Cases', () => {
-    test('should handle page=0', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors?page=0&limit=10');
+    test('should handle page=0', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors?page=0&limit=10');
 
         // Should either default to page 1 or return error
         expect([200, 400]).toContain(response.status());
     });
 
-    test('should handle negative page numbers', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors?page=-1&limit=10');
+    test('should handle negative page numbers', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors?page=-1&limit=10');
 
         expect([400, 422]).toContain(response.status());
     });
 
-    test('should handle excessive page numbers', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors?page=999999&limit=10');
+    test('should handle excessive page numbers', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors?page=999999&limit=10');
 
         expect(response.ok()).toBeTruthy();
         const data = await response.json();
@@ -1090,14 +1090,14 @@ test.describe('API Tests - Pagination Edge Cases', () => {
         expect(Array.isArray(data.errors) || Array.isArray(data)).toBeTruthy();
     });
 
-    test('should handle limit=0', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors?page=1&limit=0');
+    test('should handle limit=0', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors?page=1&limit=0');
 
         expect([400, 422]).toContain(response.status());
     });
 
-    test('should enforce maximum limit', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors?page=1&limit=10000');
+    test('should enforce maximum limit', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors?page=1&limit=10000');
 
         // Should cap at reasonable limit or return error
         expect([200, 400]).toContain(response.status());
@@ -1110,9 +1110,9 @@ test.describe('API Tests - Pagination Edge Cases', () => {
 });
 
 test.describe('API Tests - Concurrent Operations', () => {
-    test('should handle concurrent reads safely', async ({ request }) => {
+    test('should handle concurrent reads safely', async ({ apiContext }) => {
         const requests = Array.from({ length: 50 }, () =>
-            request.get('http://localhost:5000/api/errors')
+            apiContext.get('http://localhost:4000/api/errors')
         );
 
         const responses = await Promise.all(requests);
@@ -1121,7 +1121,7 @@ test.describe('API Tests - Concurrent Operations', () => {
         expect(allSuccessful).toBeTruthy();
     });
 
-    test('should handle concurrent writes with proper isolation', async ({ request }) => {
+    test('should handle concurrent writes with proper isolation', async ({ apiContext }) => {
         const errors = Array.from({ length: 10 }, (_, i) => ({
             message: `Concurrent error ${i}`,
             severity: 'medium',
@@ -1129,7 +1129,7 @@ test.describe('API Tests - Concurrent Operations', () => {
         }));
 
         const createRequests = errors.map(e =>
-            request.post('http://localhost:5000/api/errors', { data: e })
+            apiContext.post('http://localhost:4000/api/errors', { data: e })
         );
 
         const responses = await Promise.all(createRequests);
@@ -1138,9 +1138,9 @@ test.describe('API Tests - Concurrent Operations', () => {
         expect(allSuccessful).toBeTruthy();
     });
 
-    test('should prevent race conditions on updates', async ({ request }) => {
+    test('should prevent race conditions on updates', async ({ apiContext }) => {
         // Create an error
-        const createResponse = await request.post('http://localhost:5000/api/errors', {
+        const createResponse = await apiContext.post('http://localhost:4000/api/errors', {
             data: {
                 message: 'Race condition test',
                 severity: 'high',
@@ -1152,7 +1152,7 @@ test.describe('API Tests - Concurrent Operations', () => {
 
         // Concurrent updates
         const updates = Array.from({ length: 5 }, (_, i) =>
-            request.put(`http://localhost:5000/api/errors/${created.id}`, {
+            request.put(`http://localhost:4000/api/errors/${created.id}`, {
                 data: {
                     message: `Updated ${i}`,
                     severity: 'high',
@@ -1171,8 +1171,8 @@ test.describe('API Tests - Concurrent Operations', () => {
 });
 
 test.describe('API Tests - Cache Control', () => {
-    test('should include appropriate cache headers', async ({ request }) => {
-        const response = await request.get('http://localhost:5000/api/errors');
+    test('should include appropriate cache headers', async ({ apiContext }) => {
+        const response = await apiContext.get('http://localhost:4000/api/errors');
 
         const headers = response.headers();
 
@@ -1182,12 +1182,12 @@ test.describe('API Tests - Cache Control', () => {
         }
     });
 
-    test('should respect If-None-Match for conditional requests', async ({ request }) => {
-        const response1 = await request.get('http://localhost:5000/api/errors');
+    test('should respect If-None-Match for conditional requests', async ({ apiContext }) => {
+        const response1 = await apiContext.get('http://localhost:4000/api/errors');
         const etag = response1.headers()['etag'];
 
         if (etag) {
-            const response2 = await request.get('http://localhost:5000/api/errors', {
+            const response2 = await apiContext.get('http://localhost:4000/api/errors', {
                 headers: {
                     'If-None-Match': etag
                 }
@@ -1197,10 +1197,10 @@ test.describe('API Tests - Cache Control', () => {
         }
     });
 
-    test('should support If-Modified-Since', async ({ request }) => {
+    test('should support If-Modified-Since', async ({ apiContext }) => {
         const pastDate = new Date(Date.now() - 86400000).toUTCString();
 
-        const response = await request.get('http://localhost:5000/api/errors', {
+        const response = await apiContext.get('http://localhost:4000/api/errors', {
             headers: {
                 'If-Modified-Since': pastDate
             }

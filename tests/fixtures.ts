@@ -39,14 +39,16 @@ export const test = base.extend<StackLensFixtures>({
 
     // API context fixture
     apiContext: async ({ playwright }: { playwright: Playwright }, use) => {
-        // Create new request context
-        const apiContext = await playwright.request.newContext();
+        // Create new request context with API base URL
+        const apiContext = await playwright.request.newContext({
+            baseURL: 'http://localhost:4000',
+        });
 
         // Check if TEST_FIREBASE_TOKEN is available
         if (!process.env.TEST_FIREBASE_TOKEN) {
             console.warn('⚠️  TEST_FIREBASE_TOKEN not set. API tests will run without authentication.');
             console.warn('    Set TEST_FIREBASE_TOKEN environment variable for authenticated API tests.');
-            
+
             // Use unauthenticated context
             await use(apiContext);
             await apiContext.dispose();
@@ -54,10 +56,10 @@ export const test = base.extend<StackLensFixtures>({
         }
 
         try {
-            // Login and get token
-            const response = await apiContext.post('/api/auth/firebase-signin', {
+            // Login and get token using firebase-verify endpoint
+            const response = await apiContext.post('/api/auth/firebase-verify', {
                 data: {
-                    token: process.env.TEST_FIREBASE_TOKEN,
+                    idToken: process.env.TEST_FIREBASE_TOKEN,
                 },
             });
 
@@ -70,6 +72,7 @@ export const test = base.extend<StackLensFixtures>({
             // Dispose current context and create authenticated one
             await apiContext.dispose();
             const authenticatedContext = await playwright.request.newContext({
+                baseURL: 'http://localhost:4000',
                 extraHTTPHeaders: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',

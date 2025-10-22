@@ -31,25 +31,25 @@ test.describe('Unit Tests - Utilities', () => {
 
     test.describe('buildApiUrl() - API URL Builder', () => {
         test('should build API URL with path', () => {
-            const API_BASE_URL = 'http://localhost:5000';
+            const API_BASE_URL = 'http://localhost:4000';
             const buildApiUrl = (path: string) => {
                 if (!path.startsWith('/')) path = `/${path}`;
                 return `${API_BASE_URL}${path}`;
             };
 
             const url = buildApiUrl('/api/errors');
-            expect(url).toBe('http://localhost:5000/api/errors');
+            expect(url).toBe('http://localhost:4000/api/errors');
         });
 
         test('should handle paths without leading slash', () => {
-            const API_BASE_URL = 'http://localhost:5000';
+            const API_BASE_URL = 'http://localhost:4000';
             const buildApiUrl = (path: string) => {
                 if (!path.startsWith('/')) path = `/${path}`;
                 return `${API_BASE_URL}${path}`;
             };
 
             const url = buildApiUrl('api/upload');
-            expect(url).toBe('http://localhost:5000/api/upload');
+            expect(url).toBe('http://localhost:4000/api/upload');
         });
     });
 });
@@ -317,7 +317,7 @@ test.describe('Unit Tests - Export Functionality', () => {
 test.describe('Unit Tests - URL and Path Utilities', () => {
     test('should validate URL format', () => {
         const validUrls = [
-            'http://localhost:5000/api/errors',
+            'http://localhost:4000/api/errors',
             'https://api.example.com/data',
             'http://192.168.1.1:8080/path'
         ];
@@ -328,7 +328,7 @@ test.describe('Unit Tests - URL and Path Utilities', () => {
     });
 
     test('should extract query parameters from URL', () => {
-        const url = 'http://localhost:5000/api/errors?page=1&limit=50&severity=high';
+        const url = 'http://localhost:4000/api/errors?page=1&limit=50&severity=high';
         const params = new URLSearchParams(url.split('?')[1]);
 
         expect(params.get('page')).toBe('1');
@@ -337,7 +337,7 @@ test.describe('Unit Tests - URL and Path Utilities', () => {
     });
 
     test('should build URLs with query parameters', () => {
-        const base = 'http://localhost:5000/api/errors';
+        const base = 'http://localhost:4000/api/errors';
         const params = { page: 1, limit: 50, severity: 'critical' };
         const queryString = new URLSearchParams(params as any).toString();
         const fullUrl = `${base}?${queryString}`;
