@@ -1,0 +1,16 @@
+2025-08-28/02:18:49.940/CDT  INFO WincorUsbPrinter:[localhost-startStop-1] - Loading library 'C:\Windows\System32\clmon.dll'
+
+2025-08-28/02:18:50.097/CDT ERROR WindowsPrinterBase:[localhost-startStop-1] - Could not find a matching printer with name 'P1200 Single Station Printer' when looking in the available Print Services on this computer.
+
+2025-08-28/03:58:42.433/CDT  INFO WincorUsbPrinter:[localhost-startStop-1] - Loading library 'C:\Windows\System32\clmon.dll'
+
+2025-08-28/03:58:42.599/CDT ERROR WindowsPrinterBase:[localhost-startStop-1] - Could not find a matching printer with name 'P1200 Single Station Printer' when looking in the available Print Services on this computer.
+
+2025-08-28/04:03:55.740/CDT  INFO WincorUsbPrinter:[localhost-startStop-1] - Loading library 'C:\Windows\System32\clmon.dll'
+
+2025-08-28/04:03:55.938/CDT  INFO WincorUsbPrinter:[localhost-startStop-1] - Printer API function response code: 00, Status reason: OK
+
+2025-08-28/04:03:55.938/CDT  INFO WincorUsbPrinter:[localhost-startStop-1] - Printer status response reason: OK
+
+2025-08-28/04:03:55.938/CDT  INFO WindowsPrinterBase:[localhost-startStop-1] - Initialized printer with name 'P1200 Single Station Printer' 
+
