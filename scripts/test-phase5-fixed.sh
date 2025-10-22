@@ -190,8 +190,8 @@ echo -e "${YELLOW}Malformed request handling: HTTP $HTTP_BAD${NC}"
 
 # 12. Response Compression Testing (FIXED)
 echo -e "\n${BLUE}12. Response Compression${NC}"
-COMPRESSED_RESPONSE=$(curl -s -H "Accept-Encoding: gzip" -I $API_URL/version)
-echo "$COMPRESSED_RESPONSE" | grep -q "Content-Encoding"
+COMPRESSED_RESPONSE=$(curl -s -H "Accept-Encoding: gzip" -v $API_URL/version 2>&1)
+echo "$COMPRESSED_RESPONSE" | grep -q "Content-Encoding: gzip"
 COMPRESSION_RESULT=$?
 if [ $COMPRESSION_RESULT -eq 0 ]; then
     test_result 0 "Response compression enabled and working"
