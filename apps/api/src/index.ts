@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import compression from "compression";
 import { registerRoutes } from "./routes/main-routes.js";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -36,7 +37,10 @@ app.use(cors({
       process.env.CLIENT_URL
     ].filter(Boolean);
 
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests without origin (e.g., curl, Postman, server-to-server)
+    if (!origin) {
+      callback(null, true);
+    } else if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -45,6 +49,18 @@ app.use(cors({
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-Request-ID"]
+}));
+
+// Phase 5: Response compression for better performance  
+app.use(compression({
+  filter: (req: Request, res: Response) => {
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    return compression.filter(req, res);
+  },
+  level: 6, // Good balance between speed and compression ratio
+  threshold: 1024 // Only compress responses larger than 1KB
 }));
 
 // Phase 5: Request ID generation for tracing
