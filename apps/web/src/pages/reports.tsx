@@ -1329,7 +1329,7 @@ export default function Reports() {
                   <p className="text-sm text-muted-foreground">Total Files</p>
                   <p className="text-2xl font-bold">
                     {reportsLoading ? (
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 my-2">
                         <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
                         <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
                         <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
@@ -1363,7 +1363,7 @@ export default function Reports() {
                   <p className="text-sm text-muted-foreground">Total Errors</p>
                   <p className="text-2xl font-bold">
                     {reportsLoading ? (
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 my-2">
                         <div className="w-2 h-2 bg-orange-600 rounded-full animate-pulse"></div>
                         <div className="w-2 h-2 bg-orange-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
                         <div className="w-2 h-2 bg-orange-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
@@ -1399,7 +1399,7 @@ export default function Reports() {
                   </p>
                   <p className="text-2xl font-bold text-red-600">
                     {reportsLoading ? (
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 my-2">
                         <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
                         <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
                         <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
@@ -1435,7 +1435,7 @@ export default function Reports() {
                   </p>
                   <p className="text-2xl font-bold">
                     {reportsLoading ? (
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 my-2">
                         <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
                         <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
                         <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>

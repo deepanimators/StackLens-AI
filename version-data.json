@@ -1,5 +1,5 @@
 {
-  "version": "0.9.2",
+  "version": "0.9.4",
   "releaseDate": "2025-10-23",
   "commitHash": "pending",
   "totalCommits": 119,
@@ -437,6 +437,106 @@
       "performance": [
         "Optimized real-time search filtering performance",
         "Improved component rendering with better state management"
+      ]
+    },
+    "v0.9.4": {
+      "date": "2025-10-23",
+      "type": "Enhancement",
+      "title": "Comprehensive Bug Fixes & System-Wide Data Architecture",
+      "description": "Major bug fixes and system-wide data improvements for global reporting",
+      "changes": [
+        {
+          "type": "🔧 BUG FIX",
+          "description": "Fixed All Errors page to show system-wide data from all users instead of user-specific data"
+        },
+        {
+          "type": "🔧 BUG FIX", 
+          "description": "Fixed Reports page to aggregate data from all users for comprehensive analytics"
+        },
+        {
+          "type": "🔧 BUG FIX",
+          "description": "Fixed Files API to return system-wide files instead of user-specific files"
+        },
+        {
+          "type": "🎨 UI/UX",
+          "description": "Enhanced card loading animations with proper spacing and visual separation"
+        },
+        {
+          "type": "📊 DATA",
+          "description": "Implemented system-wide error types, stores, and kiosk filtering across all pages"
+        }
+      ],
+      "bugfixes": [
+        "Resolved reports showing identical data across different date ranges",
+        "Fixed All Errors page Select All filter functionality",
+        "Corrected API endpoints to use getAllErrors() instead of getErrorsByUser()",
+        "Fixed card loading animations sticking to title text",
+        "Resolved version display issues in footer modal popup"
+      ],
+      "breaking": [],
+      "performance": [
+        "Improved system-wide data aggregation performance",
+        "Enhanced loading state management across all components"
+      ]
+    },
+    "v0.9.3": {
+      "date": "2025-10-23",
+      "type": "Enhancement", 
+      "title": "Error Filtering & UI Improvements",
+      "description": "Enhanced error filtering capabilities and UI refinements",
+      "changes": [
+        {
+          "type": "🔧 ENHANCEMENT",
+          "description": "Improved multi-select dropdown functionality for better user experience"
+        },
+        {
+          "type": "🎨 UI/UX",
+          "description": "Enhanced filter layouts and responsive design across error management pages"
+        },
+        {
+          "type": "📊 DATA",
+          "description": "Optimized error type and severity filtering performance"
+        }
+      ],
+      "bugfixes": [
+        "Fixed Select All functionality in multi-select dropdowns",
+        "Resolved filter state management issues",
+        "Corrected error type filtering logic"
+      ],
+      "breaking": [],
+      "performance": [
+        "Faster error filtering and search operations",
+        "Optimized dropdown rendering with large datasets"
+      ]
+    },
+    "v0.9.2": {
+      "date": "2025-10-23",
+      "type": "Enhancement",
+      "title": "Reports Data Architecture & Loading States",
+      "description": "System-wide reporting architecture and enhanced loading animations",
+      "changes": [
+        {
+          "type": "🔧 ARCHITECTURE",
+          "description": "Converted reports endpoint from user-specific to system-wide data aggregation"
+        },
+        {
+          "type": "🎨 UI/UX", 
+          "description": "Enhanced loading animations with proper spacing in stats cards and reports"
+        },
+        {
+          "type": "📊 DATA",
+          "description": "Implemented trends calculations using system-wide data sources"
+        }
+      ],
+      "bugfixes": [
+        "Fixed reports showing same data for different date ranges",
+        "Resolved card loading animations lacking proper margins",
+        "Corrected trends calculations to use all files instead of user files"
+      ],
+      "breaking": [],
+      "performance": [
+        "Improved reports loading performance with system-wide data caching",
+        "Enhanced visual feedback during data loading states"
       ]
     },
     "v0.9.0": {

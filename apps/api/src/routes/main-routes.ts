@@ -4451,24 +4451,21 @@ Format as JSON with the following structure:
       const userId = req.query.userId;
       const includeAll = req.query.includeAll === "true"; // For dropdown usage - bypass pagination
 
-      // Check if admin is requesting files for specific user or all users
+      // Get all files from all users (system-wide approach)
       let userFiles;
-      if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
+      if (userId && userId !== "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
         // Admin requesting specific user's files
         const targetUserId = parseInt(userId);
         if (isNaN(targetUserId)) {
           return res.status(400).json({ message: "Invalid userId parameter" });
         }
         userFiles = await storage.getLogFilesByUser(targetUserId);
-      } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
-        // Admin requesting all files
-        userFiles = await storage.getAllLogFiles();
       } else if (userId && req.user.role === "user") {
-        // Regular user trying to access other user's files - deny
+        // Regular user trying to access specific user's files - deny
         return res.status(403).json({ message: "Access denied" });
       } else {
-        // Default: get current user's files
-        userFiles = await storage.getLogFilesByUser(req.user.id);
+        // Default: get all files from all users (system-wide)
+        userFiles = await storage.getAllLogFiles();
       }
 
       let filteredFiles = userFiles;
@@ -5438,24 +5435,21 @@ Format as JSON with the following structure:
       const storeNumber = req.query.storeNumber as string;
       const kioskNumber = req.query.kioskNumber as string;
 
-      // Check if admin is requesting errors for specific user or all users
+      // Get all errors from all users (system-wide approach)
       let allUserErrors;
-      if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
+      if (userId && userId !== "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
         // Admin requesting specific user's errors
         const targetUserId = parseInt(userId);
         if (isNaN(targetUserId)) {
           return res.status(400).json({ message: "Invalid userId parameter" });
         }
         allUserErrors = await storage.getErrorsByUser(targetUserId);
-      } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
-        // Admin requesting all errors
-        allUserErrors = await storage.getAllErrors();
       } else if (userId && req.user.role === "user") {
-        // Regular user trying to access other user's errors - deny
+        // Regular user trying to access specific user's errors - deny
         return res.status(403).json({ message: "Access denied" });
       } else {
-        // Default: get current user's errors
-        allUserErrors = await storage.getErrorsByUser(req.user.id);
+        // Default: get all errors from all users (system-wide)
+        allUserErrors = await storage.getAllErrors();
       }
 
       console.log(`🔍 [DEBUG] Total user errors: ${allUserErrors.length}`);
@@ -5731,7 +5725,8 @@ Format as JSON with the following structure:
   // Get all error types for filtering
   app.get("/api/errors/types", requireAuth, async (req: any, res: any) => {
     try {
-      const allUserErrors = await storage.getErrorsByUser(req.user.id);
+      // Get error types from all users (system-wide)
+      const allUserErrors = await storage.getAllErrors();
       const errorTypesSet = new Set(
         allUserErrors.map((error) => error.errorType).filter(Boolean)
       );
@@ -6444,30 +6439,31 @@ Format as JSON with the following structure:
           fromDate.setDate(now.getDate() - 30);
       }
 
-      // Get user's data
-      const userId = req.user.id;
-      const userFiles = await storage.getLogFilesByUser(userId);
-      const userErrors = await storage.getErrorsByUser(userId);
-      const analysisHistory = await storage.getAnalysisHistoryByUser(userId);
+      // Get all system data (reports should show data from all users)
+      const allFiles = await storage.getAllLogFiles();
+      const allErrors = await storage.getAllErrors();
+      // For analysis history, we'll need to get all analysis records
+      // Since there's no getAllAnalysisHistory method, we'll collect all analysis for all files
+      const analysisHistory: any[] = [];
 
       console.log(`🔍 [DEBUG] Reports - Range: ${range}, From: ${fromDate.toISOString()}, To: ${now.toISOString()}`);
-      console.log(`🔍 [DEBUG] Reports - Total files before filter: ${userFiles.length}, Total errors before filter: ${userErrors.length}`);
+      console.log(`🔍 [DEBUG] Reports - Total files before filter: ${allFiles.length}, Total errors before filter: ${allErrors.length}`);
 
       // Filter data by date range
-      const filteredFiles = userFiles.filter(
+      const filteredFiles = allFiles.filter(
         (file) =>
           file.uploadTimestamp && new Date(file.uploadTimestamp) >= fromDate
       );
 
-      const filteredErrors = userErrors.filter(
+      const filteredErrors = allErrors.filter(
         (error) => error.createdAt && new Date(error.createdAt) >= fromDate
       );
 
       console.log(`🔍 [DEBUG] Reports - Files after filter: ${filteredFiles.length}, Errors after filter: ${filteredErrors.length}`);
 
       // Log date distribution to understand the data
-      if (userFiles.length > 0) {
-        const validFileTimestamps = userFiles
+      if (allFiles.length > 0) {
+        const validFileTimestamps = allFiles
           .filter(f => f.uploadTimestamp)
           .map(f => new Date(f.uploadTimestamp as any));
         if (validFileTimestamps.length > 0) {
@@ -6476,8 +6472,8 @@ Format as JSON with the following structure:
           console.log(`🔍 [DEBUG] File dates range: ${minFileDate.toISOString()} to ${maxFileDate.toISOString()}`);
         }
       }
-      if (userErrors.length > 0) {
-        const validErrorTimestamps = userErrors
+      if (allErrors.length > 0) {
+        const validErrorTimestamps = allErrors
           .filter(e => e.createdAt)
           .map(e => new Date(e.createdAt as any));
         if (validErrorTimestamps.length > 0) {
@@ -6522,12 +6518,12 @@ Format as JSON with the following structure:
       );
       const previousToDate = new Date(fromDate);
 
-      const prevFiles = userFiles.filter((file) => {
+      const prevFiles = allFiles.filter((file) => {
         const uploadDate = new Date(file.uploadTimestamp || new Date());
         return uploadDate >= previousFromDate && uploadDate < previousToDate;
       });
 
-      const prevErrors = userErrors.filter((error) => {
+      const prevErrors = allErrors.filter((error) => {
         const errorDate = new Date(error.createdAt || new Date());
         return errorDate >= previousFromDate && errorDate < previousToDate;
       });
