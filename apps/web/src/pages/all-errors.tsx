@@ -319,6 +319,7 @@ export default function AllErrors() {
       const query = params.toString() ? `?${params.toString()}` : "";
       const data = await authenticatedRequest("GET", `/api/files${query}`);
       let allFiles = data.files || [];
+      console.log("📁 Files loaded:", allFiles.length, "files");
       
       // Filter files by store and kiosk on the client side
       if (storeFilter && storeFilter !== "all") {
@@ -660,13 +661,10 @@ export default function AllErrors() {
               <label className="text-sm font-medium text-muted-foreground">File Name</label>
               <MultiSelectDropdown
                 options={(files || [])
-                  .filter(
-                    (file: any) =>
-                      file && file.id && file.id.toString().trim() !== ""
-                  )
+                  .filter((file: any) => file && file.id != null && file.id !== '')
                   .map((file: any) => ({
                     id: file.id.toString(),
-                    label: file.originalName || `File ${file.id}`,
+                    label: file.originalName || file.filename || `File ${file.id}`,
                     value: file.id.toString(),
                   }))}
                 selectedValues={fileFilter}
