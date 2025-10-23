@@ -405,9 +405,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           totalUsers: 25,
           activeUsers: 18,
           totalRoles: 3,
-          totalTrainingModules: 12,
-          totalModels: 8,
-          activeModels: 5,
+          totalTrainingModules: 2,
+          totalMLModels: 2,
+          activeMLModels: 2,
           systemHealth: {
             status: "healthy",
             uptime: "99.8%",
@@ -1283,11 +1283,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("🤖 Attempting AI service analysis...");
         console.log("🔑 API Key available:", !!process.env.GEMINI_API_KEY);
 
-        const aiSuggestion = await aiService.generateErrorSuggestion({
-          ...error,
-          mlConfidence: (error as any).mlConfidence || 0,
-          createdAt: error.createdAt || new Date(),
-        } as any);
+        const aiSuggestion = await aiService.generateSuggestion(
+          error.message,
+          error.errorType,
+          error.severity
+        );
 
         if (aiSuggestion) {
           suggestion = {
@@ -1771,8 +1771,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         mlConfidence: (error as any).mlConfidence || 0,
         createdAt: error.createdAt || new Date(),
       };
-      const suggestion = await aiService.generateErrorSuggestion(
-        errorWithMlData
+      const suggestion = await aiService.generateSuggestion(
+        error.message,
+        error.errorType,
+        error.severity
       );
 
       // Update error with AI suggestion
@@ -2841,7 +2843,11 @@ Format as JSON with the following structure:
       };
 
       console.log("Testing AI service with rate limiting...");
-      const suggestion = await aiService.generateErrorSuggestion(testErrorLog);
+      const suggestion = await aiService.generateSuggestion(
+        testErrorLog.message,
+        testErrorLog.errorType,
+        testErrorLog.severity
+      );
 
       res.json({
         success: true,
@@ -3436,11 +3442,13 @@ Format as JSON with the following structure:
       // Calculate total files
       const totalFiles = userLogFiles.length;
 
-      // Calculate resolution rate
-      const resolutionRate =
+      // Calculate resolution rate as number for consistency
+      const resolutionRateNumber =
         totalErrors > 0
-          ? ((resolvedErrors / totalErrors) * 100).toFixed(1) + "%"
-          : "0.0%";
+          ? Math.round(((resolvedErrors / totalErrors) * 100) * 10) / 10
+          : 0;
+
+      console.log(`🔍 [DEBUG] Dashboard - Resolution Rate: ${resolvedErrors} resolved out of ${totalErrors} total = ${resolutionRateNumber}%`);
 
       // Calculate other statistics
       const pendingErrors = totalErrors - resolvedErrors;
@@ -3504,7 +3512,7 @@ Format as JSON with the following structure:
         files: calculateTrend(totalFiles, lastMonthLogFiles.length),
         errors: calculateTrend(totalErrors, lastMonthErrors.length),
         criticalErrors: calculateTrend(criticalErrors, lastMonthCriticalErrors),
-        resolutionRate: calculateTrend(parseFloat(resolutionRate), lastMonthResolutionRate)
+        resolutionRate: calculateTrend(resolutionRateNumber, lastMonthResolutionRate)
       };
 
       // Create severity distribution object
@@ -3524,7 +3532,7 @@ Format as JSON with the following structure:
         highErrors,
         mediumErrors,
         lowErrors,
-        resolutionRate,
+        resolutionRate: resolutionRateNumber,
         mlAccuracy,
         recentAnalyses: recentAnalyses.length,
         severityDistribution,
@@ -4284,6 +4292,17 @@ Format as JSON with the following structure:
   const TRENDS_CACHE_TTL = 10 * 60 * 1000; // 10 minutes cache
 
   app.get("/api/trends/analysis", async (req: any, res: any) => {
+    // Set a timeout for the entire request
+    const timeout = setTimeout(() => {
+      if (!res.headersSent) {
+        console.log(`⏰ Trends request timeout for user ${req.user?.id || 1}`);
+        res.status(408).json({
+          error: "Request timeout",
+          message: "Trends analysis is taking too long. Try again later."
+        });
+      }
+    }, 30000); // 30 second timeout
+
     try {
       const timeframe = req.query.timeframe || "30d"; // 7d, 30d, 90d
       const userId = req.user?.id || 1; // Fallback to user ID 1 for demo
@@ -4295,6 +4314,7 @@ Format as JSON with the following structure:
       // Check cache first
       const cached = trendsCache.get(cacheKey);
       if (cached && (now - cached.timestamp) < TRENDS_CACHE_TTL) {
+        clearTimeout(timeout);
         console.log(`📊 Serving cached trends data for user ${userId}, timeframe ${timeframe}`);
         return res.json(cached.data);
       }
@@ -4405,10 +4425,14 @@ Format as JSON with the following structure:
         trendsCache.delete(oldestKey);
       }
 
+      clearTimeout(timeout);
       res.json(trendsData);
     } catch (error) {
+      clearTimeout(timeout);
       console.error("Error fetching trends analysis:", error);
-      res.status(500).json({ message: "Failed to fetch trends analysis" });
+      if (!res.headersSent) {
+        res.status(500).json({ message: "Failed to fetch trends analysis" });
+      }
     }
   });
 
@@ -6426,6 +6450,9 @@ Format as JSON with the following structure:
       const userErrors = await storage.getErrorsByUser(userId);
       const analysisHistory = await storage.getAnalysisHistoryByUser(userId);
 
+      console.log(`🔍 [DEBUG] Reports - Range: ${range}, From: ${fromDate.toISOString()}, To: ${now.toISOString()}`);
+      console.log(`🔍 [DEBUG] Reports - Total files before filter: ${userFiles.length}, Total errors before filter: ${userErrors.length}`);
+
       // Filter data by date range
       const filteredFiles = userFiles.filter(
         (file) =>
@@ -6436,7 +6463,29 @@ Format as JSON with the following structure:
         (error) => error.createdAt && new Date(error.createdAt) >= fromDate
       );
 
-      // Calculate summary statistics
+      console.log(`🔍 [DEBUG] Reports - Files after filter: ${filteredFiles.length}, Errors after filter: ${filteredErrors.length}`);
+
+      // Log date distribution to understand the data
+      if (userFiles.length > 0) {
+        const validFileTimestamps = userFiles
+          .filter(f => f.uploadTimestamp)
+          .map(f => new Date(f.uploadTimestamp as any));
+        if (validFileTimestamps.length > 0) {
+          const minFileDate = new Date(Math.min(...validFileTimestamps.map(d => d.getTime())));
+          const maxFileDate = new Date(Math.max(...validFileTimestamps.map(d => d.getTime())));
+          console.log(`🔍 [DEBUG] File dates range: ${minFileDate.toISOString()} to ${maxFileDate.toISOString()}`);
+        }
+      }
+      if (userErrors.length > 0) {
+        const validErrorTimestamps = userErrors
+          .filter(e => e.createdAt)
+          .map(e => new Date(e.createdAt as any));
+        if (validErrorTimestamps.length > 0) {
+          const minErrorDate = new Date(Math.min(...validErrorTimestamps.map(d => d.getTime())));
+          const maxErrorDate = new Date(Math.max(...validErrorTimestamps.map(d => d.getTime())));
+          console.log(`🔍 [DEBUG] Error dates range: ${minErrorDate.toISOString()} to ${maxErrorDate.toISOString()}`);
+        }
+      }      // Calculate summary statistics
       const totalFiles = filteredFiles.length;
       const totalErrors = filteredErrors.length;
       const criticalErrors = filteredErrors.filter(
@@ -6454,6 +6503,8 @@ Format as JSON with the following structure:
       const resolvedErrors = filteredErrors.filter((e) => e.resolved).length;
       const resolutionRate =
         totalErrors > 0 ? (resolvedErrors / totalErrors) * 100 : 0;
+
+      console.log(`🔍 [DEBUG] Reports - Resolution Rate: ${resolvedErrors} resolved out of ${totalErrors} total = ${resolutionRate}%`);
 
       // Calculate trends (compare with previous period)
       const rangeDays =

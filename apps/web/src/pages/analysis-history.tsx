@@ -841,7 +841,7 @@ export default function AnalysisHistoryPage() {
             </div>
           ) : combinedHistory && combinedHistory.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[1200px]">
                 <thead>
                   <tr className="border-b text-left">
                     <th className="py-3 px-4 font-medium text-muted-foreground">
@@ -861,13 +861,13 @@ export default function AnalysisHistoryPage() {
                         aria-label="Select all items"
                       />
                     </th>
-                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                    <th className="py-3 px-4 font-medium text-muted-foreground min-w-[200px] max-w-[300px]">
                       File Name
                     </th>
-                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                    <th className="py-3 px-4 font-medium text-muted-foreground min-w-[120px]">
                       Store
                     </th>
-                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                    <th className="py-3 px-4 font-medium text-muted-foreground min-w-[120px]">
                       Kiosk
                     </th>
                     <th className="py-3 px-4 font-medium text-muted-foreground">
@@ -924,23 +924,41 @@ export default function AnalysisHistoryPage() {
                           }`}
                         />
                       </td>
-                      <td className="py-4 px-4">
+                      <td className="py-4 px-4 min-w-[200px] max-w-[300px]">
                         <div className="flex items-center space-x-2">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">
+                          <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                          <span className="font-medium truncate" title={analysis.filename || getFileName(analysis.fileId)}>
                             {analysis.filename || getFileName(analysis.fileId)}
                           </span>
                         </div>
                       </td>
-                      <td className="py-4 px-4">
-                        <span className="text-muted-foreground">
-                          {analysis.storeNumber || "-"}
-                        </span>
+                      <td className="py-4 px-4 min-w-[120px]">
+                        <div className="flex items-center space-x-2">
+                          {analysis.storeNumber ? (
+                            <span 
+                              className="bg-blue-100 text-blue-800 font-mono text-xs px-2 py-1 rounded truncate"
+                              title={`Store: ${analysis.storeNumber}`}
+                            >
+                              {analysis.storeNumber}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
+                        </div>
                       </td>
-                      <td className="py-4 px-4">
-                        <span className="text-muted-foreground">
-                          {analysis.kioskNumber || "-"}
-                        </span>
+                      <td className="py-4 px-4 min-w-[120px]">
+                        <div className="flex items-center space-x-2">
+                          {analysis.kioskNumber ? (
+                            <span 
+                              className="bg-green-100 text-green-800 font-mono text-xs px-2 py-1 rounded truncate"
+                              title={`Kiosk: ${analysis.kioskNumber}`}
+                            >
+                              {analysis.kioskNumber}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
+                        </div>
                       </td>
                       <td className="py-4 px-4">
                         <div className="w-32">

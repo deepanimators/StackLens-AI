@@ -34,6 +34,25 @@ const ChartSkeleton = () => (
   </div>
 );
 
+// Section loading skeleton component
+const SectionSkeleton = ({ title }: { title: string }) => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center space-x-2">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        <span>{title}</span>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -86,6 +105,7 @@ import {
   Users,
   Zap,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 
 type ErrorTypeData = {
@@ -127,15 +147,15 @@ type Trends = {
 import { authenticatedRequest, authenticatedFetch } from "@/lib/auth";
 
 // Fetch real report data from API
-const fetchReportData = async () => {
-  try {
-    console.log("🔄 Fetching real report data from API...");
+const fetchReportData = async (selectedDateRange: string) => {
+    try {
+      console.log(`🔄 Fetching real report data from API for range: ${selectedDateRange}...`);
 
-    // Use the proper reports API endpoint that includes trends
-    const reportsResponse = await authenticatedRequest(
-      "GET",
-      "/api/reports?range=30d"
-    );
+      // Use the proper reports API endpoint that includes trends with dynamic date range
+      const reportsResponse = await authenticatedRequest(
+        "GET",
+        `/api/reports?range=${selectedDateRange}`
+      );
     console.log("📊 Reports response:", reportsResponse);
 
     // Fallback to dashboard stats if reports API fails
@@ -151,7 +171,7 @@ const fetchReportData = async () => {
 
     // Calculate real statistics from the reports API response
     const summary = reportsResponse?.summary || {};
-    const trends = summary?.trends || {};
+    const trends = reportsResponse?.trends || summary?.trends || {};
     
     const totalFiles = summary.totalFiles || 0;
     const totalErrors = summary.totalErrors || 0;
@@ -1090,9 +1110,22 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any; isActive?: boolean }> 
 };
 
 export default function Reports() {
-  const [dateRange, setDateRange] = useState("7d");
+  const [dateRange, setDateRange] = useState(() => {
+    // Persist date range selection in localStorage
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('reports-date-range') || '30d';
+    }
+    return '30d';
+  });
   const [reportType, setReportType] = useState("summary");
   const { toast } = useToast();
+
+  // Update localStorage when dateRange changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('reports-date-range', dateRange);
+    }
+  }, [dateRange]);
 
   type ReportSummary = {
     totalFiles: number;
@@ -1126,9 +1159,10 @@ export default function Reports() {
       topFiles: [] as TopFile[],
       performance: { avgProcessingTime: "0.0s", successRate: 0 },
     },
+    isLoading: reportsLoading,
   } = useQuery({
     queryKey: ["reportData", dateRange],
-    queryFn: fetchReportData,
+    queryFn: () => fetchReportData(dateRange),
   });
 
   const handleExportReport = async (type: string) => {
@@ -1230,7 +1264,6 @@ export default function Reports() {
           <CardContent>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex items-center space-x-2">
-                resolutionRate: number;
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <Select value={dateRange} onValueChange={setDateRange}>
                   <SelectTrigger className="w-32">
@@ -1238,7 +1271,6 @@ export default function Reports() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="7d">Last 7 days</SelectItem>
-                    resolutionRate: 0,
                     <SelectItem value="30d">Last 30 days</SelectItem>
                     <SelectItem value="90d">Last 90 days</SelectItem>
                     <SelectItem value="1y">Last year</SelectItem>
@@ -1256,7 +1288,7 @@ export default function Reports() {
                     <SelectItem value="detailed">Detailed Report</SelectItem>
                     <SelectItem value="trends">Trends Analysis</SelectItem>
                     <SelectItem value="performance">
-                      Performance Report resolutionRate: 88.2,
+                      Performance Report
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -1296,20 +1328,28 @@ export default function Reports() {
                 <div>
                   <p className="text-sm text-muted-foreground">Total Files</p>
                   <p className="text-2xl font-bold">
-                    {reportData?.summary?.totalFiles ?? 0}
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      reportData?.summary?.totalFiles ?? 0
+                    )}
                   </p>
                 </div>
                 <FileText className="h-8 w-8 text-blue-600" />
               </div>
               <div className="mt-2 flex items-center">
-                {(reportData?.summary?.trends?.files || 0) >= 0 ? (
+                {((reportData?.summary as any)?.trends?.files || 0) >= 0 ? (
                   <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
                 ) : (
                   <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
                 )}
-                <span className={`text-sm ${(reportData?.summary?.trends?.files || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {reportData?.summary?.trends?.files !== undefined 
-                    ? `${reportData.summary.trends.files >= 0 ? '+' : ''}${reportData.summary.trends.files}%`
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.files || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {(reportData?.summary as any)?.trends?.files !== undefined 
+                    ? `${((reportData?.summary as any)?.trends?.files || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.files}%`
                     : '0%'
                   }
                 </span>
@@ -1322,20 +1362,28 @@ export default function Reports() {
                 <div>
                   <p className="text-sm text-muted-foreground">Total Errors</p>
                   <p className="text-2xl font-bold">
-                    {reportData?.summary?.totalErrors ?? 0}
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 bg-orange-600 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-orange-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-orange-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      reportData?.summary?.totalErrors ?? 0
+                    )}
                   </p>
                 </div>
                 <AlertTriangle className="h-8 w-8 text-orange-600" />
               </div>
               <div className="mt-2 flex items-center">
-                {(reportData?.summary?.trends?.errors || 0) <= 0 ? (
+                {((reportData?.summary as any)?.trends?.errors || 0) <= 0 ? (
                   <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
                 ) : (
                   <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
                 )}
-                <span className={`text-sm ${(reportData?.summary?.trends?.errors || 0) <= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {reportData?.summary?.trends?.errors !== undefined 
-                    ? `${reportData.summary.trends.errors >= 0 ? '+' : ''}${reportData.summary.trends.errors}%`
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.errors || 0) <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {(reportData?.summary as any)?.trends?.errors !== undefined
+                    ? `${((reportData?.summary as any)?.trends?.errors || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.errors}%`
                     : '0%'
                   }
                 </span>
@@ -1350,20 +1398,28 @@ export default function Reports() {
                     Critical Errors
                   </p>
                   <p className="text-2xl font-bold text-red-600">
-                    {reportData?.summary?.criticalErrors ?? 0}
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      reportData?.summary?.criticalErrors ?? 0
+                    )}
                   </p>
                 </div>
                 <Activity className="h-8 w-8 text-red-600" />
               </div>
               <div className="mt-2 flex items-center">
-                {(reportData?.summary?.trends?.critical || 0) >= 0 ? (
+                {((reportData?.summary as any)?.trends?.critical || 0) >= 0 ? (
                   <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
                 ) : (
                   <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
                 )}
-                <span className={`text-sm ${(reportData?.summary?.trends?.critical || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  {reportData?.summary?.trends?.critical !== undefined 
-                    ? `${reportData.summary.trends.critical >= 0 ? '+' : ''}${reportData.summary.trends.critical}%`
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.critical || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  {(reportData?.summary as any)?.trends?.critical !== undefined
+                    ? `${((reportData?.summary as any)?.trends?.critical || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.critical}%`
                     : '0%'
                   }
                 </span>
@@ -1378,25 +1434,35 @@ export default function Reports() {
                     Resolution Rate
                   </p>
                   <p className="text-2xl font-bold">
-                    {(
-                      ((reportData?.summary?.resolvedErrors ?? 0) /
-                        (reportData?.summary?.totalErrors ?? 1)) *
-                      100
-                    ).toFixed(1)}
-                    %
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      <>
+                        {(
+                          ((reportData?.summary?.resolvedErrors ?? 0) /
+                            (reportData?.summary?.totalErrors ?? 1)) *
+                          100
+                        ).toFixed(1)}
+                        %
+                      </>
+                    )}
                   </p>
                 </div>
                 <BarChart3 className="h-8 w-8 text-green-600" />
               </div>
               <div className="mt-2 flex items-center">
-                {(reportData?.summary?.trends?.resolution || 0) >= 0 ? (
+                {((reportData?.summary as any)?.trends?.resolution || 0) >= 0 ? (
                   <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
                 ) : (
                   <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
                 )}
-                <span className={`text-sm ${(reportData?.summary?.trends?.resolution || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {reportData?.summary?.trends?.resolution !== undefined 
-                    ? `${reportData.summary.trends.resolution >= 0 ? '+' : ''}${reportData.summary.trends.resolution}%`
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.resolution || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {(reportData?.summary as any)?.trends?.resolution !== undefined
+                    ? `${((reportData?.summary as any)?.trends?.resolution || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.resolution}%`
                     : '0%'
                   }
                 </span>
@@ -1406,11 +1472,19 @@ export default function Reports() {
         </div>
 
         {/* Report Tabs */}
-        <Tabs
-          value={reportType}
-          onValueChange={setReportType}
-          className="w-full"
-        >
+        {reportsLoading ? (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <SectionSkeleton title="Error Types Distribution" />
+            <SectionSkeleton title="Severity Analysis" />
+            <SectionSkeleton title="Top Error Files" />
+            <SectionSkeleton title="Performance Metrics" />
+          </div>
+        ) : (
+          <Tabs
+            value={reportType}
+            onValueChange={setReportType}
+            className="w-full"
+          >
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="summary">Summary</TabsTrigger>
             <TabsTrigger value="detailed">Detailed</TabsTrigger>
@@ -1492,7 +1566,7 @@ export default function Reports() {
                 <CardContent>
                   <div className="space-y-4">
                     {Object.entries(reportData?.severityDistribution || {}).map(
-                      ([severity, count]: [string, number]) => (
+                      ([severity, count]) => (
                         <div
                           key={severity}
                           className="flex items-center justify-between"
@@ -1525,7 +1599,7 @@ export default function Reports() {
                                 : "bg-green-100 text-green-800"
                             }`}
                           >
-                            {count}
+                            {count as number}
                           </Badge>
                         </div>
                       )
@@ -1850,20 +1924,15 @@ export default function Reports() {
                       %
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Success Rate
+                      Analysis Success Rate
                     </p>
                   </div>
                   <div className="text-center p-4 bg-muted rounded-lg">
                     <div className="text-2xl font-bold">
-                      {(
-                        ((reportData?.summary.resolvedErrors || 0) /
-                          (reportData?.summary.totalErrors || 1)) *
-                        100
-                      ).toFixed(1)}
-                      %
+                      {reportData?.performance?.totalAnalyses || 0}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Resolution Rate
+                      Total Analyses
                     </p>
                   </div>
                 </div>
@@ -1871,6 +1940,7 @@ export default function Reports() {
             </Card>
           </TabsContent>
         </Tabs>
+        )}
       </AdaptiveLayout>
     </>
   );

@@ -43,6 +43,7 @@ import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { SEVERITY_COLORS } from "@/lib/constants";
 
+
 interface DashboardStats {
   totalFiles: number;
   totalErrors: number;
@@ -91,7 +92,7 @@ export default function Dashboard() {
   const { toast } = useToast();
   const [selectedFile, setSelectedFile] = useState<RecentFile | null>(null);
 
-  const { data: stats } = useQuery({
+  const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/dashboard/stats"],
     queryFn: async () => {
       const response = await authenticatedRequest(
@@ -265,35 +266,39 @@ export default function Dashboard() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <StatsCard
-          title="Total Files"
-          value={stats?.totalFiles || 0}
-          icon={FileText}
-          trend={stats?.trends?.files || { value: "0%", isPositive: true }}
-          className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200/50 dark:from-blue-950/20 dark:to-blue-900/20 dark:border-blue-800/30"
-        />
-        <StatsCard
-          title="Total Errors"
-          value={stats?.totalErrors || 0}
-          icon={AlertTriangle}
-          trend={stats?.trends?.errors || { value: "0%", isPositive: true }}
-          className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200/50 dark:from-orange-950/20 dark:to-orange-900/20 dark:border-orange-800/30"
-        />
-        <StatsCard
-          title="Critical Issues"
-          value={stats?.criticalErrors || 0}
-          icon={Flame}
-          trend={stats?.trends?.criticalErrors || { value: "0%", isPositive: true }}
-          className="bg-gradient-to-br from-red-50 to-red-100 border-red-200/50 dark:from-red-950/20 dark:to-red-900/20 dark:border-red-800/30"
-        />
-        <StatsCard
-          title="Resolution Rate"
-          value={stats?.resolutionRate || "0.0%"}
-          icon={CheckCircle}
-          trend={stats?.trends?.resolutionRate || { value: "0%", isPositive: true }}
-          className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 dark:from-green-950/20 dark:to-green-900/20 dark:border-green-800/30"
-        />
-      </div>
+          <StatsCard
+            title="Total Files"
+            value={stats?.totalFiles || 0}
+            icon={FileText}
+            trend={stats?.trends?.files || { value: "0%", isPositive: true }}
+            className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200/50 dark:from-blue-950/20 dark:to-blue-900/20 dark:border-blue-800/30"
+            isLoading={statsLoading}
+          />
+          <StatsCard
+            title="Total Errors"
+            value={stats?.totalErrors || 0}
+            icon={AlertTriangle}
+            trend={stats?.trends?.errors || { value: "0%", isPositive: true }}
+            className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200/50 dark:from-orange-950/20 dark:to-orange-900/20 dark:border-orange-800/30"
+            isLoading={statsLoading}
+          />
+          <StatsCard
+            title="Critical Issues"
+            value={stats?.criticalErrors || 0}
+            icon={Flame}
+            trend={stats?.trends?.criticalErrors || { value: "0%", isPositive: true }}
+            className="bg-gradient-to-br from-red-50 to-red-100 border-red-200/50 dark:from-red-950/20 dark:to-red-900/20 dark:border-red-800/30"
+            isLoading={statsLoading}
+          />
+          <StatsCard
+            title="Resolution Rate"
+            value={stats?.resolutionRate || "0.0%"}
+            icon={CheckCircle}
+            trend={stats?.trends?.resolutionRate || { value: "0%", isPositive: true }}
+            className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 dark:from-green-950/20 dark:to-green-900/20 dark:border-green-800/30"
+            isLoading={statsLoading}
+          />
+        </div>
 
       {/* Charts and Analysis */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
@@ -382,116 +387,116 @@ export default function Dashboard() {
 
       {/* Recent Analysis */}
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Recent Analysis</CardTitle>
-            <Button
-              variant="outline"
-              onClick={() => setLocation("/analysis-history")}
-            >
-              View All
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b text-left">
-                  <th className="py-3 px-4 font-medium text-muted-foreground">
-                    File Name
-                  </th>
-                  <th className="py-3 px-4 font-medium text-muted-foreground">
-                    Status
-                  </th>
-                  <th className="py-3 px-4 font-medium text-muted-foreground">
-                    Errors Found
-                  </th>
-                  <th className="py-3 px-4 font-medium text-muted-foreground">
-                    Critical
-                  </th>
-                  <th className="py-3 px-4 font-medium text-muted-foreground">
-                    Analysis Date
-                  </th>
-                  <th className="py-3 px-4 font-medium text-muted-foreground">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(recentFiles) &&
-                  recentFiles.slice(0, 5).map((file) => (
-                    <tr key={file.id} className="border-b hover:bg-muted/50">
-                      <td className="py-4 px-4">
-                        <div className="flex items-center space-x-3">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">
-                            {file.originalName}
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Recent Analysis</CardTitle>
+              <Button
+                variant="outline"
+                onClick={() => setLocation("/analysis-history")}
+              >
+                View All
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b text-left">
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                      File Name
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                      Status
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                      Errors Found
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                      Critical
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                      Analysis Date
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.isArray(recentFiles) &&
+                    recentFiles.slice(0, 5).map((file) => (
+                      <tr key={file.id} className="border-b hover:bg-muted/50">
+                        <td className="py-4 px-4">
+                          <div className="flex items-center space-x-3">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">
+                              {file.originalName}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4">
+                          <Badge
+                            variant="secondary"
+                            className={getStatusColor(file.status)}
+                          >
+                            {file.status}
+                          </Badge>
+                        </td>
+                        <td className="py-4 px-4">{file.totalErrors || 0}</td>
+                        <td className="py-4 px-4">
+                          <span className="text-red-600">
+                            {file.criticalErrors || 0}
                           </span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <Badge
-                          variant="secondary"
-                          className={getStatusColor(file.status)}
-                        >
-                          {file.status}
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-4">{file.totalErrors || 0}</td>
-                      <td className="py-4 px-4">
-                        <span className="text-red-600">
-                          {file.criticalErrors || 0}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 text-muted-foreground">
-                        {new Date(file.uploadTimestamp).toLocaleString()}
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center space-x-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleViewAnalysis(file)}
-                            className="text-primary hover:text-primary"
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleExportFile(file)}
-                            className="text-muted-foreground hover:text-foreground"
-                          >
-                            <Download className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteFile(file)}
-                            className="text-muted-foreground hover:text-destructive"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+                        </td>
+                        <td className="py-4 px-4 text-muted-foreground">
+                          {new Date(file.uploadTimestamp).toLocaleString()}
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleViewAnalysis(file)}
+                              className="text-primary hover:text-primary"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleExportFile(file)}
+                              className="text-muted-foreground hover:text-foreground"
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteFile(file)}
+                              className="text-muted-foreground hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
 
-            {(!recentFiles || recentFiles.length === 0) && (
-              <div className="text-center py-8 text-muted-foreground">
-                <FileText className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                <p>No files uploaded yet</p>
-                <Button onClick={handleUploadClick} className="mt-2">
-                  Upload your first file
-                </Button>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              {(!recentFiles || recentFiles.length === 0) && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <FileText className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>No files uploaded yet</p>
+                  <Button onClick={handleUploadClick} className="mt-2">
+                    Upload your first file
+                  </Button>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
     </AdaptiveLayout>
   );
 }
