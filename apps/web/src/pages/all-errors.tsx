@@ -145,9 +145,9 @@ export default function AllErrors() {
   const [searchQuery, setSearchQuery] = useState("");
   const [fileFilter, setFileFilter] = useState<string[]>([]); // Changed to array for multi-select
   const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
-  const [userFilter, setUserFilter] = useState<string>("all");
-  const [storeFilter, setStoreFilter] = useState<string>("all");
-  const [kioskFilter, setKioskFilter] = useState<string>("all");
+  const [userFilter, setUserFilter] = useState<string[]>([]);
+  const [storeFilter, setStoreFilter] = useState<string[]>([]);
+  const [kioskFilter, setKioskFilter] = useState<string[]>([]);
   const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [showAISuggestionModal, setShowAISuggestionModal] = useState(false);
@@ -222,14 +222,14 @@ export default function AllErrors() {
       if (errorTypeFilter && errorTypeFilter !== "all") {
         params.append("errorType", errorTypeFilter);
       }
-      if (userFilter && userFilter !== "all") {
-        params.append("userId", userFilter);
+      if (userFilter && userFilter.length > 0) {
+        params.append("userId", userFilter.join(","));
       }
-      if (storeFilter && storeFilter !== "all") {
-        params.append("storeNumber", storeFilter);
+      if (storeFilter && storeFilter.length > 0) {
+        params.append("storeNumber", storeFilter.join(","));
       }
-      if (kioskFilter && kioskFilter !== "all") {
-        params.append("kioskNumber", kioskFilter);
+      if (kioskFilter && kioskFilter.length > 0) {
+        params.append("kioskNumber", kioskFilter.join(","));
       }
 
       try {
@@ -308,13 +308,16 @@ export default function AllErrors() {
     },
   });
 
-  // Filter kiosks based on selected store
+  // Filter kiosks based on selected stores
   const filteredKiosks = useMemo(() => {
     if (!allKiosks) return [];
-    if (storeFilter && storeFilter !== "all") {
-      const store = (stores || []).find((s: any) => s.storeNumber === storeFilter);
-      if (store) {
-        return allKiosks.filter((k: any) => k.storeId === store.id);
+    if (storeFilter && storeFilter.length > 0) {
+      const selectedStores = (stores || []).filter((s: any) => 
+        storeFilter.includes(s.storeNumber)
+      );
+      if (selectedStores.length > 0) {
+        const selectedStoreIds = selectedStores.map(s => s.id);
+        return allKiosks.filter((k: any) => selectedStoreIds.includes(k.storeId));
       }
     }
     return allKiosks;
@@ -341,20 +344,20 @@ export default function AllErrors() {
     setPage(1);
   };
 
-  const handleUserFilter = (newUserFilter: string) => {
+  const handleUserFilter = (newUserFilter: string[]) => {
     setUserFilter(newUserFilter);
     setFileFilter([]); // Reset file filter when user changes
     setPage(1);
   };
 
-  const handleStoreFilter = (newStoreFilter: string) => {
+  const handleStoreFilter = (newStoreFilter: string[]) => {
     setStoreFilter(newStoreFilter);
-    setKioskFilter("all"); // Reset kiosk filter when store changes
+    setKioskFilter([]); // Reset kiosk filter when store changes
     setFileFilter([]); // Reset file filter when store changes
     setPage(1);
   };
 
-  const handleKioskFilter = (newKioskFilter: string) => {
+  const handleKioskFilter = (newKioskFilter: string[]) => {
     setKioskFilter(newKioskFilter);
     setFileFilter([]); // Reset file filter when kiosk changes
     setPage(1);
@@ -548,11 +551,9 @@ export default function AllErrors() {
                       value: user.id.toString(),
                     }))
                   ]}
-                  selectedValues={userFilter === "all" ? [] : [userFilter]}
+                  selectedValues={userFilter}
                   onSelectionChange={(values) => {
-                    // Single select behavior - only keep the most recent selection
-                    const newValue = values.length > 0 ? values[values.length - 1] : "all";
-                    handleUserFilter(newValue);
+                    handleUserFilter(values);
                   }}
                   placeholder="All Users"
                   searchPlaceholder="Search users..."
@@ -572,11 +573,9 @@ export default function AllErrors() {
                     value: store.storeNumber,
                   }))
                 ]}
-                selectedValues={storeFilter === "all" ? [] : [storeFilter]}
+                selectedValues={storeFilter}
                 onSelectionChange={(values) => {
-                  // Single select behavior - only keep the most recent selection
-                  const newValue = values.length > 0 ? values[values.length - 1] : "all";
-                  handleStoreFilter(newValue);
+                  handleStoreFilter(values);
                 }}
                 placeholder="All Stores"
                 searchPlaceholder="Search stores..."
@@ -595,16 +594,14 @@ export default function AllErrors() {
                     value: kiosk.kioskNumber,
                   }))
                 ]}
-                selectedValues={kioskFilter === "all" ? [] : [kioskFilter]}
+                selectedValues={kioskFilter}
                 onSelectionChange={(values) => {
-                  // Single select behavior - only keep the most recent selection
-                  const newValue = values.length > 0 ? values[values.length - 1] : "all";
-                  handleKioskFilter(newValue);
+                  handleKioskFilter(values);
                 }}
-                placeholder={storeFilter === "all" ? "Select store first" : "All Kiosks"}
+                placeholder={storeFilter.length === 0 ? "Select store first" : "All Kiosks"}
                 searchPlaceholder="Search kiosks..."
                 className="w-full"
-                disabled={storeFilter === "all"}
+                disabled={storeFilter.length === 0}
               />
             </div>
 

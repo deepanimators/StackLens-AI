@@ -3350,45 +3350,45 @@ Format as JSON with the following structure:
     try {
       const userId = req.user.id;
 
-      // Get user's log files and actual error records
-      const userLogFiles = await storage.getLogFilesByUser(userId);
-      const userErrors = await storage.getErrorsByUser(userId);
+      // Get system-wide data for dashboard stats (global view)
+      const allLogFiles = await storage.getAllLogFiles();
+      const allErrors = await storage.getAllErrors();
 
-      // Calculate statistics
-      const totalErrors = userErrors.length;
-      const criticalErrors = userErrors.filter(
+      // Calculate statistics using system-wide data
+      const totalErrors = allErrors.length;
+      const criticalErrors = allErrors.filter(
         (error) => error.severity === "critical"
       ).length;
-      const highErrors = userErrors.filter(
+      const highErrors = allErrors.filter(
         (error) => error.severity === "high"
       ).length;
-      const mediumErrors = userErrors.filter(
+      const mediumErrors = allErrors.filter(
         (error) => error.severity === "medium"
       ).length;
-      const lowErrors = userErrors.filter(
+      const lowErrors = allErrors.filter(
         (error) => error.severity === "low"
       ).length;
 
-      // Get recent analysis history
+      // Get user-specific recent analysis history (keep this user-specific as requested)
       const analysisHistory = await storage.getAnalysisHistoryByUser(userId);
 
-      // Calculate resolution rate
-      const resolvedErrors = userErrors.filter(
+      // Calculate resolution rate using system-wide data
+      const resolvedErrors = allErrors.filter(
         (error) => error.resolved
       ).length;
       const resolutionRate =
         totalErrors > 0 ? (resolvedErrors / totalErrors) * 100 : 0;
 
-      // Return dashboard data
+      // Return dashboard data (system-wide stats + user-specific recent analysis)
       res.json({
-        totalFiles: userLogFiles.length,
+        totalFiles: allLogFiles.length,
         totalErrors,
         criticalErrors,
         highErrors,
         mediumErrors,
         lowErrors,
         resolutionRate: Math.round(resolutionRate * 10) / 10,
-        recentAnalyses: (analysisHistory || []).slice(0, 5),
+        recentAnalyses: (analysisHistory || []).slice(0, 5), // Keep user-specific as requested
         errorTrends: {
           critical: criticalErrors,
           high: highErrors,
@@ -5435,22 +5435,8 @@ Format as JSON with the following structure:
       const storeNumber = req.query.storeNumber as string;
       const kioskNumber = req.query.kioskNumber as string;
 
-      // Get all errors from all users (system-wide approach)
-      let allUserErrors;
-      if (userId && userId !== "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
-        // Admin requesting specific user's errors
-        const targetUserId = parseInt(userId);
-        if (isNaN(targetUserId)) {
-          return res.status(400).json({ message: "Invalid userId parameter" });
-        }
-        allUserErrors = await storage.getErrorsByUser(targetUserId);
-      } else if (userId && req.user.role === "user") {
-        // Regular user trying to access specific user's errors - deny
-        return res.status(403).json({ message: "Access denied" });
-      } else {
-        // Default: get all errors from all users (system-wide)
-        allUserErrors = await storage.getAllErrors();
-      }
+      // Always get all errors for system-wide approach, then filter afterwards
+      let allUserErrors = await storage.getAllErrors();
 
       console.log(`🔍 [DEBUG] Total user errors: ${allUserErrors.length}`);
       if (errorTypeFilter && errorTypeFilter !== "all") {
@@ -5511,27 +5497,60 @@ Format as JSON with the following structure:
         );
       }
 
-      // Filter by store number
-      if (storeNumber && storeNumber !== "all") {
-        console.log(`🔍 [DEBUG] Filtering by storeNumber: ${storeNumber}`);
+      // Filter by user IDs (supports multiple comma-separated values)
+      if (userId && userId !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by userId: ${userId}`);
         const beforeFiltering = filteredErrors.length;
-        filteredErrors = filteredErrors.filter(
-          (error: any) => error.storeNumber === storeNumber
-        );
+
+        // Handle multiple user IDs (comma-separated)
+        const userIds = userId.split(",").map(id => id.trim()).filter(id => id);
+
+        if (userIds.length > 0) {
+          filteredErrors = filteredErrors.filter(
+            (error: any) => error.userId && userIds.includes(error.userId.toString())
+          );
+        }
+
         console.log(
-          `🔍 [DEBUG] Store filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
+          `🔍 [DEBUG] User filter: ${beforeFiltering} -> ${filteredErrors.length} errors (filtering by ${userIds.length} user(s))`
         );
       }
 
-      // Filter by kiosk number
+      // Filter by store numbers (supports multiple comma-separated values)
+      if (storeNumber && storeNumber !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by storeNumber: ${storeNumber}`);
+        const beforeFiltering = filteredErrors.length;
+
+        // Handle multiple store numbers (comma-separated)
+        const storeNumbers = storeNumber.split(",").map(num => num.trim()).filter(num => num);
+
+        if (storeNumbers.length > 0) {
+          filteredErrors = filteredErrors.filter(
+            (error: any) => error.storeNumber && storeNumbers.includes(error.storeNumber.toString())
+          );
+        }
+
+        console.log(
+          `🔍 [DEBUG] Store filter: ${beforeFiltering} -> ${filteredErrors.length} errors (filtering by ${storeNumbers.length} store(s))`
+        );
+      }
+
+      // Filter by kiosk numbers (supports multiple comma-separated values)
       if (kioskNumber && kioskNumber !== "all") {
         console.log(`🔍 [DEBUG] Filtering by kioskNumber: ${kioskNumber}`);
         const beforeFiltering = filteredErrors.length;
-        filteredErrors = filteredErrors.filter(
-          (error: any) => error.kioskNumber === kioskNumber
-        );
+
+        // Handle multiple kiosk numbers (comma-separated)
+        const kioskNumbers = kioskNumber.split(",").map(num => num.trim()).filter(num => num);
+
+        if (kioskNumbers.length > 0) {
+          filteredErrors = filteredErrors.filter(
+            (error: any) => error.kioskNumber && kioskNumbers.includes(error.kioskNumber.toString())
+          );
+        }
+
         console.log(
-          `🔍 [DEBUG] Kiosk filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
+          `🔍 [DEBUG] Kiosk filter: ${beforeFiltering} -> ${filteredErrors.length} errors (filtering by ${kioskNumbers.length} kiosk(s))`
         );
       }
 
@@ -5682,7 +5701,8 @@ Format as JSON with the following structure:
       }
 
       const userId = user.id;
-      const allUserErrors = await storage.getErrorsByUser(userId);
+      // Use system-wide data for AI analysis statistics
+      const allUserErrors = await storage.getAllErrors();
 
       console.log(
         `🔍 [DEBUG] Found ${allUserErrors.length} total errors for user ${userId}`
@@ -6415,7 +6435,7 @@ Format as JSON with the following structure:
   // Get comprehensive reports and analytics
   app.get("/api/reports", requireAuth, async (req: any, res: any) => {
     try {
-      const range = req.query.range || "30d"; // Default to 30 days
+      const range = req.query.range || req.query.dateRange || "30d"; // Default to 30 days
       const format = req.query.format || "json"; // json, csv, pdf, excel
 
       // Calculate date range
