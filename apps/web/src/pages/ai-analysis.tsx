@@ -265,17 +265,18 @@ export default function AIAnalysisPage() {
         "POST",
         "/api/ai/process-excel-training"
       );
-      if (!processResponse.ok) {
+      
+      if (!processResponse || !processResponse.processedRecords) {
         throw new Error("Failed to process Excel training data");
       }
 
-      const { processedRecords } = await processResponse.json();
+      const { processedRecords } = processResponse;
 
       // Step 2: Train the model
       setTrainingStatus("Training ML model with processed data...");
       setTrainingProgress(50);
 
-      const trainResponse = await authenticatedRequest(
+      const trainingResult = await authenticatedRequest(
         "POST",
         "/api/ai/train-manual",
         {
@@ -283,24 +284,25 @@ export default function AIAnalysisPage() {
         }
       );
 
-      if (!trainResponse.ok) {
+      if (!trainingResult || !trainingResult.success) {
         throw new Error("Failed to train model");
       }
-
-      const trainingResult = await trainResponse.json();
 
       // Step 3: Validate and finalize
       setTrainingStatus("Validating model performance...");
       setTrainingProgress(80);
 
       // Get updated metrics
-      const metricsResponse = await authenticatedRequest(
-        "GET",
-        "/api/ai/training-metrics"
-      );
-      if (metricsResponse.ok) {
-        const metrics = await metricsResponse.json();
-        setTrainingMetrics(metrics);
+      try {
+        const metrics = await authenticatedRequest(
+          "GET",
+          "/api/ai/training-metrics"
+        );
+        if (metrics) {
+          setTrainingMetrics(metrics);
+        }
+      } catch (error) {
+        console.warn("Failed to fetch training metrics:", error);
       }
 
       setTrainingProgress(100);
@@ -421,72 +423,88 @@ export default function AIAnalysisPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {isLoadingStats || isLoadingErrors || isLoadingConsolidated ? (
           Array.from({ length: 4 }, (_, i) => (
-            <Card key={i}>
-              <CardContent className="p-4">
+            <Card key={i} className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="h-4 bg-gray-200 rounded animate-pulse w-16 mb-2"></div>
-                    <div className="h-8 bg-gray-200 rounded animate-pulse w-12"></div>
+                    <p className="text-sm text-muted-foreground font-medium">Loading...</p>
+                    <div className="text-3xl font-bold">
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
                   </div>
-                  <Loader2 className="h-8 w-8 text-gray-400 animate-spin" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <Loader2 className="w-7 h-7 text-primary animate-spin" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
           ))
         ) : (
           <>
-            <Card>
-              <CardContent className="p-4">
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">Total Errors</p>
-                    <p className="text-2xl font-bold">
+                    <p className="text-sm text-muted-foreground font-medium">Total Errors</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                       {aiSuggestionStats.totalErrors}
                     </p>
                   </div>
-                  <AlertTriangle className="h-8 w-8 text-orange-600" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <AlertTriangle className="w-7 h-7 text-primary" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-4">
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">AI Suggestions</p>
-                    <p className="text-2xl font-bold">
+                    <p className="text-sm text-muted-foreground font-medium">AI Suggestions</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                       {aiSuggestionStats.withAISuggestions}
                     </p>
                   </div>
-                  <Brain className="h-8 w-8 text-purple-600" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <Brain className="w-7 h-7 text-primary" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-4">
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">ML Predictions</p>
-                    <p className="text-2xl font-bold">
+                    <p className="text-sm text-muted-foreground font-medium">ML Predictions</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                       {aiSuggestionStats.withMLPredictions}
                     </p>
                   </div>
-                  <Zap className="h-8 w-8 text-blue-600" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <Zap className="w-7 h-7 text-primary" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-4">
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">Resolved</p>
-                    <p className="text-2xl font-bold">
+                    <p className="text-sm text-muted-foreground font-medium">Resolved</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                       {aiSuggestionStats.resolvedErrors}
                     </p>
                   </div>
-                  <CheckCircle className="h-8 w-8 text-green-600" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <CheckCircle className="w-7 h-7 text-primary" />
+                  </div>
                 </div>
               </CardContent>
             </Card>

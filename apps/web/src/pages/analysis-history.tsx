@@ -726,68 +726,106 @@ export default function AnalysisHistoryPage() {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Analyses</p>
-                <p className="text-2xl font-bold">{statistics.totalAnalyses}</p>
-              </div>
-              <FileText className="h-8 w-8 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
+        {isLoading ? (
+          Array.from({ length: 4 }, (_, i) => (
+            <Card key={i} className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Loading...</p>
+                    <div className="text-3xl font-bold">
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <FileText className="w-7 h-7 text-primary animate-pulse" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Total Analyses</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {statistics.totalAnalyses}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <FileText className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Errors</p>
-                <p className="text-2xl font-bold">{statistics.totalErrors}</p>
-              </div>
-              <AlertTriangle className="h-8 w-8 text-orange-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Total Errors</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {statistics.totalErrors}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <AlertTriangle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Critical Issues</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {statistics.totalCriticalErrors}
-                </p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-red-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Critical Issues</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-red-600">
+                      {statistics.totalCriticalErrors}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <CheckCircle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Avg. Accuracy</p>
-                <p className="text-2xl font-bold">
-                  {Array.isArray(analysisHistory) &&
-                  analysisHistory.length &&
-                  analysisHistory.some((a) => a.modelAccuracy > 0)
-                    ? (
-                        analysisHistory.reduce(
-                          (sum, a) => sum + (a.modelAccuracy || 0),
-                          0
-                        ) /
-                        analysisHistory.filter((a) => a.modelAccuracy > 0)
-                          .length
-                      ).toFixed(1) + "%"
-                    : "0.0%"}
-                </p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-green-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Avg. Accuracy</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {Array.isArray(analysisHistory) &&
+                      analysisHistory.length &&
+                      analysisHistory.some((a) => a.modelAccuracy > 0)
+                        ? (
+                            analysisHistory.reduce(
+                              (sum, a) => sum + (a.modelAccuracy || 0),
+                              0
+                            ) /
+                            analysisHistory.filter((a) => a.modelAccuracy > 0)
+                              .length
+                          ).toFixed(1) + "%"
+                        : "0.0%"}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <TrendingUp className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       {/* Analysis History Table */}

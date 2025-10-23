@@ -5506,9 +5506,44 @@ Format as JSON with the following structure:
         const userIds = userId.split(",").map(id => id.trim()).filter(id => id);
 
         if (userIds.length > 0) {
+          // Get all files uploaded by these users
+          const allFiles = await storage.getAllLogFiles();
+
+          // Debug: Show sample user data
+          console.log(`🔍 [DEBUG] Sample files uploadedBy values:`, allFiles.slice(0, 5).map(f => ({
+            id: f.id,
+            uploadedBy: f.uploadedBy,
+            uploadedByType: typeof f.uploadedBy,
+            originalName: f.originalName
+          })));
+          console.log(`🔍 [DEBUG] Looking for userIds:`, userIds.map(id => ({ id, type: typeof id })));
+
+          const userFileIds = allFiles
+            .filter(file => {
+              const uploadedBy = file.uploadedBy;
+              if (!uploadedBy) return false;
+
+              // Try both string and number comparison
+              const matched = userIds.includes(uploadedBy.toString()) ||
+                userIds.includes(uploadedBy) ||
+                (typeof uploadedBy === 'number' && userIds.includes(uploadedBy.toString()));
+
+              if (matched) {
+                console.log(`🔍 [DEBUG] File ${file.id} (${file.originalName}) matches user ${uploadedBy}`);
+              }
+              return matched;
+            })
+            .map(file => file.id);
+
+          console.log(`🔍 [DEBUG] Found ${userFileIds.length} files for users: ${userIds.join(", ")}`);
+          console.log(`🔍 [DEBUG] User file IDs:`, userFileIds.slice(0, 10));
+
+          // Filter errors by fileIds that belong to these users
+          const beforeErrorFilter = filteredErrors.length;
           filteredErrors = filteredErrors.filter(
-            (error: any) => error.userId && userIds.includes(error.userId.toString())
+            (error: any) => error.fileId && userFileIds.includes(error.fileId)
           );
+          console.log(`🔍 [DEBUG] Error filter result: ${beforeErrorFilter} -> ${filteredErrors.length} errors`);
         }
 
         console.log(
@@ -6469,15 +6504,53 @@ Format as JSON with the following structure:
       console.log(`🔍 [DEBUG] Reports - Range: ${range}, From: ${fromDate.toISOString()}, To: ${now.toISOString()}`);
       console.log(`🔍 [DEBUG] Reports - Total files before filter: ${allFiles.length}, Total errors before filter: ${allErrors.length}`);
 
-      // Filter data by date range
-      const filteredFiles = allFiles.filter(
-        (file) =>
-          file.uploadTimestamp && new Date(file.uploadTimestamp) >= fromDate
-      );
+      // Quick check of data availability
+      console.log(`🔍 [DEBUG] First file sample:`, allFiles.slice(0, 3).map(f => ({
+        id: f.id,
+        uploadTimestamp: f.uploadTimestamp,
+        originalName: f.originalName
+      })));
+      console.log(`🔍 [DEBUG] First error sample:`, allErrors.slice(0, 3).map(e => ({
+        id: e.id,
+        createdAt: e.createdAt,
+        severity: e.severity,
+        fileId: e.fileId
+      })));
 
-      const filteredErrors = allErrors.filter(
-        (error) => error.createdAt && new Date(error.createdAt) >= fromDate
-      );
+      // Log sample data to understand the structure
+      if (allFiles.length > 0) {
+        console.log(`🔍 [DEBUG] Sample file timestamp: ${allFiles[0].uploadTimestamp}, type: ${typeof allFiles[0].uploadTimestamp}`);
+      }
+      if (allErrors.length > 0) {
+        console.log(`🔍 [DEBUG] Sample error timestamp: ${allErrors[0].createdAt}, type: ${typeof allErrors[0].createdAt}`);
+      }
+
+      // Filter data by date range with better date handling
+      const filteredFiles = allFiles.filter((file) => {
+        if (!file.uploadTimestamp) return false;
+        try {
+          const fileDate = new Date(file.uploadTimestamp);
+          // Check if date is valid
+          if (isNaN(fileDate.getTime())) return false;
+          return fileDate >= fromDate;
+        } catch (error) {
+          console.warn(`Invalid file timestamp: ${file.uploadTimestamp}`, error);
+          return false;
+        }
+      });
+
+      const filteredErrors = allErrors.filter((error) => {
+        if (!error.createdAt) return false;
+        try {
+          const errorDate = new Date(error.createdAt);
+          // Check if date is valid
+          if (isNaN(errorDate.getTime())) return false;
+          return errorDate >= fromDate;
+        } catch (error) {
+          console.warn(`Invalid error timestamp: ${error.createdAt}`, error);
+          return false;
+        }
+      });
 
       console.log(`🔍 [DEBUG] Reports - Files after filter: ${filteredFiles.length}, Errors after filter: ${filteredErrors.length}`);
 
@@ -6539,13 +6612,25 @@ Format as JSON with the following structure:
       const previousToDate = new Date(fromDate);
 
       const prevFiles = allFiles.filter((file) => {
-        const uploadDate = new Date(file.uploadTimestamp || new Date());
-        return uploadDate >= previousFromDate && uploadDate < previousToDate;
+        if (!file.uploadTimestamp) return false;
+        try {
+          const uploadDate = new Date(file.uploadTimestamp);
+          if (isNaN(uploadDate.getTime())) return false;
+          return uploadDate >= previousFromDate && uploadDate < previousToDate;
+        } catch (error) {
+          return false;
+        }
       });
 
       const prevErrors = allErrors.filter((error) => {
-        const errorDate = new Date(error.createdAt || new Date());
-        return errorDate >= previousFromDate && errorDate < previousToDate;
+        if (!error.createdAt) return false;
+        try {
+          const errorDate = new Date(error.createdAt);
+          if (isNaN(errorDate.getTime())) return false;
+          return errorDate >= previousFromDate && errorDate < previousToDate;
+        } catch (error) {
+          return false;
+        }
       });
 
       // Calculate trend percentages with better logic
@@ -6731,7 +6816,16 @@ Format as JSON with the following structure:
         return res.json(reportData);
       }
 
-      res.json(reportData);
+      // Add wrapper for frontend compatibility
+      res.json({
+        data: reportData.summary, // Frontend expects data.totalFiles structure
+        summary: reportData.summary,
+        severityDistribution: reportData.severityDistribution,
+        errorTypes: reportData.errorTypes,
+        topFiles: reportData.topFiles,
+        performance: reportData.performance,
+        dateRange: reportData.dateRange
+      });
     } catch (error) {
       console.error("Error generating reports:", error);
       res.status(500).json({ message: "Failed to generate reports" });

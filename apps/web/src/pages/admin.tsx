@@ -146,7 +146,7 @@ export default function AdminDashboard() {
   const [isGeminiApiKeyLocked, setIsGeminiApiKeyLocked] = useState(false);
 
   // Fetch admin stats
-  const { data: adminStats } = useQuery<AdminStats>({
+  const { data: adminStats, isLoading: isLoadingAdminStats } = useQuery<AdminStats>({
     queryKey: ["/api/admin/stats"],
     queryFn: async () => {
       return await authenticatedRequest("GET", "/api/admin/stats");
@@ -900,81 +900,115 @@ export default function AdminDashboard() {
 
           {/* Admin Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200/50 dark:from-blue-950/20 dark:to-blue-900/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      Total Users
-                    </p>
-                    <p className="text-2xl font-bold">
-                      {adminStats?.totalUsers || 0}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {adminStats?.activeUsers || 0} active
-                    </p>
-                  </div>
-                  <Users className="h-8 w-8 text-blue-600" />
-                </div>
-              </CardContent>
-            </Card>
+            {isLoadingAdminStats ? (
+              Array.from({ length: 4 }, (_, i) => (
+                <Card key={i} className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground font-medium">Loading...</p>
+                        <div className="text-3xl font-bold">
+                          <div className="flex items-center space-x-1 my-2 py-1">
+                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                        <Users className="w-7 h-7 text-primary animate-pulse" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <>
+                <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground font-medium">
+                          Total Users
+                        </p>
+                        <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          {adminStats?.totalUsers || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {adminStats?.activeUsers || 0} active
+                        </p>
+                      </div>
+                      <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                        <Users className="w-7 h-7 text-primary" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200/50 dark:from-purple-950/20 dark:to-purple-900/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      Total Roles
-                    </p>
-                    <p className="text-2xl font-bold">
-                      {adminStats?.totalRoles || 0}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Permission levels
-                    </p>
-                  </div>
-                  <Shield className="h-8 w-8 text-purple-600" />
-                </div>
-              </CardContent>
-            </Card>
+                <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground font-medium">
+                          Total Roles
+                        </p>
+                        <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          {adminStats?.totalRoles || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Permission levels
+                        </p>
+                      </div>
+                      <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                        <Shield className="w-7 h-7 text-primary" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-            <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 dark:from-green-950/20 dark:to-green-900/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      Training Modules
-                    </p>
-                    <p className="text-2xl font-bold">
-                      {adminStats?.totalTrainingModules || 0}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Available courses
-                    </p>
-                  </div>
-                  <BookOpen className="h-8 w-8 text-green-600" />
-                </div>
-              </CardContent>
-            </Card>
+                <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground font-medium">
+                          Training Modules
+                        </p>
+                        <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          {adminStats?.totalTrainingModules || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Available courses
+                        </p>
+                      </div>
+                      <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                        <BookOpen className="w-7 h-7 text-primary" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-            <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200/50 dark:from-orange-950/20 dark:to-orange-900/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      AI Models
-                    </p>
-                    <p className="text-2xl font-bold">
-                      {adminStats?.totalMLModels || 0}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {adminStats?.activeMLModels || 0} active
-                    </p>
-                  </div>
-                  <Brain className="h-8 w-8 text-orange-600" />
-                </div>
-              </CardContent>
-            </Card>
+                <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground font-medium">
+                          AI Models
+                        </p>
+                        <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          {adminStats?.totalMLModels || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {adminStats?.activeMLModels || 0} active
+                        </p>
+                      </div>
+                      <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                        <Brain className="w-7 h-7 text-primary" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            )}
           </div>
 
           {/* Quick Actions */}

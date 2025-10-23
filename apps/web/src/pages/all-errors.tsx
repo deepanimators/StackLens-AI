@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +18,7 @@ import AnalysisModal from "@/components/analysis-modal";
 import AISuggestionModal from "@/components/ai-suggestion-modal";
 import MultiSelectDropdown from "@/components/multi-select-dropdown";
 import { authenticatedRequest, authenticatedFetch, authManager } from "@/lib/auth";
-import { Search, Filter, Download, RefreshCw } from "lucide-react";
+import { Search, Filter, Download, RefreshCw, AlertTriangle, Info } from "lucide-react";
 import { SEVERITY_LABELS } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 
@@ -137,17 +138,54 @@ const transformErrorLog = (apiError: any): ErrorLog => {
   };
 };
 
+// Helper functions for URL parameter management with wouter
+const getUrlParams = () => {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    page: parseInt(params.get("page") || "1"),
+    limit: parseInt(params.get("limit") || "25"),
+    severity: params.get("severity") || "all",
+    search: params.get("search") || "",
+    fileFilter: params.get("fileFilter")?.split(",").filter(Boolean) || [],
+    errorType: params.get("errorType") || "all",
+    userFilter: params.get("userFilter")?.split(",").filter(Boolean) || [],
+    storeFilter: params.get("storeFilter")?.split(",").filter(Boolean) || [],
+    kioskFilter: params.get("kioskFilter")?.split(",").filter(Boolean) || [],
+  };
+};
+
+const updateUrlParams = (params: Record<string, any>) => {
+  const searchParams = new URLSearchParams();
+  
+  if (params.page !== 1) searchParams.set("page", params.page.toString());
+  if (params.limit !== 25) searchParams.set("limit", params.limit.toString());
+  if (params.severity !== "all") searchParams.set("severity", params.severity);
+  if (params.search) searchParams.set("search", params.search);
+  if (params.fileFilter.length > 0) searchParams.set("fileFilter", params.fileFilter.join(","));
+  if (params.errorType !== "all") searchParams.set("errorType", params.errorType);
+  if (params.userFilter.length > 0) searchParams.set("userFilter", params.userFilter.join(","));
+  if (params.storeFilter.length > 0) searchParams.set("storeFilter", params.storeFilter.join(","));
+  if (params.kioskFilter.length > 0) searchParams.set("kioskFilter", params.kioskFilter.join(","));
+
+  const newUrl = `${window.location.pathname}${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+  window.history.replaceState({}, '', newUrl);
+};
+
 export default function AllErrors() {
   const { toast } = useToast();
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(25);
-  const [severity, setSeverity] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [fileFilter, setFileFilter] = useState<string[]>([]); // Changed to array for multi-select
-  const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
-  const [userFilter, setUserFilter] = useState<string[]>([]);
-  const [storeFilter, setStoreFilter] = useState<string[]>([]);
-  const [kioskFilter, setKioskFilter] = useState<string[]>([]);
+  const [location] = useLocation();
+  
+  // Initialize state from URL parameters
+  const initialParams = getUrlParams();
+  const [page, setPage] = useState(initialParams.page);
+  const [limit, setLimit] = useState(initialParams.limit);
+  const [severity, setSeverity] = useState<string>(initialParams.severity);
+  const [searchQuery, setSearchQuery] = useState(initialParams.search);
+  const [fileFilter, setFileFilter] = useState<string[]>(initialParams.fileFilter);
+  const [errorTypeFilter, setErrorTypeFilter] = useState<string>(initialParams.errorType);
+  const [userFilter, setUserFilter] = useState<string[]>(initialParams.userFilter);
+  const [storeFilter, setStoreFilter] = useState<string[]>(initialParams.storeFilter);
+  const [kioskFilter, setKioskFilter] = useState<string[]>(initialParams.kioskFilter);
   const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [showAISuggestionModal, setShowAISuggestionModal] = useState(false);
@@ -172,6 +210,21 @@ export default function AllErrors() {
     },
     enabled: isAdmin,
   });
+
+  // Sync state changes with URL parameters
+  useEffect(() => {
+    updateUrlParams({
+      page,
+      limit,
+      severity,
+      search: searchQuery,
+      fileFilter,
+      errorType: errorTypeFilter,
+      userFilter,
+      storeFilter,
+      kioskFilter
+    });
+  }, [page, limit, severity, searchQuery, fileFilter, errorTypeFilter, userFilter, storeFilter, kioskFilter]);
 
   const {
     data: errorsData,
@@ -256,15 +309,13 @@ export default function AllErrors() {
     },
   });
 
-  // Get files for the file filter dropdown - filtered by store and kiosk
+  // Get files for the file filter dropdown - filtered by store and kiosk only (independent of user filter)
   const { data: files } = useQuery({
-    queryKey: ["/api/files", { userId: userFilter, storeFilter, kioskFilter, includeAll: true }],
+    queryKey: ["/api/files", { storeFilter, kioskFilter, includeAll: true }],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.append("includeAll", "true"); // Get all files for dropdown
-      if (userFilter && userFilter !== "all") {
-        params.append("userId", userFilter);
-      }
+      // Note: We intentionally don't filter by user here so the files dropdown shows all available files
       const query = params.toString() ? `?${params.toString()}` : "";
       const data = await authenticatedRequest("GET", `/api/files${query}`);
       let allFiles = data.files || [];
@@ -705,38 +756,95 @@ export default function AllErrors() {
 
       {/* Summary Stats - Now shows totals from all filtered results, not just current page */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-red-600">
-              {errorsData?.severityCounts?.critical || 0}
-            </div>
-            <p className="text-sm text-muted-foreground">Critical</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-orange-600">
-              {errorsData?.severityCounts?.high || 0}
-            </div>
-            <p className="text-sm text-muted-foreground">High</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-yellow-600">
-              {errorsData?.severityCounts?.medium || 0}
-            </div>
-            <p className="text-sm text-muted-foreground">Medium</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-blue-600">
-              {errorsData?.severityCounts?.low || 0}
-            </div>
-            <p className="text-sm text-muted-foreground">Low</p>
-          </CardContent>
-        </Card>
+        {isLoading ? (
+          Array.from({ length: 4 }, (_, i) => (
+            <Card key={i} className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Loading...</p>
+                    <div className="text-3xl font-bold">
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <AlertTriangle className="w-7 h-7 text-primary animate-pulse" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Critical</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-red-600 to-red-700 bg-clip-text text-transparent">
+                      {errorsData?.severityCounts?.critical || 0}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-xl flex items-center justify-center ring-2 ring-red-500/10">
+                    <AlertTriangle className="w-7 h-7 text-red-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">High</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+                      {errorsData?.severityCounts?.high || 0}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-xl flex items-center justify-center ring-2 ring-orange-500/10">
+                    <AlertTriangle className="w-7 h-7 text-orange-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Medium</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-yellow-700 bg-clip-text text-transparent">
+                      {errorsData?.severityCounts?.medium || 0}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-xl flex items-center justify-center ring-2 ring-yellow-500/10">
+                    <AlertTriangle className="w-7 h-7 text-yellow-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Low</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
+                      {errorsData?.severityCounts?.low || 0}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl flex items-center justify-center ring-2 ring-blue-500/10">
+                    <Info className="w-7 h-7 text-blue-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       {/* Errors Table */}
