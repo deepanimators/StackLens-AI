@@ -266,8 +266,15 @@ export default function AIAnalysisPage() {
         "/api/ai/process-excel-training"
       );
       
-      if (!processResponse || !processResponse.processedRecords) {
-        throw new Error("Failed to process Excel training data");
+      console.log("📊 Process Excel response:", processResponse);
+      
+      if (!processResponse || processResponse.error) {
+        const errorMsg = processResponse?.error || processResponse?.details || "Failed to process Excel training data";
+        throw new Error(errorMsg);
+      }
+      
+      if (!processResponse.processedRecords) {
+        throw new Error("No processed records returned from Excel training data");
       }
 
       const { processedRecords } = processResponse;
@@ -284,8 +291,15 @@ export default function AIAnalysisPage() {
         }
       );
 
-      if (!trainingResult || !trainingResult.success) {
-        throw new Error("Failed to train model");
+      console.log("📊 Training result:", trainingResult);
+      
+      if (!trainingResult) {
+        throw new Error("No response received from training API");
+      }
+      
+      if (!trainingResult.success) {
+        const errorMsg = trainingResult.error || trainingResult.message || "Failed to train model";
+        throw new Error(errorMsg);
       }
 
       // Step 3: Validate and finalize
