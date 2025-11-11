@@ -3410,37 +3410,35 @@ Format as JSON with the following structure:
     try {
       const userId = req.user.id;
 
-      // Get user's log files and actual error records (standardized approach)
-      const userLogFiles = await storage.getLogFilesByUser(userId);
-      const userErrors = await storage.getErrorsByUser(userId);
+      // For dashboard summary stats we want system-wide/global values
+      // Get all system log files and errors (system-wide)
+      const allLogFiles = await storage.getAllLogFiles();
+      const allErrors = await storage.getAllErrors();
 
-      // Calculate total errors from actual error records (consistent with other pages)
-      const totalErrors = userErrors.length;
-      const criticalErrors = userErrors.filter(
+      // Calculate total errors from system-wide error records
+      const totalErrors = allErrors.length;
+      const criticalErrors = allErrors.filter(
         (error) => error.severity === "critical"
       ).length;
-      const highErrors = userErrors.filter(
-        (error) => error.severity === "high"
-      ).length;
-      const mediumErrors = userErrors.filter(
+      const highErrors = allErrors.filter((error) => error.severity === "high")
+        .length;
+      const mediumErrors = allErrors.filter(
         (error) => error.severity === "medium"
       ).length;
-      const lowErrors = userErrors.filter(
-        (error) => error.severity === "low"
-      ).length;
+      const lowErrors = allErrors.filter((error) => error.severity === "low")
+        .length;
 
       // Get actual error details for resolved count (from error_logs table)
-      const resolvedErrors = userErrors.filter(
-        (error) => error.resolved === true
-      ).length;
+      const resolvedErrors = allErrors.filter((error) => error.resolved === true)
+        .length;
 
-      // Get analysis history
+      // Keep recent analysis user-specific for privacy and UX
       const analysisHistoryArray = await storage.getAnalysisHistoryByUser(
         userId
       );
 
-      // Calculate total files
-      const totalFiles = userLogFiles.length;
+      // Calculate total files (system-wide)
+      const totalFiles = allLogFiles.length;
 
       // Calculate resolution rate as number for consistency
       const resolutionRateNumber =
@@ -3461,8 +3459,8 @@ Format as JSON with the following structure:
         )
         .slice(0, 5);
 
-      // Calculate ML accuracy from error records with actual ML confidence
-      const errorsWithConfidence = userErrors.filter(
+      // Calculate ML accuracy from system-wide error records with actual ML confidence
+      const errorsWithConfidence = allErrors.filter(
         (error) =>
           (error as any).mlConfidence && (error as any).mlConfidence > 0
       );
@@ -3481,14 +3479,18 @@ Format as JSON with the following structure:
       const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
       const lastMonthTimestamp = lastMonth.getTime();
 
-      // Get last month's data
-      const lastMonthLogFiles = userLogFiles.filter(
-        (file) => new Date(file.uploadTimestamp).getTime() >= lastMonthTimestamp &&
-          new Date(file.uploadTimestamp).getTime() < now.getTime() - (30 * 24 * 60 * 60 * 1000)
+      // Get last month's data (system-wide)
+      const lastMonthLogFiles = allLogFiles.filter(
+        (file) =>
+          file.uploadTimestamp &&
+          new Date(Number(file.uploadTimestamp)).getTime() >= lastMonthTimestamp &&
+          new Date(Number(file.uploadTimestamp)).getTime() < now.getTime() - (30 * 24 * 60 * 60 * 1000)
       );
-      const lastMonthErrors = userErrors.filter(
-        (error) => error.createdAt && new Date(error.createdAt).getTime() >= lastMonthTimestamp &&
-          new Date(error.createdAt).getTime() < now.getTime() - (30 * 24 * 60 * 60 * 1000)
+      const lastMonthErrors = allErrors.filter(
+        (error) =>
+          error.createdAt &&
+          new Date(Number(error.createdAt)).getTime() >= lastMonthTimestamp &&
+          new Date(Number(error.createdAt)).getTime() < now.getTime() - (30 * 24 * 60 * 60 * 1000)
       );
       const lastMonthCriticalErrors = lastMonthErrors.filter(error => error.severity === "critical").length;
       const lastMonthResolvedErrors = lastMonthErrors.filter(error => error.resolved === true).length;
@@ -3540,11 +3542,12 @@ Format as JSON with the following structure:
         // Additional stats
         avgResolutionTime: "2.5 hours", // Mock data - could be calculated from processing times
         topErrorType:
-          userErrors.length > 0
-            ? userErrors.reduce((acc, error) => {
-              acc[error.errorType] = (acc[error.errorType] || 0) + 1;
-              return acc;
-            }, {} as any)
+          allErrors.length > 0
+            ? allErrors.reduce((acc, error) => {
+                const key = error.errorType || "unknown";
+                acc[key] = (acc[key] || 0) + 1;
+                return acc;
+              }, {} as any)
             : {},
       });
     } catch (error) {
