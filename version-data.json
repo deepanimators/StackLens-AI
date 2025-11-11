@@ -356,6 +356,9 @@
         "Fixed All Errors page to show system-wide data from all users instead of user-specific data",
         "Fixed Reports page to aggregate data from all users for comprehensive analytics", 
         "Fixed Files API to return system-wide files instead of user-specific files",
+        "Dashboard summary cards (Total Files, Total Errors, Critical Issues, Resolution Rate) now display system-wide/global data",
+        "Error Trends and Severity Distribution charts on the dashboard now use system-wide data sources for accurate global analytics",
+        "AI Analysis page now shows global AI/ML statistics and consolidated error data (no longer limited to the logged-in user)",
         "Enhanced card loading animations with proper spacing and visual separation",
         "Implemented system-wide error types, stores, and kiosk filtering across all pages"
       ]
@@ -496,10 +499,26 @@
           "type": "📊 DATA",
           "description": "Implemented system-wide error types, stores, and kiosk filtering across all pages"
         }
+        ,
+        {
+          "type": "📊 DATA",
+          "description": "Dashboard summary cards (Total Files, Total Errors, Critical Issues, Resolution Rate) switched to system-wide/global data"
+        },
+        {
+          "type": "📈 CHARTS",
+          "description": "Error Trends and Severity Distribution charts on the dashboard now use system-wide data sources for accurate global analytics"
+        },
+        {
+          "type": "🤖 AI",
+          "description": "AI Analysis page updated to show global AI/ML statistics and consolidated error data (no longer limited to the logged-in user)"
+        }
       ],
       "bugfixes": [
         "Resolved reports showing identical data across different date ranges",
         "Fixed All Errors page Select All filter functionality",
+        "Dashboard cards incorrectly scoped to user fixed (now global)",
+        "Error Trends & Severity Distribution charts fixed to use global data",
+        "AI Analysis statistics and consolidated views fixed to be global",
         "Corrected API endpoints to use getAllErrors() instead of getErrorsByUser()",
         "Fixed card loading animations sticking to title text",
         "Resolved version display issues in footer modal popup"
