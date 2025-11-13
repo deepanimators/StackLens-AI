@@ -400,26 +400,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock stats until database schema is fixed
-        const mockStats = {
-          totalUsers: 25,
-          activeUsers: 18,
-          totalRoles: 3,
-          totalTrainingModules: 12,
-          totalModels: 8,
-          activeModels: 5,
+        // Fetch real statistics from database
+        const allUsers = await storage.getAllUsers();
+        const allRoles = await storage.getAllRoles();
+        const allTrainingModules = await storage.getAllTrainingModules();
+        const allMlModels = await storage.getAllMlModels();
+
+        // Calculate active users (those with lastLogin in last 7 days)
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        const activeUsers = allUsers.filter(
+          (u) => u.lastLogin && new Date(u.lastLogin) > sevenDaysAgo
+        ).length;
+
+        // Calculate users added in last 7 days
+        const usersSinceLast7Days = allUsers.filter(
+          (u) => u.createdAt && new Date(u.createdAt) > sevenDaysAgo
+        ).length;
+
+        const stats = {
+          totalUsers: allUsers.length,
+          activeUsers: activeUsers,
+          totalRoles: allRoles.length,
+          totalTrainingModules: allTrainingModules.length,
+          totalModels: allMlModels.length,
+          activeModels: allMlModels.filter((m) => m.isActive).length,
           systemHealth: {
             status: "healthy",
             uptime: "99.8%",
             lastChecked: new Date().toISOString(),
           },
           recentActivity: {
-            newUsersThisWeek: 3,
+            newUsersThisWeek: usersSinceLast7Days,
             trainingSessionsThisWeek: 15,
-            modelsDeployedThisMonth: 2,
+            modelsDeployedThisMonth: allMlModels.filter(
+              (m) =>
+                m.trainedAt &&
+                new Date(m.trainedAt) >
+                new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            ).length,
           },
         };
-        res.json(mockStats);
+        res.json(stats);
       } catch (error) {
         console.error("Error fetching admin stats:", error);
         res.status(500).json({ message: "Failed to fetch admin stats" });
@@ -664,26 +686,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock roles until database schema is fixed
-        const mockRoles = [
-          {
-            id: 1,
-            name: "Admin",
-            description: "Administrator role",
-            permissions: ["read", "write", "delete"],
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            name: "User",
-            description: "Standard user role",
-            permissions: ["read"],
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        res.json(mockRoles);
+        const roles = await storage.getAllRoles();
+        res.json(roles);
       } catch (error) {
         console.error("Error fetching roles:", error);
         res.status(500).json({ message: "Failed to fetch roles" });
@@ -787,30 +791,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock training modules until database schema is fixed
-        const mockModules = [
-          {
-            id: 1,
-            title: "Introduction to Error Analysis",
-            description: "Learn the basics of error pattern recognition",
-            content: "Module content here...",
-            difficulty: "beginner",
-            estimatedDuration: 60,
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            title: "Advanced ML Training",
-            description: "Deep dive into machine learning model training",
-            content: "Advanced module content...",
-            difficulty: "advanced",
-            estimatedDuration: 120,
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        res.json(mockModules);
+        const modules = await storage.getAllTrainingModules();
+        res.json(modules);
       } catch (error) {
         console.error("Error fetching training modules:", error);
         res.status(500).json({ message: "Failed to fetch training modules" });
@@ -976,40 +958,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock models until database schema is fixed
-        const mockModels = [
-          {
-            id: 1,
-            name: "Error Classification Model",
-            version: "1.0.0",
-            description: "Classifies errors by type and severity",
-            modelType: "classification",
-            accuracy: 0.85,
-            precision: 0.82,
-            recall: 0.88,
-            f1Score: 0.85,
-            cvScore: 0.83,
-            isActive: true,
-            trainedAt: new Date().toISOString(),
-            performanceGrade: "B",
-          },
-          {
-            id: 2,
-            name: "Severity Prediction Model",
-            version: "2.1.0",
-            description: "Predicts error severity levels",
-            modelType: "regression",
-            accuracy: 0.92,
-            precision: 0.9,
-            recall: 0.94,
-            f1Score: 0.92,
-            cvScore: 0.91,
-            isActive: true,
-            trainedAt: new Date().toISOString(),
-            performanceGrade: "A",
-          },
-        ];
-        res.json(mockModels);
+        const models = await storage.getAllMlModels();
+        res.json(models);
       } catch (error) {
         console.error("Error fetching models:", error);
         res.status(500).json({ message: "Failed to fetch models" });
@@ -2738,278 +2688,6 @@ Format as JSON with the following structure:
     }
   );
 
-  // Test endpoint to verify server is working
-  app.get("/api/test", (req, res) => {
-    res.json({
-      message: "Server is working",
-      timestamp: new Date().toISOString(),
-      port: process.env.PORT || 3000,
-    });
-  });
-
-  // Test endpoint for debugging ML training and error pattern saves - NO AUTH REQUIRED
-  app.post("/api/test/ml-training", async (req: any, res: any) => {
-    try {
-      console.log("Test ML training endpoint called");
-
-      // Simple test to check if error pattern saving works
-      const testPattern = {
-        pattern: "Test error pattern",
-        regex: "test.*error",
-        severity: "high",
-        category: "test",
-        errorType: "test-error",
-        description: "Test description",
-        solution: "Test solution",
-      };
-
-      console.log("Saving test error pattern...");
-      const savedPattern = await storage.saveErrorPattern(testPattern);
-      console.log("Test pattern saved successfully:", savedPattern.id);
-
-      res.json({
-        success: true,
-        message: "Test pattern saved successfully",
-        savedPatternId: savedPattern.id,
-        testPattern: savedPattern,
-      });
-    } catch (error: any) {
-      console.error("Test ML training error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-        stack: error.stack,
-      });
-    }
-  });
-
-  // Test endpoint for AI service rate limiting - NO AUTH REQUIRED
-  app.post("/api/test/ai-suggestion", async (req: any, res: any) => {
-    try {
-      console.log("Test AI suggestion endpoint called");
-
-      // Create a mock error log for testing
-      const testErrorLog = {
-        id: 1,
-        timestamp: new Date(),
-        createdAt: new Date(),
-        message: "Test error: Cannot connect to database",
-        fileId: 1,
-        lineNumber: 123,
-        severity: "high",
-        errorType: "database",
-        fullText: "Test error: Cannot connect to database\nError at line 123",
-        stackTrace: "Error at line 123",
-        fileName: "test.js",
-        resolved: false,
-        aiSuggestion: null,
-        mlConfidence: null,
-        pattern: null,
-        mlPrediction: null,
-      };
-
-      console.log("Testing AI service with rate limiting...");
-      const suggestion = await aiService.generateErrorSuggestion(testErrorLog);
-
-      res.json({
-        success: true,
-        message: "AI suggestion generated successfully",
-        suggestion: suggestion,
-        rateLimiting: "6 second minimum delay between calls",
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error: any) {
-      console.error("Test AI suggestion error:", error);
-
-      // Check if it's a quota error
-      if (error.status === 429) {
-        res.status(429).json({
-          success: false,
-          message: "API quota exceeded - rate limiting working",
-          error: "QUOTA_EXCEEDED",
-          retryAfter: "30s",
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: error.message,
-          error: error.toString(),
-        });
-      }
-    }
-  });
-
-  // Test endpoint for model status - NO AUTH REQUIRED
-  app.get("/api/test/model-status", async (req: any, res: any) => {
-    try {
-      console.log("Test model status endpoint called");
-
-      // Get ML models from database
-      const allModels = await storage.getAllMlModels();
-      const activeModels = allModels.filter((model) => model.isActive);
-
-      // Get the latest models for each type
-      const enhancedMlModel = activeModels.find(
-        (m) => m.name.includes("enhanced") || m.name.includes("Enhanced")
-      );
-      const suggestionModel = activeModels.find(
-        (m) => m.name.includes("suggestion") || m.name.includes("Suggestion")
-      );
-
-      // Format the response
-      const modelStatus = {
-        enhancedMlModel: enhancedMlModel
-          ? {
-            id: enhancedMlModel.id,
-            name: enhancedMlModel.name,
-            version: enhancedMlModel.version,
-            accuracy: enhancedMlModel.accuracy,
-            isActive: enhancedMlModel.isActive,
-            trainedAt: enhancedMlModel.trainedAt,
-          }
-          : null,
-        suggestionModel: suggestionModel
-          ? {
-            id: suggestionModel.id,
-            name: suggestionModel.name,
-            version: suggestionModel.version,
-            accuracy: suggestionModel.accuracy,
-            isActive: suggestionModel.isActive,
-            trainedAt: suggestionModel.trainedAt,
-          }
-          : null,
-        allActiveModels: activeModels.map((m) => ({
-          id: m.id,
-          name: m.name,
-          version: m.version,
-          accuracy: m.accuracy,
-          trainedAt: m.trainedAt,
-        })),
-      };
-
-      res.json({
-        success: true,
-        modelStatus,
-        totalActiveModels: activeModels.length,
-      });
-    } catch (error: any) {
-      console.error("Test model status error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
-  // Test endpoint for suggestion without auth - for debugging 404 issues
-  app.post("/api/test/suggestion/:id", async (req: any, res: any) => {
-    try {
-      const errorId = parseInt(req.params.id);
-      console.log(`🧪 TEST: Suggestion request for error ID: ${errorId}`);
-
-      const error = await storage.getErrorLog(errorId);
-      if (!error) {
-        console.log(`❌ TEST: Error not found: ID ${errorId}`);
-        return res.status(404).json({
-          success: false,
-          message: "Error not found",
-          errorId,
-          available: await storage.getAllErrors(),
-        });
-      }
-
-      console.log(`✅ TEST: Found error: ${error.message.substring(0, 50)}...`);
-      const errorWithMlData = {
-        ...error,
-        mlConfidence: (error as any).mlConfidence || 0,
-        createdAt: error.createdAt || new Date(),
-      };
-
-      const suggestion = await suggestor.getSuggestion(errorWithMlData);
-
-      res.json({
-        success: true,
-        message: "Test suggestion generated successfully",
-        error,
-        suggestion,
-        features: FeatureEngineer.extractFeatures(errorWithMlData),
-      });
-    } catch (error: any) {
-      console.error("TEST: Error generating suggestion:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
-  // Test endpoint to fix model inconsistencies - NO AUTH REQUIRED
-  app.post("/api/test/fix-models", async (req: any, res: any) => {
-    try {
-      console.log("Restoring proper model differentiation...");
-
-      // Get all models first
-      const allModels = await storage.getAllMlModels();
-
-      // Find Enhanced ML Model - restore to actual 91.0% accuracy
-      const enhancedModel = allModels.find((m) =>
-        m.name.includes("Enhanced ML Model")
-      );
-      if (enhancedModel) {
-        await storage.updateMlModel(enhancedModel.id, {
-          name: "Enhanced ML Model",
-          version: "1.0.5", // Older, established model
-          accuracy: 0.91, // Actual 91.0% accuracy
-        });
-        console.log("Restored Enhanced ML Model to actual performance values");
-      }
-
-      // Find Suggestion Model - newer model with different performance
-      const suggestionModel = allModels.find((m) =>
-        m.name.includes("StackLens Error Suggestion Model")
-      );
-      if (suggestionModel) {
-        await storage.updateMlModel(suggestionModel.id, {
-          name: "StackLens Error Suggestion Model",
-          version: "1.0.2", // Newer, recently added model
-          accuracy: 0.915, // Better accuracy than Enhanced ML
-        });
-        console.log("Updated Suggestion Model with its own performance values");
-      }
-
-      // Get updated models
-      const updatedModels = await storage.getAllMlModels();
-      const activeUpdatedModels = updatedModels.filter(
-        (model) => model.isActive
-      );
-
-      res.json({
-        success: true,
-        message:
-          "Model differentiation restored - each model now shows its actual performance",
-        explanation:
-          "Enhanced ML Model (91.0%, v1.0.5) and Suggestion Model (91.5%, v1.0.2) now have different values based on their actual training results",
-        updatedModels: activeUpdatedModels.map((m) => ({
-          id: m.id,
-          name: m.name,
-          version: m.version,
-          accuracy: m.accuracy ? `${(m.accuracy * 100).toFixed(1)}%` : "N/A",
-          trainedAt: m.trainedAt,
-        })),
-      });
-    } catch (error: any) {
-      console.error("Fix models error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
   // Settings endpoint for UI configuration
   app.get("/api/settings", requireAuth, async (req: any, res: any) => {
     try {
@@ -3264,50 +2942,6 @@ Format as JSON with the following structure:
 
   // ============= CORE API ENDPOINTS =============
 
-  // Test endpoint to debug dashboard data
-  app.get("/api/debug/dashboard", async (req: any, res: any) => {
-    try {
-      const userId = 1; // hardcoded for debugging
-
-      // Get user's log files
-      const userLogFiles = await storage.getLogFilesByUser(userId);
-
-      console.log("Raw log files data:", JSON.stringify(userLogFiles, null, 2));
-
-      res.json({
-        rawLogFiles: userLogFiles,
-        totalFiles: userLogFiles.length,
-        calculations: {
-          totalErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.totalErrors || 0),
-            0
-          ),
-          criticalErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.criticalErrors || 0),
-            0
-          ),
-          highErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.highErrors || 0),
-            0
-          ),
-          mediumErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.mediumErrors || 0),
-            0
-          ),
-          lowErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.lowErrors || 0),
-            0
-          ),
-        },
-      });
-    } catch (error) {
-      console.error("Debug endpoint error:", error);
-      res.status(500).json({
-        error: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
-  });
-
   // Dashboard endpoint - main dashboard data
   app.get("/api/dashboard", requireAuth, async (req: any, res: any) => {
     try {
@@ -3459,8 +3093,33 @@ Format as JSON with the following structure:
         recentAnalyses: recentAnalyses.length,
         severityDistribution,
         // Additional stats
-        weeklyTrend: Math.floor(Math.random() * 20) - 10, // Mock trend data
-        avgResolutionTime: "2.5 hours", // Mock data
+        weeklyTrend: (() => {
+          const resolved = userErrors.filter((e: any) => e.resolved);
+          if (resolved.length === 0) return 0;
+          const times = resolved.map(
+            (e: any) =>
+              (new Date(e.resolvedAt || new Date()).getTime() -
+                new Date(e.createdAt).getTime()) /
+              (1000 * 60 * 60)
+          );
+          return Math.floor(
+            times.reduce((a: any, b: any) => a + b, 0) / times.length
+          );
+        })(),
+        avgResolutionTime: (() => {
+          const resolved = userErrors.filter((e: any) => e.resolved);
+          if (resolved.length === 0) return "N/A";
+          const times = resolved.map(
+            (e: any) =>
+              (new Date(e.resolvedAt || new Date()).getTime() -
+                new Date(e.createdAt).getTime()) /
+              (1000 * 60 * 60)
+          );
+          const avg = times.reduce((a: any, b: any) => a + b, 0) / times.length;
+          if (avg < 1) return `${Math.round(avg * 60)} minutes`;
+          if (avg < 24) return `${Math.round(avg)} hours`;
+          return `${Math.round(avg / 24)} days`;
+        })(),
         topErrorType:
           userErrors.length > 0
             ? userErrors.reduce((acc, error) => {
@@ -5235,20 +4894,23 @@ Format as JSON with the following structure:
           }
         } catch (mlError) {
           console.error("ML prediction failed:", mlError);
-          // Provide mock ML prediction with realistic confidence
+          // Provide fallback ML prediction with realistic confidence
           mlPrediction = {
             category: error.errorType || "Unknown",
             severity: error.severity || "medium",
-            confidence: Math.min(
-              0.95,
-              Math.max(0.65, Math.random() * 0.3 + 0.7)
-            ),
+            confidence: 0.75,
             suggestedFix:
               "Check the error context and apply appropriate debugging techniques.",
             estimatedTime: "15-30 minutes",
           };
         }
       }
+
+      // Get all errors for related errors analysis
+      const allErrors = await storage.getAllErrors();
+      const relatedErrors = allErrors
+        .filter((e: any) => e.errorType === error.errorType && e.id !== error.id)
+        .slice(0, 5);
 
       res.json({
         error,
@@ -5258,9 +4920,8 @@ Format as JSON with the following structure:
             `Common in ${error.errorType} errors`,
             "Often resolved by code review",
           ],
-          relatedErrors: [], // Mock for now - can implement later
-          historicalContext: `Similar errors: ${Math.floor(Math.random() * 10) + 1
-            }`,
+          relatedErrors: relatedErrors,
+          historicalContext: `Similar errors: ${relatedErrors.length}`,
         },
       });
     } catch (error) {

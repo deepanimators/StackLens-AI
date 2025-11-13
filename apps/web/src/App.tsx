@@ -5,26 +5,35 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useQuery } from "@tanstack/react-query";
 import { authManager } from "./lib/auth";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutProvider } from "@/contexts/layout-context";
 import { SettingsProvider } from "@/contexts/settings-context";
 import { FirebaseAuthWrapper } from "@/components/firebase-auth-wrapper";
 
-// Pages
-import Dashboard from "@/pages/dashboard";
-import Upload from "@/pages/upload";
-import AllErrors from "@/pages/all-errors";
-import AnalysisHistory from "@/pages/analysis-history";
-import AIAnalysis from "@/pages/ai-analysis";
-import EnhancedAIAnalysis from "@/pages/enhanced-ai-analysis";
-import AIEnhancedDashboard from "@/pages/ai-enhanced-dashboard";
-import Reports from "@/pages/reports";
-import Settings from "@/pages/settings";
-import Admin from "@/pages/admin";
-import StoreKioskManagement from "@/pages/store-kiosk-management";
+// Lazy load heavy pages to reduce initial bundle
+const Dashboard = lazy(() => import("@/pages/dashboard"));
+const Upload = lazy(() => import("@/pages/upload"));
+const AllErrors = lazy(() => import("@/pages/all-errors"));
+const AnalysisHistory = lazy(() => import("@/pages/analysis-history"));
+const AIAnalysis = lazy(() => import("@/pages/ai-analysis"));
+const EnhancedAIAnalysis = lazy(() => import("@/pages/enhanced-ai-analysis"));
+const AIEnhancedDashboard = lazy(() => import("@/pages/ai-enhanced-dashboard"));
+const Reports = lazy(() => import("@/pages/reports"));
+const Settings = lazy(() => import("@/pages/settings"));
+const Admin = lazy(() => import("@/pages/admin"));
+const StoreKioskManagement = lazy(() => import("@/pages/store-kiosk-management"));
+
+// Keep Login and NotFound as synchronous to avoid loading delay on auth pages
 import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
+
+// Loading skeleton component
+const PageLoader = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 
 function Router() {
   const { data: user, isLoading, refetch } = useQuery({
@@ -69,18 +78,18 @@ function Router() {
 
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/ai-dashboard" component={AIEnhancedDashboard} />
-      <Route path="/upload" component={Upload} />
-      <Route path="/all-errors" component={AllErrors} />
-      <Route path="/analysis-history" component={AnalysisHistory} />
-      <Route path="/ai-analysis" component={AIAnalysis} />
-      <Route path="/enhanced-ai-analysis" component={EnhancedAIAnalysis} />
-      <Route path="/reports" component={Reports} />
-      <Route path="/settings" component={Settings} />
-      <Route path="/admin" component={Admin} />
-      <Route path="/store-kiosk-management" component={StoreKioskManagement} />
+      <Route path="/" component={() => <Suspense fallback={<PageLoader />}><Dashboard /></Suspense>} />
+      <Route path="/dashboard" component={() => <Suspense fallback={<PageLoader />}><Dashboard /></Suspense>} />
+      <Route path="/ai-dashboard" component={() => <Suspense fallback={<PageLoader />}><AIEnhancedDashboard /></Suspense>} />
+      <Route path="/upload" component={() => <Suspense fallback={<PageLoader />}><Upload /></Suspense>} />
+      <Route path="/all-errors" component={() => <Suspense fallback={<PageLoader />}><AllErrors /></Suspense>} />
+      <Route path="/analysis-history" component={() => <Suspense fallback={<PageLoader />}><AnalysisHistory /></Suspense>} />
+      <Route path="/ai-analysis" component={() => <Suspense fallback={<PageLoader />}><AIAnalysis /></Suspense>} />
+      <Route path="/enhanced-ai-analysis" component={() => <Suspense fallback={<PageLoader />}><EnhancedAIAnalysis /></Suspense>} />
+      <Route path="/reports" component={() => <Suspense fallback={<PageLoader />}><Reports /></Suspense>} />
+      <Route path="/settings" component={() => <Suspense fallback={<PageLoader />}><Settings /></Suspense>} />
+      <Route path="/admin" component={() => <Suspense fallback={<PageLoader />}><Admin /></Suspense>} />
+      <Route path="/store-kiosk-management" component={() => <Suspense fallback={<PageLoader />}><StoreKioskManagement /></Suspense>} />
       <Route component={NotFound} />
     </Switch>
   );

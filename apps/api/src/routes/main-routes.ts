@@ -403,26 +403,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock stats until database schema is fixed
-        const mockStats = {
-          totalUsers: 25,
-          activeUsers: 18,
-          totalRoles: 3,
-          totalTrainingModules: 2,
-          totalMLModels: 2,
-          activeMLModels: 2,
+        // Get real stats from database
+        const allUsers = await storage.getAllUsers();
+        const allRoles = await storage.getAllRoles();
+        const allTrainingModules = await storage.getAllTrainingModules();
+        const allMlModels = await storage.getAllMlModels();
+        const activeMLModels = allMlModels.filter((model) => model.isActive);
+
+        // Calculate active users (users with login within last 30 days)
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const activeUsers = allUsers.filter((user: any) => {
+          const lastLogin = user.lastLogin ? new Date(user.lastLogin) : null;
+          return lastLogin && lastLogin > thirtyDaysAgo;
+        }).length;
+
+        // Calculate this week's new users
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const newUsersThisWeek = allUsers.filter((user: any) => {
+          const createdAt = new Date(user.createdAt || 0);
+          return createdAt > sevenDaysAgo;
+        }).length;
+
+        // Get training sessions count (simplified - can be enhanced)
+        const allTrainingSessions = await db.select().from(modelTrainingSessions);
+        const trainingSessionsThisWeek = allTrainingSessions.filter((session: any) => {
+          const createdAt = new Date(session.createdAt || 0);
+          return createdAt > sevenDaysAgo;
+        }).length;
+
+        // Get model deployments this month
+        const thirtyDaysAgoTime = thirtyDaysAgo.getTime();
+        const modelDeploymentsThisMonth = await db.select().from(modelDeployments);
+        const deploymentsThisMonth = modelDeploymentsThisMonth.filter((deployment: any) => {
+          const createdAt = new Date(deployment.createdAt || 0).getTime();
+          return createdAt > thirtyDaysAgoTime;
+        }).length;
+
+        const stats = {
+          totalUsers: allUsers.length,
+          activeUsers,
+          totalRoles: allRoles.length,
+          totalTrainingModules: allTrainingModules.length,
+          totalMLModels: allMlModels.length,
+          activeMLModels: activeMLModels.length,
           systemHealth: {
-            status: "healthy",
+            status: activeMLModels.length > 0 ? "healthy" : "warning",
             uptime: "99.8%",
             lastChecked: new Date().toISOString(),
           },
           recentActivity: {
-            newUsersThisWeek: 3,
-            trainingSessionsThisWeek: 15,
-            modelsDeployedThisMonth: 2,
+            newUsersThisWeek,
+            trainingSessionsThisWeek,
+            modelsDeployedThisMonth: deploymentsThisMonth,
           },
         };
-        res.json(mockStats);
+        res.json(stats);
       } catch (error) {
         console.error("Error fetching admin stats:", error);
         res.status(500).json({ message: "Failed to fetch admin stats" });
@@ -644,9 +679,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (defaultLanguage) updates.language = defaultLanguage;
 
         // Update notification preferences
-        const currentNotifPrefs = typeof userSettings.notificationPreferences === 'string'
+        const currentNotifPrefs = userSettings && typeof userSettings.notificationPreferences === 'string'
           ? JSON.parse(userSettings.notificationPreferences)
-          : userSettings.notificationPreferences || {};
+          : userSettings?.notificationPreferences || {};
 
         updates.notificationPreferences = JSON.stringify({
           ...currentNotifPrefs,
@@ -683,26 +718,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock roles until database schema is fixed
-        const mockRoles = [
-          {
-            id: 1,
-            name: "Admin",
-            description: "Administrator role",
-            permissions: ["read", "write", "delete"],
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            name: "User",
-            description: "Standard user role",
-            permissions: ["read"],
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        res.json(mockRoles);
+        // Get real roles from database
+        const roles = await storage.getAllRoles();
+        res.json(roles);
       } catch (error) {
         console.error("Error fetching roles:", error);
         res.status(500).json({ message: "Failed to fetch roles" });
@@ -806,30 +824,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock training modules until database schema is fixed
-        const mockModules = [
-          {
-            id: 1,
-            title: "Introduction to Error Analysis",
-            description: "Learn the basics of error pattern recognition",
-            content: "Module content here...",
-            difficulty: "beginner",
-            estimatedDuration: 60,
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            title: "Advanced ML Training",
-            description: "Deep dive into machine learning model training",
-            content: "Advanced module content...",
-            difficulty: "advanced",
-            estimatedDuration: 120,
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        res.json(mockModules);
+        // Get real training modules from database
+        const modules = await storage.getAllTrainingModules();
+        res.json(modules);
       } catch (error) {
         console.error("Error fetching training modules:", error);
         res.status(500).json({ message: "Failed to fetch training modules" });
@@ -995,40 +992,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock models until database schema is fixed
-        const mockModels = [
-          {
-            id: 1,
-            name: "Error Classification Model",
-            version: "1.0.0",
-            description: "Classifies errors by type and severity",
-            modelType: "classification",
-            accuracy: 0.85,
-            precision: 0.82,
-            recall: 0.88,
-            f1Score: 0.85,
-            cvScore: 0.83,
-            isActive: true,
-            trainedAt: new Date().toISOString(),
-            performanceGrade: "B",
-          },
-          {
-            id: 2,
-            name: "Severity Prediction Model",
-            version: "2.1.0",
-            description: "Predicts error severity levels",
-            modelType: "regression",
-            accuracy: 0.92,
-            precision: 0.9,
-            recall: 0.94,
-            f1Score: 0.92,
-            cvScore: 0.91,
-            isActive: true,
-            trainedAt: new Date().toISOString(),
-            performanceGrade: "A",
-          },
-        ];
-        res.json(mockModels);
+        // Get real ML models from database
+        const models = await storage.getAllMlModels();
+        res.json(models);
       } catch (error) {
         console.error("Error fetching models:", error);
         res.status(500).json({ message: "Failed to fetch models" });
@@ -1555,18 +1521,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         );
 
         for (let i = 0; i < result.predictions.length; i++) {
-          const prediction = result.predictions[i];
+          const prediction = result.predictions[i] as any;
           const error = errors[i];
 
           if (error.id && prediction) {
             const mlPredictionData = {
-              severity: prediction.severity || "medium",
-              priority: prediction.priority || "medium",
-              confidence: prediction.confidence || 0.8,
-              category: prediction.category || "general",
-              resolutionTime: prediction.resolutionTime || "2-4 hours",
-              complexity: prediction.complexity || "medium",
-              tags: prediction.tags || [],
+              severity: (prediction.severity as string) || "medium",
+              priority: (prediction.priority as string) || "medium",
+              confidence: (prediction.confidence as number) || 0.8,
+              category: (prediction.category as string) || "general",
+              resolutionTime: (prediction.resolutionTime as string) || "2-4 hours",
+              complexity: (prediction.complexity as string) || "medium",
+              tags: (prediction.tags as string[]) || [],
               timestamp: new Date().toISOString(),
             };
 
@@ -1986,15 +1952,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
 
           // Train the ML model
-          const mlService = new (
-            await import("./services/ml-service")
-          ).MLService();
+          const mlServiceInstance = new MLService();
           const userErrorsWithMlData = userErrors.map((error) => ({
             ...error,
             mlConfidence: (error as any).mlConfidence || 0,
             createdAt: error.createdAt || new Date(),
           }));
-          const trainingMetrics = await mlService.trainModel(
+          const trainingMetrics = await mlServiceInstance.trainModel(
             userErrorsWithMlData
           );
 
@@ -2327,15 +2291,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
 
-        const mlService = new (
-          await import("./services/ml-service")
-        ).MLService();
+        const mlServiceInstance = new MLService();
         const userErrorsWithMlData = userErrors.map((error) => ({
           ...error,
           mlConfidence: (error as any).mlConfidence || 0,
           createdAt: error.createdAt || new Date(),
         }));
-        const trainingMetrics = await mlService.trainModel(
+        const trainingMetrics = await mlServiceInstance.trainModel(
           userErrorsWithMlData
         );
 
@@ -2783,273 +2745,6 @@ Format as JSON with the following structure:
     }
   });
 
-  // Test endpoint for debugging ML training and error pattern saves - NO AUTH REQUIRED
-  app.post("/api/test/ml-training", async (req: any, res: any) => {
-    try {
-      console.log("Test ML training endpoint called");
-
-      // Simple test to check if error pattern saving works
-      const testPattern = {
-        pattern: "Test error pattern",
-        regex: "test.*error",
-        severity: "high",
-        category: "test",
-        errorType: "test-error",
-        description: "Test description",
-        solution: "Test solution",
-      };
-
-      console.log("Saving test error pattern...");
-      const savedPattern = await storage.saveErrorPattern(testPattern);
-      console.log("Test pattern saved successfully:", savedPattern.id);
-
-      res.json({
-        success: true,
-        message: "Test pattern saved successfully",
-        savedPatternId: savedPattern.id,
-        testPattern: savedPattern,
-      });
-    } catch (error: any) {
-      console.error("Test ML training error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-        stack: error.stack,
-      });
-    }
-  });
-
-  // Test endpoint for AI service rate limiting - NO AUTH REQUIRED
-  app.post("/api/test/ai-suggestion", async (req: any, res: any) => {
-    try {
-      console.log("Test AI suggestion endpoint called");
-
-      // Create a mock error log for testing
-      const testErrorLog = {
-        id: 1,
-        timestamp: new Date(),
-        createdAt: new Date(),
-        message: "Test error: Cannot connect to database",
-        fileId: 1,
-        lineNumber: 123,
-        severity: "high",
-        errorType: "database",
-        fullText: "Test error: Cannot connect to database\nError at line 123",
-        stackTrace: "Error at line 123",
-        fileName: "test.js",
-        resolved: false,
-        aiSuggestion: null,
-        mlConfidence: null,
-        pattern: null,
-        mlPrediction: null,
-      };
-
-      console.log("Testing AI service with rate limiting...");
-      const suggestion = await aiService.generateSuggestion(
-        testErrorLog.message,
-        testErrorLog.errorType,
-        testErrorLog.severity
-      );
-
-      res.json({
-        success: true,
-        message: "AI suggestion generated successfully",
-        suggestion: suggestion,
-        rateLimiting: "6 second minimum delay between calls",
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error: any) {
-      console.error("Test AI suggestion error:", error);
-
-      // Check if it's a quota error
-      if (error.status === 429) {
-        res.status(429).json({
-          success: false,
-          message: "API quota exceeded - rate limiting working",
-          error: "QUOTA_EXCEEDED",
-          retryAfter: "30s",
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: error.message,
-          error: error.toString(),
-        });
-      }
-    }
-  });
-
-  // Test endpoint for model status - NO AUTH REQUIRED
-  app.get("/api/test/model-status", async (req: any, res: any) => {
-    try {
-      console.log("Test model status endpoint called");
-
-      // Get ML models from database
-      const allModels = await storage.getAllMlModels();
-      const activeModels = allModels.filter((model) => model.isActive);
-
-      // Get the latest models for each type
-      const enhancedMlModel = activeModels.find(
-        (m) => m.name.includes("enhanced") || m.name.includes("Enhanced")
-      );
-      const suggestionModel = activeModels.find(
-        (m) => m.name.includes("suggestion") || m.name.includes("Suggestion")
-      );
-
-      // Format the response
-      const modelStatus = {
-        enhancedMlModel: enhancedMlModel
-          ? {
-            id: enhancedMlModel.id,
-            name: enhancedMlModel.name,
-            version: enhancedMlModel.version,
-            accuracy: enhancedMlModel.accuracy,
-            isActive: enhancedMlModel.isActive,
-            trainedAt: enhancedMlModel.trainedAt,
-          }
-          : null,
-        suggestionModel: suggestionModel
-          ? {
-            id: suggestionModel.id,
-            name: suggestionModel.name,
-            version: suggestionModel.version,
-            accuracy: suggestionModel.accuracy,
-            isActive: suggestionModel.isActive,
-            trainedAt: suggestionModel.trainedAt,
-          }
-          : null,
-        allActiveModels: activeModels.map((m) => ({
-          id: m.id,
-          name: m.name,
-          version: m.version,
-          accuracy: m.accuracy,
-          trainedAt: m.trainedAt,
-        })),
-      };
-
-      res.json({
-        success: true,
-        modelStatus,
-        totalActiveModels: activeModels.length,
-      });
-    } catch (error: any) {
-      console.error("Test model status error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
-  // Test endpoint for suggestion without auth - for debugging 404 issues
-  app.post("/api/test/suggestion/:id", async (req: any, res: any) => {
-    try {
-      const errorId = parseInt(req.params.id);
-      console.log(`🧪 TEST: Suggestion request for error ID: ${errorId}`);
-
-      const error = await storage.getErrorLog(errorId);
-      if (!error) {
-        console.log(`❌ TEST: Error not found: ID ${errorId}`);
-        return res.status(404).json({
-          success: false,
-          message: "Error not found",
-          errorId,
-          available: await storage.getAllErrors(),
-        });
-      }
-
-      console.log(`✅ TEST: Found error: ${error.message.substring(0, 50)}...`);
-      const errorWithMlData = {
-        ...error,
-        mlConfidence: (error as any).mlConfidence || 0,
-        createdAt: error.createdAt || new Date(),
-      };
-
-      const suggestion = await suggestor.getSuggestion(errorWithMlData);
-
-      res.json({
-        success: true,
-        message: "Test suggestion generated successfully",
-        error,
-        suggestion,
-        features: FeatureEngineer.extractFeatures(errorWithMlData),
-      });
-    } catch (error: any) {
-      console.error("TEST: Error generating suggestion:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
-  // Test endpoint to fix model inconsistencies - NO AUTH REQUIRED
-  app.post("/api/test/fix-models", async (req: any, res: any) => {
-    try {
-      console.log("Restoring proper model differentiation...");
-
-      // Get all models first
-      const allModels = await storage.getAllMlModels();
-
-      // Find Enhanced ML Model - restore to actual 91.0% accuracy
-      const enhancedModel = allModels.find((m) =>
-        m.name.includes("Enhanced ML Model")
-      );
-      if (enhancedModel) {
-        await storage.updateMlModel(enhancedModel.id, {
-          name: "Enhanced ML Model",
-          version: "1.0.5", // Older, established model
-          accuracy: 0.91, // Actual 91.0% accuracy
-        });
-        console.log("Restored Enhanced ML Model to actual performance values");
-      }
-
-      // Find Suggestion Model - newer model with different performance
-      const suggestionModel = allModels.find((m) =>
-        m.name.includes("StackLens Error Suggestion Model")
-      );
-      if (suggestionModel) {
-        await storage.updateMlModel(suggestionModel.id, {
-          name: "StackLens Error Suggestion Model",
-          version: "1.0.2", // Newer, recently added model
-          accuracy: 0.915, // Better accuracy than Enhanced ML
-        });
-        console.log("Updated Suggestion Model with its own performance values");
-      }
-
-      // Get updated models
-      const updatedModels = await storage.getAllMlModels();
-      const activeUpdatedModels = updatedModels.filter(
-        (model) => model.isActive
-      );
-
-      res.json({
-        success: true,
-        message:
-          "Model differentiation restored - each model now shows its actual performance",
-        explanation:
-          "Enhanced ML Model (91.0%, v1.0.5) and Suggestion Model (91.5%, v1.0.2) now have different values based on their actual training results",
-        updatedModels: activeUpdatedModels.map((m) => ({
-          id: m.id,
-          name: m.name,
-          version: m.version,
-          accuracy: m.accuracy ? `${(m.accuracy * 100).toFixed(1)}%` : "N/A",
-          trainedAt: m.trainedAt,
-        })),
-      });
-    } catch (error: any) {
-      console.error("Fix models error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
   // Settings endpoint for UI configuration
   app.get("/api/settings", requireAuth, async (req: any, res: any) => {
     try {
@@ -3063,7 +2758,7 @@ Format as JSON with the following structure:
 
       // If no settings exist, create default settings
       if (!userSettings) {
-        const defaultSettings = {
+        const defaultSettingsInput = {
           userId,
           theme: "system",
           language: "en",
@@ -3078,8 +2773,7 @@ Format as JSON with the following structure:
           timeFormat: "12h",
         };
 
-        await storage.createUserSettings(defaultSettings);
-        userSettings = defaultSettings;
+        userSettings = await storage.createUserSettings(defaultSettingsInput);
       }
 
       res.json(userSettings);
@@ -3304,52 +2998,9 @@ Format as JSON with the following structure:
 
   // ============= CORE API ENDPOINTS =============
 
-  // Test endpoint to debug dashboard data
-  app.get("/api/debug/dashboard", async (req: any, res: any) => {
-    try {
-      const userId = 1; // hardcoded for debugging
-
-      // Get user's log files
-      const userLogFiles = await storage.getLogFilesByUser(userId);
-
-      console.log("Raw log files data:", JSON.stringify(userLogFiles, null, 2));
-
-      res.json({
-        rawLogFiles: userLogFiles,
-        totalFiles: userLogFiles.length,
-        calculations: {
-          totalErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.totalErrors || 0),
-            0
-          ),
-          criticalErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.criticalErrors || 0),
-            0
-          ),
-          highErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.highErrors || 0),
-            0
-          ),
-          mediumErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.mediumErrors || 0),
-            0
-          ),
-          lowErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.lowErrors || 0),
-            0
-          ),
-        },
-      });
-    } catch (error) {
-      console.error("Debug endpoint error:", error);
-      res.status(500).json({
-        error: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
-  });
-
-  // Dashboard endpoint - main dashboard data
-  app.get("/api/dashboard", requireAuth, async (req: any, res: any) => {
+  // ============= AUDIT LOGS =============
+  // Get ML prediction for error
+  app.post("/api/ml/predict", requireAuth, async (req: any, res) => {
     try {
       const userId = req.user.id;
 
@@ -3542,8 +3193,36 @@ Format as JSON with the following structure:
         recentAnalyses: recentAnalyses.length,
         severityDistribution,
         trends: trends, // Add calculated trends
-        // Additional stats
-        avgResolutionTime: "2.5 hours", // Mock data - could be calculated from processing times
+        // Calculate real average resolution time
+        avgResolutionTime: (() => {
+          const resolvedErrors = allErrors.filter((error: any) => {
+            return (
+              (error.status === "resolved" && error.resolvedAt) ||
+              (error.resolved === 1 && error.resolvedAt) ||
+              (error.resolved === true && error.resolvedAt)
+            );
+          });
+
+          if (resolvedErrors.length === 0) return "N/A";
+
+          const resolutionTimes = resolvedErrors.map((error: any) => {
+            const created = new Date(error.createdAt || error.timestamp || 0);
+            const resolved = new Date(error.resolvedAt || 0);
+            const hours = (resolved.getTime() - created.getTime()) / (1000 * 60 * 60);
+            return Math.max(0, hours);
+          });
+
+          const avgHours = resolutionTimes.reduce((a, b) => a + b, 0) / resolutionTimes.length;
+
+          if (avgHours < 1) {
+            return `${Math.round(avgHours * 60)} minutes`;
+          } else if (avgHours < 24) {
+            return `${Math.round(avgHours)} hours`;
+          } else {
+            const days = avgHours / 24;
+            return `${Math.round(days * 10) / 10} days`;
+          }
+        })(),
         topErrorType:
           allErrors.length > 0
             ? allErrors.reduce((acc, error) => {
@@ -4428,7 +4107,9 @@ Format as JSON with the following structure:
       // Clean up old cache entries periodically (basic cleanup)
       if (trendsCache.size > 100) {
         const oldestKey = trendsCache.keys().next().value;
-        trendsCache.delete(oldestKey);
+        if (oldestKey) {
+          trendsCache.delete(oldestKey);
+        }
       }
 
       clearTimeout(timeout);
@@ -4569,11 +4250,11 @@ Format as JSON with the following structure:
         if (storeNumber && kioskNumber) {
           try {
             // Get store details
-            const stores = await storage.getStores();
+            const stores = await storage.getAllStores();
             const store = stores.find((s: any) => s.storeNumber === storeNumber);
 
             // Get kiosk details
-            const kiosks = await storage.getKiosks();
+            const kiosks = await storage.getAllKiosks();
             const kiosk = kiosks.find((k: any) => k.kioskNumber === kioskNumber);
 
             if (store && kiosk) {
@@ -5409,6 +5090,11 @@ Format as JSON with the following structure:
         }
       }
 
+      // Get similar errors for context
+      const similarErrors = allErrors.filter(
+        (e: any) => e.errorType === error.errorType && e.id !== error.id
+      );
+
       res.json({
         error,
         mlPrediction,
@@ -5417,9 +5103,8 @@ Format as JSON with the following structure:
             `Common in ${error.errorType} errors`,
             "Often resolved by code review",
           ],
-          relatedErrors: [], // Mock for now - can implement later
-          historicalContext: `Similar errors: ${Math.floor(Math.random() * 10) + 1
-            }`,
+          relatedErrors: similarErrors.slice(0, 5), // Get up to 5 similar errors
+          historicalContext: `Similar errors: ${similarErrors.length}`,
         },
       });
     } catch (error) {
@@ -5530,9 +5215,8 @@ Format as JSON with the following structure:
               if (!uploadedBy) return false;
 
               // Try both string and number comparison
-              const matched = userIds.includes(uploadedBy.toString()) ||
-                userIds.includes(uploadedBy) ||
-                (typeof uploadedBy === 'number' && userIds.includes(uploadedBy.toString()));
+              const uploadedByStr = String(uploadedBy);
+              const matched = userIds.includes(uploadedByStr);
 
               if (matched) {
                 console.log(`🔍 [DEBUG] File ${file.id} (${file.originalName}) matches user ${uploadedBy}`);
@@ -6552,8 +6236,9 @@ Format as JSON with the following structure:
           // Check if date is valid
           if (isNaN(errorDate.getTime())) return false;
           return errorDate >= fromDate;
-        } catch (error) {
-          console.warn(`Invalid error timestamp: ${error.createdAt}`, error);
+        } catch (error: unknown) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          console.warn(`Invalid error timestamp:`, errorMsg);
           return false;
         }
       });
@@ -6950,12 +6635,14 @@ Format as JSON with the following structure:
           return res.send(buffer);
         } catch (xlsxError) {
           console.error("❌ Excel generation failed:", xlsxError);
-          console.error("Error details:", xlsxError.message, xlsxError.stack);
+          const errorMsg = xlsxError instanceof Error ? xlsxError.message : String(xlsxError);
+          const errorStack = xlsxError instanceof Error ? xlsxError.stack : undefined;
+          console.error("Error details:", errorMsg, errorStack);
 
           // Return error response instead of silent fallback
           return res.status(500).json({
             message: "Excel generation failed",
-            error: xlsxError.message,
+            error: xlsxError instanceof Error ? xlsxError.message : String(xlsxError),
             fallbackFormat: "csv"
           });
         }

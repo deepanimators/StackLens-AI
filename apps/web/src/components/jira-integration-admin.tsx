@@ -91,9 +91,7 @@ export function JiraIntegrationAdmin() {
   const { data: jiraStatus, refetch: refetchJiraStatus } = useQuery({
     queryKey: ["jira-status"],
     queryFn: async () => {
-      const response = await authenticatedRequest("/api/jira/status", {
-        method: "GET",
-      });
+      const response = await authenticatedRequest("GET", "/api/jira/status");
       return response.json();
     },
     refetchInterval: 30000,
@@ -103,9 +101,7 @@ export function JiraIntegrationAdmin() {
   const { data: automationStatus, refetch: refetchAutomationStatus } = useQuery({
     queryKey: ["automation-status"],
     queryFn: async () => {
-      const response = await authenticatedRequest("/api/automation/status", {
-        method: "GET",
-      });
+      const response = await authenticatedRequest("GET", "/api/automation/status");
       return response.json();
     },
     refetchInterval: 30000,
@@ -115,9 +111,7 @@ export function JiraIntegrationAdmin() {
   const { data: watcherStatus, refetch: refetchWatcherStatus } = useQuery({
     queryKey: ["watcher-status"],
     queryFn: async () => {
-      const response = await authenticatedRequest("/api/watcher/status", {
-        method: "GET",
-      });
+      const response = await authenticatedRequest("GET", "/api/watcher/status");
       return response.json();
     },
     refetchInterval: 30000,
@@ -126,12 +120,8 @@ export function JiraIntegrationAdmin() {
   // Start Watcher Mutation
   const startWatcherMutation = useMutation({
     mutationFn: async () => {
-      const response = await authenticatedRequest("/api/watcher/start", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          logFilePath: "data/pos-application.log",
-        }),
+      const response = await authenticatedRequest("POST", "/api/watcher/start", {
+        logFilePath: "data/pos-application.log",
       });
       return response.json();
     },
@@ -154,9 +144,7 @@ export function JiraIntegrationAdmin() {
   // Stop Watcher Mutation
   const stopWatcherMutation = useMutation({
     mutationFn: async () => {
-      const response = await authenticatedRequest("/api/watcher/stop", {
-        method: "POST",
-      });
+      const response = await authenticatedRequest("POST", "/api/watcher/stop");
       return response.json();
     },
     onSuccess: () => {
@@ -178,11 +166,7 @@ export function JiraIntegrationAdmin() {
   // Toggle Automation Mutation
   const toggleAutomationMutation = useMutation({
     mutationFn: async (enabled: boolean) => {
-      const response = await authenticatedRequest("/api/automation/toggle", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ enabled }),
-      });
+      const response = await authenticatedRequest("POST", "/api/automation/toggle", { enabled });
       return response.json();
     },
     onSuccess: () => {

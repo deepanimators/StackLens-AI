@@ -41,6 +41,11 @@
     "test:headed": "playwright test --headed",
     "test:report": "playwright show-report",
     "test:codegen": "playwright codegen http://localhost:5173",
+    "test:phase2": "vitest run tests/phase2-*.test.ts",
+    "test:phase2:watch": "vitest watch tests/phase2-*.test.ts",
+    "test:phase2:ui": "vitest --ui tests/phase2-*.test.ts",
+    "test:vitest": "vitest run",
+    "test:vitest:watch": "vitest watch",
     "clean": "rm -rf dist node_modules/.vite test-results",
     "reset": "npm run clean && npm install"
   },
