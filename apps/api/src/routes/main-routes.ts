@@ -8499,6 +8499,50 @@ Format as JSON with the following structure:
     });
   });
 
+  // 🔥 CRITICAL FIX #2: Start LogWatcher service for real-time file monitoring
+  try {
+    console.log("Starting LogWatcher service for real-time monitoring...");
+    // Watch demo POS app logs and any error logs directory
+    const logPathsToWatch = [
+      path.resolve("./demo-pos-app/logs"),
+      path.resolve("./data/logs"),
+      path.resolve("./logs"),
+    ].filter((p) => fs.existsSync(p));
+
+    if (logPathsToWatch.length > 0) {
+      await logWatcher.start(logPathsToWatch);
+      console.log("✅ LogWatcher service started successfully");
+
+      // 🔥 CRITICAL FIX #3: Connect LogWatcher errors to automation flow
+      logWatcher.on("error-detected", async (detectedError: any) => {
+        try {
+          console.log(
+            `[LogWatcher] Detected error: ${detectedError.errorType} - ${detectedError.message}`
+          );
+
+          // Trigger automation for Jira ticket creation
+          const automationResult = await errorAutomation.executeAutomation(
+            detectedError,
+            0.85  // Default ML confidence
+          );
+          console.log(`✅ Error automation executed:`, automationResult);
+        } catch (automationError) {
+          console.error("[LogWatcher Automation] Failed to process error:", automationError);
+        }
+      });
+
+      logWatcher.on("error", (error: any) => {
+        console.error("[LogWatcher] Monitoring error:", error);
+      });
+    } else {
+      console.log(
+        "ℹ️  No log directories found. Create logs directory to enable file monitoring."
+      );
+    }
+  } catch (error) {
+    console.error("Failed to start LogWatcher service:", error);
+  }
+
   // Create HTTP server
   const httpServer = createServer(app);
 

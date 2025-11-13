@@ -2,6 +2,7 @@ import { storage } from "../database/database-storage.js";
 import { LogParser } from "../services/log-parser.js";
 import { aiService } from "../services/ai-service.js";
 import { MLService } from "../services/ml/ml-service.js";
+import { errorAutomation } from "../services/error-automation.js";
 import path from "path";
 import fs from "fs";
 
@@ -190,6 +191,13 @@ class BackgroundJobProcessor {
             resolved: false,
           });
           errorLogs.push(errorLog);
+
+          // 🔥 CRITICAL FIX #1: Call error automation to process error (create Jira tickets, etc.)
+          try {
+            await errorAutomation.executeAutomation(error);
+          } catch (automationError) {
+            console.error(`Error automation failed for error ${errorLog.id}:`, automationError);
+          }
         }
 
         // Update progress during batch processing
