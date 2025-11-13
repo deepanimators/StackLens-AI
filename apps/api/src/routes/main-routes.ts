@@ -48,6 +48,9 @@ import {
   modelDeployments,
   InsertAuditLog,
 } from "@shared/sqlite-schema";
+import { jiraService } from "../services/jira-integration.js";
+import { logWatcher } from "../services/log-watcher.js";
+import { errorAutomation } from "../services/error-automation.js";
 import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
 import { createRAGRoutes } from "./rag-routes.js";
 import crypto from "crypto";
@@ -3544,10 +3547,10 @@ Format as JSON with the following structure:
         topErrorType:
           allErrors.length > 0
             ? allErrors.reduce((acc, error) => {
-                const key = error.errorType || "unknown";
-                acc[key] = (acc[key] || 0) + 1;
-                return acc;
-              }, {} as any)
+              const key = error.errorType || "unknown";
+              acc[key] = (acc[key] || 0) + 1;
+              return acc;
+            }, {} as any)
             : {},
       });
     } catch (error) {
@@ -8653,6 +8656,161 @@ Format as JSON with the following structure:
   // Enhanced RAG Routes for vector-powered suggestions
   const ragRoutes = createRAGRoutes(sqlite);
   app.use("/api/rag", ragRoutes);
+
+  // ============================================================================
+  // JIRA INTEGRATION & AUTOMATION ROUTES
+  // ============================================================================
+
+  // Jira Integration Status
+  app.get("/api/jira/status", (req, res) => {
+    try {
+      const status = jiraService.getStatus();
+      res.json({ success: true, data: status });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get Jira status",
+      });
+    }
+  });
+
+  // Automation Service Status
+  app.get("/api/automation/status", (req, res) => {
+    try {
+      const stats = errorAutomation.getStatistics();
+      res.json({ success: true, data: stats });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get automation status",
+      });
+    }
+  });
+
+  // Log Watcher Status
+  app.get("/api/watcher/status", (req, res) => {
+    try {
+      const status = logWatcher.getStatus();
+      res.json({ success: true, data: status });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get watcher status",
+      });
+    }
+  });
+
+  // Start watching demo POS logs
+  app.post("/api/watcher/start", (req, res) => {
+    try {
+      const logFilePath = process.env.POS_LOG_FILE_PATH || "logs/pos-application.log";
+      logWatcher.start([logFilePath]);
+      res.json({ success: true, message: "Log watcher started", data: logWatcher.getStatus() });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to start log watcher",
+      });
+    }
+  });
+
+  // Stop watching logs
+  app.post("/api/watcher/stop", (req, res) => {
+    try {
+      logWatcher.stop();
+      res.json({ success: true, message: "Log watcher stopped" });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to stop log watcher",
+      });
+    }
+  });
+
+  // Enable/disable automation
+  app.post("/api/automation/toggle", (req, res) => {
+    try {
+      const { enabled } = req.body;
+      if (typeof enabled !== "boolean") {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid request. 'enabled' boolean is required.",
+        });
+      }
+      errorAutomation.setEnabled(enabled);
+      res.json({
+        success: true,
+        message: `Automation ${enabled ? "enabled" : "disabled"}`,
+        data: errorAutomation.getStatistics(),
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to toggle automation",
+      });
+    }
+  });
+
+  // Receive events from Demo POS (webhook)
+  app.post("/api/demo-events", async (req, res) => {
+    try {
+      const { type, orderId, storeNumber, kioskNumber, error, timestamp } = req.body;
+
+      if (type === "error_detected") {
+        console.log(
+          `[Demo POS Event] Error detected in order ${orderId}:`,
+          error
+        );
+        res.json({ success: true, message: "Event received" });
+        // You can add further processing here (e.g., save to database, trigger automation)
+      } else {
+        res.status(400).json({ success: false, error: "Unknown event type" });
+      }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to process event",
+      });
+    }
+  });
+
+  // Real-time monitoring stream (Server-Sent Events)
+  app.get("/api/monitoring/live", (req, res) => {
+    // Set SSE headers
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    // Send initial connection message
+    res.write("data: " + JSON.stringify({ type: "connected", message: "Monitoring stream started" }) + "\n\n");
+
+    // Event listeners
+    const onError = (data: unknown) => {
+      res.write("data: " + JSON.stringify({ type: "error-detected", data }) + "\n\n");
+    };
+
+    const onTicketCreated = (data: unknown) => {
+      res.write("data: " + JSON.stringify({ type: "ticket-created", data }) + "\n\n");
+    };
+
+    const onTicketUpdated = (data: unknown) => {
+      res.write("data: " + JSON.stringify({ type: "ticket-updated", data }) + "\n\n");
+    };
+
+    // Attach listeners
+    logWatcher.on("error-detected", onError);
+    errorAutomation.on("ticket-created", onTicketCreated);
+    errorAutomation.on("ticket-updated", onTicketUpdated);
+
+    // Cleanup on disconnect
+    req.on("close", () => {
+      logWatcher.off("error-detected", onError);
+      errorAutomation.off("ticket-created", onTicketCreated);
+      errorAutomation.off("ticket-updated", onTicketUpdated);
+      res.end();
+    });
+  });
 
   // Create HTTP server
   const httpServer = createServer(app);

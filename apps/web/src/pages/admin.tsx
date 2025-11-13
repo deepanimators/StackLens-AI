@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLayout } from "@/contexts/layout-context";
 import { useSettings } from "@/contexts/settings-context";
 import LayoutSelector from "@/components/layout-selector";
+import JiraIntegrationAdmin from "@/components/jira-integration-admin";
 import {
   Users,
   Settings,
@@ -859,7 +860,7 @@ export default function AdminDashboard() {
       subtitle="System Administration & AI Model Management"
     >
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="roles">Roles</TabsTrigger>
@@ -867,6 +868,7 @@ export default function AdminDashboard() {
           <TabsTrigger value="ai-models">AI Models</TabsTrigger>
           <TabsTrigger value="ui-settings">UI Settings</TabsTrigger>
           <TabsTrigger value="api-integration">API & Integration</TabsTrigger>
+          <TabsTrigger value="jira-integration">Jira Integration</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -2047,6 +2049,11 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        {/* Jira Integration Tab */}
+        <TabsContent value="jira-integration" className="space-y-6">
+          <JiraIntegrationAdmin />
         </TabsContent>
       </Tabs>
 
