@@ -199,8 +199,11 @@ export class DemoPOSService extends EventEmitter {
 }
 
 // Export singleton instance
+// 🔥 FIX #1: Use absolute path from project root (/data/pos-application.log)
+// This ensures logs can be found by LogWatcher service running from server root
 const demoPOS = new DemoPOSService(
-    process.env.POS_LOG_FILE_PATH || "logs/pos-application.log"
+    process.env.POS_LOG_FILE_PATH ||
+    path.resolve(process.cwd(), "..", "data", "pos-application.log")
 );
 
 export default demoPOS;

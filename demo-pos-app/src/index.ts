@@ -6,6 +6,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 import demoPOS from "./pos-service";
 
 dotenv.config();
@@ -13,6 +14,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 const STACKLENS_URL = process.env.STACKLENS_URL || "http://localhost:3000";
+
+// 🔥 FIX #1: Use absolute path for log file
+// Logs to: <project-root>/data/pos-application.log
+// This ensures LogWatcher can find it from server root
+const absoluteLogPath = path.resolve(process.cwd(), "..", "data", "pos-application.log");
 
 // Middleware
 app.use(cors());

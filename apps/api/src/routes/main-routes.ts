@@ -8502,14 +8502,28 @@ Format as JSON with the following structure:
   // 🔥 CRITICAL FIX #2: Start LogWatcher service for real-time file monitoring
   try {
     console.log("Starting LogWatcher service for real-time monitoring...");
-    // Watch demo POS app logs and any error logs directory
+
+    // 🔥 FIX #2: Watch correct directory where Demo POS app logs
+    // Demo POS logs to: <project-root>/data/pos-application.log
     const logPathsToWatch = [
-      path.resolve("./demo-pos-app/logs"),
-      path.resolve("./data/logs"),
-      path.resolve("./logs"),
-    ].filter((p) => fs.existsSync(p));
+      path.resolve("./data"),  // ✅ CORRECT: Demo POS logs here
+      path.resolve("./logs"),  // Fallback for other log sources
+    ].filter((p) => {
+      // Create directory if it doesn't exist
+      if (!fs.existsSync(p)) {
+        try {
+          fs.mkdirSync(p, { recursive: true });
+          console.log(`✅ Created log directory: ${p}`);
+        } catch (err) {
+          console.warn(`Failed to create log directory ${p}:`, err);
+          return false;
+        }
+      }
+      return true;
+    });
 
     if (logPathsToWatch.length > 0) {
+      console.log(`📍 Watching directories: ${logPathsToWatch.join(", ")}`);
       await logWatcher.start(logPathsToWatch);
       console.log("✅ LogWatcher service started successfully");
 
@@ -8536,7 +8550,7 @@ Format as JSON with the following structure:
       });
     } else {
       console.log(
-        "ℹ️  No log directories found. Create logs directory to enable file monitoring."
+        "⚠️  No log directories found. Error detection will be unavailable."
       );
     }
   } catch (error) {

@@ -6,6 +6,7 @@
 
 import { EventEmitter } from "events";
 import * as fs from "fs";
+import * as path from "path";
 import * as chokidar from "chokidar";
 import { LogParser, type ParsedError } from "./log-parser";
 
@@ -86,9 +87,26 @@ export class LogWatcherService extends EventEmitter {
         }
 
         try {
-            // Initialize line counts for each file
+            // 🔥 FIX: Convert directories to file paths
+            // If paths are directories, watch for .log files in them
+            const actualFilePaths: string[] = [];
+
             for (const filePath of filePaths) {
                 if (fs.existsSync(filePath)) {
+                    const stats = fs.statSync(filePath);
+                    if (stats.isDirectory()) {
+                        // Watch all .log files in this directory
+                        actualFilePaths.push(path.join(filePath, "*.log"));
+                    } else {
+                        actualFilePaths.push(filePath);
+                    }
+                }
+            }
+
+            // Initialize line counts for each file
+            for (const filePath of actualFilePaths) {
+                // Skip glob patterns, only count actual files
+                if (fs.existsSync(filePath) && !filePath.includes("*")) {
                     const lineCount = fs.readFileSync(filePath, "utf-8").split("\n").length;
                     this.watchedFiles.set(filePath, lineCount);
                     this.fileStats.set(filePath, {
@@ -100,7 +118,7 @@ export class LogWatcherService extends EventEmitter {
             }
 
             // Set up file watcher with debouncing
-            this.watcher = chokidar.watch(filePaths, {
+            this.watcher = chokidar.watch(actualFilePaths, {
                 persistent: true,
                 awaitWriteFinish: { stabilityThreshold: 100, pollInterval: 100 },
             });
