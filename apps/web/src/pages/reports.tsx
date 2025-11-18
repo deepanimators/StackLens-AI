@@ -34,6 +34,25 @@ const ChartSkeleton = () => (
   </div>
 );
 
+// Section loading skeleton component
+const SectionSkeleton = ({ title }: { title: string }) => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center space-x-2">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        <span>{title}</span>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -86,6 +105,7 @@ import {
   Users,
   Zap,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 
 type ErrorTypeData = {
@@ -116,98 +136,67 @@ type Performance = {
   successRate: number;
 };
 
+type Trends = {
+  files?: number;
+  errors?: number;
+  critical?: number;
+  resolution?: number;
+};
+
 // Import the authenticatedRequest and authenticatedFetch functions
 import { authenticatedRequest, authenticatedFetch } from "@/lib/auth";
 
 // Fetch real report data from API
-const fetchReportData = async () => {
-  try {
-    console.log("🔄 Fetching real report data from API...");
+const fetchReportData = async (selectedDateRange: string) => {
+    try {
+      console.log(`🔄 Fetching real report data from API for range: ${selectedDateRange}...`);
 
-    // Fetch dashboard stats which should have the real numbers
-    const dashboardResponse = await authenticatedRequest(
-      "GET",
-      "/api/dashboard"
-    );
-    console.log("📊 Dashboard response:", dashboardResponse);
+      // Use the proper reports API endpoint that includes trends with dynamic date range
+      const reportsResponse = await authenticatedRequest(
+        "GET",
+        `/api/reports?range=${selectedDateRange}`
+      );
+    console.log("📊 Reports response:", reportsResponse);
 
-    // Fetch error logs to get current statistics
-    const errorsResponse = await authenticatedRequest("GET", "/api/errors");
-    console.log("🐛 Errors response:", errorsResponse);
+    // Fallback to dashboard stats if reports API fails
+    let dashboardResponse = null;
+    try {
+      dashboardResponse = await authenticatedRequest(
+        "GET",
+        "/api/dashboard/stats"
+      );
+    } catch (error) {
+      console.warn("Dashboard API failed, using reports data only:", error);
+    }
 
-    // Fetch log files to get file statistics
-    const filesResponse = await authenticatedRequest("GET", "/api/files");
-    console.log("📁 Files response:", filesResponse);
+    // Calculate real statistics from the reports API response
+    const summary = reportsResponse?.summary || {};
+    const trends = reportsResponse?.trends || summary?.trends || {};
+    
+    const totalFiles = summary.totalFiles || 0;
+    const totalErrors = summary.totalErrors || 0;
+    const criticalErrors = summary.criticalErrors || 0;
+    const resolvedErrors = summary.resolvedErrors || 0;
+    const resolutionRate = summary.resolutionRate || 0;
 
-    // Calculate real statistics from the API responses
-    const totalFiles =
-      dashboardResponse?.totalFiles || filesResponse?.files?.length || 0;
-    const errorsArray = errorsResponse?.errors || [];
-    const filesArray = filesResponse?.files || [];
-
-    const totalErrors =
-      dashboardResponse?.totalErrors || errorsArray?.length || 0;
-    const criticalErrors =
-      dashboardResponse?.criticalErrors ||
-      errorsArray?.filter((error: any) => error.severity === "critical")
-        .length ||
-      0;
-    const resolvedErrors =
-      dashboardResponse?.resolvedErrors ||
-      errorsArray?.filter((error: any) => error.resolved === true).length ||
-      0;
-
-    const resolutionRate = totalErrors > 0 ? resolvedErrors / totalErrors : 0;
-
-    // Create severity distribution from real data
-    const severityDistribution = {
-      critical:
-        errorsArray?.filter((error: any) => error.severity === "critical")
-          .length || 0,
-      high:
-        errorsArray?.filter((error: any) => error.severity === "high").length ||
-        0,
-      medium:
-        errorsArray?.filter((error: any) => error.severity === "medium")
-          .length || 0,
-      low:
-        errorsArray?.filter((error: any) => error.severity === "low").length ||
-        0,
+    // Use severity distribution from API response
+    const severityDistribution = reportsResponse?.severityDistribution || {
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
     };
 
-    // Group errors by type for real error type distribution
-    const errorTypeMap = new Map();
-    errorsArray?.forEach((error: any) => {
-      const type = error.errorType || "Unknown";
-      errorTypeMap.set(type, (errorTypeMap.get(type) || 0) + 1);
-    });
+    // Use error types from API response 
+    const errorTypes: ErrorTypeData[] = reportsResponse?.errorTypes || [];
 
-    const errorTypes: ErrorTypeData[] = Array.from(errorTypeMap.entries())
-      .map(([type, count]) => ({
-        type,
-        count: count as number,
-        percentage:
-          totalErrors > 0 ? ((count as number) / totalErrors) * 100 : 0,
-      }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5); // Top 5 error types
+    // Use top files from API response
+    const topFiles: TopFile[] = reportsResponse?.topFiles || [];
 
-    // Get top files with most errors (mock for now, would need file-specific data)
-    const topFiles: TopFile[] = [
-      {
-        fileName: "Recent Logs",
-        totalErrors: Math.floor(totalErrors * 0.4),
-        critical: Math.floor(criticalErrors * 0.4),
-        high: Math.floor(severityDistribution.high * 0.4),
-        medium: Math.floor(severityDistribution.medium * 0.4),
-        low: Math.floor(severityDistribution.low * 0.4),
-        analysisDate: new Date().toISOString(),
-      },
-    ];
-
-    const performance: Performance = {
-      avgProcessingTime: dashboardResponse?.avgProcessingTime || "1.2s",
-      successRate: dashboardResponse?.successRate || 95.5,
+    // Use performance data from API response
+    const performance: Performance = reportsResponse?.performance || {
+      avgProcessingTime: "0.0s",
+      successRate: 0,
     };
 
     const realData = {
@@ -217,11 +206,12 @@ const fetchReportData = async () => {
         criticalErrors,
         resolvedErrors,
         resolutionRate,
+        trends: trends, // Add trends data from the reports API
       },
-      errorTypes,
-      severityDistribution,
-      topFiles,
-      performance,
+      errorTypes: reportsResponse?.errorTypes || errorTypes,
+      severityDistribution: reportsResponse?.severityDistribution || severityDistribution,
+      topFiles: reportsResponse?.topFiles || topFiles,
+      performance: reportsResponse?.performance || performance,
     };
 
     console.log("✅ Real report data calculated:", realData);
@@ -231,11 +221,6 @@ const fetchReportData = async () => {
 
     // In production, show error state - NO MOCK DATA
     if (import.meta.env.PROD) {
-      toast({
-        title: "Error Loading Report Data",
-        description: "Unable to fetch report data. Please try again later.",
-        variant: "destructive",
-      });
       // Return empty data structure to trigger "No data" UI
       const errorTypes: ErrorTypeData[] = [];
       const severityDistribution: SeverityDistribution = {
@@ -297,8 +282,9 @@ const fetchReportData = async () => {
 };
 
 // Enhanced Trends Analysis Component
-const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
+const EnhancedTrendsAnalysis: React.FC<{ reportData: any; isActive?: boolean }> = ({
   reportData,
+  isActive = false,
 }) => {
   const [trendsData, setTrendsData] = useState<any>(null);
   const [timeframe, setTimeframe] = useState<string>("30d");
@@ -333,7 +319,7 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
     }
   }, [trendsData]);
 
-  // Fetch trends data from API
+  // Fetch trends data from API using authenticated request
   const fetchTrendsData = async (selectedTimeframe: string) => {
     setIsLoading(true);
     console.log(
@@ -341,62 +327,19 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
     );
 
     try {
-      const authToken = localStorage.getItem("auth_token");
-      console.log(
-        `🔑 Auth token exists: ${!!authToken}, length: ${
-          authToken?.length || 0
-        }`
-      );
-
       const url = `/api/trends/analysis?timeframe=${selectedTimeframe}`;
-      console.log(`📡 Making request to: ${url}`);
+      console.log(`📡 Making authenticated request to: ${url}`);
 
-      const response = await fetch(url, {
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${authToken || ""}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log(
-        `📊 Response status: ${response.status} ${response.statusText}`
-      );
-      console.log(`📊 Response ok: ${response.ok}`);
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(`✅ Successfully fetched trends data:`, data);
+      // Use authenticatedRequest instead of fetch
+      const data = await authenticatedRequest("GET", url);
+      console.log(`✅ Successfully fetched trends data:`, data);
         
-        // Check if we got real data or empty results
-        if (!data || (Array.isArray(data.errorIdentificationTrends) && data.errorIdentificationTrends.length === 0)) {
-          console.log("ℹ️ No trends data available for selected timeframe");
-          setTrendsData(null);
-        } else {
-          setTrendsData(data);
-        }
+      // Check if we got real data or empty results
+      if (!data || (Array.isArray(data.errorIdentificationTrends) && data.errorIdentificationTrends.length === 0)) {
+        console.log("ℹ️ No trends data available for selected timeframe");
+        setTrendsData(null);
       } else {
-        // API call failed (auth error, server error, etc.)
-        console.error(
-          "🚨 API call failed:",
-          response.status,
-          response.statusText
-        );
-        const errorText = await response.text();
-        console.error("Error details:", errorText);
-        
-        // In production, show error instead of mock
-        if (import.meta.env.PROD) {
-          toast({
-            title: "Error Loading Trends",
-            description: "Unable to fetch trend data. Please try again.",
-            variant: "destructive",
-          });
-          setTrendsData(null);
-        } else {
-          console.warn("⚠️ DEV MODE: Showing empty state");
-          setTrendsData(null);
-        }
+        setTrendsData(data);
       }
     } catch (error) {
       console.error("💥 Failed to fetch trends data:", error);
@@ -405,22 +348,18 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
         console.error("Error message:", error.message);
       }
 
-      // No mock data - show error or empty state
-      if (import.meta.env.PROD) {
-        toast({
-          title: "Network Error",
-          description: "Failed to load trends data. Check your connection.",
-          variant: "destructive",
-        });
-      }
+      // Show empty state on error
       setTrendsData(null);
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchTrendsData(timeframe);
-  }, [timeframe]);
+    // Only fetch data when component is active and not already loaded
+    if (isActive && !trendsData && !isLoading) {
+      fetchTrendsData(timeframe);
+    }
+  }, [isActive, timeframe]);
 
   // Generate mock trends data for demo
   const generateMockTrendsData = (timeframe: string) => {
@@ -1171,9 +1110,22 @@ const EnhancedTrendsAnalysis: React.FC<{ reportData: any }> = ({
 };
 
 export default function Reports() {
-  const [dateRange, setDateRange] = useState("7d");
+  const [dateRange, setDateRange] = useState(() => {
+    // Persist date range selection in localStorage
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('reports-date-range') || '30d';
+    }
+    return '30d';
+  });
   const [reportType, setReportType] = useState("summary");
   const { toast } = useToast();
+
+  // Update localStorage when dateRange changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('reports-date-range', dateRange);
+    }
+  }, [dateRange]);
 
   type ReportSummary = {
     totalFiles: number;
@@ -1181,6 +1133,7 @@ export default function Reports() {
     criticalErrors: number;
     resolvedErrors: number;
     resolutionRate: number;
+    trends?: Trends;
   };
 
   const defaultSummary: ReportSummary = {
@@ -1189,6 +1142,12 @@ export default function Reports() {
     criticalErrors: 0,
     resolvedErrors: 0,
     resolutionRate: 0,
+    trends: {
+      files: 0,
+      errors: 0,
+      critical: 0,
+      resolution: 0,
+    },
   };
 
   const {
@@ -1200,9 +1159,10 @@ export default function Reports() {
       topFiles: [] as TopFile[],
       performance: { avgProcessingTime: "0.0s", successRate: 0 },
     },
+    isLoading: reportsLoading,
   } = useQuery({
     queryKey: ["reportData", dateRange],
-    queryFn: fetchReportData,
+    queryFn: () => fetchReportData(dateRange),
   });
 
   const handleExportReport = async (type: string) => {
@@ -1304,7 +1264,6 @@ export default function Reports() {
           <CardContent>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex items-center space-x-2">
-                resolutionRate: number;
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <Select value={dateRange} onValueChange={setDateRange}>
                   <SelectTrigger className="w-32">
@@ -1312,7 +1271,6 @@ export default function Reports() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="7d">Last 7 days</SelectItem>
-                    resolutionRate: 0,
                     <SelectItem value="30d">Last 30 days</SelectItem>
                     <SelectItem value="90d">Last 90 days</SelectItem>
                     <SelectItem value="1y">Last year</SelectItem>
@@ -1330,7 +1288,7 @@ export default function Reports() {
                     <SelectItem value="detailed">Detailed Report</SelectItem>
                     <SelectItem value="trends">Trends Analysis</SelectItem>
                     <SelectItem value="performance">
-                      Performance Report resolutionRate: 88.2,
+                      Performance Report
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -1370,14 +1328,31 @@ export default function Reports() {
                 <div>
                   <p className="text-sm text-muted-foreground">Total Files</p>
                   <p className="text-2xl font-bold">
-                    {reportData?.summary?.totalFiles ?? 0}
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      reportData?.summary?.totalFiles ?? 0
+                    )}
                   </p>
                 </div>
                 <FileText className="h-8 w-8 text-blue-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-                <span className="text-sm text-green-600">+12.5%</span>
+                {((reportData?.summary as any)?.trends?.files || 0) >= 0 ? (
+                  <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+                ) : (
+                  <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
+                )}
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.files || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {(reportData?.summary as any)?.trends?.files !== undefined 
+                    ? `${((reportData?.summary as any)?.trends?.files || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.files}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -1387,14 +1362,31 @@ export default function Reports() {
                 <div>
                   <p className="text-sm text-muted-foreground">Total Errors</p>
                   <p className="text-2xl font-bold">
-                    {reportData?.summary?.totalErrors ?? 0}
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      reportData?.summary?.totalErrors ?? 0
+                    )}
                   </p>
                 </div>
                 <AlertTriangle className="h-8 w-8 text-orange-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
-                <span className="text-sm text-green-600">-8.2%</span>
+                {((reportData?.summary as any)?.trends?.errors || 0) <= 0 ? (
+                  <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
+                ) : (
+                  <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
+                )}
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.errors || 0) <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {(reportData?.summary as any)?.trends?.errors !== undefined
+                    ? `${((reportData?.summary as any)?.trends?.errors || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.errors}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -1406,14 +1398,31 @@ export default function Reports() {
                     Critical Errors
                   </p>
                   <p className="text-2xl font-bold text-red-600">
-                    {reportData?.summary?.criticalErrors ?? 0}
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      reportData?.summary?.criticalErrors ?? 0
+                    )}
                   </p>
                 </div>
                 <Activity className="h-8 w-8 text-red-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
-                <span className="text-sm text-red-600">+3.1%</span>
+                {((reportData?.summary as any)?.trends?.critical || 0) >= 0 ? (
+                  <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
+                ) : (
+                  <TrendingDown className="h-4 w-4 text-green-600 mr-1" />
+                )}
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.critical || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  {(reportData?.summary as any)?.trends?.critical !== undefined
+                    ? `${((reportData?.summary as any)?.trends?.critical || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.critical}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -1425,30 +1434,57 @@ export default function Reports() {
                     Resolution Rate
                   </p>
                   <p className="text-2xl font-bold">
-                    {(
-                      ((reportData?.summary?.resolvedErrors ?? 0) /
-                        (reportData?.summary?.totalErrors ?? 1)) *
-                      100
-                    ).toFixed(1)}
-                    %
+                    {reportsLoading ? (
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    ) : (
+                      <>
+                        {(
+                          ((reportData?.summary?.resolvedErrors ?? 0) /
+                            (reportData?.summary?.totalErrors ?? 1)) *
+                          100
+                        ).toFixed(1)}
+                        %
+                      </>
+                    )}
                   </p>
                 </div>
                 <BarChart3 className="h-8 w-8 text-green-600" />
               </div>
               <div className="mt-2 flex items-center">
-                <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-                <span className="text-sm text-green-600">+2.4%</span>
+                {((reportData?.summary as any)?.trends?.resolution || 0) >= 0 ? (
+                  <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+                ) : (
+                  <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
+                )}
+                <span className={`text-sm ${((reportData?.summary as any)?.trends?.resolution || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {(reportData?.summary as any)?.trends?.resolution !== undefined
+                    ? `${((reportData?.summary as any)?.trends?.resolution || 0) >= 0 ? '+' : ''}${(reportData?.summary as any)?.trends?.resolution}%`
+                    : '0%'
+                  }
+                </span>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Report Tabs */}
-        <Tabs
-          value={reportType}
-          onValueChange={setReportType}
-          className="w-full"
-        >
+        {reportsLoading ? (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <SectionSkeleton title="Error Types Distribution" />
+            <SectionSkeleton title="Severity Analysis" />
+            <SectionSkeleton title="Top Error Files" />
+            <SectionSkeleton title="Performance Metrics" />
+          </div>
+        ) : (
+          <Tabs
+            value={reportType}
+            onValueChange={setReportType}
+            className="w-full"
+          >
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="summary">Summary</TabsTrigger>
             <TabsTrigger value="detailed">Detailed</TabsTrigger>
@@ -1468,7 +1504,7 @@ export default function Reports() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {reportData?.errorTypes.map((type, index) => (
+                    {reportData?.errorTypes.map((type: any, index: number) => (
                       <div
                         key={index}
                         className="flex items-center justify-between"
@@ -1563,7 +1599,7 @@ export default function Reports() {
                                 : "bg-green-100 text-green-800"
                             }`}
                           >
-                            {count}
+                            {count as number}
                           </Badge>
                         </div>
                       )
@@ -1607,7 +1643,7 @@ export default function Reports() {
                       </tr>
                     </thead>
                     <tbody>
-                      {reportData?.topFiles?.map((file, index) => (
+                      {reportData?.topFiles?.map((file: any, index: number) => (
                         <tr key={index} className="border-b hover:bg-muted/50">
                           <td className="py-2 px-4 font-medium">
                             {file.fileName}
@@ -1764,7 +1800,7 @@ export default function Reports() {
                     <div className="space-y-2">
                       {reportData?.errorTypes
                         .slice(0, 5)
-                        .map((errorType, index) => (
+                        .map((errorType: any, index: number) => (
                           <div
                             key={index}
                             className="flex items-center justify-between p-2 rounded border"
@@ -1863,7 +1899,7 @@ export default function Reports() {
           </TabsContent>
 
           <TabsContent value="trends" className="space-y-4">
-            <EnhancedTrendsAnalysis reportData={reportData} />
+            <EnhancedTrendsAnalysis reportData={reportData} isActive={reportType === "trends"} />
           </TabsContent>
 
           <TabsContent value="performance" className="space-y-4">
@@ -1888,20 +1924,15 @@ export default function Reports() {
                       %
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Success Rate
+                      Analysis Success Rate
                     </p>
                   </div>
                   <div className="text-center p-4 bg-muted rounded-lg">
                     <div className="text-2xl font-bold">
-                      {(
-                        ((reportData?.summary.resolvedErrors || 0) /
-                          (reportData?.summary.totalErrors || 1)) *
-                        100
-                      ).toFixed(1)}
-                      %
+                      {reportData?.performance?.totalAnalyses || 0}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Resolution Rate
+                      Total Analyses
                     </p>
                   </div>
                 </div>
@@ -1909,6 +1940,7 @@ export default function Reports() {
             </Card>
           </TabsContent>
         </Tabs>
+        )}
       </AdaptiveLayout>
     </>
   );

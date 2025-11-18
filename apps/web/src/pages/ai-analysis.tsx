@@ -32,7 +32,27 @@ import {
   Activity,
   FileSpreadsheet,
   Settings,
+  Loader2,
 } from "lucide-react";
+
+// Loading skeleton component for sections
+const SectionSkeleton = ({ title }: { title: string }) => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center space-x-2">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        <span>{title}</span>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
+      </div>
+    </CardContent>
+  </Card>
+);
 
 interface ErrorLog {
   id: number;
@@ -96,7 +116,7 @@ export default function AIAnalysisPage() {
   const [consolidatedItemsPerPage] = useState(10);
 
   // Fast stats query for dashboard (no heavy data loading)
-  const { data: errorStats } = useQuery({
+  const { data: errorStats, isLoading: isLoadingStats } = useQuery({
     queryKey: ["/api/errors/stats"],
     queryFn: async () => {
       return await authenticatedRequest("GET", "/api/errors/stats");
@@ -105,7 +125,7 @@ export default function AIAnalysisPage() {
   });
 
   // Fetch all errors with AI suggestions (only when needed for detailed view)
-  const { data: errors, refetch: refetchErrors } = useQuery({
+  const { data: errors, refetch: refetchErrors, isLoading: isLoadingErrors } = useQuery({
     queryKey: ["/api/errors/enhanced/all"],
     queryFn: async (): Promise<ErrorLog[]> => {
       // Only load first few pages for performance, prioritize errors with AI/ML data
@@ -139,7 +159,7 @@ export default function AIAnalysisPage() {
     staleTime: 5000, // Reduced from 60000ms (60s) to 5000ms (5s) for faster updates
   });
 
-  const { data: consolidatedData, refetch: refetchConsolidated } = useQuery({
+  const { data: consolidatedData, refetch: refetchConsolidated, isLoading: isLoadingConsolidated } = useQuery({
     queryKey: ["/api/errors/consolidated/summary"],
     queryFn: async () => {
       // Load only first few pages for performance
@@ -184,14 +204,14 @@ export default function AIAnalysisPage() {
     staleTime: 10000, // Cache for 10 seconds
   });
 
-  const { data: mlStatus } = useQuery({
+  const { data: mlStatus, isLoading: isLoadingMLStatus } = useQuery({
     queryKey: ["/api/ml/status"],
     queryFn: async (): Promise<MLStatus> => {
       return await authenticatedRequest("GET", "/api/ml/status");
     },
   });
 
-  const { data: suggestionPerformance } = useQuery({
+  const { data: suggestionPerformance, isLoading: isLoadingSuggestions } = useQuery({
     queryKey: ["/api/ai/suggestion-performance"],
     queryFn: async (): Promise<SuggestionPerformance> => {
       // Fixed: Return the authenticated request result directly
@@ -203,11 +223,21 @@ export default function AIAnalysisPage() {
   });
 
   const handleViewSuggestion = (error: ErrorLog) => {
+    console.log("🤖 handleViewSuggestion called with error:", error);
+    if (!error || !error.id) {
+      console.error("❌ Invalid error data for suggestion:", error);
+      return;
+    }
     setSelectedError(error);
     setShowAISuggestionModal(true);
   };
 
   const handleGenerateSuggestion = (error: ErrorLog) => {
+    console.log("🤖 handleGenerateSuggestion called with error:", error);
+    if (!error || !error.id) {
+      console.error("❌ Invalid error data for suggestion generation:", error);
+      return;
+    }
     setSelectedError(error);
     setShowAISuggestionModal(true);
   };
@@ -235,17 +265,25 @@ export default function AIAnalysisPage() {
         "POST",
         "/api/ai/process-excel-training"
       );
-      if (!processResponse.ok) {
-        throw new Error("Failed to process Excel training data");
+      
+      console.log("📊 Process Excel response:", processResponse);
+      
+      if (!processResponse || processResponse.error) {
+        const errorMsg = processResponse?.error || processResponse?.details || "Failed to process Excel training data";
+        throw new Error(errorMsg);
+      }
+      
+      if (!processResponse.processedRecords) {
+        throw new Error("No processed records returned from Excel training data");
       }
 
-      const { processedRecords } = await processResponse.json();
+      const { processedRecords } = processResponse;
 
       // Step 2: Train the model
       setTrainingStatus("Training ML model with processed data...");
       setTrainingProgress(50);
 
-      const trainResponse = await authenticatedRequest(
+      const trainingResult = await authenticatedRequest(
         "POST",
         "/api/ai/train-manual",
         {
@@ -253,24 +291,32 @@ export default function AIAnalysisPage() {
         }
       );
 
-      if (!trainResponse.ok) {
-        throw new Error("Failed to train model");
+      console.log("📊 Training result:", trainingResult);
+      
+      if (!trainingResult) {
+        throw new Error("No response received from training API");
       }
-
-      const trainingResult = await trainResponse.json();
+      
+      if (!trainingResult.success) {
+        const errorMsg = trainingResult.error || trainingResult.message || "Failed to train model";
+        throw new Error(errorMsg);
+      }
 
       // Step 3: Validate and finalize
       setTrainingStatus("Validating model performance...");
       setTrainingProgress(80);
 
       // Get updated metrics
-      const metricsResponse = await authenticatedRequest(
-        "GET",
-        "/api/ai/training-metrics"
-      );
-      if (metricsResponse.ok) {
-        const metrics = await metricsResponse.json();
-        setTrainingMetrics(metrics);
+      try {
+        const metrics = await authenticatedRequest(
+          "GET",
+          "/api/ai/training-metrics"
+        );
+        if (metrics) {
+          setTrainingMetrics(metrics);
+        }
+      } catch (error) {
+        console.warn("Failed to fetch training metrics:", error);
       }
 
       setTrainingProgress(100);
@@ -389,61 +435,95 @@ export default function AIAnalysisPage() {
     >
       {/* AI Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Errors</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.totalErrors}
-                </p>
-              </div>
-              <AlertTriangle className="h-8 w-8 text-orange-600" />
-            </div>
-          </CardContent>
-        </Card>
+        {isLoadingStats || isLoadingErrors || isLoadingConsolidated ? (
+          Array.from({ length: 4 }, (_, i) => (
+            <Card key={i} className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Loading...</p>
+                    <div className="text-3xl font-bold">
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <Loader2 className="w-7 h-7 text-primary animate-spin" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Total Errors</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {aiSuggestionStats.totalErrors}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <AlertTriangle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">AI Suggestions</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.withAISuggestions}
-                </p>
-              </div>
-              <Brain className="h-8 w-8 text-purple-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">AI Suggestions</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {aiSuggestionStats.withAISuggestions}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <Brain className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">ML Predictions</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.withMLPredictions}
-                </p>
-              </div>
-              <Zap className="h-8 w-8 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">ML Predictions</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {aiSuggestionStats.withMLPredictions}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <Zap className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Resolved</p>
-                <p className="text-2xl font-bold">
-                  {aiSuggestionStats.resolvedErrors}
-                </p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-green-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Resolved</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {aiSuggestionStats.resolvedErrors}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <CheckCircle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       {/* Enhanced ML Training Metrics Dashboard */}
@@ -631,14 +711,17 @@ export default function AIAnalysisPage() {
       )}
 
       {/* Always Visible Suggestion Model Performance Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <TrendingUp className="h-5 w-5" />
-            <span>Suggestion Model Performance</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      {isLoadingSuggestions ? (
+        <SectionSkeleton title="Suggestion Model Performance" />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="h-5 w-5" />
+              <span>Suggestion Model Performance</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Model Accuracy</p>
@@ -771,17 +854,21 @@ export default function AIAnalysisPage() {
             </Button>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
       {/* ML Prediction Model Status */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Activity className="h-5 w-5" />
-            <span>ML Prediction Model Status</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      {isLoadingMLStatus ? (
+        <SectionSkeleton title="ML Prediction Model Status" />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Activity className="h-5 w-5" />
+              <span>ML Prediction Model Status</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Prediction Status</p>
@@ -855,7 +942,8 @@ export default function AIAnalysisPage() {
             </Button>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
       {/* AI Analysis Tabs */}
       <Tabs defaultValue="consolidated" className="w-full">
@@ -866,12 +954,15 @@ export default function AIAnalysisPage() {
         </TabsList>
 
         <TabsContent value="consolidated" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Consolidated Error Analysis</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {sortedConsolidatedErrors.length > 0 ? (
+          {isLoadingConsolidated ? (
+            <SectionSkeleton title="Consolidated Error Analysis" />
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>Consolidated Error Analysis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {sortedConsolidatedErrors.length > 0 ? (
                 <div className="space-y-4">
                   {/* Pagination info */}
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -950,9 +1041,16 @@ export default function AIAnalysisPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() =>
-                              handleViewSuggestion(group.examples[0])
-                            }
+                            onClick={() => {
+                              const firstExample = group.examples && group.examples[0];
+                              if (firstExample && firstExample.id) {
+                                handleViewSuggestion(firstExample);
+                              } else {
+                                console.warn("No valid error example found for suggestion:", group);
+                              }
+                            }}
+                            disabled={!group.examples || !group.examples[0] || !group.examples[0].id}
+                            title={group.examples && group.examples[0] && group.examples[0].id ? "View AI Suggestion" : "No error data available"}
                           >
                             <Bot className="h-4 w-4" />
                           </Button>
@@ -1045,16 +1143,20 @@ export default function AIAnalysisPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="suggestions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>AI Suggestions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {sortedAISuggestionErrors.length > 0 ? (
+          {isLoadingErrors ? (
+            <SectionSkeleton title="AI Suggestions" />
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>AI Suggestions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {sortedAISuggestionErrors.length > 0 ? (
                 <ErrorTable
                   errors={sortedAISuggestionErrors}
                   onViewDetails={handleViewDetails}
@@ -1075,14 +1177,18 @@ export default function AIAnalysisPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="predictions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>ML Predictions</CardTitle>
-            </CardHeader>
+          {isLoadingErrors ? (
+            <SectionSkeleton title="ML Predictions" />
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>ML Predictions</CardTitle>
+              </CardHeader>
             <CardContent>
               {sortedMLPredictionErrors.length > 0 ? (
                 <div className="space-y-4">
@@ -1256,13 +1362,20 @@ export default function AIAnalysisPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
 
       {/* Modals */}
 
-      {selectedError && (
+      <AISuggestionModal
+        isOpen={showAISuggestionModal}
+        onClose={() => setShowAISuggestionModal(false)}
+        error={selectedError}
+      />
+
+      {false && selectedError && (
         <Dialog
           open={showAISuggestionModal}
           onOpenChange={setShowAISuggestionModal}

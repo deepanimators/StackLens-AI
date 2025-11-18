@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,8 @@ interface AnalysisHistory {
   lowErrors: number;
   processingTime: number;
   modelAccuracy: number;
+  storeNumber?: string | null; // Store number from log file
+  kioskNumber?: string | null; // Kiosk number from log file
   // Additional fields from API
   analysisDate?: string; // Backward compatibility
   fileName?: string; // From file lookup
@@ -70,8 +72,26 @@ export default function AnalysisHistoryPage() {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [filterFileId, setFilterFileId] = useState<number | null>(null);
+  const [filterFileName, setFilterFileName] = useState<string>("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Handle URL parameters for filtering by file
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const fileIdParam = urlParams.get('fileId');
+    const fileNameParam = urlParams.get('fileName');
+    
+    if (fileIdParam) {
+      const fileId = parseInt(fileIdParam);
+      if (!isNaN(fileId)) {
+        setFilterFileId(fileId);
+        setFilterFileName(fileNameParam ? decodeURIComponent(fileNameParam) : '');
+        console.log("📁 Filtering analysis history by file:", { fileId, fileName: fileNameParam });
+      }
+    }
+  }, []);
 
   // Fetch analysis history (completed analyses)
   const {
@@ -79,13 +99,23 @@ export default function AnalysisHistoryPage() {
     isLoading,
     error: historyError,
   } = useQuery({
-    queryKey: ["/api/analysis/history"],
+    queryKey: ["/api/analysis/history", filterFileId],
     queryFn: async () => {
       try {
+        // Build query parameters
+        const params = new URLSearchParams();
+        params.append("limit", "100");
+        
+        if (filterFileId) {
+          params.append("fileId", filterFileId.toString());
+        }
+        
+        const queryString = params.toString() ? `?${params.toString()}` : "?limit=100";
+        
         // Request with reasonable limit for display but get statistics for all records
         const data = await authenticatedRequest(
           "GET",
-          "/api/analysis/history?limit=100"
+          `/api/analysis/history${queryString}`
         );
         console.log("📊 Analysis history response:", data);
 
@@ -669,72 +699,133 @@ export default function AnalysisHistoryPage() {
   return (
     <AdaptiveLayout
       title="Analysis History"
-      subtitle="Review your past log file analyses"
+      subtitle={filterFileId ? `Showing analysis for: ${filterFileName || `File ID ${filterFileId}`}` : "Review your past log file analyses"}
     >
+      {/* File Filter Alert */}
+      {filterFileId && (
+        <Alert className="mb-4">
+          <AlertDescription className="flex items-center justify-between">
+            <span>
+              Showing analysis results for <strong>{filterFileName || `File ID ${filterFileId}`}</strong>
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setFilterFileId(null);
+                setFilterFileName("");
+                // Clear URL parameters
+                window.history.replaceState({}, '', window.location.pathname);
+              }}
+            >
+              Show All Files
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Analyses</p>
-                <p className="text-2xl font-bold">{statistics.totalAnalyses}</p>
-              </div>
-              <FileText className="h-8 w-8 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
+        {isLoading ? (
+          Array.from({ length: 4 }, (_, i) => (
+            <Card key={i} className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Loading...</p>
+                    <div className="text-3xl font-bold">
+                      <div className="flex items-center space-x-1 my-2 py-1">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <FileText className="w-7 h-7 text-primary animate-pulse" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Total Analyses</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {statistics.totalAnalyses}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <FileText className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Errors</p>
-                <p className="text-2xl font-bold">{statistics.totalErrors}</p>
-              </div>
-              <AlertTriangle className="h-8 w-8 text-orange-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Total Errors</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {statistics.totalErrors}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <AlertTriangle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Critical Issues</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {statistics.totalCriticalErrors}
-                </p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-red-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Critical Issues</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-red-600">
+                      {statistics.totalCriticalErrors}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <CheckCircle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Avg. Accuracy</p>
-                <p className="text-2xl font-bold">
-                  {Array.isArray(analysisHistory) &&
-                  analysisHistory.length &&
-                  analysisHistory.some((a) => a.modelAccuracy > 0)
-                    ? (
-                        analysisHistory.reduce(
-                          (sum, a) => sum + (a.modelAccuracy || 0),
-                          0
-                        ) /
-                        analysisHistory.filter((a) => a.modelAccuracy > 0)
-                          .length
-                      ).toFixed(1) + "%"
-                    : "0.0%"}
-                </p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-green-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">Avg. Accuracy</p>
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {Array.isArray(analysisHistory) &&
+                      analysisHistory.length &&
+                      analysisHistory.some((a) => a.modelAccuracy > 0)
+                        ? (
+                            analysisHistory.reduce(
+                              (sum, a) => sum + (a.modelAccuracy || 0),
+                              0
+                            ) /
+                            analysisHistory.filter((a) => a.modelAccuracy > 0)
+                              .length
+                          ).toFixed(1) + "%"
+                        : "0.0%"}
+                    </p>
+                  </div>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center ring-2 ring-primary/10">
+                    <TrendingUp className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       {/* Analysis History Table */}
@@ -788,7 +879,7 @@ export default function AnalysisHistoryPage() {
             </div>
           ) : combinedHistory && combinedHistory.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[1200px]">
                 <thead>
                   <tr className="border-b text-left">
                     <th className="py-3 px-4 font-medium text-muted-foreground">
@@ -808,8 +899,14 @@ export default function AnalysisHistoryPage() {
                         aria-label="Select all items"
                       />
                     </th>
-                    <th className="py-3 px-4 font-medium text-muted-foreground">
+                    <th className="py-3 px-4 font-medium text-muted-foreground min-w-[200px] max-w-[300px]">
                       File Name
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground min-w-[120px]">
+                      Store
+                    </th>
+                    <th className="py-3 px-4 font-medium text-muted-foreground min-w-[120px]">
+                      Kiosk
                     </th>
                     <th className="py-3 px-4 font-medium text-muted-foreground">
                       Progress
@@ -865,12 +962,40 @@ export default function AnalysisHistoryPage() {
                           }`}
                         />
                       </td>
-                      <td className="py-4 px-4">
+                      <td className="py-4 px-4 min-w-[200px] max-w-[300px]">
                         <div className="flex items-center space-x-2">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">
+                          <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                          <span className="font-medium truncate" title={analysis.filename || getFileName(analysis.fileId)}>
                             {analysis.filename || getFileName(analysis.fileId)}
                           </span>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4 min-w-[120px]">
+                        <div className="flex items-center space-x-2">
+                          {analysis.storeNumber ? (
+                            <span 
+                              className="bg-blue-100 text-blue-800 font-mono text-xs px-2 py-1 rounded truncate"
+                              title={`Store: ${analysis.storeNumber}`}
+                            >
+                              {analysis.storeNumber}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-4 px-4 min-w-[120px]">
+                        <div className="flex items-center space-x-2">
+                          {analysis.kioskNumber ? (
+                            <span 
+                              className="bg-green-100 text-green-800 font-mono text-xs px-2 py-1 rounded truncate"
+                              title={`Kiosk: ${analysis.kioskNumber}`}
+                            >
+                              {analysis.kioskNumber}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
                         </div>
                       </td>
                       <td className="py-4 px-4">

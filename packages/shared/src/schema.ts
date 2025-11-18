@@ -623,3 +623,64 @@ export const SettingsCategoryEnum = z.enum([
   "api",
   "integration",
 ]);
+
+// Jira Integration Tables
+export const jiraTickets = sqliteTable("jira_tickets", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  errorId: integer("error_id").references(() => errorLogs.id),
+  jiraKey: text("jira_key").notNull(),
+  jiraUrl: text("jira_url"),
+  errorType: text("error_type").notNull(),
+  severity: text("severity").notNull(),
+  storeNumber: text("store_number"),
+  kioskNumber: text("kiosk_number"),
+  status: text("status").default("open"), // open, in_progress, closed
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+export const automationLogs = sqliteTable("automation_logs", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  errorId: integer("error_id").references(() => errorLogs.id),
+  decision: text("decision").notNull(), // create, update, skip
+  reason: text("reason"),
+  severity: text("severity"),
+  mlConfidence: real("ml_confidence").default(0),
+  threshold: real("threshold").default(0),
+  jiraTicketKey: text("jira_ticket_key"),
+  jiraTicketId: integer("jira_ticket_id").references(() => jiraTickets.id),
+  success: integer("success", { mode: "boolean" }).default(true),
+  error: text("error"),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+export const jiraIntegrationConfig = sqliteTable("jira_integration_config", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  key: text("key").notNull().unique(),
+  value: text("value").notNull(),
+  description: text("description"),
+  isEncrypted: integer("is_encrypted", { mode: "boolean" }).default(false),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
+// Insert schemas for Jira tables
+export const insertJiraTicketSchema = createInsertSchema(jiraTickets).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertAutomationLogSchema = createInsertSchema(automationLogs).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertAutomationLog = z.infer<typeof insertAutomationLogSchema>;
