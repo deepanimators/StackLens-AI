@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   # OpenTelemetry Collector
@@ -9,11 +9,11 @@ services:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
       - otel-collector-logs:/tmp/otel-collector
     ports:
-      - "4317:4317"  # OTLP/gRPC
-      - "4318:4318"  # OTLP/HTTP
-      - "9411:9411"  # Zipkin
+      - "4317:4317" # OTLP/gRPC
+      - "4318:4318" # OTLP/HTTP
+      - "9411:9411" # Zipkin
       - "14250:14250" # Jaeger gRPC
-      - "9200:9200"  # Elasticsearch (forwarded from ES container)
+      - "9200:9200" # Elasticsearch (forwarded from ES container)
     environment:
       - GOGC=80
     depends_on:
@@ -52,13 +52,18 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_LOG_RETENTION_HOURS: 168
       KAFKA_LOG_SEGMENT_BYTES: 1073741824
     volumes:
       - kafka-data:/var/lib/kafka/data
     healthcheck:
-      test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server=localhost:9092"]
+      test:
+        [
+          "CMD",
+          "kafka-broker-api-versions.sh",
+          "--bootstrap-server=localhost:9092",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5

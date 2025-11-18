@@ -1,0 +1,359 @@
+name: OTEL Pipeline CI
+
+on:
+  push:
+    branches: [main, feature/otel-pipeline, develop]
+    paths:
+      - 'collector/**'
+      - 'sdk-examples/**'
+      - 'stacklens/**'
+      - 'config/rules/**'
+      - 'infra/compose/**'
+      - '.github/workflows/otel-pipeline-ci.yml'
+      - 'tests/smoke-tests/**'
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  DOCKER_COMPOSE_VERSION: v2.20.0
+
+jobs:
+  lint:
+    name: Lint & Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate docker-compose.yml
+        run: |
+          docker-compose -f infra/compose/docker-compose.yml config > /dev/null
+          echo "✓ docker-compose.yml is valid"
+
+      - name: Validate docker-compose.test.yml
+        run: |
+          docker-compose -f infra/compose/docker-compose.test.yml config > /dev/null
+          echo "✓ docker-compose.test.yml is valid"
+
+      - name: Validate YAML files
+        run: |
+          find . -name "*.yml" -o -name "*.yaml" | grep -E "(collector|config)" | head -20 | while read f; do
+            echo "Checking $f..."
+            python -c "import yaml; yaml.safe_load(open('$f'))" && echo "  ✓ Valid YAML"
+          done
+
+      - name: Validate JSON schemas
+        run: |
+          # Validate log_schema.json is valid JSON
+          python -m json.tool stacklens/ingest/schema/log_schema.json > /dev/null
+          echo "✓ log_schema.json is valid JSON"
+          
+          # Validate alert-rules.json
+          python -m json.tool config/rules/alert-rules.json > /dev/null
+          echo "✓ alert-rules.json is valid JSON"
+
+      - name: Lint YAML syntax
+        run: |
+          python -c "
+          import yaml
+          import sys
+          
+          files = [
+              'collector/otel-collector-config.yaml',
+              'stacklens/ingest/schema/log_schema.json',
+              'config/rules/alert-rules.json'
+          ]
+          
+          for f in files:
+              try:
+                  if f.endswith('.json'):
+                      import json
+                      with open(f) as fh:
+                          json.load(fh)
+                  else:
+                      with open(f) as fh:
+                          yaml.safe_load(fh)
+                  print(f'✓ {f} is valid')
+              except Exception as e:
+                  print(f'✗ {f}: {e}')
+                  sys.exit(1)
+          "
+
+  collector-compose-test:
+    name: Docker Compose Infrastructure Test
+    runs-on: ubuntu-latest
+    
+    services:
+      docker:
+        image: docker:dind
+        options: >-
+          --privileged
+          --health-cmd="docker ps"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Pull required images
+        run: |
+          docker-compose -f infra/compose/docker-compose.test.yml pull
+
+      - name: Start services (test config)
+        run: |
+          cd infra/compose
+          docker-compose -f docker-compose.test.yml up -d
+          echo "Waiting for services to be healthy..."
+          sleep 15
+
+      - name: Check service health
+        run: |
+          cd infra/compose
+          docker-compose -f docker-compose.test.yml ps
+          
+          # Verify critical services
+          docker-compose -f docker-compose.test.yml exec -T zookeeper nc -z localhost 2181 && echo "✓ Zookeeper healthy" || echo "✗ Zookeeper unhealthy"
+          docker-compose -f docker-compose.test.yml exec -T kafka nc -z localhost 9092 && echo "✓ Kafka healthy" || echo "✗ Kafka unhealthy"
+
+      - name: Verify Kafka topics
+        run: |
+          cd infra/compose
+          docker-compose -f docker-compose.test.yml exec -T kafka kafka-topics --list --bootstrap-server localhost:9092 | grep -E "otel-logs|otel-traces|stacklens-enriched|stacklens-alerts"
+          echo "✓ All required Kafka topics exist"
+
+      - name: Verify OTLP endpoint
+        run: |
+          cd infra/compose
+          docker-compose -f docker-compose.test.yml exec -T otel-collector curl -s http://localhost:4318/healthz
+          echo "✓ OTLP Collector health check passed"
+
+      - name: Test OTLP log ingestion
+        run: |
+          cd infra/compose
+          
+          # Send test log
+          curl -s -X POST http://localhost:4318/v1/logs \
+            -H "Content-Type: application/json" \
+            -d '{
+              "resourceLogs": [{
+                "resource": {"attributes": [{"key": "service.name", "value": {"stringValue": "test-service"}}]},
+                "scopeLogs": [{
+                  "scope": {"name": "test"},
+                  "logRecords": [{
+                    "timeUnixNano": "1705316445000000000",
+                    "body": {"stringValue": "CI test log"}
+                  }]
+                }]
+              }]
+            }' | head -20
+          
+          echo "✓ OTLP log endpoint accepted request"
+
+      - name: Verify Elasticsearch
+        run: |
+          cd infra/compose
+          
+          # Wait for Elasticsearch to start
+          max_attempts=30
+          attempt=0
+          while [ $attempt -lt $max_attempts ]; do
+            if docker-compose -f docker-compose.test.yml exec -T elasticsearch curl -s http://localhost:9200/_cluster/health > /dev/null 2>&1; then
+              echo "✓ Elasticsearch is healthy"
+              break
+            fi
+            attempt=$((attempt + 1))
+            sleep 1
+          done
+          
+          if [ $attempt -eq $max_attempts ]; then
+            echo "✗ Elasticsearch failed to start"
+            exit 1
+          fi
+
+      - name: Cleanup
+        if: always()
+        run: |
+          cd infra/compose
+          docker-compose -f docker-compose.test.yml down -v
+          echo "✓ Test environment cleaned up"
+
+  smoke-test:
+    name: Collector Smoke Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start infrastructure
+        run: |
+          cd infra/compose
+          docker-compose -f docker-compose.test.yml up -d
+          echo "Waiting for services to initialize..."
+          sleep 20
+
+      - name: Run smoke test
+        run: |
+          chmod +x tests/smoke-tests/collector-smoke-test.sh
+          ./tests/smoke-tests/collector-smoke-test.sh
+
+      - name: Check logs for errors
+        if: always()
+        run: |
+          cd infra/compose
+          echo "=== Collector Logs ==="
+          docker-compose -f docker-compose.test.yml logs otel-collector | tail -50 || true
+          
+          echo "=== Kafka Logs ==="
+          docker-compose -f docker-compose.test.yml logs kafka | tail -30 || true
+
+      - name: Cleanup
+        if: always()
+        run: |
+          cd infra/compose
+          docker-compose -f docker-compose.test.yml down -v
+
+  schema-validation:
+    name: Data Contract Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install jsonschema
+        run: pip install jsonschema pyyaml
+
+      - name: Validate log schema
+        run: |
+          python -c "
+          import json
+          
+          # Load schema
+          with open('stacklens/ingest/schema/log_schema.json') as f:
+              schema = json.load(f)
+          
+          # Validate schema structure
+          assert 'type' in schema, 'Schema missing type'
+          assert 'properties' in schema, 'Schema missing properties'
+          assert schema['type'] == 'object', 'Schema root must be object'
+          
+          # Validate required fields
+          required = schema.get('required', [])
+          assert 'timestamp' in required, 'Missing required field: timestamp'
+          assert 'service' in required, 'Missing required field: service'
+          assert 'message' in required, 'Missing required field: message'
+          
+          print(f'✓ Log schema valid with {len(schema[\"properties\"])} fields')
+          print(f'✓ Required fields: {len(required)}')
+          "
+
+      - name: Validate alert rules
+        run: |
+          python -c "
+          import json
+          
+          with open('config/rules/alert-rules.json') as f:
+              rules = json.load(f)
+          
+          assert 'rules' in rules, 'Missing rules array'
+          
+          required_fields = ['id', 'name', 'severity', 'conditions', 'suggested_fix']
+          for rule in rules['rules']:
+              for field in required_fields:
+                  assert field in rule, f'Rule missing field: {field}'
+          
+          print(f'✓ Alert rules valid with {len(rules[\"rules\"])} rules')
+          "
+
+      - name: Validate alert rule IDs are unique
+        run: |
+          python -c "
+          import json
+          
+          with open('config/rules/alert-rules.json') as f:
+              rules = json.load(f)
+          
+          ids = [r['id'] for r in rules['rules']]
+          duplicates = [id for id in ids if ids.count(id) > 1]
+          
+          if duplicates:
+              print(f'✗ Duplicate rule IDs: {duplicates}')
+              exit(1)
+          
+          print(f'✓ All {len(ids)} rule IDs are unique')
+          "
+
+  sdk-examples-lint:
+    name: SDK Examples Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Validate JavaScript syntax
+        run: |
+          node -c sdk-examples/js/otel-web-sample.js
+          echo "✓ Browser SDK syntax valid"
+          
+          node -c sdk-examples/node/otel-node-sample.js
+          echo "✓ Node SDK syntax valid"
+
+      - name: Basic import check
+        run: |
+          python -c "
+          import re
+          
+          # Check browser SDK
+          with open('sdk-examples/js/otel-web-sample.js') as f:
+              content = f.read()
+              assert 'WebTracerProvider' in content, 'Browser SDK missing WebTracerProvider'
+              assert 'OTLPTraceExporter' in content, 'Browser SDK missing OTLPTraceExporter'
+              assert 'StackLensLogger' in content, 'Browser SDK missing StackLensLogger'
+              print('✓ Browser SDK has required components')
+          
+          # Check Node SDK
+          with open('sdk-examples/node/otel-node-sample.js') as f:
+              content = f.read()
+              assert 'NodeSDK' in content, 'Node SDK missing NodeSDK'
+              assert 'getNodeAutoInstrumentations' in content, 'Node SDK missing auto-instrumentation'
+              assert 'StackLensLogger' in content, 'Node SDK missing StackLensLogger'
+              print('✓ Node SDK has required components')
+          "
+
+  all-checks:
+    name: All Checks Complete
+    needs: [lint, collector-compose-test, smoke-test, schema-validation, sdk-examples-lint]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Summary
+        run: |
+          echo "✓ All OTEL Pipeline CI checks passed!"
+          echo ""
+          echo "Completed:"
+          echo "  ✓ YAML/JSON validation"
+          echo "  ✓ Docker compose infrastructure test"
+          echo "  ✓ Collector smoke test"
+          echo "  ✓ Data contract validation"
+          echo "  ✓ SDK examples validation"

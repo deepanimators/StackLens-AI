@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StackLens OTEL Pipeline - Browser SDK Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: #667eea;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .status-box {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            color: #666;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-key {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-value {
+            color: #666;
+            word-break: break-all;
+        }
+
+        .status-value.success {
+            color: #27ae60;
+        }
+
+        .status-value.error {
+            color: #e74c3c;
+        }
+
+        .status-value.warning {
+            color: #f39c12;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        button.primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        button.secondary {
+            background: #ecf0f1;
+            color: #333;
+        }
+
+        button.secondary:hover {
+            background: #d5dbdb;
+        }
+
+        button.danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        button.danger:hover {
+            background: #c0392b;
+        }
+
+        .response-box {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .badge.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 12px;
+            color: #856404;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .link {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔭 StackLens OTEL Pipeline</h1>
+            <div class="subtitle">Browser SDK Demo & Integration Test</div>
+        </header>
+
+        <!-- Status Section -->
+        <div class="section">
+            <div class="section-title">SDK Status</div>
+            <div class="status-box" id="statusBox">
+                <div class="status-item">
+                    <span class="status-key">Status:</span>
+                    <span class="status-value" id="statusValue">Initializing...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-key">Request ID:</span>
+                    <span class="status-value" id="requestIdValue">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-key">Trace ID:</span>
+                    <span class="status-value" id="traceIdValue">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-key">Collector URL:</span>
+                    <span class="status-value" id="collectorValue">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-key">Logs Queued:</span>
+                    <span class="status-value" id="logCountValue">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Scenarios Section -->
+        <div class="section">
+            <div class="section-title">Test Scenarios</div>
+
+            <div class="input-group">
+                <label for="userId">User ID (for correlation):</label>
+                <input type="text" id="userId" placeholder="user-123" value="user-demo">
+            </div>
+
+            <div class="button-group">
+                <button class="primary" onclick="testHealthCheck()">Health Check</button>
+                <button class="primary" onclick="testSuccessfulRequest()">Successful Request</button>
+                <button class="primary" onclick="testFailedRequest()">Failed Request</button>
+                <button class="primary" onclick="testSlowRequest()">Slow Request</button>
+                <button class="secondary" onclick="testStructuredLogging()">Structured Logging</button>
+                <button class="danger" onclick="triggerError()">Trigger Error</button>
+            </div>
+
+            <div class="warning-box">
+                ⚠️ Note: Tests will log to the OTEL Collector at <code>http://localhost:4318</code>.
+                Make sure the infrastructure is running: <code>cd infra/compose && docker-compose up -d</code>
+            </div>
+
+            <div id="responseBox" style="display: none;">
+                <strong style="color: #333;">Response:</strong>
+                <div class="response-box" id="responseContent"></div>
+            </div>
+        </div>
+
+        <!-- Browser Events Section -->
+        <div class="section">
+            <div class="section-title">Instrumented Events</div>
+            <div id="eventsBox" class="status-box">
+                <p style="color: #999; text-align: center;">Browser events will appear here...</p>
+            </div>
+        </div>
+
+        <!-- Integration Checks Section -->
+        <div class="section">
+            <div class="section-title">Integration Checks</div>
+            <div class="button-group">
+                <button class="secondary" onclick="checkKibana()">Check Kibana Logs</button>
+                <button class="secondary" onclick="checkJaeger()">Check Jaeger Traces</button>
+                <button class="secondary" onclick="exportLogs()">Export Logs Now</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Learn more about the OTEL Pipeline:</p>
+            <p>
+                <a href="http://localhost:5601" class="link" target="_blank">📊 Kibana Logs</a> •
+                <a href="http://localhost:16686" class="link" target="_blank">🔍 Jaeger Traces</a> •
+                <a href="http://localhost:9200" class="link" target="_blank">📈 Elasticsearch</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Include the OTel Browser SDK -->
+    <script>
+        /**
+         * StackLens Browser SDK (Simplified version)
+         * For full SDK, see sdk-examples/js/otel-web-sample.js
+         */
+
+        const OTEL_COLLECTOR_URL = 'http://localhost:4318';
+        let eventLog = [];
+
+        // Initialize OTel tracer (simplified)
+        const tracer = {
+            traces: [],
+            addTrace: function(traceId, spanId, name, duration, status = 'success') {
+                const trace = { traceId, spanId, name, duration, status, timestamp: new Date().toISOString() };
+                this.traces.push(trace);
+                addEvent(`Trace: ${name} (${duration}ms) - ${status}`);
+                return trace;
+            },
+        };
+
+        let requestId = generateUUID();
+        let requestIdInput = document.getElementById('userId');
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                const r = (Math.random() * 16) | 0;
+                const v = c === 'x' ? r : (r & 0x3) | 0x8;
+                return v.toString(16);
+            });
+        }
+
+        function getRequestId() {
+            return requestIdInput.value || requestId;
+        }
+
+        function addEvent(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            eventLog.push(`[${timestamp}] ${message}`);
+
+            const eventsBox = document.getElementById('eventsBox');
+            eventsBox.innerHTML = eventLog
+                .slice(-10)
+                .map((e) => `<div class="status-item"><span class="status-value">${e}</span></div>`)
+                .join('');
+
+            document.getElementById('logCountValue').textContent = eventLog.length;
+        }
+
+        function updateStatus(status, color = 'success') {
+            const statusValue = document.getElementById('statusValue');
+            statusValue.textContent = status;
+            statusValue.className = `status-value ${color}`;
+        }
+
+        function showResponse(data) {
+            const responseBox = document.getElementById('responseBox');
+            const responseContent = document.getElementById('responseContent');
+            responseContent.textContent = JSON.stringify(data, null, 2);
+            responseBox.style.display = 'block';
+        }
+
+        // Update UI on load
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('statusValue').textContent = 'Ready';
+            document.getElementById('statusValue').className = 'status-value success';
+            document.getElementById('requestIdValue').textContent = getRequestId();
+            document.getElementById('traceIdValue').textContent = generateUUID();
+            document.getElementById('collectorValue').textContent = OTEL_COLLECTOR_URL;
+
+            addEvent('SDK initialized');
+            addEvent('Browser: ' + navigator.userAgent.split(' ').slice(-2).join(' '));
+        });
+
+        // Test Functions
+        async function testHealthCheck() {
+            updateStatus('Running health check...', 'info');
+            addEvent('Health check started');
+
+            try {
+                const response = await fetch('http://localhost:3000/health', {
+                    method: 'GET',
+                    headers: { 'x-request-id': getRequestId() },
+                });
+
+                const data = await response.json();
+                tracer.addTrace(generateUUID(), generateUUID(), 'health-check', 50, 'success');
+                showResponse(data);
+                updateStatus(`Health OK`, 'success');
+                addEvent('Health check passed');
+            } catch (error) {
+                updateStatus(`Error: ${error.message}`, 'error');
+                addEvent(`Health check failed: ${error.message}`);
+            }
+        }
+
+        async function testSuccessfulRequest() {
+            updateStatus('Running successful request...', 'info');
+            addEvent('Creating successful request');
+
+            try {
+                const startTime = performance.now();
+                const response = await fetch('http://localhost:3000/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-request-id': getRequestId(),
+                    },
+                    body: JSON.stringify({
+                        product_id: 'SKU-001',
+                        quantity: 1,
+                    }),
+                });
+
+                const duration = Math.round(performance.now() - startTime);
+                const data = await response.json();
+
+                tracer.addTrace(generateUUID(), generateUUID(), 'create-order', duration, response.ok ? 'success' : 'error');
+                showResponse(data);
+
+                if (response.ok) {
+                    updateStatus('Request successful', 'success');
+                    addEvent(`Order created: ${data.order?.id}`);
+                } else {
+                    updateStatus('Request failed', 'error');
+                    addEvent(`Order creation failed: ${data.error}`);
+                }
+            } catch (error) {
+                updateStatus(`Error: ${error.message}`, 'error');
+                addEvent(`Request failed: ${error.message}`);
+            }
+        }
+
+        async function testFailedRequest() {
+            updateStatus('Running failed request...', 'warning');
+            addEvent('Creating request that will fail');
+
+            try {
+                const response = await fetch('http://localhost:3000/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-request-id': getRequestId(),
+                    },
+                    body: JSON.stringify({
+                        product_id: 'SKU-INVALID',
+                        quantity: 1,
+                    }),
+                });
+
+                const data = await response.json();
+                tracer.addTrace(generateUUID(), generateUUID(), 'create-order-failed', 100, 'error');
+                showResponse(data);
+
+                updateStatus('Expected failure (404)', 'warning');
+                addEvent(`Product not found (expected)`);
+            } catch (error) {
+                updateStatus(`Error: ${error.message}`, 'error');
+                addEvent(`Request failed: ${error.message}`);
+            }
+        }
+
+        async function testSlowRequest() {
+            updateStatus('Running slow request...', 'warning');
+            addEvent('Simulating slow request...');
+
+            try {
+                const startTime = performance.now();
+                // Simulate slow operation
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                const duration = Math.round(performance.now() - startTime);
+
+                tracer.addTrace(generateUUID(), generateUUID(), 'slow-request', duration, 'success');
+                updateStatus('Slow request complete', 'success');
+                addEvent(`Slow operation took ${duration}ms`);
+                showResponse({ message: 'Simulated slow operation', duration });
+            } catch (error) {
+                updateStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testStructuredLogging() {
+            updateStatus('Logging structured data...', 'info');
+
+            const logData = {
+                timestamp: new Date().toISOString(),
+                level: 'info',
+                message: 'Test structured log',
+                request_id: getRequestId(),
+                user_id: requestIdInput.value,
+                action: 'test.structured_log',
+                app_version: '1.0.0',
+                environment: 'browser',
+            };
+
+            addEvent(`Structured log: ${logData.message}`);
+            showResponse(logData);
+            updateStatus('Structured log created', 'success');
+        }
+
+        function triggerError() {
+            updateStatus('Triggering error...', 'error');
+            addEvent('Simulating unhandled error');
+
+            try {
+                throw new Error('Intentional test error for error tracking');
+            } catch (error) {
+                tracer.addTrace(generateUUID(), generateUUID(), 'error-trigger', 0, 'error');
+                showResponse({
+                    error: error.message,
+                    stack: error.stack,
+                    timestamp: new Date().toISOString(),
+                });
+                updateStatus('Error captured and logged', 'error');
+                addEvent(`Error caught: ${error.message}`);
+            }
+        }
+
+        function checkKibana() {
+            addEvent('Opening Kibana...');
+            window.open('http://localhost:5601', '_blank');
+        }
+
+        function checkJaeger() {
+            addEvent('Opening Jaeger...');
+            window.open('http://localhost:16686', '_blank');
+        }
+
+        function exportLogs() {
+            updateStatus('Exporting logs...', 'info');
+            addEvent('Attempting to export logs to collector');
+
+            // In a real SDK, this would batch and send to OTLP endpoint
+            const logsToExport = {
+                resourceLogs: [
+                    {
+                        resource: {
+                            attributes: {
+                                'service.name': 'browser-sdk-demo',
+                                'browser': navigator.userAgent.split(' ').slice(-1)[0],
+                            },
+                        },
+                        scopeLogs: [
+                            {
+                                logRecords: eventLog.map((e, i) => ({
+                                    body: e,
+                                    timestamp: new Date().toISOString(),
+                                })),
+                            },
+                        ],
+                    },
+                ],
+            };
+
+            showResponse(logsToExport);
+            updateStatus('Export prepared (check console)', 'success');
+            console.log('Logs ready for export:', logsToExport);
+        }
+
+        // Track page visibility changes
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                addEvent('Page hidden');
+            } else {
+                addEvent('Page visible');
+            }
+        });
+
+        // Track errors
+        window.addEventListener('error', function (event) {
+            addEvent(`Error: ${event.error?.message || 'Unknown error'}`);
+        });
+    </script>
+</body>
+</html>
