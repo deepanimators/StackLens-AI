@@ -1,0 +1,187 @@
+version: '3.8'
+
+# StackLens OTEL Pipeline - Phase 2 (Parser/Enricher Service)
+# This compose file includes PostgreSQL, Kafka, and the Parser/Enricher Service
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: stacklens-postgres
+    environment:
+      POSTGRES_USER: stacklens
+      POSTGRES_PASSWORD: stacklens_secure_password
+      POSTGRES_DB: stacklens
+      POSTGRES_INITDB_ARGS: "-c shared_buffers=256MB -c max_connections=100"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./python-services/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    networks:
+      - stacklens-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stacklens -d stacklens"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Zookeeper (Kafka Coordination)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: stacklens-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_INIT_LIMIT: 5
+    ports:
+      - "2181:2181"
+    networks:
+      - stacklens-network
+    healthcheck:
+      test: ["CMD", "echo", "stat", "|", "nc", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Kafka Broker
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: stacklens-kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+    networks:
+      - stacklens-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Kafka Topics Initializer
+  kafka-init:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: stacklens-kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - stacklens-network
+    command: >
+      bash -c "
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic otel-logs --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic stacklens-enriched --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic stacklens-dlq --partitions 1 --replication-factor 1 &&
+      echo 'Topics created successfully'
+      "
+    restart: on-failure
+
+  # Phase 2: Parser/Enricher Service
+  parser-enricher:
+    build:
+      context: .
+      dockerfile: python-services/Dockerfile.phase2
+    container_name: stacklens-parser-enricher
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
+    ports:
+      - "8001:8000"
+    environment:
+      # Kafka Configuration
+      KAFKA_BROKERS: kafka:9092
+      KAFKA_CONSUMER_GROUP: parser-enricher-group
+      KAFKA_SESSION_TIMEOUT: "30000"
+      KAFKA_MAX_POLL_RECORDS: "100"
+      KAFKA_INPUT_TOPIC: otel-logs
+      KAFKA_OUTPUT_TOPIC: stacklens-enriched
+      KAFKA_DLQ_TOPIC: stacklens-dlq
+      
+      # PostgreSQL Configuration
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: stacklens
+      DB_USER: stacklens
+      DB_PASSWORD: stacklens_secure_password
+      DB_POOL_SIZE: "5"
+      
+      # Service Configuration
+      BATCH_SIZE: "100"
+      BATCH_TIMEOUT: "5"
+      SERVICE_NAME: parser-enricher
+      ENVIRONMENT: development
+      LOG_LEVEL: INFO
+    networks:
+      - stacklens-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    volumes:
+      - ./python-services/parser_enricher_service.py:/app/parser_enricher_service.py
+      - ./logs:/app/logs
+
+  # Kafka UI (Optional - for monitoring)
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: stacklens-kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: stacklens
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    networks:
+      - stacklens-network
+    restart: unless-stopped
+
+  # PgAdmin (Optional - for database management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: stacklens-pgadmin
+    depends_on:
+      - postgres
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@stacklens.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      SCRIPT_NAME: /pgadmin
+    networks:
+      - stacklens-network
+    restart: unless-stopped
+
+networks:
+  stacklens-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
