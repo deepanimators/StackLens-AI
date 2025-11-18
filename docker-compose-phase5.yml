@@ -1,0 +1,275 @@
+version: "3.9"
+
+# Phase 5: ML & Anomaly Detection Services
+# Builds on Phase 4 analytics with machine learning anomaly detection and predictive alerting
+# Requires Phase 4 services running (Kafka, PostgreSQL)
+
+services:
+  # ============================================================================
+  # ML Anomaly Detection Service
+  # ============================================================================
+  ml-service:
+    build:
+      context: ./python-services
+      dockerfile: Dockerfile
+    container_name: stacklens-ml-service
+    image: stacklens/ml-service:latest
+    restart: unless-stopped
+
+    command: python ml_service.py
+
+    environment:
+      LOG_LEVEL: INFO
+      ENVIRONMENT: production
+
+      # PostgreSQL
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-stacklens}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-stacklens}
+
+      # Kafka
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+    depends_on:
+      - postgres
+      - kafka
+
+    ports:
+      - "8005:8005" # Optional: metrics port
+
+    volumes:
+      - ./python-services:/app
+      - ml-models:/app/models
+
+    networks:
+      - stacklens-network
+
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "ml_service.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+        labels: "service=ml-service"
+
+  # ============================================================================
+  # Predictive Alerting Service
+  # ============================================================================
+  predictive-alerter:
+    build:
+      context: ./python-services
+      dockerfile: Dockerfile
+    container_name: stacklens-predictive-alerter
+    image: stacklens/predictive-alerter:latest
+    restart: unless-stopped
+
+    command: python predictive_alerter.py
+
+    environment:
+      LOG_LEVEL: INFO
+      ENVIRONMENT: production
+
+      # PostgreSQL
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-stacklens}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-stacklens}
+
+      # Kafka
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+    depends_on:
+      - postgres
+      - kafka
+      - ml-service
+
+    ports:
+      - "8006:8006" # Optional: metrics port
+
+    volumes:
+      - ./python-services:/app
+      - ml-models:/app/models
+
+    networks:
+      - stacklens-network
+
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "predictive_alerter.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+        labels: "service=predictive-alerter"
+
+  # ============================================================================
+  # PostgreSQL Database (shared with Phase 4)
+  # ============================================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: stacklens-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-stacklens}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-stacklens}
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./python-services/ml_schema.sql:/docker-entrypoint-initdb.d/04-ml-schema.sql
+
+    networks:
+      - stacklens-network
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-stacklens}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "2"
+        labels: "service=postgres"
+
+  # ============================================================================
+  # Kafka (shared with Phase 4)
+  # ============================================================================
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: stacklens-kafka
+    restart: unless-stopped
+
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+
+    depends_on:
+      - zookeeper
+
+    ports:
+      - "9092:9092"
+
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+
+    networks:
+      - stacklens-network
+
+    healthcheck:
+      test:
+        ["CMD", "kafka-topics.sh", "--bootstrap-server", "kafka:9092", "--list"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "2"
+        labels: "service=kafka"
+
+  # ============================================================================
+  # Zookeeper (dependency for Kafka)
+  # ============================================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: stacklens-zookeeper
+    restart: unless-stopped
+
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_INIT_LIMIT: 5
+
+    ports:
+      - "2181:2181"
+
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+
+    networks:
+      - stacklens-network
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "2"
+        labels: "service=zookeeper"
+
+  # ============================================================================
+  # Postgres Admin (optional UI)
+  # ============================================================================
+  pgadmin:
+    image: dpage/pgadmin4:7.9
+    container_name: stacklens-pgadmin
+    restart: unless-stopped
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@stacklens.local
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+
+    ports:
+      - "5050:80"
+
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+    networks:
+      - stacklens-network
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "2"
+        labels: "service=pgadmin"
+
+volumes:
+  postgres-data:
+    name: stacklens-postgres-data
+  pgadmin-data:
+    name: stacklens-pgadmin-data
+  kafka-data:
+    name: stacklens-kafka-data
+  zookeeper-data:
+    name: stacklens-zookeeper-data
+  zookeeper-logs:
+    name: stacklens-zookeeper-logs
+  ml-models:
+    name: stacklens-ml-models
+
+networks:
+  stacklens-network:
+    name: stacklens-network
+    driver: bridge

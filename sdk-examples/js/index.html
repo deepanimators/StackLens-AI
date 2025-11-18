@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OTel Web Sample</title>
+</head>
+<body>
+    <h1>OTel Web Sample</h1>
+    <button id="btn-error">Trigger Error</button>
+    <button id="btn-api">Call API</button>
+
+    <script type="module">
+        import { WebTracerProvider } from 'https://esm.sh/@opentelemetry/sdk-trace-web';
+        import { OTLPTraceExporter } from 'https://esm.sh/@opentelemetry/exporter-trace-otlp-http';
+        import { BatchSpanProcessor } from 'https://esm.sh/@opentelemetry/sdk-trace-base';
+        import { Resource } from 'https://esm.sh/@opentelemetry/resources';
+        import { SemanticResourceAttributes } from 'https://esm.sh/@opentelemetry/semantic-conventions';
+
+        const provider = new WebTracerProvider({
+            resource: new Resource({
+                [SemanticResourceAttributes.SERVICE_NAME]: 'web-sample-app',
+            }),
+        });
+
+        const exporter = new OTLPTraceExporter({
+            url: 'http://localhost:4318/v1/traces',
+        });
+
+        provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+        provider.register();
+
+        // Custom Logger
+        const log = (level, message, context = {}) => {
+            const payload = {
+                timestamp: new Date().toISOString(),
+                service: 'web-sample-app',
+                level,
+                message,
+                ...context
+            };
+            
+            // Send to StackLens Ingest API
+            fetch('http://localhost:3001/api/ingest/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(console.error);
+        };
+
+        document.getElementById('btn-error').addEventListener('click', () => {
+            log('error', 'Payment failed', { error_code: 'PAYMENT_FAILURE', user_id: 'u_web' });
+            alert('Error logged');
+        });
+
+        document.getElementById('btn-api').addEventListener('click', () => {
+            log('info', 'API button clicked');
+        });
+    </script>
+</body>
+</html>

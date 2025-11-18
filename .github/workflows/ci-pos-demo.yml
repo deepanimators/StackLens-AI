@@ -1,0 +1,44 @@
+name: POS Demo CI
+
+on:
+  push:
+    branches: [ feature/pos-demo ]
+  pull_request:
+    branches: [ feature/pos-demo ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Backend Dependencies
+      run: |
+        cd pos-demo/backend
+        npm ci
+
+    - name: Lint Backend
+      run: |
+        cd pos-demo/backend
+        npm run lint
+
+    - name: Test Backend
+      run: |
+        cd pos-demo/backend
+        npm test
+
+    - name: Install Frontend Dependencies
+      run: |
+        cd pos-demo/frontend
+        npm ci
+
+    - name: Build Frontend
+      run: |
+        cd pos-demo/frontend
+        npm run build
