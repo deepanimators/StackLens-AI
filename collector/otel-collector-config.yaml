@@ -1,0 +1,147 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+        cors:
+          allowed_origins:
+            - "http://localhost:*"
+            - "http://127.0.0.1:*"
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+  # Optional: Prometheus metrics receiver
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: ['localhost:8888']
+
+processors:
+  # Memory limiter to prevent OOM
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+    spike_limit_mib: 128
+
+  # Batch processor for efficiency
+  batch:
+    send_batch_size: 1024
+    timeout: 10s
+    send_batch_max_size: 2048
+
+  # Attributes processor to add service metadata
+  attributes:
+    actions:
+      - key: environment
+        value: dev
+        action: insert
+      - key: otel.version
+        value: "1.0.0"
+        action: insert
+
+  # Resource detection processor
+  resourcedetection/system:
+    detectors: [system, docker, env]
+    timeout: 5s
+    override: true
+
+  # Sampling processor (probabilistic - keep 100% in dev)
+  probabilistic_sampler:
+    sampling_percentage: 100
+
+  # Attributes filter processor for PII redaction
+  attributes/redact:
+    actions:
+      - key: password
+        action: delete
+      - key: token
+        action: delete
+      - key: api_key
+        action: delete
+      - key: credit_card
+        action: delete
+      - key: ssn
+        action: delete
+
+exporters:
+  # Kafka exporter for durability and scale
+  kafka:
+    brokers:
+      - "kafka:29092"
+    topic: "otel-%{resource.service.name}"
+    encoding: raw_text
+    marshaler: raw_text
+    retry_on_failure:
+      enabled: true
+      initial_interval: 5s
+      max_interval: 30s
+      max_elapsed_time: 300s
+
+  # Elasticsearch direct export (optional - for demo)
+  otlp:
+    endpoint: elasticsearch:9200
+    timeout: 30s
+
+  # Console exporter for debugging
+  logging:
+    loglevel: debug
+
+  # File exporter for testing/CI
+  file:
+    path: /tmp/otel-collector/traces.json
+    format: json
+
+  # Jaeger exporter for distributed tracing
+  jaeger:
+    endpoint: "http://jaeger:14250"
+
+service:
+  pipelines:
+    # Traces pipeline
+    traces:
+      receivers: [otlp]
+      processors:
+        - memory_limiter
+        - resourcedetection/system
+        - batch
+        - attributes
+        - probabilistic_sampler
+      exporters:
+        - kafka
+        - jaeger
+        - logging
+        - file
+
+    # Metrics pipeline (optional)
+    metrics:
+      receivers: [otlp, prometheus]
+      processors:
+        - memory_limiter
+        - batch
+        - resourcedetection/system
+      exporters:
+        - logging
+
+    # Logs pipeline
+    logs:
+      receivers: [otlp]
+      processors:
+        - memory_limiter
+        - attributes/redact
+        - batch
+        - resourcedetection/system
+        - probabilistic_sampler
+      exporters:
+        - kafka
+        - logging
+        - file
+
+  # Telemetry configuration for the collector itself
+  telemetry:
+    logs:
+      level: debug
+    metrics:
+      level: detailed
+      address: 127.0.0.1:8888

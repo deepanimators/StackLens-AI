@@ -1,0 +1,116 @@
+[
+  {
+    "id": "PRICE_MISSING",
+    "name": "Price Missing",
+    "severity": "error",
+    "description": "Product price is null or missing during order creation",
+    "conditions": {
+      "error_code": "PRICE_MISSING",
+      "action": "create_order"
+    },
+    "suggested_fix": "Check inventory service response; ensure price is set before order submission",
+    "automation_possible": true,
+    "automation_action": "retry_with_fallback_price",
+    "priority": 1
+  },
+  {
+    "id": "INVENTORY_UNAVAILABLE",
+    "name": "Inventory Unavailable",
+    "severity": "warn",
+    "description": "Requested product is out of stock",
+    "conditions": {
+      "error_code": "INVENTORY_UNAVAILABLE"
+    },
+    "suggested_fix": "Notify customer; show alternative products or waitlist option",
+    "automation_possible": true,
+    "automation_action": "notify_customer_alternatives",
+    "priority": 2
+  },
+  {
+    "id": "PAYMENT_FAILURE",
+    "name": "Payment Failure",
+    "severity": "error",
+    "description": "Payment processing failed",
+    "conditions": {
+      "error_code": "PAYMENT_FAILURE"
+    },
+    "suggested_fix": "Verify payment gateway credentials; check card validity; retry with exponential backoff",
+    "automation_possible": true,
+    "automation_action": "retry_payment_with_backoff",
+    "priority": 1
+  },
+  {
+    "id": "DB_CONNECTION_ERROR",
+    "name": "Database Connection Error",
+    "severity": "error",
+    "description": "Cannot connect to database",
+    "conditions": {
+      "error_code": "DB_CONNECTION_ERROR"
+    },
+    "suggested_fix": "Check database availability; verify connection string; check firewall/network",
+    "automation_possible": false,
+    "priority": 1
+  },
+  {
+    "id": "EXTERNAL_TIMEOUT",
+    "name": "External Service Timeout",
+    "severity": "warn",
+    "description": "Timeout calling external service",
+    "conditions": {
+      "error_code": "EXTERNAL_TIMEOUT"
+    },
+    "suggested_fix": "Check external service health; increase timeout if acceptable; implement fallback",
+    "automation_possible": true,
+    "automation_action": "use_cached_response",
+    "priority": 2
+  },
+  {
+    "id": "DATA_VALIDATION_ERROR",
+    "name": "Data Validation Error",
+    "severity": "warn",
+    "description": "Input data failed validation",
+    "conditions": {
+      "error_code": "DATA_VALIDATION_ERROR"
+    },
+    "suggested_fix": "Review input validation rules; check client-side validation; log exact field failures",
+    "automation_possible": false,
+    "priority": 3
+  },
+  {
+    "id": "DUPLICATE_ORDER",
+    "name": "Duplicate Order Detected",
+    "severity": "info",
+    "description": "Attempted to create a duplicate order",
+    "conditions": {
+      "error_code": "DUPLICATE_ORDER"
+    },
+    "suggested_fix": "Return existing order; implement idempotency keys in client",
+    "automation_possible": true,
+    "automation_action": "return_existing_order",
+    "priority": 2
+  },
+  {
+    "id": "AUTHZ_FAILURE",
+    "name": "Authorization Failure",
+    "severity": "warn",
+    "description": "User lacks required permissions",
+    "conditions": {
+      "error_code": "AUTHZ_FAILURE"
+    },
+    "suggested_fix": "Verify user roles and permissions; check access control policies",
+    "automation_possible": false,
+    "priority": 2
+  },
+  {
+    "id": "UNHANDLED_EXCEPTION",
+    "name": "Unhandled Exception",
+    "severity": "error",
+    "description": "Unexpected error occurred",
+    "conditions": {
+      "level": "error"
+    },
+    "suggested_fix": "Review stack trace; check error logs for root cause; escalate to dev team",
+    "automation_possible": false,
+    "priority": 1
+  }
+]

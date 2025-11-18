@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "StackLens Log Schema v1",
+  "description": "Standard log schema for StackLens ingestion. All fields are optional unless marked required.",
+  "required": ["timestamp", "service", "level", "message"],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the log was generated"
+    },
+    "trace_id": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{32}$|^$",
+      "description": "OpenTelemetry trace ID (32 hex chars) for correlation"
+    },
+    "span_id": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{16}$|^$",
+      "description": "OpenTelemetry span ID (16 hex chars)"
+    },
+    "request_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Unique request identifier for tracing across services"
+    },
+    "service": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Service/application name generating the log"
+    },
+    "env": {
+      "type": "string",
+      "enum": ["prod", "staging", "dev", "test"],
+      "description": "Environment: prod, staging, dev, or test"
+    },
+    "level": {
+      "type": "string",
+      "enum": ["debug", "info", "warn", "error", "fatal"],
+      "description": "Log level: debug, info, warn, error, or fatal"
+    },
+    "message": {
+      "type": "string",
+      "description": "Main log message"
+    },
+    "error_code": {
+      "type": ["string", "null"],
+      "pattern": "^[A-Z_0-9]{1,64}$",
+      "description": "Application-specific error code (e.g., PRICE_MISSING, DB_CONNECTION_ERROR)"
+    },
+    "user_id": {
+      "type": ["string", "integer", "null"],
+      "description": "User ID associated with the log (can be hashed)"
+    },
+    "product_id": {
+      "type": ["string", "integer", "null"],
+      "description": "Product ID if applicable"
+    },
+    "action": {
+      "type": ["string", "null"],
+      "description": "User action or operation name (e.g., create_order, checkout)"
+    },
+    "status": {
+      "type": ["string", "null"],
+      "enum": ["success", "failure", "partial", "pending", null],
+      "description": "Operation status"
+    },
+    "app_version": {
+      "type": ["string", "null"],
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$|^$",
+      "description": "Application version (semver)"
+    },
+    "attrs": {
+      "type": "object",
+      "description": "Additional structured attributes as key-value pairs",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "number" },
+          { "type": "boolean" },
+          { "type": "null" },
+          { "type": "array" },
+          { "type": "object" }
+        ]
+      }
+    },
+    "stacktrace": {
+      "type": ["string", "null"],
+      "description": "Full stack trace for error logs"
+    },
+    "source_file": {
+      "type": ["string", "null"],
+      "description": "Source file path where log was generated"
+    },
+    "line_number": {
+      "type": ["integer", "null"],
+      "description": "Line number in source file"
+    },
+    "function_name": {
+      "type": ["string", "null"],
+      "description": "Function/method name where log was generated"
+    },
+    "duration_ms": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Duration of operation in milliseconds"
+    },
+    "http_method": {
+      "type": ["string", "null"],
+      "enum": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS", null],
+      "description": "HTTP method if applicable"
+    },
+    "http_status_code": {
+      "type": ["integer", "null"],
+      "minimum": 100,
+      "maximum": 599,
+      "description": "HTTP status code if applicable"
+    },
+    "http_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "HTTP URL (may be redacted)"
+    },
+    "ip_address": {
+      "type": ["string", "null"],
+      "description": "Client IP address"
+    },
+    "user_agent": {
+      "type": ["string", "null"],
+      "description": "User agent string"
+    },
+    "cost_center": {
+      "type": ["string", "null"],
+      "description": "Cost center tag for billing"
+    },
+    "team": {
+      "type": ["string", "null"],
+      "description": "Team owner"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Freeform metadata object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "timestamp": "2025-01-15T10:30:45.123Z",
+      "trace_id": "abcdef0123456789abcdef0123456789",
+      "span_id": "0123456789abcdef",
+      "request_id": "550e8400-e29b-41d4-a716-446655440000",
+      "service": "order-service",
+      "env": "prod",
+      "level": "error",
+      "message": "Failed to process order",
+      "error_code": "PRICE_MISSING",
+      "user_id": "user-123",
+      "product_id": "prod-456",
+      "action": "create_order",
+      "status": "failure",
+      "app_version": "1.2.3",
+      "attrs": {
+        "order_id": "ord-789",
+        "items_count": 3,
+        "cart_value": 99.99
+      },
+      "http_method": "POST",
+      "http_status_code": 400,
+      "http_url": "https://api.example.com/orders",
+      "duration_ms": 245
+    }
+  ]
+}

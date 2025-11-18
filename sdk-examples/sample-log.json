@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-01-15T10:30:45.123Z",
+  "trace_id": "abcdef0123456789abcdef0123456789",
+  "span_id": "0123456789abcdef",
+  "request_id": "550e8400-e29b-41d4-a716-446655440000",
+  "service": "order-service",
+  "env": "prod",
+  "level": "error",
+  "message": "Failed to process order: price is null",
+  "error_code": "PRICE_MISSING",
+  "user_id": "user-123",
+  "product_id": "prod-456",
+  "action": "create_order",
+  "status": "failure",
+  "app_version": "1.2.3",
+  "attrs": {
+    "order_id": "ord-789",
+    "items_count": 3,
+    "cart_value": 99.99,
+    "inventory_service_latency_ms": 245
+  },
+  "http_method": "POST",
+  "http_status_code": 400,
+  "http_url": "https://api.example.com/orders",
+  "duration_ms": 245,
+  "stacktrace": "Error: Price is null\n  at createOrder (order.ts:45:12)\n  at processOrder (order.ts:32:8)\n  at async handlePost (api.ts:78:15)"
+}
