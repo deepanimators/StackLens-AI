@@ -55,3 +55,66 @@ export const ingestLogs = async (req: Request, res: Response, next: NextFunction
 export const healthCheck = (req: Request, res: Response) => {
     res.json({ status: 'ok', version: process.env.APP_VERSION || '0.1.0' });
 };
+
+// Manual log trigger endpoints for POS demo UI
+export const logInfo = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        logger.info('POS Demo: Item scan initiated', {
+            source: 'pos-frontend',
+            type: 'info',
+            timestamp: new Date().toISOString(),
+            userAgent: req.get('user-agent'),
+        });
+        res.json({ status: 'logged', type: 'info' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const logError = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        logger.error('POS Demo: Payment error simulated', {
+            source: 'pos-frontend',
+            type: 'error',
+            timestamp: new Date().toISOString(),
+            userAgent: req.get('user-agent'),
+        });
+        res.json({ status: 'logged', type: 'error' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const logCheckout = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        logger.info('POS Demo: Checkout simulation', {
+            source: 'pos-frontend',
+            type: 'checkout',
+            timestamp: new Date().toISOString(),
+            userAgent: req.get('user-agent'),
+        });
+        res.json({ status: 'logged', type: 'checkout' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const logCustom = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { message, source } = req.body;
+        if (!message) {
+            throw new AppError('Message is required', 'VALIDATION_ERROR', 400, 'Provide a message field');
+        }
+
+        logger.info(`POS Demo: ${message}`, {
+            source: source || 'pos-frontend',
+            type: 'custom',
+            timestamp: new Date().toISOString(),
+            userAgent: req.get('user-agent'),
+        });
+        res.json({ status: 'logged', type: 'custom', message });
+    } catch (err) {
+        next(err);
+    }
+};
+

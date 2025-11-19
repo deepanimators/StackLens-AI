@@ -1,9 +1,42 @@
 import React, { useState } from 'react';
-import { ShoppingCart, AlertTriangle, CheckCircle } from 'lucide-react';
-import axios from 'axios';
+import { Home } from 'lucide-react';
+import ProductsPage from './pages/products';
+
+type Page = 'home' | 'products';
 
 function App() {
+  const [currentPage, setCurrentPage] = useState<Page>('home');
+
+  if (currentPage === 'products') {
+    return (
+      <div>
+        <ProductsPage />
+        <div className="fixed bottom-4 left-4">
+          <button
+            onClick={() => setCurrentPage('home')}
+            className="flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-lg"
+          >
+            <Home size={18} />
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <HomePage onNavigateToProducts={() => setCurrentPage('products')} />
+  );
+}
+
+interface HomePageProps {
+  onNavigateToProducts: () => void;
+}
+
+function HomePage({ onNavigateToProducts }: HomePageProps) {
   const [status, setStatus] = useState<string>('');
+  const { ShoppingCart, AlertTriangle, CheckCircle } = require('lucide-react');
+  const axios = require('axios');
 
   const sendLog = async (type: 'info' | 'error' | 'checkout') => {
     try {
@@ -28,6 +61,10 @@ function App() {
           <h1 className="text-2xl font-bold text-gray-800">POS Demo</h1>
         </div>
 
+        <p className="text-gray-600 text-sm mb-6">
+          Production-ready Point of Sale System with OpenTelemetry Integration
+        </p>
+
         <div className="space-y-4">
           <button
             onClick={() => sendLog('checkout')}
@@ -51,6 +88,14 @@ function App() {
           >
             <ShoppingCart size={20} />
             Simulate Item Scan
+          </button>
+
+          <button
+            onClick={onNavigateToProducts}
+            className="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-medium transition-colors"
+          >
+            <ShoppingCart size={20} />
+            Browse Products
           </button>
         </div>
 
