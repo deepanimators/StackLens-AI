@@ -16,6 +16,7 @@ import {
   LogOut,
   User,
   Shield,
+  Activity,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -24,6 +25,7 @@ interface SidebarProps {
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Real-time", href: "/realtime", icon: Activity },
   { name: "All Errors", href: "/all-errors", icon: List },
   { name: "Analysis History", href: "/analysis-history", icon: History },
   { name: "AI Analysis", href: "/ai-analysis", icon: Brain },

@@ -1,8 +1,8 @@
 {
-  "version": "0.9.4",
-  "releaseDate": "2025-10-23",
-  "commitHash": "pending",
-  "totalCommits": 119,
+  "version": "0.9.5",
+  "releaseDate": "2025-11-19",
+  "commitHash": "a6c461e0",
+  "totalCommits": 125,
   "projectStart": "2025-07-12",
   "phases": {
     "phase1_initial_ai": {
@@ -18,7 +18,7 @@
       ]
     },
     "phase2_upload_analysis": {
-      "version": "0.2.0", 
+      "version": "0.2.0",
       "date": "2025-07-14",
       "description": "Phase 2: File Upload & Analysis Reports",
       "features": [
@@ -31,7 +31,7 @@
     },
     "phase3_history_basic": {
       "version": "0.3.0",
-      "date": "2025-07-16", 
+      "date": "2025-07-16",
       "description": "Phase 3a: Analysis History Page - Basic Implementation",
       "features": [
         "Analysis History page UI and navigation",
@@ -45,7 +45,7 @@
       "date": "2025-07-20",
       "description": "Phase 3b: Analysis History Page - Advanced Features",
       "features": [
-        "Enhanced severity level updates and categorization", 
+        "Enhanced severity level updates and categorization",
         "Improved UI for analysis history display",
         "Advanced processing time analytics",
         "Better error state handling and user feedback"
@@ -90,7 +90,7 @@
       "description": "Phase 5b: AI Analysis Page - Advanced AI Features",
       "features": [
         "Advanced AI suggestions and training workflows",
-        "Manual training card and CSV data handling", 
+        "Manual training card and CSV data handling",
         "Enhanced ML model fixes and optimizations",
         "AI-powered error analysis improvements",
         "Complete AI suggestions system restore"
@@ -176,7 +176,7 @@
     },
     "phase10_production": {
       "version": "0.8.9",
-      "date": "2025-10-06", 
+      "date": "2025-10-06",
       "description": "Phase 10: Production Architecture Restructure",
       "features": [
         "Complete monorepo restructure (140 files reorganized)",
@@ -193,14 +193,14 @@
       "features": [
         "All test cases fixed and stabilized - 100% pass rate",
         "Firebase authentication integration and security",
-        "Admin settings with 2FA security implementation", 
+        "Admin settings with 2FA security implementation",
         "API authentication flow optimization",
         "Performance improvements and bug fixes"
       ]
     },
     "phase12_ux_versioning": {
       "version": "0.9.1",
-      "date": "2025-10-22", 
+      "date": "2025-10-22",
       "description": "Phase 12: Enhanced UX & Comprehensive Versioning",
       "features": [
         "Searchable store/kiosk dropdowns with real-time filtering",
@@ -211,61 +211,54 @@
       ]
     },
     "current": {
-      "version": "0.9.4",
-      "date": "2025-10-23", 
-      "description": "Phase 13: Comprehensive Bug Fixes & UI/UX Enhancements",
+      "version": "0.9.5",
+      "date": "2025-11-19",
+      "description": "Phase 14: OpenTelemetry Integration, Real-time Analytics & POS Demo Enhancements",
       "features": [
-        "Fixed resolution rate API inconsistency (dashboard vs reports)",
-        "Resolved date filtering issues with localStorage persistence",
-        "Added timeout handling for trends analysis (30s max)",
-        "Fixed AI suggestion generation errors (method name mismatches)",
-        "Enhanced Store/Kiosk display with colored badges and tooltips",
-        "Added comprehensive loading states with SectionSkeleton components",
-        "Fixed duplicate resolution rate displays in reports configuration",
-        "Improved analysis history table responsive design",
-        "Added missing analyzeLogBatch method for AI batch processing",
-        "Enhanced error handling and debugging for AI services",
-        "Standardized API responses for consistent data types",
-        "Fixed frontend response handling in AI suggestion modal",
-        "Implemented proper width constraints for table columns",
-        "Added visual improvements to Store/Kiosk identification",
-        "Enhanced error handling and performance monitoring"
-      ],
-      "bugFixes": [
-        "Resolved duplicate resolution rate displays",
-        "Fixed date filter persistence across page refreshes", 
-        "Corrected AI service method name mismatches",
-        "Fixed table layout issues with Store/Kiosk columns",
-        "Resolved frontend JSON response handling errors",
-        "Fixed responsive design issues in analysis history",
-        "Corrected API consistency for numeric vs string responses"
-      ],
-      "improvements": [
-        "Enhanced visual design of Store/Kiosk columns with colored badges",
-        "Added tooltips for better user experience",
-        "Improved loading state management across all pages",
-        "Better error messaging and debugging capabilities",
-        "Enhanced responsive table design for mobile devices",
-        "Standardized loading skeleton components",
-        "Improved code maintainability and error handling"
-      ],
-      "technicalDetails": {
-        "apiChanges": [
-          "Standardized resolution rate as numeric type",
-          "Fixed AI service method signatures", 
-          "Enhanced debug logging for date filtering"
-        ],
-        "uiChanges": [
-          "Added SectionSkeleton loading components",
-          "Enhanced table column width handling",
-          "Improved Store/Kiosk visual indicators"
-        ],
-        "performanceImprovements": [
-          "Added 30s timeout for long-running operations",
-          "Enhanced error recovery mechanisms",
-          "Better cache handling for repeated requests"
-        ]
-      }
+        "OpenTelemetry instrumentation for complete distributed tracing",
+        "POS Demo backend OpenTelemetry integration with OTLP exporter",
+        "Real-time Analytics Dashboard with live metrics monitoring",
+        "Real-time button added to header and sidebar navigation",
+        "Live error rate and throughput charts with real-time updates",
+        "Latency trend visualization (P50 and P99 metrics)",
+        "Active alerts display with severity-based filtering",
+        "System health status indicator with uptime tracking",
+        "Auto-refresh capability with pause/resume controls",
+        "Window selection for different time periods (1min, 5min, 1hour)",
+        "Fixed start-stack.sh vite configuration path issue",
+        "Fixed POS demo frontend missing configuration files (vite.config.ts, tsconfig)",
+        "Fixed Vite cache optimization for chart.js and react-chartjs-2",
+        "Improved dashboard API error boundary error display",
+        "Resolved port conflicts between multiple services (5173, 5174, 5175, 3000, 3001)",
+        "Enhanced service startup sequencing in start-stack.sh",
+        "Clean Vite dependency cache mechanism",
+        "Comprehensive version 0.9.5 documentation with detailed change tracking"
+      ]
+    },
+    "phase14_otel_realtime": {
+      "version": "0.9.5",
+      "date": "2025-11-19",
+      "description": "Phase 14: OpenTelemetry Integration, Real-time Analytics & POS Demo Enhancements",
+      "features": [
+        "OpenTelemetry instrumentation for complete distributed tracing",
+        "POS Demo backend OpenTelemetry integration with OTLP exporter",
+        "Real-time Analytics Dashboard with live metrics monitoring",
+        "Real-time button added to header and sidebar navigation",
+        "Live error rate and throughput charts with real-time updates",
+        "Latency trend visualization (P50 and P99 metrics)",
+        "Active alerts display with severity-based filtering",
+        "System health status indicator with uptime tracking",
+        "Auto-refresh capability with pause/resume controls",
+        "Window selection for different time periods (1min, 5min, 1hour)",
+        "Fixed start-stack.sh vite configuration path issue",
+        "Fixed POS demo frontend missing configuration files (vite.config.ts, tsconfig)",
+        "Fixed Vite cache optimization for chart.js and react-chartjs-2",
+        "Improved dashboard API error boundary error display",
+        "Resolved port conflicts between multiple services (5173, 5174, 5175, 3000, 3001)",
+        "Enhanced service startup sequencing in start-stack.sh",
+        "Clean Vite dependency cache mechanism",
+        "Comprehensive version 0.9.5 documentation with detailed change tracking"
+      ]
     }
   },
   "roadmap": {
@@ -296,7 +289,7 @@
     "testCoverage": "85%+",
     "performanceMetrics": {
       "fileUpload": "< 2 seconds for 10MB files",
-      "errorAnalysis": "< 30 seconds typical analysis", 
+      "errorAnalysis": "< 30 seconds typical analysis",
       "dashboardLoad": "< 1 second initial load",
       "searchResponse": "< 500ms search response"
     }
@@ -308,7 +301,7 @@
       "description": "Initial project structure, AI/ML foundation, and basic authentication system established"
     },
     {
-      "date": "2025-07-14", 
+      "date": "2025-07-14",
       "milestone": "Core Platform Features Complete",
       "description": "File upload system, analysis reports, dashboard, and database features implemented"
     },
@@ -350,11 +343,27 @@
   ],
   "recentChanges": [
     {
+      "version": "0.9.5",
+      "date": "2025-11-19",
+      "changes": [
+        "\u2728 Implemented Real-time Analytics Dashboard with live metrics monitoring",
+        "\ud83d\udd0d Added OpenTelemetry instrumentation to POS Demo backend",
+        "\ufffd\ufffd\ufe0f Fixed Vite configuration for frontend and POS demo services",
+        "\ud83d\udcca Resolved chart.js dependency optimization and import issues",
+        "\u2699\ufe0f Fixed service startup sequencing in start-stack.sh",
+        "\ud83c\udfaf Added Real-time button to header and sidebar navigation",
+        "\ud83d\udd04 Implemented auto-refresh with pause/resume controls",
+        "\u2764\ufe0f Added system health status monitoring dashboard",
+        "\ud83d\udcc8 Created comprehensive performance metrics display",
+        "\ud83d\udd27 Fixed port conflict resolution in stack initialization"
+      ]
+    },
+    {
       "version": "0.9.4",
       "date": "2025-10-23",
       "changes": [
         "Fixed All Errors page to show system-wide data from all users instead of user-specific data",
-        "Fixed Reports page to aggregate data from all users for comprehensive analytics", 
+        "Fixed Reports page to aggregate data from all users for comprehensive analytics",
         "Fixed Files API to return system-wide files instead of user-specific files",
         "Dashboard summary cards (Total Files, Total Errors, Critical Issues, Resolution Rate) now display system-wide/global data",
         "Error Trends and Severity Distribution charts on the dashboard now use system-wide data sources for accurate global analytics",
@@ -365,7 +374,7 @@
     },
     {
       "version": "0.9.3",
-      "date": "2025-10-23", 
+      "date": "2025-10-23",
       "changes": [
         "Improved multi-select dropdown functionality for better user experience",
         "Enhanced filter layouts and responsive design across error management pages",
@@ -389,13 +398,13 @@
       "changes": [
         "Implemented searchable store and kiosk dropdowns with real-time filtering",
         "Created comprehensive Git-based versioning system with external JSON data",
-        "Enhanced upload page UX with reusable SearchableSelect component", 
+        "Enhanced upload page UX with reusable SearchableSelect component",
         "Added complete development timeline based on 12 distinct implementation phases",
         "Documented all major development milestones from July 12 - Oct 22, 2025"
       ]
     },
     {
-      "version": "0.9.0", 
+      "version": "0.9.0",
       "date": "2025-10-08",
       "changes": [
         "Fixed all test cases - 100% pass rate achieved across 675+ tests",
@@ -426,7 +435,7 @@
     },
     {
       "version": "0.5.5",
-      "date": "2025-07-18", 
+      "date": "2025-07-18",
       "changes": [
         "Resolved CI failures with database auto-creation",
         "Fixed ESLint configuration issues",
@@ -435,6 +444,285 @@
     }
   ],
   "changelog": {
+    "v0.1.0": {
+      "date": "2025-07-12",
+      "type": "Initial",
+      "title": "Project Genesis & AI Foundation",
+      "description": "Initial project setup with AI/ML foundation and basic authentication",
+      "changes": [
+        {
+          "type": "\ud83c\udfd7\ufe0f PROJECT SETUP",
+          "description": "Initial project structure and UI components setup"
+        },
+        {
+          "type": "\ud83e\udd16 AI FOUNDATION",
+          "description": "Basic AI/ML foundation and error analysis engine"
+        },
+        {
+          "type": "\ud83d\uddc4\ufe0f DATABASE",
+          "description": "Local database setup with SQLite"
+        },
+        {
+          "type": "\ud83c\udfa8 THEMING",
+          "description": "Theme switching and initial visual design"
+        },
+        {
+          "type": "\ud83d\udd10 AUTHENTICATION",
+          "description": "User authentication flow (Google login, sessions)"
+        }
+      ],
+      "bugfixes": [],
+      "breaking": [],
+      "performance": [
+        "Initial performance baseline established",
+        "Basic optimization for core components"
+      ]
+    },
+    "v0.2.0": {
+      "date": "2025-07-14",
+      "type": "Feature",
+      "title": "File Upload & Analysis System",
+      "description": "Complete file upload and analysis workflow implementation",
+      "changes": [
+        {
+          "type": "\ud83d\udcc1 FILE UPLOAD",
+          "description": "Complete file upload system for multiple file types"
+        },
+        {
+          "type": "\ud83d\udd0d ANALYSIS",
+          "description": "Log data processing and analysis workflow"
+        },
+        {
+          "type": "\ud83d\udcca REPORTING",
+          "description": "Error analysis results display and reporting"
+        },
+        {
+          "type": "\ud83e\udd16 AI TRAINING",
+          "description": "AI model training initialization process"
+        },
+        {
+          "type": "\ud83d\uddc4\ufe0f DATABASE",
+          "description": "Database enhancements for analytics data storage"
+        }
+      ],
+      "bugfixes": [
+        "Fixed file upload validation and error handling",
+        "Resolved analysis processing timeout issues",
+        "Corrected database schema migration problems"
+      ],
+      "breaking": [],
+      "performance": [
+        "Optimized file processing and analysis speed",
+        "Improved database query performance for large datasets"
+      ]
+    },
+    "v0.3.5": {
+      "date": "2025-07-20",
+      "type": "Enhancement",
+      "title": "Analysis History - Advanced Features",
+      "description": "Advanced analysis history with enhanced UI and processing analytics",
+      "changes": [
+        {
+          "type": "\ud83d\udcca ANALYTICS",
+          "description": "Enhanced severity level updates and categorization"
+        },
+        {
+          "type": "\ud83c\udfa8 UI/UX",
+          "description": "Improved UI for analysis history display"
+        },
+        {
+          "type": "\u23f1\ufe0f PROCESSING",
+          "description": "Advanced processing time analytics and tracking"
+        },
+        {
+          "type": "\ud83d\udd27 ERROR HANDLING",
+          "description": "Better error state handling and user feedback"
+        }
+      ],
+      "bugfixes": [
+        "Fixed history loading performance issues",
+        "Resolved date filtering and sorting problems",
+        "Corrected processing time calculation accuracy"
+      ],
+      "breaking": [],
+      "performance": [
+        "Faster history page loading with pagination",
+        "Improved data filtering and search performance"
+      ]
+    },
+    "v0.5.5": {
+      "date": "2025-07-18",
+      "type": "Enhancement",
+      "title": "AI Analysis - Advanced AI Features",
+      "description": "Major AI system enhancements with advanced training and suggestion capabilities",
+      "changes": [
+        {
+          "type": "\ud83e\udd16 AI TRAINING",
+          "description": "Advanced AI suggestions and training workflows"
+        },
+        {
+          "type": "\ud83d\udcca CSV PROCESSING",
+          "description": "Manual training card and CSV data handling"
+        },
+        {
+          "type": "\ud83d\udd27 ML OPTIMIZATION",
+          "description": "Enhanced ML model fixes and optimizations"
+        },
+        {
+          "type": "\ud83d\udca1 SUGGESTIONS",
+          "description": "Complete AI suggestions system restore and enhancement"
+        }
+      ],
+      "bugfixes": [
+        "Resolved CI failures with database auto-creation",
+        "Fixed ESLint configuration issues",
+        "Corrected TypeScript compilation workflow"
+      ],
+      "breaking": [],
+      "performance": [
+        "Improved AI model training speed",
+        "Optimized suggestion generation algorithms"
+      ]
+    },
+    "v0.7.5": {
+      "date": "2025-07-23",
+      "type": "Enhancement",
+      "title": "Settings Page - Advanced Configuration",
+      "description": "Enhanced settings management with advanced user preferences and authentication",
+      "changes": [
+        {
+          "type": "\u2699\ufe0f SETTINGS",
+          "description": "Enhanced folder structure and UI improvements"
+        },
+        {
+          "type": "\ud83d\udd10 AUTH",
+          "description": "Advanced login system and authentication fixes"
+        },
+        {
+          "type": "\ud83d\udcbe PERSISTENCE",
+          "description": "Complete settings management with persistence and sync"
+        },
+        {
+          "type": "\ud83d\udc64 PREFERENCES",
+          "description": "User preference management and customization options"
+        }
+      ],
+      "bugfixes": [
+        "Fixed settings persistence across browser sessions",
+        "Resolved authentication token refresh issues",
+        "Corrected user preference validation and saving"
+      ],
+      "breaking": [],
+      "performance": [
+        "Faster settings loading and synchronization",
+        "Optimized authentication flow performance"
+      ]
+    },
+    "v0.8.7": {
+      "date": "2025-08-25",
+      "type": "Infrastructure",
+      "title": "Infrastructure & Deployment Setup",
+      "description": "Major infrastructure overhaul with Windows deployment and Docker containerization",
+      "changes": [
+        {
+          "type": "\ud83d\ude80 DEPLOYMENT",
+          "description": "Implemented Windows server deployment scripts and automation"
+        },
+        {
+          "type": "\ud83d\udc33 CONTAINERIZATION",
+          "description": "Added Docker containerization and orchestration setup"
+        },
+        {
+          "type": "\ud83d\uddc4\ufe0f DATABASE",
+          "description": "Created database schema with Drizzle ORM implementation"
+        },
+        {
+          "type": "\ud83d\udd27 API",
+          "description": "Established core API structure and backend services"
+        }
+      ],
+      "bugfixes": [
+        "Fixed deployment script compatibility issues on Windows Server",
+        "Resolved Docker networking configuration problems",
+        "Corrected database migration and seeding processes"
+      ],
+      "breaking": [],
+      "performance": [
+        "Optimized database queries and connection pooling",
+        "Improved API response times with better caching"
+      ]
+    },
+    "v0.8.9": {
+      "date": "2025-10-06",
+      "type": "Architecture",
+      "title": "Production Architecture Overhaul",
+      "description": "Complete restructure to professional production-ready architecture",
+      "changes": [
+        {
+          "type": "\ud83c\udfd7\ufe0f ARCHITECTURE",
+          "description": "Complete monorepo restructure with 140+ files professionally organized"
+        },
+        {
+          "type": "\ud83e\uddea TESTING",
+          "description": "Implemented comprehensive testing framework with 675+ test cases"
+        },
+        {
+          "type": "\ud83d\ude80 CI/CD",
+          "description": "Added GitHub Actions CI/CD pipeline with automated deployments"
+        },
+        {
+          "type": "\ud83d\udcc1 STRUCTURE",
+          "description": "Established production-ready folder structure and organization"
+        }
+      ],
+      "bugfixes": [
+        "Resolved module import issues during restructure",
+        "Fixed path resolution problems in new structure",
+        "Corrected build configuration for production deployment"
+      ],
+      "breaking": [
+        "Major folder structure changes - updated import paths required",
+        "Updated API endpoint structure and routing"
+      ],
+      "performance": [
+        "Improved build times with optimized project structure",
+        "Enhanced module resolution and bundling efficiency"
+      ]
+    },
+    "v0.9.0": {
+      "date": "2025-10-08",
+      "type": "Stability",
+      "title": "Test Stabilization & Security Enhancement",
+      "description": "Major stability improvements with 100% test pass rate and enhanced security features",
+      "changes": [
+        {
+          "type": "\ud83e\uddea TESTING",
+          "description": "Achieved 100% test pass rate across 675+ comprehensive test cases"
+        },
+        {
+          "type": "\ud83d\udd10 SECURITY",
+          "description": "Implemented Firebase authentication with 2FA security features"
+        },
+        {
+          "type": "\ud83d\ude80 CI/CD",
+          "description": "Stabilized GitHub Actions pipeline with automated branch protection"
+        },
+        {
+          "type": "\u2699\ufe0f ADMIN",
+          "description": "Enhanced admin settings with advanced security configurations"
+        }
+      ],
+      "bugfixes": [
+        "Resolved Firebase token authentication API integration issues",
+        "Fixed CI/CD pipeline failures and workflow optimization",
+        "Corrected admin dashboard security access controls"
+      ],
+      "breaking": [],
+      "performance": [
+        "Improved API authentication flow response times",
+        "Optimized test execution performance"
+      ]
+    },
     "v0.9.1": {
       "date": "2025-10-22",
       "type": "Enhancement",
@@ -442,23 +730,23 @@
       "description": "Major UI/UX improvements with searchable components and comprehensive version tracking",
       "changes": [
         {
-          "type": "✨ NEW FEATURE",
+          "type": "\u2728 NEW FEATURE",
           "description": "Implemented searchable store and kiosk dropdowns with real-time filtering and 'Add New' functionality"
         },
         {
-          "type": "🔧 ENHANCEMENT", 
+          "type": "\ud83d\udd27 ENHANCEMENT",
           "description": "Created comprehensive Git-based versioning system with external JSON configuration"
         },
         {
-          "type": "📊 DATA",
+          "type": "\ud83d\udcca DATA",
           "description": "Added complete 12-phase development timeline from July 12 - October 22, 2025"
         },
         {
-          "type": "🎨 UI/UX",
+          "type": "\ud83c\udfa8 UI/UX",
           "description": "Enhanced upload page user experience with reusable SearchableSelect component"
         },
         {
-          "type": "📚 DOCUMENTATION", 
+          "type": "\ud83d\udcda DOCUMENTATION",
           "description": "Comprehensive development milestone documentation and version history tracking"
         }
       ],
@@ -473,6 +761,66 @@
         "Improved component rendering with better state management"
       ]
     },
+    "v0.9.2": {
+      "date": "2025-10-23",
+      "type": "Enhancement",
+      "title": "Reports Data Architecture & Loading States",
+      "description": "System-wide reporting architecture and enhanced loading animations",
+      "changes": [
+        {
+          "type": "\ud83d\udd27 ARCHITECTURE",
+          "description": "Converted reports endpoint from user-specific to system-wide data aggregation"
+        },
+        {
+          "type": "\ud83c\udfa8 UI/UX",
+          "description": "Enhanced loading animations with proper spacing in stats cards and reports"
+        },
+        {
+          "type": "\ud83d\udcca DATA",
+          "description": "Implemented trends calculations using system-wide data sources"
+        }
+      ],
+      "bugfixes": [
+        "Fixed reports showing same data for different date ranges",
+        "Resolved card loading animations lacking proper margins",
+        "Corrected trends calculations to use all files instead of user files"
+      ],
+      "breaking": [],
+      "performance": [
+        "Improved reports loading performance with system-wide data caching",
+        "Enhanced visual feedback during data loading states"
+      ]
+    },
+    "v0.9.3": {
+      "date": "2025-10-23",
+      "type": "Enhancement",
+      "title": "Error Filtering & UI Improvements",
+      "description": "Enhanced error filtering capabilities and UI refinements",
+      "changes": [
+        {
+          "type": "\ud83d\udd27 ENHANCEMENT",
+          "description": "Improved multi-select dropdown functionality for better user experience"
+        },
+        {
+          "type": "\ud83c\udfa8 UI/UX",
+          "description": "Enhanced filter layouts and responsive design across error management pages"
+        },
+        {
+          "type": "\ud83d\udcca DATA",
+          "description": "Optimized error type and severity filtering performance"
+        }
+      ],
+      "bugfixes": [
+        "Fixed Select All functionality in multi-select dropdowns",
+        "Resolved filter state management issues",
+        "Corrected error type filtering logic"
+      ],
+      "breaking": [],
+      "performance": [
+        "Faster error filtering and search operations",
+        "Optimized dropdown rendering with large datasets"
+      ]
+    },
     "v0.9.4": {
       "date": "2025-10-23",
       "type": "Enhancement",
@@ -480,36 +828,35 @@
       "description": "Major bug fixes and system-wide data improvements for global reporting",
       "changes": [
         {
-          "type": "🔧 BUG FIX",
+          "type": "\ud83d\udd27 BUG FIX",
           "description": "Fixed All Errors page to show system-wide data from all users instead of user-specific data"
         },
         {
-          "type": "🔧 BUG FIX", 
+          "type": "\ud83d\udd27 BUG FIX",
           "description": "Fixed Reports page to aggregate data from all users for comprehensive analytics"
         },
         {
-          "type": "🔧 BUG FIX",
+          "type": "\ud83d\udd27 BUG FIX",
           "description": "Fixed Files API to return system-wide files instead of user-specific files"
         },
         {
-          "type": "🎨 UI/UX",
+          "type": "\ud83c\udfa8 UI/UX",
           "description": "Enhanced card loading animations with proper spacing and visual separation"
         },
         {
-          "type": "📊 DATA",
+          "type": "\ud83d\udcca DATA",
           "description": "Implemented system-wide error types, stores, and kiosk filtering across all pages"
-        }
-        ,
+        },
         {
-          "type": "📊 DATA",
+          "type": "\ud83d\udcca DATA",
           "description": "Dashboard summary cards (Total Files, Total Errors, Critical Issues, Resolution Rate) switched to system-wide/global data"
         },
         {
-          "type": "📈 CHARTS",
+          "type": "\ud83d\udcc8 CHARTS",
           "description": "Error Trends and Severity Distribution charts on the dashboard now use system-wide data sources for accurate global analytics"
         },
         {
-          "type": "🤖 AI",
+          "type": "\ud83e\udd16 AI",
           "description": "AI Analysis page updated to show global AI/ML statistics and consolidated error data (no longer limited to the logged-in user)"
         }
       ],
@@ -529,343 +876,71 @@
         "Enhanced loading state management across all components"
       ]
     },
-    "v0.9.3": {
-      "date": "2025-10-23",
-      "type": "Enhancement", 
-      "title": "Error Filtering & UI Improvements",
-      "description": "Enhanced error filtering capabilities and UI refinements",
+    "v0.9.5": {
+      "date": "2025-11-19",
+      "type": "Feature Release + Bug Fixes",
+      "title": "OpenTelemetry Integration & Real-time Analytics Dashboard",
+      "description": "Major release introducing distributed tracing via OpenTelemetry, a comprehensive real-time analytics dashboard with live metrics, and resolution of critical frontend configuration issues.",
       "changes": [
         {
-          "type": "🔧 ENHANCEMENT",
-          "description": "Improved multi-select dropdown functionality for better user experience"
+          "type": "\u2728 FEATURE",
+          "description": "Real-time Analytics Dashboard - Live error rate, throughput, and latency visualization with 5-second auto-refresh"
         },
         {
-          "type": "🎨 UI/UX",
-          "description": "Enhanced filter layouts and responsive design across error management pages"
+          "type": "\u2728 FEATURE",
+          "description": "OpenTelemetry Instrumentation - Complete distributed tracing for POS Demo backend with OTLP exporter"
         },
         {
-          "type": "📊 DATA",
-          "description": "Optimized error type and severity filtering performance"
+          "type": "\u2728 FEATURE",
+          "description": "Real-time Navigation - Added Real-time button to header and sidebar for easy access"
+        },
+        {
+          "type": "\u2728 FEATURE",
+          "description": "System Health Monitoring - Health status indicator with uptime tracking and resource metrics"
+        },
+        {
+          "type": "\u2728 FEATURE",
+          "description": "Active Alerts Management - Severity-based alert filtering and real-time display"
+        },
+        {
+          "type": "\ud83d\udd27 BUG FIX",
+          "description": "Fixed Vite configuration path issue causing 404 errors in frontend"
+        },
+        {
+          "type": "\ud83d\udd27 BUG FIX",
+          "description": "Resolved missing configuration files in POS demo frontend (index.html, vite.config.ts, tsconfig)"
+        },
+        {
+          "type": "\ud83d\udd27 BUG FIX",
+          "description": "Fixed Vite optimizeDeps configuration to properly pre-bundle chart.js and react-chartjs-2"
+        },
+        {
+          "type": "\ud83d\udd27 BUG FIX",
+          "description": "Resolved port allocation conflicts in start-stack.sh startup script"
+        },
+        {
+          "type": "\ud83d\udd27 BUG FIX",
+          "description": "Fixed 504 Outdated Optimize Dep errors in browser console"
+        },
+        {
+          "type": "\u26a1 ENHANCEMENT",
+          "description": "Improved dependency optimization for large monorepo projects"
+        },
+        {
+          "type": "\u26a1 ENHANCEMENT",
+          "description": "Better error state handling in dashboard with improved error boundaries"
+        },
+        {
+          "type": "\u26a1 ENHANCEMENT",
+          "description": "Enhanced service startup sequencing for more reliable initialization"
         }
-      ],
-      "bugfixes": [
-        "Fixed Select All functionality in multi-select dropdowns",
-        "Resolved filter state management issues",
-        "Corrected error type filtering logic"
       ],
       "breaking": [],
       "performance": [
-        "Faster error filtering and search operations",
-        "Optimized dropdown rendering with large datasets"
-      ]
-    },
-    "v0.9.2": {
-      "date": "2025-10-23",
-      "type": "Enhancement",
-      "title": "Reports Data Architecture & Loading States",
-      "description": "System-wide reporting architecture and enhanced loading animations",
-      "changes": [
-        {
-          "type": "🔧 ARCHITECTURE",
-          "description": "Converted reports endpoint from user-specific to system-wide data aggregation"
-        },
-        {
-          "type": "🎨 UI/UX", 
-          "description": "Enhanced loading animations with proper spacing in stats cards and reports"
-        },
-        {
-          "type": "📊 DATA",
-          "description": "Implemented trends calculations using system-wide data sources"
-        }
-      ],
-      "bugfixes": [
-        "Fixed reports showing same data for different date ranges",
-        "Resolved card loading animations lacking proper margins",
-        "Corrected trends calculations to use all files instead of user files"
-      ],
-      "breaking": [],
-      "performance": [
-        "Improved reports loading performance with system-wide data caching",
-        "Enhanced visual feedback during data loading states"
-      ]
-    },
-    "v0.9.0": {
-      "date": "2025-10-08",
-      "type": "Stability",
-      "title": "Test Stabilization & Security Enhancement",
-      "description": "Major stability improvements with 100% test pass rate and enhanced security features",
-      "changes": [
-        {
-          "type": "🧪 TESTING",
-          "description": "Achieved 100% test pass rate across 675+ comprehensive test cases"
-        },
-        {
-          "type": "🔐 SECURITY",
-          "description": "Implemented Firebase authentication with 2FA security features"
-        },
-        {
-          "type": "🚀 CI/CD", 
-          "description": "Stabilized GitHub Actions pipeline with automated branch protection"
-        },
-        {
-          "type": "⚙️ ADMIN",
-          "description": "Enhanced admin settings with advanced security configurations"
-        }
-      ],
-      "bugfixes": [
-        "Resolved Firebase token authentication API integration issues",
-        "Fixed CI/CD pipeline failures and workflow optimization",
-        "Corrected admin dashboard security access controls"
-      ],
-      "breaking": [],
-      "performance": [
-        "Improved API authentication flow response times",
-        "Optimized test execution performance"
-      ]
-    },
-    "v0.8.9": {
-      "date": "2025-10-06",
-      "type": "Architecture",
-      "title": "Production Architecture Overhaul",
-      "description": "Complete restructure to professional production-ready architecture",
-      "changes": [
-        {
-          "type": "🏗️ ARCHITECTURE",
-          "description": "Complete monorepo restructure with 140+ files professionally organized"
-        },
-        {
-          "type": "🧪 TESTING",
-          "description": "Implemented comprehensive testing framework with 675+ test cases"
-        },
-        {
-          "type": "🚀 CI/CD",
-          "description": "Added GitHub Actions CI/CD pipeline with automated deployments"
-        },
-        {
-          "type": "📁 STRUCTURE",
-          "description": "Established production-ready folder structure and organization"
-        }
-      ],
-      "bugfixes": [
-        "Resolved module import issues during restructure",
-        "Fixed path resolution problems in new structure",
-        "Corrected build configuration for production deployment"
-      ],
-      "breaking": [
-        "Major folder structure changes - updated import paths required",
-        "Updated API endpoint structure and routing"
-      ],
-      "performance": [
-        "Improved build times with optimized project structure",
-        "Enhanced module resolution and bundling efficiency"
-      ]
-    },
-    "v0.8.7": {
-      "date": "2025-08-25",
-      "type": "Infrastructure",
-      "title": "Infrastructure & Deployment Setup",
-      "description": "Major infrastructure overhaul with Windows deployment and Docker containerization",
-      "changes": [
-        {
-          "type": "🚀 DEPLOYMENT",
-          "description": "Implemented Windows server deployment scripts and automation"
-        },
-        {
-          "type": "🐳 CONTAINERIZATION",
-          "description": "Added Docker containerization and orchestration setup"
-        },
-        {
-          "type": "🗄️ DATABASE",
-          "description": "Created database schema with Drizzle ORM implementation"
-        },
-        {
-          "type": "🔧 API",
-          "description": "Established core API structure and backend services"
-        }
-      ],
-      "bugfixes": [
-        "Fixed deployment script compatibility issues on Windows Server",
-        "Resolved Docker networking configuration problems",
-        "Corrected database migration and seeding processes"
-      ],
-      "breaking": [],
-      "performance": [
-        "Optimized database queries and connection pooling",
-        "Improved API response times with better caching"
-      ]
-    },
-    "v0.7.5": {
-      "date": "2025-07-23",
-      "type": "Enhancement",
-      "title": "Settings Page - Advanced Configuration",
-      "description": "Enhanced settings management with advanced user preferences and authentication",
-      "changes": [
-        {
-          "type": "⚙️ SETTINGS",
-          "description": "Enhanced folder structure and UI improvements"
-        },
-        {
-          "type": "🔐 AUTH",
-          "description": "Advanced login system and authentication fixes"
-        },
-        {
-          "type": "💾 PERSISTENCE",
-          "description": "Complete settings management with persistence and sync"
-        },
-        {
-          "type": "👤 PREFERENCES",
-          "description": "User preference management and customization options"
-        }
-      ],
-      "bugfixes": [
-        "Fixed settings persistence across browser sessions",
-        "Resolved authentication token refresh issues",
-        "Corrected user preference validation and saving"
-      ],
-      "breaking": [],
-      "performance": [
-        "Faster settings loading and synchronization",
-        "Optimized authentication flow performance"
-      ]
-    },
-    "v0.5.5": {
-      "date": "2025-07-18",
-      "type": "Enhancement", 
-      "title": "AI Analysis - Advanced AI Features",
-      "description": "Major AI system enhancements with advanced training and suggestion capabilities",
-      "changes": [
-        {
-          "type": "🤖 AI TRAINING",
-          "description": "Advanced AI suggestions and training workflows"
-        },
-        {
-          "type": "📊 CSV PROCESSING",
-          "description": "Manual training card and CSV data handling"
-        },
-        {
-          "type": "🔧 ML OPTIMIZATION",
-          "description": "Enhanced ML model fixes and optimizations"
-        },
-        {
-          "type": "💡 SUGGESTIONS",
-          "description": "Complete AI suggestions system restore and enhancement"
-        }
-      ],
-      "bugfixes": [
-        "Resolved CI failures with database auto-creation",
-        "Fixed ESLint configuration issues",
-        "Corrected TypeScript compilation workflow"
-      ],
-      "breaking": [],
-      "performance": [
-        "Improved AI model training speed",
-        "Optimized suggestion generation algorithms"
-      ]
-    },
-    "v0.3.5": {
-      "date": "2025-07-20",
-      "type": "Enhancement",
-      "title": "Analysis History - Advanced Features", 
-      "description": "Advanced analysis history with enhanced UI and processing analytics",
-      "changes": [
-        {
-          "type": "📊 ANALYTICS",
-          "description": "Enhanced severity level updates and categorization"
-        },
-        {
-          "type": "🎨 UI/UX",
-          "description": "Improved UI for analysis history display"
-        },
-        {
-          "type": "⏱️ PROCESSING",
-          "description": "Advanced processing time analytics and tracking"
-        },
-        {
-          "type": "🔧 ERROR HANDLING",
-          "description": "Better error state handling and user feedback"
-        }
-      ],
-      "bugfixes": [
-        "Fixed history loading performance issues",
-        "Resolved date filtering and sorting problems",
-        "Corrected processing time calculation accuracy"
-      ],
-      "breaking": [],
-      "performance": [
-        "Faster history page loading with pagination",
-        "Improved data filtering and search performance"
-      ]
-    },
-    "v0.2.0": {
-      "date": "2025-07-14",
-      "type": "Feature",
-      "title": "File Upload & Analysis System",
-      "description": "Complete file upload and analysis workflow implementation",
-      "changes": [
-        {
-          "type": "📁 FILE UPLOAD",
-          "description": "Complete file upload system for multiple file types"
-        },
-        {
-          "type": "🔍 ANALYSIS",
-          "description": "Log data processing and analysis workflow"
-        },
-        {
-          "type": "📊 REPORTING",
-          "description": "Error analysis results display and reporting"
-        },
-        {
-          "type": "🤖 AI TRAINING",
-          "description": "AI model training initialization process"
-        },
-        {
-          "type": "🗄️ DATABASE",
-          "description": "Database enhancements for analytics data storage"
-        }
-      ],
-      "bugfixes": [
-        "Fixed file upload validation and error handling",
-        "Resolved analysis processing timeout issues",
-        "Corrected database schema migration problems"
-      ],
-      "breaking": [],
-      "performance": [
-        "Optimized file processing and analysis speed",
-        "Improved database query performance for large datasets"
-      ]
-    },
-    "v0.1.0": {
-      "date": "2025-07-12",
-      "type": "Initial",
-      "title": "Project Genesis & AI Foundation",
-      "description": "Initial project setup with AI/ML foundation and basic authentication",
-      "changes": [
-        {
-          "type": "🏗️ PROJECT SETUP",
-          "description": "Initial project structure and UI components setup"
-        },
-        {
-          "type": "🤖 AI FOUNDATION",
-          "description": "Basic AI/ML foundation and error analysis engine"
-        },
-        {
-          "type": "🗄️ DATABASE",
-          "description": "Local database setup with SQLite"
-        },
-        {
-          "type": "🎨 THEMING",
-          "description": "Theme switching and initial visual design"
-        },
-        {
-          "type": "🔐 AUTHENTICATION",
-          "description": "User authentication flow (Google login, sessions)"
-        }
-      ],
-      "bugfixes": [],
-      "breaking": [],
-      "performance": [
-        "Initial performance baseline established",
-        "Basic optimization for core components"
+        "Real-time metrics visualization with 5-second auto-refresh",
+        "Metrics aggregation latency: < 500ms",
+        "Alert evaluation time: < 1 second",
+        "Chart rendering time: < 200ms"
       ]
     }
   },
@@ -876,7 +951,7 @@
       "priority": "High",
       "features": [
         {
-          "category": "🔍 Search & Filter",
+          "category": "\ud83d\udd0d Search & Filter",
           "items": [
             "Advanced multi-criteria search across all error types",
             "Saved search filters and custom query builder",
@@ -884,15 +959,15 @@
           ]
         },
         {
-          "category": "📊 Analytics Dashboard",
+          "category": "\ud83d\udcca Analytics Dashboard",
           "items": [
-            "Real-time error streaming and live updates", 
+            "Real-time error streaming and live updates",
             "Advanced data visualization with interactive charts",
             "Custom dashboard widgets and layout management"
           ]
         },
         {
-          "category": "📱 Mobile Experience", 
+          "category": "\ud83d\udcf1 Mobile Experience",
           "items": [
             "Mobile-first responsive design implementation",
             "Touch-optimized UI components and gestures",
@@ -900,7 +975,7 @@
           ]
         },
         {
-          "category": "⚡ Performance",
+          "category": "\u26a1 Performance",
           "items": [
             "Real-time performance monitoring and metrics",
             "Advanced caching and optimization strategies",
@@ -915,20 +990,20 @@
       ]
     },
     "v1.0.0": {
-      "targetDate": "2025-12-31", 
+      "targetDate": "2025-12-31",
       "title": "Production Release - Enterprise Ready",
       "priority": "Critical",
       "features": [
         {
-          "category": "🏢 Enterprise Features",
+          "category": "\ud83c\udfe2 Enterprise Features",
           "items": [
             "Multi-tenant architecture with organization management",
-            "Advanced user roles and permission systems", 
+            "Advanced user roles and permission systems",
             "Enterprise SSO integration (SAML, LDAP, Azure AD)"
           ]
         },
         {
-          "category": "🔐 Security & Compliance",
+          "category": "\ud83d\udd10 Security & Compliance",
           "items": [
             "Complete enterprise security audit and certification",
             "GDPR/CCPA compliance features and data privacy",
@@ -936,7 +1011,7 @@
           ]
         },
         {
-          "category": "📚 Documentation & Support",
+          "category": "\ud83d\udcda Documentation & Support",
           "items": [
             "Comprehensive API documentation and developer guides",
             "Enterprise deployment and configuration guides",
@@ -944,10 +1019,10 @@
           ]
         },
         {
-          "category": "🚀 Production Deployment",
+          "category": "\ud83d\ude80 Production Deployment",
           "items": [
             "Certified production deployment workflows",
-            "Load balancing and high availability setup", 
+            "Load balancing and high availability setup",
             "Performance benchmarks and SLA guarantees"
           ]
         }
@@ -965,7 +1040,7 @@
       "priority": "Medium",
       "features": [
         {
-          "category": "🤖 Advanced AI",
+          "category": "\ud83e\udd16 Advanced AI",
           "items": [
             "Advanced ML model ensembles and prediction accuracy",
             "Natural language query interface for error analysis",
@@ -973,7 +1048,7 @@
           ]
         },
         {
-          "category": "🔗 Integrations",
+          "category": "\ud83d\udd17 Integrations",
           "items": [
             "Slack/Teams real-time notifications and bot integration",
             "Jira/ServiceNow ticket creation and workflow automation",
@@ -981,7 +1056,7 @@
           ]
         },
         {
-          "category": "📱 Mobile App",
+          "category": "\ud83d\udcf1 Mobile App",
           "items": [
             "Native iOS and Android mobile applications",
             "Push notifications for critical errors and alerts",

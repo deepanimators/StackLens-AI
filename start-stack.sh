@@ -30,35 +30,50 @@ ROOT_DIR=$(pwd)
 
 # 1. Cleanup & Start Infra
 echo "📦 Checking Infrastructure..."
-# Force kill anything on port 9093 if docker didn't catch it
-if lsof -i :9093 >/dev/null; then
-    echo "⚠️  Port 9093 is still in use. Attempting to stop Docker containers again..."
-    docker-compose down
-    if lsof -i :9093 >/dev/null; then
-        echo "❌ Port 9093 is still busy. Please free this port manually."
+cd "$ROOT_DIR/infra"
+# Force kill anything on port 9094 if docker didn't catch it
+if lsof -i :9094 >/dev/null; then
+    echo "⚠️  Port 9094 is still in use. Attempting to stop Docker containers again..."
+    docker-compose -f docker-compose.yml down
+    if lsof -i :9094 >/dev/null; then
+        echo "❌ Port 9094 is still busy. Please free this port manually."
         exit 1
     fi
 fi
-docker-compose up -d
+docker-compose -f docker-compose.yml up -d
 cd "$ROOT_DIR"
 
-# 2. Start Backend
-echo "🔧 Starting Backend (Port 3001)..."
-cd "$ROOT_DIR/stacklens/backend"
-export KAFKA_BROKERS=localhost:9093
-npm start &
-BACKEND_PID=$!
+# Wait for Postgres to be ready
+echo "⏳ Waiting for Postgres to be ready..."
+until nc -z localhost 5432; do
+  sleep 1
+done
+echo "✅ Postgres is ready!"
 
-# 3. Start Frontend
+# Wait for Kafka to be ready
+echo "⏳ Waiting for Kafka to be ready..."
+until nc -z localhost 9094; do
+  sleep 1
+done
+echo "✅ Kafka is ready!"
+
+# 2. Start Frontend (uses root vite.config.ts which points to apps/web)
 echo "🎨 Starting Frontend (Port 5173)..."
-cd "$ROOT_DIR/stacklens/frontend"
+cd "$ROOT_DIR"
 npm run dev &
 FRONTEND_PID=$!
+
+# 3. Start Backend
+echo "🔧 Starting Backend (Port 3001)..."
+cd "$ROOT_DIR/stacklens/backend"
+export KAFKA_BROKERS=localhost:9094
+npm start &
+BACKEND_PID=$!
 
 # 4. Start POS Demo Backend
 echo "🛒 Starting POS Demo Backend (Port 3000)..."
 cd "$ROOT_DIR/pos-demo/backend"
-export KAFKA_BROKERS=localhost:9093
+export KAFKA_BROKERS=localhost:9094
 npm install
 npm start &
 POS_BACKEND_PID=$!

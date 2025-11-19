@@ -19,6 +19,7 @@ const AnalysisHistory = lazy(() => import("@/pages/analysis-history"));
 const AIAnalysis = lazy(() => import("@/pages/ai-analysis"));
 const EnhancedAIAnalysis = lazy(() => import("@/pages/enhanced-ai-analysis"));
 const AIEnhancedDashboard = lazy(() => import("@/pages/ai-enhanced-dashboard"));
+const Realtime = lazy(() => import("@/pages/realtime"));
 const Reports = lazy(() => import("@/pages/reports"));
 const Settings = lazy(() => import("@/pages/settings"));
 const Admin = lazy(() => import("@/pages/admin"));
@@ -80,6 +81,7 @@ function Router() {
     <Switch>
       <Route path="/" component={() => <Suspense fallback={<PageLoader />}><Dashboard /></Suspense>} />
       <Route path="/dashboard" component={() => <Suspense fallback={<PageLoader />}><Dashboard /></Suspense>} />
+      <Route path="/realtime" component={() => <Suspense fallback={<PageLoader />}><Realtime /></Suspense>} />
       <Route path="/ai-dashboard" component={() => <Suspense fallback={<PageLoader />}><AIEnhancedDashboard /></Suspense>} />
       <Route path="/upload" component={() => <Suspense fallback={<PageLoader />}><Upload /></Suspense>} />
       <Route path="/all-errors" component={() => <Suspense fallback={<PageLoader />}><AllErrors /></Suspense>} />

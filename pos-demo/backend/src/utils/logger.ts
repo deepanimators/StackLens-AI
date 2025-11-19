@@ -3,7 +3,7 @@ import { context } from './context';
 
 const { combine, timestamp, json, printf } = winston.format;
 
-const logFormat = winston.format((info) => {
+const logFormat = winston.format((info: any) => {
     const store = context.getStore();
     if (store) {
         info.request_id = store.requestId;

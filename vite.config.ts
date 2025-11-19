@@ -23,6 +23,18 @@ export default defineConfig(async () => {
       }
     },
     root: path.resolve(import.meta.dirname, "apps/web"),
+    optimizeDeps: {
+      include: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "@tanstack/react-query",
+        "chart.js",
+        "react-chartjs-2",
+        "lucide-react",
+        "axios"
+      ]
+    },
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
       emptyOutDir: true,
