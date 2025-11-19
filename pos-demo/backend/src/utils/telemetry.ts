@@ -10,21 +10,20 @@ const otelCollectorUrl = process.env.OTEL_COLLECTOR_URL || 'http://localhost:431
 const sdk = new NodeSDK({
     resource: new Resource({
         [SemanticResourceAttributes.SERVICE_NAME]: 'pos-backend',
-        [SemanticResourceAttributes.SERVICE_VERSION]: process.env.APP_VERSION || '0.1.0',
     }),
     traceExporter: new OTLPTraceExporter({
-        url: otelCollectorUrl,
+        url: process.env.OTEL_COLLECTOR_URL || 'http://localhost:4318/v1/traces',
     }),
     instrumentations: [getNodeAutoInstrumentations()],
 });
 
 export const startTelemetry = () => {
     sdk.start();
-    logger.info('OpenTelemetry SDK started');
+    logger.info('OpenTelemetry initialized');
 };
 
 export const shutdownTelemetry = () => {
     sdk.shutdown()
-        .then(() => logger.info('OpenTelemetry SDK shut down'))
-        .catch((error) => logger.error('Error shutting down OpenTelemetry SDK', { error }));
+        .then(() => logger.info('OpenTelemetry SDK shut down successfully'))
+        .catch((error: any) => logger.error('Error shutting down OpenTelemetry SDK', { error }));
 };

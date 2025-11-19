@@ -30,6 +30,11 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.67.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.208.0",
+    "@opentelemetry/resources": "^2.2.0",
+    "@opentelemetry/sdk-node": "^0.208.0",
+    "@opentelemetry/semantic-conventions": "^1.38.0",
     "helmet": "^8.1.0",
     "sqlite": "^5.1.1"
   }
