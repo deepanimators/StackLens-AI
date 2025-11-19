@@ -4,6 +4,7 @@ import {
   AlertTriangle,
   CheckCircle,
   MessageSquare,
+  FileText,
   RefreshCw,
   AlertCircle,
   TrendingUp,
@@ -357,7 +358,7 @@ function ProductsPage() {
         <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
           <div className="flex items-center gap-2 mb-6">
             <div className="bg-purple-100 p-2 rounded-lg">
-              <MessageSquare size={24} className="text-purple-600" />
+              <FileText size={24} className="text-purple-600" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-900">Manual Log Trigger</h2>
@@ -392,7 +393,7 @@ function ProductsPage() {
                   onClick={sendManualLog}
                   className="flex-1 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg font-medium transition-colors"
                 >
-                  <MessageSquare size={18} />
+                  <FileText size={18} />
                   Send Custom Log
                 </button>
                 <button
