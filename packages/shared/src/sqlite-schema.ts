@@ -347,6 +347,55 @@ export const passwordResetTokens = sqliteTable("password_reset_tokens", {
     .$defaultFn(() => new Date()),
 });
 
+// Jira Integration Tables
+export const jiraTickets = sqliteTable("jira_tickets", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  ticketKey: text("ticket_key").unique().notNull(), // e.g., "STACK-123"
+  jiraId: text("jira_id").unique(),
+  errorLogId: integer("error_log_id"),
+  automationId: integer("automation_id"),
+  title: text("title").notNull(),
+  description: text("description"),
+  severity: text("severity").notNull(), // CRITICAL, HIGH, MEDIUM, LOW
+  jiraSeverity: text("jira_severity"), // Blocker, High, Medium, Low
+  status: text("status").notNull().default("open"), // open, in-progress, closed
+  detectedAt: integer("detected_at", { mode: "timestamp" }).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const automationLogs = sqliteTable("automation_logs", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  errorLogId: integer("error_log_id"),
+  decision: text("decision").notNull(), // create, update, skip
+  reason: text("reason"),
+  severity: text("severity"),
+  mlConfidence: real("ml_confidence"),
+  threshold: real("threshold"),
+  passed: integer("passed", { mode: "boolean" }),
+  ticketCreated: integer("ticket_created", { mode: "boolean" }).default(false),
+  ticketKey: text("ticket_key"),
+  error: text("error"),
+  executedAt: integer("executed_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const jiraIntegrationConfig = sqliteTable("jira_integration_config", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  key: text("key").unique().notNull(),
+  value: text("value").notNull(),
+  description: text("description"),
+  isSecret: integer("is_secret", { mode: "boolean" }).default(false),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
@@ -385,6 +434,12 @@ export type UserSession = typeof userSessions.$inferSelect;
 export type InsertUserSession = typeof userSessions.$inferInsert;
 export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
 export type InsertPasswordResetToken = typeof passwordResetTokens.$inferInsert;
+export type JiraTicket = typeof jiraTickets.$inferSelect;
+export type InsertJiraTicket = typeof jiraTickets.$inferInsert;
+export type AutomationLog = typeof automationLogs.$inferSelect;
+export type InsertAutomationLog = typeof automationLogs.$inferInsert;
+export type JiraIntegrationConfig = typeof jiraIntegrationConfig.$inferSelect;
+export type InsertJiraIntegrationConfig = typeof jiraIntegrationConfig.$inferInsert;
 
 // Zod schemas
 export const insertUserSchema = createInsertSchema(users);
@@ -407,3 +462,6 @@ export const insertUserSettingsSchema = createInsertSchema(userSettings);
 export const insertAiTrainingDataSchema = createInsertSchema(aiTrainingData);
 export const insertUserSessionSchema = createInsertSchema(userSessions);
 export const insertPasswordResetTokenSchema = createInsertSchema(passwordResetTokens);
+export const insertJiraTicketSchema = createInsertSchema(jiraTickets);
+export const insertAutomationLogSchema = createInsertSchema(automationLogs);
+export const insertJiraIntegrationConfigSchema = createInsertSchema(jiraIntegrationConfig);

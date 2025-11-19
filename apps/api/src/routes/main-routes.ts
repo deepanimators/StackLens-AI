@@ -48,6 +48,9 @@ import {
   modelDeployments,
   InsertAuditLog,
 } from "@shared/sqlite-schema";
+import { jiraService } from "../services/jira-integration.js";
+import { logWatcher } from "../services/log-watcher.js";
+import { errorAutomation } from "../services/error-automation.js";
 import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
 import { createRAGRoutes } from "./rag-routes.js";
 import crypto from "crypto";
@@ -400,26 +403,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock stats until database schema is fixed
-        const mockStats = {
-          totalUsers: 25,
-          activeUsers: 18,
-          totalRoles: 3,
-          totalTrainingModules: 12,
-          totalModels: 8,
-          activeModels: 5,
+        // Get real stats from database
+        const allUsers = await storage.getAllUsers();
+        const allRoles = await storage.getAllRoles();
+        const allTrainingModules = await storage.getAllTrainingModules();
+        const allMlModels = await storage.getAllMlModels();
+        const activeMLModels = allMlModels.filter((model) => model.isActive);
+
+        // Calculate active users (users with login within last 30 days)
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const activeUsers = allUsers.filter((user: any) => {
+          const lastLogin = user.lastLogin ? new Date(user.lastLogin) : null;
+          return lastLogin && lastLogin > thirtyDaysAgo;
+        }).length;
+
+        // Calculate this week's new users
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const newUsersThisWeek = allUsers.filter((user: any) => {
+          const createdAt = new Date(user.createdAt || 0);
+          return createdAt > sevenDaysAgo;
+        }).length;
+
+        // Get training sessions count (simplified - can be enhanced)
+        const allTrainingSessions = await db.select().from(modelTrainingSessions);
+        const trainingSessionsThisWeek = allTrainingSessions.filter((session: any) => {
+          const createdAt = new Date(session.createdAt || 0);
+          return createdAt > sevenDaysAgo;
+        }).length;
+
+        // Get model deployments this month
+        const thirtyDaysAgoTime = thirtyDaysAgo.getTime();
+        const modelDeploymentsThisMonth = await db.select().from(modelDeployments);
+        const deploymentsThisMonth = modelDeploymentsThisMonth.filter((deployment: any) => {
+          const createdAt = new Date(deployment.createdAt || 0).getTime();
+          return createdAt > thirtyDaysAgoTime;
+        }).length;
+
+        const stats = {
+          totalUsers: allUsers.length,
+          activeUsers,
+          totalRoles: allRoles.length,
+          totalTrainingModules: allTrainingModules.length,
+          totalMLModels: allMlModels.length,
+          activeMLModels: activeMLModels.length,
           systemHealth: {
-            status: "healthy",
+            status: activeMLModels.length > 0 ? "healthy" : "warning",
             uptime: "99.8%",
             lastChecked: new Date().toISOString(),
           },
           recentActivity: {
-            newUsersThisWeek: 3,
-            trainingSessionsThisWeek: 15,
-            modelsDeployedThisMonth: 2,
+            newUsersThisWeek,
+            trainingSessionsThisWeek,
+            modelsDeployedThisMonth: deploymentsThisMonth,
           },
         };
-        res.json(mockStats);
+        res.json(stats);
       } catch (error) {
         console.error("Error fetching admin stats:", error);
         res.status(500).json({ message: "Failed to fetch admin stats" });
@@ -641,9 +679,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (defaultLanguage) updates.language = defaultLanguage;
 
         // Update notification preferences
-        const currentNotifPrefs = typeof userSettings.notificationPreferences === 'string'
+        const currentNotifPrefs = userSettings && typeof userSettings.notificationPreferences === 'string'
           ? JSON.parse(userSettings.notificationPreferences)
-          : userSettings.notificationPreferences || {};
+          : userSettings?.notificationPreferences || {};
 
         updates.notificationPreferences = JSON.stringify({
           ...currentNotifPrefs,
@@ -680,26 +718,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock roles until database schema is fixed
-        const mockRoles = [
-          {
-            id: 1,
-            name: "Admin",
-            description: "Administrator role",
-            permissions: ["read", "write", "delete"],
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            name: "User",
-            description: "Standard user role",
-            permissions: ["read"],
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        res.json(mockRoles);
+        // Get real roles from database
+        const roles = await storage.getAllRoles();
+        res.json(roles);
       } catch (error) {
         console.error("Error fetching roles:", error);
         res.status(500).json({ message: "Failed to fetch roles" });
@@ -803,30 +824,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock training modules until database schema is fixed
-        const mockModules = [
-          {
-            id: 1,
-            title: "Introduction to Error Analysis",
-            description: "Learn the basics of error pattern recognition",
-            content: "Module content here...",
-            difficulty: "beginner",
-            estimatedDuration: 60,
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            title: "Advanced ML Training",
-            description: "Deep dive into machine learning model training",
-            content: "Advanced module content...",
-            difficulty: "advanced",
-            estimatedDuration: 120,
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        res.json(mockModules);
+        // Get real training modules from database
+        const modules = await storage.getAllTrainingModules();
+        res.json(modules);
       } catch (error) {
         console.error("Error fetching training modules:", error);
         res.status(500).json({ message: "Failed to fetch training modules" });
@@ -992,40 +992,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // Return mock models until database schema is fixed
-        const mockModels = [
-          {
-            id: 1,
-            name: "Error Classification Model",
-            version: "1.0.0",
-            description: "Classifies errors by type and severity",
-            modelType: "classification",
-            accuracy: 0.85,
-            precision: 0.82,
-            recall: 0.88,
-            f1Score: 0.85,
-            cvScore: 0.83,
-            isActive: true,
-            trainedAt: new Date().toISOString(),
-            performanceGrade: "B",
-          },
-          {
-            id: 2,
-            name: "Severity Prediction Model",
-            version: "2.1.0",
-            description: "Predicts error severity levels",
-            modelType: "regression",
-            accuracy: 0.92,
-            precision: 0.9,
-            recall: 0.94,
-            f1Score: 0.92,
-            cvScore: 0.91,
-            isActive: true,
-            trainedAt: new Date().toISOString(),
-            performanceGrade: "A",
-          },
-        ];
-        res.json(mockModels);
+        // Get real ML models from database
+        const models = await storage.getAllMlModels();
+        res.json(models);
       } catch (error) {
         console.error("Error fetching models:", error);
         res.status(500).json({ message: "Failed to fetch models" });
@@ -1283,11 +1252,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("🤖 Attempting AI service analysis...");
         console.log("🔑 API Key available:", !!process.env.GEMINI_API_KEY);
 
-        const aiSuggestion = await aiService.generateErrorSuggestion({
-          ...error,
-          mlConfidence: (error as any).mlConfidence || 0,
-          createdAt: error.createdAt || new Date(),
-        } as any);
+        const aiSuggestion = await aiService.generateSuggestion(
+          error.message,
+          error.errorType,
+          error.severity
+        );
 
         if (aiSuggestion) {
           suggestion = {
@@ -1552,18 +1521,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         );
 
         for (let i = 0; i < result.predictions.length; i++) {
-          const prediction = result.predictions[i];
+          const prediction = result.predictions[i] as any;
           const error = errors[i];
 
           if (error.id && prediction) {
             const mlPredictionData = {
-              severity: prediction.severity || "medium",
-              priority: prediction.priority || "medium",
-              confidence: prediction.confidence || 0.8,
-              category: prediction.category || "general",
-              resolutionTime: prediction.resolutionTime || "2-4 hours",
-              complexity: prediction.complexity || "medium",
-              tags: prediction.tags || [],
+              severity: (prediction.severity as string) || "medium",
+              priority: (prediction.priority as string) || "medium",
+              confidence: (prediction.confidence as number) || 0.8,
+              category: (prediction.category as string) || "general",
+              resolutionTime: (prediction.resolutionTime as string) || "2-4 hours",
+              complexity: (prediction.complexity as string) || "medium",
+              tags: (prediction.tags as string[]) || [],
               timestamp: new Date().toISOString(),
             };
 
@@ -1771,8 +1740,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         mlConfidence: (error as any).mlConfidence || 0,
         createdAt: error.createdAt || new Date(),
       };
-      const suggestion = await aiService.generateErrorSuggestion(
-        errorWithMlData
+      const suggestion = await aiService.generateSuggestion(
+        error.message,
+        error.errorType,
+        error.severity
       );
 
       // Update error with AI suggestion
@@ -1981,15 +1952,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
 
           // Train the ML model
-          const mlService = new (
-            await import("./services/ml-service")
-          ).MLService();
+          const mlServiceInstance = new MLService();
           const userErrorsWithMlData = userErrors.map((error) => ({
             ...error,
             mlConfidence: (error as any).mlConfidence || 0,
             createdAt: error.createdAt || new Date(),
           }));
-          const trainingMetrics = await mlService.trainModel(
+          const trainingMetrics = await mlServiceInstance.trainModel(
             userErrorsWithMlData
           );
 
@@ -2322,15 +2291,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
 
-        const mlService = new (
-          await import("./services/ml-service")
-        ).MLService();
+        const mlServiceInstance = new MLService();
         const userErrorsWithMlData = userErrors.map((error) => ({
           ...error,
           mlConfidence: (error as any).mlConfidence || 0,
           createdAt: error.createdAt || new Date(),
         }));
-        const trainingMetrics = await mlService.trainModel(
+        const trainingMetrics = await mlServiceInstance.trainModel(
           userErrorsWithMlData
         );
 
@@ -2778,269 +2745,6 @@ Format as JSON with the following structure:
     }
   });
 
-  // Test endpoint for debugging ML training and error pattern saves - NO AUTH REQUIRED
-  app.post("/api/test/ml-training", async (req: any, res: any) => {
-    try {
-      console.log("Test ML training endpoint called");
-
-      // Simple test to check if error pattern saving works
-      const testPattern = {
-        pattern: "Test error pattern",
-        regex: "test.*error",
-        severity: "high",
-        category: "test",
-        errorType: "test-error",
-        description: "Test description",
-        solution: "Test solution",
-      };
-
-      console.log("Saving test error pattern...");
-      const savedPattern = await storage.saveErrorPattern(testPattern);
-      console.log("Test pattern saved successfully:", savedPattern.id);
-
-      res.json({
-        success: true,
-        message: "Test pattern saved successfully",
-        savedPatternId: savedPattern.id,
-        testPattern: savedPattern,
-      });
-    } catch (error: any) {
-      console.error("Test ML training error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-        stack: error.stack,
-      });
-    }
-  });
-
-  // Test endpoint for AI service rate limiting - NO AUTH REQUIRED
-  app.post("/api/test/ai-suggestion", async (req: any, res: any) => {
-    try {
-      console.log("Test AI suggestion endpoint called");
-
-      // Create a mock error log for testing
-      const testErrorLog = {
-        id: 1,
-        timestamp: new Date(),
-        createdAt: new Date(),
-        message: "Test error: Cannot connect to database",
-        fileId: 1,
-        lineNumber: 123,
-        severity: "high",
-        errorType: "database",
-        fullText: "Test error: Cannot connect to database\nError at line 123",
-        stackTrace: "Error at line 123",
-        fileName: "test.js",
-        resolved: false,
-        aiSuggestion: null,
-        mlConfidence: null,
-        pattern: null,
-        mlPrediction: null,
-      };
-
-      console.log("Testing AI service with rate limiting...");
-      const suggestion = await aiService.generateErrorSuggestion(testErrorLog);
-
-      res.json({
-        success: true,
-        message: "AI suggestion generated successfully",
-        suggestion: suggestion,
-        rateLimiting: "6 second minimum delay between calls",
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error: any) {
-      console.error("Test AI suggestion error:", error);
-
-      // Check if it's a quota error
-      if (error.status === 429) {
-        res.status(429).json({
-          success: false,
-          message: "API quota exceeded - rate limiting working",
-          error: "QUOTA_EXCEEDED",
-          retryAfter: "30s",
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: error.message,
-          error: error.toString(),
-        });
-      }
-    }
-  });
-
-  // Test endpoint for model status - NO AUTH REQUIRED
-  app.get("/api/test/model-status", async (req: any, res: any) => {
-    try {
-      console.log("Test model status endpoint called");
-
-      // Get ML models from database
-      const allModels = await storage.getAllMlModels();
-      const activeModels = allModels.filter((model) => model.isActive);
-
-      // Get the latest models for each type
-      const enhancedMlModel = activeModels.find(
-        (m) => m.name.includes("enhanced") || m.name.includes("Enhanced")
-      );
-      const suggestionModel = activeModels.find(
-        (m) => m.name.includes("suggestion") || m.name.includes("Suggestion")
-      );
-
-      // Format the response
-      const modelStatus = {
-        enhancedMlModel: enhancedMlModel
-          ? {
-            id: enhancedMlModel.id,
-            name: enhancedMlModel.name,
-            version: enhancedMlModel.version,
-            accuracy: enhancedMlModel.accuracy,
-            isActive: enhancedMlModel.isActive,
-            trainedAt: enhancedMlModel.trainedAt,
-          }
-          : null,
-        suggestionModel: suggestionModel
-          ? {
-            id: suggestionModel.id,
-            name: suggestionModel.name,
-            version: suggestionModel.version,
-            accuracy: suggestionModel.accuracy,
-            isActive: suggestionModel.isActive,
-            trainedAt: suggestionModel.trainedAt,
-          }
-          : null,
-        allActiveModels: activeModels.map((m) => ({
-          id: m.id,
-          name: m.name,
-          version: m.version,
-          accuracy: m.accuracy,
-          trainedAt: m.trainedAt,
-        })),
-      };
-
-      res.json({
-        success: true,
-        modelStatus,
-        totalActiveModels: activeModels.length,
-      });
-    } catch (error: any) {
-      console.error("Test model status error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
-  // Test endpoint for suggestion without auth - for debugging 404 issues
-  app.post("/api/test/suggestion/:id", async (req: any, res: any) => {
-    try {
-      const errorId = parseInt(req.params.id);
-      console.log(`🧪 TEST: Suggestion request for error ID: ${errorId}`);
-
-      const error = await storage.getErrorLog(errorId);
-      if (!error) {
-        console.log(`❌ TEST: Error not found: ID ${errorId}`);
-        return res.status(404).json({
-          success: false,
-          message: "Error not found",
-          errorId,
-          available: await storage.getAllErrors(),
-        });
-      }
-
-      console.log(`✅ TEST: Found error: ${error.message.substring(0, 50)}...`);
-      const errorWithMlData = {
-        ...error,
-        mlConfidence: (error as any).mlConfidence || 0,
-        createdAt: error.createdAt || new Date(),
-      };
-
-      const suggestion = await suggestor.getSuggestion(errorWithMlData);
-
-      res.json({
-        success: true,
-        message: "Test suggestion generated successfully",
-        error,
-        suggestion,
-        features: FeatureEngineer.extractFeatures(errorWithMlData),
-      });
-    } catch (error: any) {
-      console.error("TEST: Error generating suggestion:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
-  // Test endpoint to fix model inconsistencies - NO AUTH REQUIRED
-  app.post("/api/test/fix-models", async (req: any, res: any) => {
-    try {
-      console.log("Restoring proper model differentiation...");
-
-      // Get all models first
-      const allModels = await storage.getAllMlModels();
-
-      // Find Enhanced ML Model - restore to actual 91.0% accuracy
-      const enhancedModel = allModels.find((m) =>
-        m.name.includes("Enhanced ML Model")
-      );
-      if (enhancedModel) {
-        await storage.updateMlModel(enhancedModel.id, {
-          name: "Enhanced ML Model",
-          version: "1.0.5", // Older, established model
-          accuracy: 0.91, // Actual 91.0% accuracy
-        });
-        console.log("Restored Enhanced ML Model to actual performance values");
-      }
-
-      // Find Suggestion Model - newer model with different performance
-      const suggestionModel = allModels.find((m) =>
-        m.name.includes("StackLens Error Suggestion Model")
-      );
-      if (suggestionModel) {
-        await storage.updateMlModel(suggestionModel.id, {
-          name: "StackLens Error Suggestion Model",
-          version: "1.0.2", // Newer, recently added model
-          accuracy: 0.915, // Better accuracy than Enhanced ML
-        });
-        console.log("Updated Suggestion Model with its own performance values");
-      }
-
-      // Get updated models
-      const updatedModels = await storage.getAllMlModels();
-      const activeUpdatedModels = updatedModels.filter(
-        (model) => model.isActive
-      );
-
-      res.json({
-        success: true,
-        message:
-          "Model differentiation restored - each model now shows its actual performance",
-        explanation:
-          "Enhanced ML Model (91.0%, v1.0.5) and Suggestion Model (91.5%, v1.0.2) now have different values based on their actual training results",
-        updatedModels: activeUpdatedModels.map((m) => ({
-          id: m.id,
-          name: m.name,
-          version: m.version,
-          accuracy: m.accuracy ? `${(m.accuracy * 100).toFixed(1)}%` : "N/A",
-          trainedAt: m.trainedAt,
-        })),
-      });
-    } catch (error: any) {
-      console.error("Fix models error:", error);
-      res.status(500).json({
-        success: false,
-        message: error.message,
-        error: error.toString(),
-      });
-    }
-  });
-
   // Settings endpoint for UI configuration
   app.get("/api/settings", requireAuth, async (req: any, res: any) => {
     try {
@@ -3054,7 +2758,7 @@ Format as JSON with the following structure:
 
       // If no settings exist, create default settings
       if (!userSettings) {
-        const defaultSettings = {
+        const defaultSettingsInput = {
           userId,
           theme: "system",
           language: "en",
@@ -3069,8 +2773,7 @@ Format as JSON with the following structure:
           timeFormat: "12h",
         };
 
-        await storage.createUserSettings(defaultSettings);
-        userSettings = defaultSettings;
+        userSettings = await storage.createUserSettings(defaultSettingsInput);
       }
 
       res.json(userSettings);
@@ -3295,94 +2998,51 @@ Format as JSON with the following structure:
 
   // ============= CORE API ENDPOINTS =============
 
-  // Test endpoint to debug dashboard data
-  app.get("/api/debug/dashboard", async (req: any, res: any) => {
-    try {
-      const userId = 1; // hardcoded for debugging
-
-      // Get user's log files
-      const userLogFiles = await storage.getLogFilesByUser(userId);
-
-      console.log("Raw log files data:", JSON.stringify(userLogFiles, null, 2));
-
-      res.json({
-        rawLogFiles: userLogFiles,
-        totalFiles: userLogFiles.length,
-        calculations: {
-          totalErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.totalErrors || 0),
-            0
-          ),
-          criticalErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.criticalErrors || 0),
-            0
-          ),
-          highErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.highErrors || 0),
-            0
-          ),
-          mediumErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.mediumErrors || 0),
-            0
-          ),
-          lowErrors: userLogFiles.reduce(
-            (sum, file) => sum + (file.lowErrors || 0),
-            0
-          ),
-        },
-      });
-    } catch (error) {
-      console.error("Debug endpoint error:", error);
-      res.status(500).json({
-        error: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
-  });
-
-  // Dashboard endpoint - main dashboard data
-  app.get("/api/dashboard", requireAuth, async (req: any, res: any) => {
+  // ============= AUDIT LOGS =============
+  // Get ML prediction for error
+  app.post("/api/ml/predict", requireAuth, async (req: any, res) => {
     try {
       const userId = req.user.id;
 
-      // Get user's log files and actual error records
-      const userLogFiles = await storage.getLogFilesByUser(userId);
-      const userErrors = await storage.getErrorsByUser(userId);
+      // Get system-wide data for dashboard stats (global view)
+      const allLogFiles = await storage.getAllLogFiles();
+      const allErrors = await storage.getAllErrors();
 
-      // Calculate statistics
-      const totalErrors = userErrors.length;
-      const criticalErrors = userErrors.filter(
+      // Calculate statistics using system-wide data
+      const totalErrors = allErrors.length;
+      const criticalErrors = allErrors.filter(
         (error) => error.severity === "critical"
       ).length;
-      const highErrors = userErrors.filter(
+      const highErrors = allErrors.filter(
         (error) => error.severity === "high"
       ).length;
-      const mediumErrors = userErrors.filter(
+      const mediumErrors = allErrors.filter(
         (error) => error.severity === "medium"
       ).length;
-      const lowErrors = userErrors.filter(
+      const lowErrors = allErrors.filter(
         (error) => error.severity === "low"
       ).length;
 
-      // Get recent analysis history
+      // Get user-specific recent analysis history (keep this user-specific as requested)
       const analysisHistory = await storage.getAnalysisHistoryByUser(userId);
 
-      // Calculate resolution rate
-      const resolvedErrors = userErrors.filter(
+      // Calculate resolution rate using system-wide data
+      const resolvedErrors = allErrors.filter(
         (error) => error.resolved
       ).length;
       const resolutionRate =
         totalErrors > 0 ? (resolvedErrors / totalErrors) * 100 : 0;
 
-      // Return dashboard data
+      // Return dashboard data (system-wide stats + user-specific recent analysis)
       res.json({
-        totalFiles: userLogFiles.length,
+        totalFiles: allLogFiles.length,
         totalErrors,
         criticalErrors,
         highErrors,
         mediumErrors,
         lowErrors,
         resolutionRate: Math.round(resolutionRate * 10) / 10,
-        recentAnalyses: (analysisHistory || []).slice(0, 5),
+        recentAnalyses: (analysisHistory || []).slice(0, 5), // Keep user-specific as requested
         errorTrends: {
           critical: criticalErrors,
           high: highErrors,
@@ -3404,43 +3064,43 @@ Format as JSON with the following structure:
     try {
       const userId = req.user.id;
 
-      // Get user's log files and actual error records (standardized approach)
-      const userLogFiles = await storage.getLogFilesByUser(userId);
-      const userErrors = await storage.getErrorsByUser(userId);
+      // For dashboard summary stats we want system-wide/global values
+      // Get all system log files and errors (system-wide)
+      const allLogFiles = await storage.getAllLogFiles();
+      const allErrors = await storage.getAllErrors();
 
-      // Calculate total errors from actual error records (consistent with other pages)
-      const totalErrors = userErrors.length;
-      const criticalErrors = userErrors.filter(
+      // Calculate total errors from system-wide error records
+      const totalErrors = allErrors.length;
+      const criticalErrors = allErrors.filter(
         (error) => error.severity === "critical"
       ).length;
-      const highErrors = userErrors.filter(
-        (error) => error.severity === "high"
-      ).length;
-      const mediumErrors = userErrors.filter(
+      const highErrors = allErrors.filter((error) => error.severity === "high")
+        .length;
+      const mediumErrors = allErrors.filter(
         (error) => error.severity === "medium"
       ).length;
-      const lowErrors = userErrors.filter(
-        (error) => error.severity === "low"
-      ).length;
+      const lowErrors = allErrors.filter((error) => error.severity === "low")
+        .length;
 
       // Get actual error details for resolved count (from error_logs table)
-      const resolvedErrors = userErrors.filter(
-        (error) => error.resolved === true
-      ).length;
+      const resolvedErrors = allErrors.filter((error) => error.resolved === true)
+        .length;
 
-      // Get analysis history
+      // Keep recent analysis user-specific for privacy and UX
       const analysisHistoryArray = await storage.getAnalysisHistoryByUser(
         userId
       );
 
-      // Calculate total files
-      const totalFiles = userLogFiles.length;
+      // Calculate total files (system-wide)
+      const totalFiles = allLogFiles.length;
 
-      // Calculate resolution rate
-      const resolutionRate =
+      // Calculate resolution rate as number for consistency
+      const resolutionRateNumber =
         totalErrors > 0
-          ? ((resolvedErrors / totalErrors) * 100).toFixed(1) + "%"
-          : "0.0%";
+          ? Math.round(((resolvedErrors / totalErrors) * 100) * 10) / 10
+          : 0;
+
+      console.log(`🔍 [DEBUG] Dashboard - Resolution Rate: ${resolvedErrors} resolved out of ${totalErrors} total = ${resolutionRateNumber}%`);
 
       // Calculate other statistics
       const pendingErrors = totalErrors - resolvedErrors;
@@ -3453,8 +3113,8 @@ Format as JSON with the following structure:
         )
         .slice(0, 5);
 
-      // Calculate ML accuracy from error records with actual ML confidence
-      const errorsWithConfidence = userErrors.filter(
+      // Calculate ML accuracy from system-wide error records with actual ML confidence
+      const errorsWithConfidence = allErrors.filter(
         (error) =>
           (error as any).mlConfidence && (error as any).mlConfidence > 0
       );
@@ -3467,6 +3127,49 @@ Format as JSON with the following structure:
           : 0;
 
       const mlAccuracy = Math.round(avgConfidence * 100);
+
+      // Calculate monthly trends based on historical data
+      const now = new Date();
+      const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+      const lastMonthTimestamp = lastMonth.getTime();
+
+      // Get last month's data (system-wide)
+      const lastMonthLogFiles = allLogFiles.filter(
+        (file) =>
+          file.uploadTimestamp &&
+          new Date(Number(file.uploadTimestamp)).getTime() >= lastMonthTimestamp &&
+          new Date(Number(file.uploadTimestamp)).getTime() < now.getTime() - (30 * 24 * 60 * 60 * 1000)
+      );
+      const lastMonthErrors = allErrors.filter(
+        (error) =>
+          error.createdAt &&
+          new Date(Number(error.createdAt)).getTime() >= lastMonthTimestamp &&
+          new Date(Number(error.createdAt)).getTime() < now.getTime() - (30 * 24 * 60 * 60 * 1000)
+      );
+      const lastMonthCriticalErrors = lastMonthErrors.filter(error => error.severity === "critical").length;
+      const lastMonthResolvedErrors = lastMonthErrors.filter(error => error.resolved === true).length;
+      const lastMonthResolutionRate = lastMonthErrors.length > 0
+        ? (lastMonthResolvedErrors / lastMonthErrors.length) * 100
+        : 0;
+
+      // Calculate trend percentages
+      const calculateTrend = (current: number, previous: number): { value: string; isPositive: boolean } => {
+        if (previous === 0) {
+          return current > 0 ? { value: "+100%", isPositive: true } : { value: "0%", isPositive: true };
+        }
+        const change = ((current - previous) / previous) * 100;
+        return {
+          value: `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`,
+          isPositive: change >= 0
+        };
+      };
+
+      const trends = {
+        files: calculateTrend(totalFiles, lastMonthLogFiles.length),
+        errors: calculateTrend(totalErrors, lastMonthErrors.length),
+        criticalErrors: calculateTrend(criticalErrors, lastMonthCriticalErrors),
+        resolutionRate: calculateTrend(resolutionRateNumber, lastMonthResolutionRate)
+      };
 
       // Create severity distribution object
       const severityDistribution = {
@@ -3485,17 +3188,46 @@ Format as JSON with the following structure:
         highErrors,
         mediumErrors,
         lowErrors,
-        resolutionRate,
+        resolutionRate: resolutionRateNumber,
         mlAccuracy,
         recentAnalyses: recentAnalyses.length,
         severityDistribution,
-        // Additional stats
-        weeklyTrend: Math.floor(Math.random() * 20) - 10, // Mock trend data
-        avgResolutionTime: "2.5 hours", // Mock data
+        trends: trends, // Add calculated trends
+        // Calculate real average resolution time
+        avgResolutionTime: (() => {
+          const resolvedErrors = allErrors.filter((error: any) => {
+            return (
+              (error.status === "resolved" && error.resolvedAt) ||
+              (error.resolved === 1 && error.resolvedAt) ||
+              (error.resolved === true && error.resolvedAt)
+            );
+          });
+
+          if (resolvedErrors.length === 0) return "N/A";
+
+          const resolutionTimes = resolvedErrors.map((error: any) => {
+            const created = new Date(error.createdAt || error.timestamp || 0);
+            const resolved = new Date(error.resolvedAt || 0);
+            const hours = (resolved.getTime() - created.getTime()) / (1000 * 60 * 60);
+            return Math.max(0, hours);
+          });
+
+          const avgHours = resolutionTimes.reduce((a, b) => a + b, 0) / resolutionTimes.length;
+
+          if (avgHours < 1) {
+            return `${Math.round(avgHours * 60)} minutes`;
+          } else if (avgHours < 24) {
+            return `${Math.round(avgHours)} hours`;
+          } else {
+            const days = avgHours / 24;
+            return `${Math.round(days * 10) / 10} days`;
+          }
+        })(),
         topErrorType:
-          userErrors.length > 0
-            ? userErrors.reduce((acc, error) => {
-              acc[error.errorType] = (acc[error.errorType] || 0) + 1;
+          allErrors.length > 0
+            ? allErrors.reduce((acc, error) => {
+              const key = error.errorType || "unknown";
+              acc[key] = (acc[key] || 0) + 1;
               return acc;
             }, {} as any)
             : {},
@@ -4240,35 +3972,73 @@ Format as JSON with the following structure:
     return recommendations;
   }
 
-  // Enhanced Trends Analysis API Endpoint (Demo - No Auth Required)
+  // Enhanced Trends Analysis API Endpoint with Caching and Performance Optimization
+  const trendsCache = new Map<string, { data: any; timestamp: number }>();
+  const TRENDS_CACHE_TTL = 10 * 60 * 1000; // 10 minutes cache
+
   app.get("/api/trends/analysis", async (req: any, res: any) => {
+    // Set a timeout for the entire request
+    const timeout = setTimeout(() => {
+      if (!res.headersSent) {
+        console.log(`⏰ Trends request timeout for user ${req.user?.id || 1}`);
+        res.status(408).json({
+          error: "Request timeout",
+          message: "Trends analysis is taking too long. Try again later."
+        });
+      }
+    }, 30000); // 30 second timeout
+
     try {
       const timeframe = req.query.timeframe || "30d"; // 7d, 30d, 90d
       const userId = req.user?.id || 1; // Fallback to user ID 1 for demo
 
-      // Get user's error data
+      // Create cache key
+      const cacheKey = `trends_${userId}_${timeframe}`;
+      const now = Date.now();
+
+      // Check cache first
+      const cached = trendsCache.get(cacheKey);
+      if (cached && (now - cached.timestamp) < TRENDS_CACHE_TTL) {
+        clearTimeout(timeout);
+        console.log(`📊 Serving cached trends data for user ${userId}, timeframe ${timeframe}`);
+        return res.json(cached.data);
+      }
+
+      console.log(`🔄 Computing fresh trends data for user ${userId}, timeframe ${timeframe}`);
+
+      // Set headers for streaming response
+      res.setHeader('Content-Type', 'application/json');
+
+      // Get user's error data with limit to prevent overwhelming queries
       const userErrors = await storage.getErrorsByUser(userId);
-      const userAnalyses = await storage.getAnalysisHistoryByUser(userId); // Using correct method
+      const userAnalyses = await storage.getAnalysisHistoryByUser(userId);
 
       // Calculate time boundaries
-      const now = new Date();
+      const currentDate = new Date();
       const timeframes = {
         "7d": 7 * 24 * 60 * 60 * 1000,
         "30d": 30 * 24 * 60 * 60 * 1000,
         "90d": 90 * 24 * 60 * 60 * 1000,
       };
       const timeLimit = new Date(
-        now.getTime() - timeframes[timeframe as keyof typeof timeframes]
+        currentDate.getTime() - timeframes[timeframe as keyof typeof timeframes]
       );
 
-      // Filter data by timeframe
-      const recentErrors = userErrors.filter(
-        (error: any) =>
+      // Filter data by timeframe and limit results for performance
+      const recentErrors = userErrors
+        .filter((error: any) =>
           new Date(error.timestamp || error.createdAt) >= timeLimit
-      );
-      const recentAnalyses = userAnalyses.filter(
-        (analysis: any) => new Date(analysis.analysisTimestamp) >= timeLimit
-      );
+        )
+        .slice(0, 5000); // Limit to 5000 most recent errors to prevent overwhelming analysis
+
+      const recentAnalyses = userAnalyses
+        .filter((analysis: any) => new Date(analysis.analysisTimestamp) >= timeLimit)
+        .slice(0, 1000); // Limit to 1000 most recent analyses
+
+      // If we have too much data, return a lightweight response
+      if (recentErrors.length > 2000) {
+        console.log(`⚠️ Large dataset detected (${recentErrors.length} errors), using optimized analysis`);
+      }
 
       // 1. Error Identification Trends
       const errorIdentificationTrends = generateErrorIdentificationTrends(
@@ -4312,7 +4082,7 @@ Format as JSON with the following structure:
       const trendsData = {
         timeframe,
         totalDataPoints: recentErrors.length,
-        analysisTimestamp: now.toISOString(),
+        analysisTimestamp: new Date().toISOString(), // Use current timestamp for response time
         errorIdentificationTrends,
         similarErrorAnalysis,
         resolutionTimeAnalysis,
@@ -4325,12 +4095,31 @@ Format as JSON with the following structure:
           recentErrors,
           recentAnalyses
         ),
+        cached: false, // Indicate this is fresh data
       };
 
+      // Cache the result
+      trendsCache.set(cacheKey, {
+        data: { ...trendsData, cached: true }, // Mark cached version 
+        timestamp: Date.now()
+      });
+
+      // Clean up old cache entries periodically (basic cleanup)
+      if (trendsCache.size > 100) {
+        const oldestKey = trendsCache.keys().next().value;
+        if (oldestKey) {
+          trendsCache.delete(oldestKey);
+        }
+      }
+
+      clearTimeout(timeout);
       res.json(trendsData);
     } catch (error) {
+      clearTimeout(timeout);
       console.error("Error fetching trends analysis:", error);
-      res.status(500).json({ message: "Failed to fetch trends analysis" });
+      if (!res.headersSent) {
+        res.status(500).json({ message: "Failed to fetch trends analysis" });
+      }
     }
   });
 
@@ -4349,24 +4138,21 @@ Format as JSON with the following structure:
       const userId = req.query.userId;
       const includeAll = req.query.includeAll === "true"; // For dropdown usage - bypass pagination
 
-      // Check if admin is requesting files for specific user or all users
+      // Get all files from all users (system-wide approach)
       let userFiles;
-      if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
+      if (userId && userId !== "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
         // Admin requesting specific user's files
         const targetUserId = parseInt(userId);
         if (isNaN(targetUserId)) {
           return res.status(400).json({ message: "Invalid userId parameter" });
         }
         userFiles = await storage.getLogFilesByUser(targetUserId);
-      } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
-        // Admin requesting all files
-        userFiles = await storage.getAllLogFiles();
       } else if (userId && req.user.role === "user") {
-        // Regular user trying to access other user's files - deny
+        // Regular user trying to access specific user's files - deny
         return res.status(403).json({ message: "Access denied" });
       } else {
-        // Default: get current user's files
-        userFiles = await storage.getLogFilesByUser(req.user.id);
+        // Default: get all files from all users (system-wide)
+        userFiles = await storage.getAllLogFiles();
       }
 
       let filteredFiles = userFiles;
@@ -4464,11 +4250,11 @@ Format as JSON with the following structure:
         if (storeNumber && kioskNumber) {
           try {
             // Get store details
-            const stores = await storage.getStores();
+            const stores = await storage.getAllStores();
             const store = stores.find((s: any) => s.storeNumber === storeNumber);
 
             // Get kiosk details
-            const kiosks = await storage.getKiosks();
+            const kiosks = await storage.getAllKiosks();
             const kiosk = kiosks.find((k: any) => k.kioskNumber === kioskNumber);
 
             if (store && kiosk) {
@@ -4614,12 +4400,14 @@ Format as JSON with the following structure:
         return res.status(404).json({ message: "File not found" });
       }
 
-      // Check permissions
-      if (file.uploadedBy !== req.user.id) {
+      // Check permissions - allow users to delete their own files, and allow admins to delete any file
+      if (file.uploadedBy !== req.user.id && req.user.role !== "admin" && req.user.role !== "super_admin") {
         console.log(
-          `🚫 Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}`
+          `🚫 Access denied: file uploaded by ${file.uploadedBy}, user is ${req.user.id}, role: ${req.user.role}`
         );
-        return res.status(403).json({ message: "Access denied: You can only delete files you uploaded" });
+        return res.status(403).json({
+          message: "Access denied: You can only delete files you uploaded"
+        });
       }
 
       console.log("🔄 Starting comprehensive cascade deletion process...");
@@ -5040,6 +4828,9 @@ Format as JSON with the following structure:
       res.setHeader("Expires", "0");
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 20;
+      const fileIdFilter = req.query.fileId ? parseInt(req.query.fileId as string) : null;
+
+      console.log("📊 Analysis history request:", { page, limit, fileIdFilter, userId: req.user.id });
 
       // Get analysis history for the user - only completed analyses
       const analysisHistoryArray = await storage.getAnalysisHistoryByUser(
@@ -5047,9 +4838,17 @@ Format as JSON with the following structure:
       );
 
       // Filter to only include completed analyses (no processing/pending)
-      const completedAnalyses = analysisHistoryArray.filter(
+      let completedAnalyses = analysisHistoryArray.filter(
         (analysis: any) => analysis.status === "completed"
       );
+
+      // Apply file ID filter if specified
+      if (fileIdFilter) {
+        completedAnalyses = completedAnalyses.filter(
+          (analysis: any) => analysis.fileId === fileIdFilter
+        );
+        console.log(`📁 Filtered by fileId ${fileIdFilter}: ${completedAnalyses.length} analyses`);
+      }
 
       // Apply pagination
       const total = completedAnalyses.length;
@@ -5061,23 +4860,33 @@ Format as JSON with the following structure:
         )
         .slice(offset, offset + limit);
 
-      // Get corresponding log files to get actual file names
+      // Get corresponding log files to get actual file names and store/kiosk data
       const history = await Promise.all(
         paginatedHistory.map(async (item: any) => {
           let fileName = "Unknown File";
           let uploadDate = item.createdAt;
+          let storeNumber = null;
+          let kioskNumber = null;
 
           // First try to use filename from analysis history record
           if (item.filename) {
             fileName = item.filename;
             uploadDate = item.uploadTimestamp || item.createdAt;
-          } else if (item.fileId) {
-            // Fallback: try to get the actual file name from log files
+          }
+
+          // Always try to get store/kiosk data from log files if fileId exists
+          if (item.fileId) {
             try {
               const logFile = await storage.getLogFile(item.fileId);
               if (logFile) {
-                fileName = logFile.originalName || logFile.filename;
-                uploadDate = logFile.uploadTimestamp || item.createdAt;
+                // Get filename if not already set
+                if (!item.filename) {
+                  fileName = logFile.originalName || logFile.filename;
+                  uploadDate = logFile.uploadTimestamp || item.createdAt;
+                }
+                // Get store and kiosk data
+                storeNumber = logFile.storeNumber;
+                kioskNumber = logFile.kioskNumber;
               }
             } catch (error) {
               console.warn(`Could not fetch log file ${item.fileId}:`, error);
@@ -5102,6 +4911,8 @@ Format as JSON with the following structure:
             fileId: item.fileId, // Add fileId for patterns API
             filename: fileName, // Use filename instead of fileName for frontend consistency
             uploadDate: validUploadDate,
+            storeNumber: storeNumber, // Add store number
+            kioskNumber: kioskNumber, // Add kiosk number
             totalErrors: item.totalErrors || 0,
             criticalErrors: item.criticalErrors || 0,
             highErrors: item.highErrors || 0,
@@ -5279,6 +5090,11 @@ Format as JSON with the following structure:
         }
       }
 
+      // Get similar errors for context
+      const similarErrors = allErrors.filter(
+        (e: any) => e.errorType === error.errorType && e.id !== error.id
+      );
+
       res.json({
         error,
         mlPrediction,
@@ -5287,9 +5103,8 @@ Format as JSON with the following structure:
             `Common in ${error.errorType} errors`,
             "Often resolved by code review",
           ],
-          relatedErrors: [], // Mock for now - can implement later
-          historicalContext: `Similar errors: ${Math.floor(Math.random() * 10) + 1
-            }`,
+          relatedErrors: similarErrors.slice(0, 5), // Get up to 5 similar errors
+          historicalContext: `Similar errors: ${similarErrors.length}`,
         },
       });
     } catch (error) {
@@ -5311,25 +5126,8 @@ Format as JSON with the following structure:
       const storeNumber = req.query.storeNumber as string;
       const kioskNumber = req.query.kioskNumber as string;
 
-      // Check if admin is requesting errors for specific user or all users
-      let allUserErrors;
-      if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
-        // Admin requesting specific user's errors
-        const targetUserId = parseInt(userId);
-        if (isNaN(targetUserId)) {
-          return res.status(400).json({ message: "Invalid userId parameter" });
-        }
-        allUserErrors = await storage.getErrorsByUser(targetUserId);
-      } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
-        // Admin requesting all errors
-        allUserErrors = await storage.getAllErrors();
-      } else if (userId && req.user.role === "user") {
-        // Regular user trying to access other user's errors - deny
-        return res.status(403).json({ message: "Access denied" });
-      } else {
-        // Default: get current user's errors
-        allUserErrors = await storage.getErrorsByUser(req.user.id);
-      }
+      // Always get all errors for system-wide approach, then filter afterwards
+      let allUserErrors = await storage.getAllErrors();
 
       console.log(`🔍 [DEBUG] Total user errors: ${allUserErrors.length}`);
       if (errorTypeFilter && errorTypeFilter !== "all") {
@@ -5390,27 +5188,94 @@ Format as JSON with the following structure:
         );
       }
 
-      // Filter by store number
-      if (storeNumber && storeNumber !== "all") {
-        console.log(`🔍 [DEBUG] Filtering by storeNumber: ${storeNumber}`);
+      // Filter by user IDs (supports multiple comma-separated values)
+      if (userId && userId !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by userId: ${userId}`);
         const beforeFiltering = filteredErrors.length;
-        filteredErrors = filteredErrors.filter(
-          (error: any) => error.storeNumber === storeNumber
-        );
+
+        // Handle multiple user IDs (comma-separated)
+        const userIds = userId.split(",").map(id => id.trim()).filter(id => id);
+
+        if (userIds.length > 0) {
+          // Get all files uploaded by these users
+          const allFiles = await storage.getAllLogFiles();
+
+          // Debug: Show sample user data
+          console.log(`🔍 [DEBUG] Sample files uploadedBy values:`, allFiles.slice(0, 5).map(f => ({
+            id: f.id,
+            uploadedBy: f.uploadedBy,
+            uploadedByType: typeof f.uploadedBy,
+            originalName: f.originalName
+          })));
+          console.log(`🔍 [DEBUG] Looking for userIds:`, userIds.map(id => ({ id, type: typeof id })));
+
+          const userFileIds = allFiles
+            .filter(file => {
+              const uploadedBy = file.uploadedBy;
+              if (!uploadedBy) return false;
+
+              // Try both string and number comparison
+              const uploadedByStr = String(uploadedBy);
+              const matched = userIds.includes(uploadedByStr);
+
+              if (matched) {
+                console.log(`🔍 [DEBUG] File ${file.id} (${file.originalName}) matches user ${uploadedBy}`);
+              }
+              return matched;
+            })
+            .map(file => file.id);
+
+          console.log(`🔍 [DEBUG] Found ${userFileIds.length} files for users: ${userIds.join(", ")}`);
+          console.log(`🔍 [DEBUG] User file IDs:`, userFileIds.slice(0, 10));
+
+          // Filter errors by fileIds that belong to these users
+          const beforeErrorFilter = filteredErrors.length;
+          filteredErrors = filteredErrors.filter(
+            (error: any) => error.fileId && userFileIds.includes(error.fileId)
+          );
+          console.log(`🔍 [DEBUG] Error filter result: ${beforeErrorFilter} -> ${filteredErrors.length} errors`);
+        }
+
         console.log(
-          `🔍 [DEBUG] Store filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
+          `🔍 [DEBUG] User filter: ${beforeFiltering} -> ${filteredErrors.length} errors (filtering by ${userIds.length} user(s))`
         );
       }
 
-      // Filter by kiosk number
+      // Filter by store numbers (supports multiple comma-separated values)
+      if (storeNumber && storeNumber !== "all") {
+        console.log(`🔍 [DEBUG] Filtering by storeNumber: ${storeNumber}`);
+        const beforeFiltering = filteredErrors.length;
+
+        // Handle multiple store numbers (comma-separated)
+        const storeNumbers = storeNumber.split(",").map(num => num.trim()).filter(num => num);
+
+        if (storeNumbers.length > 0) {
+          filteredErrors = filteredErrors.filter(
+            (error: any) => error.storeNumber && storeNumbers.includes(error.storeNumber.toString())
+          );
+        }
+
+        console.log(
+          `🔍 [DEBUG] Store filter: ${beforeFiltering} -> ${filteredErrors.length} errors (filtering by ${storeNumbers.length} store(s))`
+        );
+      }
+
+      // Filter by kiosk numbers (supports multiple comma-separated values)
       if (kioskNumber && kioskNumber !== "all") {
         console.log(`🔍 [DEBUG] Filtering by kioskNumber: ${kioskNumber}`);
         const beforeFiltering = filteredErrors.length;
-        filteredErrors = filteredErrors.filter(
-          (error: any) => error.kioskNumber === kioskNumber
-        );
+
+        // Handle multiple kiosk numbers (comma-separated)
+        const kioskNumbers = kioskNumber.split(",").map(num => num.trim()).filter(num => num);
+
+        if (kioskNumbers.length > 0) {
+          filteredErrors = filteredErrors.filter(
+            (error: any) => error.kioskNumber && kioskNumbers.includes(error.kioskNumber.toString())
+          );
+        }
+
         console.log(
-          `🔍 [DEBUG] Kiosk filter: ${beforeFiltering} -> ${filteredErrors.length} errors`
+          `🔍 [DEBUG] Kiosk filter: ${beforeFiltering} -> ${filteredErrors.length} errors (filtering by ${kioskNumbers.length} kiosk(s))`
         );
       }
 
@@ -5421,8 +5286,41 @@ Format as JSON with the following structure:
 
       // Transform to expected format
       const errors = paginatedErrors.map((error) => {
-        // Extract timestamp from message if not available in timestamp field
-        let extractedTimestamp = error.timestamp;
+        // Ensure timestamp is properly formatted and valid
+        let extractedTimestamp = null;
+
+        // First, try to use the existing timestamp field
+        if (error.timestamp) {
+          try {
+            // Handle different timestamp formats
+            if (typeof error.timestamp === 'string') {
+              // Try parsing as-is first
+              const date = new Date(error.timestamp);
+              if (!isNaN(date.getTime())) {
+                extractedTimestamp = date.toISOString();
+              } else {
+                // Try parsing as Unix timestamp (seconds)
+                const numTimestamp = parseInt(error.timestamp);
+                if (!isNaN(numTimestamp)) {
+                  const timestamp = numTimestamp < 10000000000 ? numTimestamp * 1000 : numTimestamp;
+                  extractedTimestamp = new Date(timestamp).toISOString();
+                }
+              }
+            } else if (typeof error.timestamp === 'number') {
+              // Handle numeric timestamps
+              const timestamp = error.timestamp < 10000000000 ? error.timestamp * 1000 : error.timestamp;
+              extractedTimestamp = new Date(timestamp).toISOString();
+            } else {
+              // Try to convert to date directly
+              extractedTimestamp = new Date(error.timestamp).toISOString();
+            }
+          } catch (e) {
+            console.warn('Failed to parse existing timestamp:', error.timestamp, e);
+            extractedTimestamp = null;
+          }
+        }
+
+        // If no valid timestamp found, try extracting from message
         if (!extractedTimestamp && error.message) {
           // Try to extract timestamp from message like "2025-05-31/18:00:03.918/PDT"
           const timestampMatch = error.message.match(
@@ -5434,13 +5332,31 @@ Format as JSON with the following structure:
               const dateStr = timestampMatch[1]
                 .replace("/", " ")
                 .replace(/\/[A-Z]{3}$/, "");
-              extractedTimestamp = new Date(dateStr);
+              const parsedDate = new Date(dateStr);
+              if (!isNaN(parsedDate.getTime())) {
+                extractedTimestamp = parsedDate.toISOString();
+              }
             } catch (e) {
-              extractedTimestamp = null;
+              console.warn('Failed to parse timestamp from message:', timestampMatch[1], e);
             }
-          } else {
-            extractedTimestamp = null;
           }
+        }
+
+        // If still no timestamp, use createdAt or current time as fallback
+        if (!extractedTimestamp) {
+          if (error.createdAt) {
+            try {
+              extractedTimestamp = new Date(error.createdAt).toISOString();
+            } catch (e) {
+              console.warn('Failed to parse createdAt timestamp:', error.createdAt, e);
+            }
+          }
+        }
+
+        // Final fallback - use current time but log it
+        if (!extractedTimestamp) {
+          console.warn('No valid timestamp found for error', error.id, 'using current time as fallback');
+          extractedTimestamp = new Date().toISOString();
         }
 
         return {
@@ -5456,7 +5372,7 @@ Format as JSON with the following structure:
           fullText: error.fullText,
           file_path: (error as any).filename || "Unknown",
           line_number: error.lineNumber,
-          timestamp: extractedTimestamp || "N/A",
+          timestamp: extractedTimestamp,
           stack_trace: error.fullText,
           context: error.pattern || "",
           resolved: error.resolved,
@@ -5466,12 +5382,21 @@ Format as JSON with the following structure:
         };
       });
 
+      // Calculate severity counts from all filtered errors (not just the paginated ones)
+      const severityCounts = {
+        critical: filteredErrors.filter(error => error.severity === "critical").length,
+        high: filteredErrors.filter(error => error.severity === "high").length,
+        medium: filteredErrors.filter(error => error.severity === "medium").length,
+        low: filteredErrors.filter(error => error.severity === "low").length,
+      };
+
       res.json({
         errors: errors,
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit),
+        severityCounts: severityCounts,
       });
     } catch (error) {
       console.error("Error fetching errors:", error);
@@ -5501,7 +5426,8 @@ Format as JSON with the following structure:
       }
 
       const userId = user.id;
-      const allUserErrors = await storage.getErrorsByUser(userId);
+      // Use system-wide data for AI analysis statistics
+      const allUserErrors = await storage.getAllErrors();
 
       console.log(
         `🔍 [DEBUG] Found ${allUserErrors.length} total errors for user ${userId}`
@@ -5544,7 +5470,8 @@ Format as JSON with the following structure:
   // Get all error types for filtering
   app.get("/api/errors/types", requireAuth, async (req: any, res: any) => {
     try {
-      const allUserErrors = await storage.getErrorsByUser(req.user.id);
+      // Get error types from all users (system-wide)
+      const allUserErrors = await storage.getAllErrors();
       const errorTypesSet = new Set(
         allUserErrors.map((error) => error.errorType).filter(Boolean)
       );
@@ -6233,7 +6160,7 @@ Format as JSON with the following structure:
   // Get comprehensive reports and analytics
   app.get("/api/reports", requireAuth, async (req: any, res: any) => {
     try {
-      const range = req.query.range || "30d"; // Default to 30 days
+      const range = req.query.range || req.query.dateRange || "30d"; // Default to 30 days
       const format = req.query.format || "json"; // json, csv, pdf, excel
 
       // Calculate date range
@@ -6257,23 +6184,88 @@ Format as JSON with the following structure:
           fromDate.setDate(now.getDate() - 30);
       }
 
-      // Get user's data
-      const userId = req.user.id;
-      const userFiles = await storage.getLogFilesByUser(userId);
-      const userErrors = await storage.getErrorsByUser(userId);
-      const analysisHistory = await storage.getAnalysisHistoryByUser(userId);
+      // Get all system data (reports should show data from all users)
+      const allFiles = await storage.getAllLogFiles();
+      const allErrors = await storage.getAllErrors();
+      // For analysis history, we'll need to get all analysis records
+      // Since there's no getAllAnalysisHistory method, we'll collect all analysis for all files
+      const analysisHistory: any[] = [];
 
-      // Filter data by date range
-      const filteredFiles = userFiles.filter(
-        (file) =>
-          file.uploadTimestamp && new Date(file.uploadTimestamp) >= fromDate
-      );
+      console.log(`🔍 [DEBUG] Reports - Range: ${range}, From: ${fromDate.toISOString()}, To: ${now.toISOString()}`);
+      console.log(`🔍 [DEBUG] Reports - Total files before filter: ${allFiles.length}, Total errors before filter: ${allErrors.length}`);
 
-      const filteredErrors = userErrors.filter(
-        (error) => error.createdAt && new Date(error.createdAt) >= fromDate
-      );
+      // Quick check of data availability
+      console.log(`🔍 [DEBUG] First file sample:`, allFiles.slice(0, 3).map(f => ({
+        id: f.id,
+        uploadTimestamp: f.uploadTimestamp,
+        originalName: f.originalName
+      })));
+      console.log(`🔍 [DEBUG] First error sample:`, allErrors.slice(0, 3).map(e => ({
+        id: e.id,
+        createdAt: e.createdAt,
+        severity: e.severity,
+        fileId: e.fileId
+      })));
 
-      // Calculate summary statistics
+      // Log sample data to understand the structure
+      if (allFiles.length > 0) {
+        console.log(`🔍 [DEBUG] Sample file timestamp: ${allFiles[0].uploadTimestamp}, type: ${typeof allFiles[0].uploadTimestamp}`);
+      }
+      if (allErrors.length > 0) {
+        console.log(`🔍 [DEBUG] Sample error timestamp: ${allErrors[0].createdAt}, type: ${typeof allErrors[0].createdAt}`);
+      }
+
+      // Filter data by date range with better date handling
+      const filteredFiles = allFiles.filter((file) => {
+        if (!file.uploadTimestamp) return false;
+        try {
+          const fileDate = new Date(file.uploadTimestamp);
+          // Check if date is valid
+          if (isNaN(fileDate.getTime())) return false;
+          return fileDate >= fromDate;
+        } catch (error) {
+          console.warn(`Invalid file timestamp: ${file.uploadTimestamp}`, error);
+          return false;
+        }
+      });
+
+      const filteredErrors = allErrors.filter((error) => {
+        if (!error.createdAt) return false;
+        try {
+          const errorDate = new Date(error.createdAt);
+          // Check if date is valid
+          if (isNaN(errorDate.getTime())) return false;
+          return errorDate >= fromDate;
+        } catch (error: unknown) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          console.warn(`Invalid error timestamp:`, errorMsg);
+          return false;
+        }
+      });
+
+      console.log(`🔍 [DEBUG] Reports - Files after filter: ${filteredFiles.length}, Errors after filter: ${filteredErrors.length}`);
+
+      // Log date distribution to understand the data
+      if (allFiles.length > 0) {
+        const validFileTimestamps = allFiles
+          .filter(f => f.uploadTimestamp)
+          .map(f => new Date(f.uploadTimestamp as any));
+        if (validFileTimestamps.length > 0) {
+          const minFileDate = new Date(Math.min(...validFileTimestamps.map(d => d.getTime())));
+          const maxFileDate = new Date(Math.max(...validFileTimestamps.map(d => d.getTime())));
+          console.log(`🔍 [DEBUG] File dates range: ${minFileDate.toISOString()} to ${maxFileDate.toISOString()}`);
+        }
+      }
+      if (allErrors.length > 0) {
+        const validErrorTimestamps = allErrors
+          .filter(e => e.createdAt)
+          .map(e => new Date(e.createdAt as any));
+        if (validErrorTimestamps.length > 0) {
+          const minErrorDate = new Date(Math.min(...validErrorTimestamps.map(d => d.getTime())));
+          const maxErrorDate = new Date(Math.max(...validErrorTimestamps.map(d => d.getTime())));
+          console.log(`🔍 [DEBUG] Error dates range: ${minErrorDate.toISOString()} to ${maxErrorDate.toISOString()}`);
+        }
+      }      // Calculate summary statistics
       const totalFiles = filteredFiles.length;
       const totalErrors = filteredErrors.length;
       const criticalErrors = filteredErrors.filter(
@@ -6292,6 +6284,8 @@ Format as JSON with the following structure:
       const resolutionRate =
         totalErrors > 0 ? (resolvedErrors / totalErrors) * 100 : 0;
 
+      console.log(`🔍 [DEBUG] Reports - Resolution Rate: ${resolvedErrors} resolved out of ${totalErrors} total = ${resolutionRate}%`);
+
       // Calculate trends (compare with previous period)
       const rangeDays =
         range === "7d"
@@ -6308,14 +6302,26 @@ Format as JSON with the following structure:
       );
       const previousToDate = new Date(fromDate);
 
-      const prevFiles = userFiles.filter((file) => {
-        const uploadDate = new Date(file.uploadTimestamp || new Date());
-        return uploadDate >= previousFromDate && uploadDate < previousToDate;
+      const prevFiles = allFiles.filter((file) => {
+        if (!file.uploadTimestamp) return false;
+        try {
+          const uploadDate = new Date(file.uploadTimestamp);
+          if (isNaN(uploadDate.getTime())) return false;
+          return uploadDate >= previousFromDate && uploadDate < previousToDate;
+        } catch (error) {
+          return false;
+        }
       });
 
-      const prevErrors = userErrors.filter((error) => {
-        const errorDate = new Date(error.createdAt || new Date());
-        return errorDate >= previousFromDate && errorDate < previousToDate;
+      const prevErrors = allErrors.filter((error) => {
+        if (!error.createdAt) return false;
+        try {
+          const errorDate = new Date(error.createdAt);
+          if (isNaN(errorDate.getTime())) return false;
+          return errorDate >= previousFromDate && errorDate < previousToDate;
+        } catch (error) {
+          return false;
+        }
       });
 
       // Calculate trend percentages with better logic
@@ -6501,7 +6507,16 @@ Format as JSON with the following structure:
         return res.json(reportData);
       }
 
-      res.json(reportData);
+      // Add wrapper for frontend compatibility
+      res.json({
+        data: reportData.summary, // Frontend expects data.totalFiles structure
+        summary: reportData.summary,
+        severityDistribution: reportData.severityDistribution,
+        errorTypes: reportData.errorTypes,
+        topFiles: reportData.topFiles,
+        performance: reportData.performance,
+        dateRange: reportData.dateRange
+      });
     } catch (error) {
       console.error("Error generating reports:", error);
       res.status(500).json({ message: "Failed to generate reports" });
@@ -6513,6 +6528,9 @@ Format as JSON with the following structure:
     try {
       const range = req.query.range || "30d";
       const format = req.query.format || "json";
+      const reportType = req.query.reportType || "summary";
+
+      console.log("📊 Reports export request:", { range, format, reportType, userId: req.user.id });
 
       // Calculate date range
       const now = new Date();
@@ -6572,6 +6590,8 @@ Format as JSON with the following structure:
 
       if (format === "xlsx") {
         try {
+          console.log("📊 Generating Excel report with", exportData.length, "records");
+
           // Create a proper Excel file using a simple approach
           const XLSX = require("xlsx");
 
@@ -6614,15 +6634,17 @@ Format as JSON with the following structure:
           res.setHeader("Content-Length", buffer.length);
           return res.send(buffer);
         } catch (xlsxError) {
-          console.error("Excel generation failed:", xlsxError);
-          // Fallback to CSV
-          const csvData = convertToCSV(exportData);
-          res.setHeader("Content-Type", "text/csv");
-          res.setHeader(
-            "Content-Disposition",
-            `attachment; filename="error-analysis-report-${range}.csv"`
-          );
-          return res.send(csvData);
+          console.error("❌ Excel generation failed:", xlsxError);
+          const errorMsg = xlsxError instanceof Error ? xlsxError.message : String(xlsxError);
+          const errorStack = xlsxError instanceof Error ? xlsxError.stack : undefined;
+          console.error("Error details:", errorMsg, errorStack);
+
+          // Return error response instead of silent fallback
+          return res.status(500).json({
+            message: "Excel generation failed",
+            error: xlsxError instanceof Error ? xlsxError.message : String(xlsxError),
+            fallbackFormat: "csv"
+          });
         }
       }
 
@@ -6833,8 +6855,15 @@ Format as JSON with the following structure:
         totalRecords: exportData.length,
       });
     } catch (error) {
-      console.error("Error generating export:", error);
-      res.status(500).json({ message: "Failed to generate export" });
+      console.error("❌ Error generating reports export:", error);
+      console.error("Error details:", error instanceof Error ? error.message : "Unknown error");
+      console.error("Stack trace:", error instanceof Error ? error.stack : "No stack trace");
+
+      res.status(500).json({
+        message: "Failed to generate export",
+        error: error instanceof Error ? error.message : "Unknown error",
+        timestamp: new Date().toISOString()
+      });
     }
   });
 
@@ -6842,7 +6871,15 @@ Format as JSON with the following structure:
   app.get("/api/export/errors", requireAuth, async (req: any, res: any) => {
     try {
       const analysisId = req.query.analysisId;
+      const fileId = req.query.fileId;
       const format = req.query.format || "csv";
+      const severity = req.query.severity as string;
+      const search = req.query.search as string;
+      const fileFilter = req.query.fileFilter as string;
+      const errorTypeFilter = req.query.errorType as string;
+      const userId = req.query.userId as string;
+
+      console.log("📤 Export request:", { analysisId, fileId, format, userId: req.user.id });
 
       let errors;
       let filename;
@@ -6857,28 +6894,120 @@ Format as JSON with the following structure:
           )
           .orderBy(desc(errorLogs.createdAt));
         filename = `analysis-${analysisId}`;
+      } else if (fileId) {
+        // Get errors for the specific file
+        const targetFileId = parseInt(fileId);
+        if (isNaN(targetFileId)) {
+          return res.status(400).json({ message: "Invalid fileId parameter" });
+        }
+
+        // Verify user has access to this file
+        const file = await storage.getLogFile(targetFileId);
+        if (!file) {
+          return res.status(404).json({ message: "File not found" });
+        }
+
+        if (file.uploadedBy !== req.user.id && req.user.role !== "admin" && req.user.role !== "super_admin") {
+          return res.status(403).json({ message: "Access denied" });
+        }
+
+        errors = await storage.getErrorsByFile(targetFileId);
+        filename = `file-${targetFileId}-${file.originalName.replace(/[^a-zA-Z0-9]/g, '_')}`;
       } else {
-        // Get all errors for the user
-        errors = await storage.getErrorsByUser(req.user.id);
-        filename = "all-errors";
+        // Check if admin is requesting errors for specific user or all users
+        let allUserErrors;
+        if (userId && (req.user.role === "admin" || req.user.role === "super_admin")) {
+          // Admin requesting specific user's errors
+          const targetUserId = parseInt(userId);
+          if (isNaN(targetUserId)) {
+            return res.status(400).json({ message: "Invalid userId parameter" });
+          }
+          allUserErrors = await storage.getErrorsByUser(targetUserId);
+        } else if (userId === "all" && (req.user.role === "admin" || req.user.role === "super_admin")) {
+          // Admin requesting all errors
+          allUserErrors = await storage.getAllErrors();
+        } else if (userId && req.user.role === "user") {
+          // Regular user trying to access other user's errors - deny
+          return res.status(403).json({ message: "Access denied" });
+        } else {
+          // Default: get current user's errors
+          allUserErrors = await storage.getErrorsByUser(req.user.id);
+        }
+
+        errors = allUserErrors;
+
+        // Apply same filters as the main errors endpoint
+        if (severity && severity !== "all") {
+          errors = errors.filter((error) => error.severity === severity);
+        }
+
+        if (errorTypeFilter && errorTypeFilter !== "all") {
+          errors = errors.filter((error) => error.errorType === errorTypeFilter);
+        }
+
+        if (search) {
+          const searchLower = search.toLowerCase();
+          errors = errors.filter(
+            (error) =>
+              error.message.toLowerCase().includes(searchLower) ||
+              (error.fullText && error.fullText.toLowerCase().includes(searchLower)) ||
+              error.errorType.toLowerCase().includes(searchLower)
+          );
+        }
+
+        if (fileFilter && fileFilter !== "all") {
+          const fileIds = fileFilter.split(",").map(id => id.trim()).filter(id => id);
+          if (fileIds.length > 0) {
+            errors = errors.filter(
+              (error) => error.fileId && fileIds.includes(error.fileId.toString())
+            );
+          }
+        }
+
+        filename = "filtered-errors";
       }
 
-      // Prepare export data
-      const exportData = errors.map((error) => ({
-        id: error.id,
-        timestamp: error.timestamp || new Date(error.createdAt || Date.now()).toISOString(),
-        severity: error.severity,
-        errorType: error.errorType,
-        message: error.message,
-        fullText: error.fullText,
-        resolved: error.resolved ? "Yes" : "No",
-        hasAISuggestion: error.aiSuggestion ? "Yes" : "No",
-        hasMLPrediction: error.mlPrediction ? "Yes" : "No",
-        mlConfidence: (error as any).mlConfidence
-          ? `${((error as any).mlConfidence * 100).toFixed(1)}%`
-          : "N/A",
-        lineNumber: error.lineNumber,
-      }));
+      // Prepare export data with proper timestamp handling
+      const exportData = errors.map((error) => {
+        // Ensure valid timestamp format
+        let formattedTimestamp = null;
+        if (error.timestamp) {
+          try {
+            formattedTimestamp = new Date(error.timestamp).toISOString();
+          } catch (e) {
+            console.warn('Invalid timestamp in export for error', error.id, ':', error.timestamp);
+          }
+        }
+
+        if (!formattedTimestamp && error.createdAt) {
+          try {
+            formattedTimestamp = new Date(error.createdAt).toISOString();
+          } catch (e) {
+            console.warn('Invalid createdAt timestamp in export for error', error.id, ':', error.createdAt);
+          }
+        }
+
+        if (!formattedTimestamp) {
+          formattedTimestamp = new Date().toISOString();
+        }
+
+        return {
+          id: error.id,
+          timestamp: formattedTimestamp,
+          severity: error.severity,
+          errorType: error.errorType,
+          message: error.message,
+          fullText: error.fullText || error.message,
+          resolved: error.resolved ? "Yes" : "No",
+          hasAISuggestion: error.aiSuggestion ? "Yes" : "No",
+          hasMLPrediction: error.mlPrediction ? "Yes" : "No",
+          mlConfidence: (error as any).mlConfidence
+            ? `${((error as any).mlConfidence * 100).toFixed(1)}%`
+            : "N/A",
+          lineNumber: error.lineNumber || "N/A",
+          fileName: (error as any).filename || "Unknown",
+        };
+      });
 
       if (format === "xlsx") {
         try {
@@ -8214,6 +8343,219 @@ Format as JSON with the following structure:
   // Enhanced RAG Routes for vector-powered suggestions
   const ragRoutes = createRAGRoutes(sqlite);
   app.use("/api/rag", ragRoutes);
+
+  // ============================================================================
+  // JIRA INTEGRATION & AUTOMATION ROUTES
+  // ============================================================================
+
+  // Jira Integration Status
+  app.get("/api/jira/status", (req, res) => {
+    try {
+      const status = jiraService.getStatus();
+      res.json({ success: true, data: status });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get Jira status",
+      });
+    }
+  });
+
+  // Automation Service Status
+  app.get("/api/automation/status", (req, res) => {
+    try {
+      const stats = errorAutomation.getStatistics();
+      res.json({ success: true, data: stats });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get automation status",
+      });
+    }
+  });
+
+  // Log Watcher Status
+  app.get("/api/watcher/status", (req, res) => {
+    try {
+      const status = logWatcher.getStatus();
+      res.json({ success: true, data: status });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get watcher status",
+      });
+    }
+  });
+
+  // Start watching demo POS logs
+  app.post("/api/watcher/start", (req, res) => {
+    try {
+      const logFilePath = process.env.POS_LOG_FILE_PATH || "logs/pos-application.log";
+      logWatcher.start([logFilePath]);
+      res.json({ success: true, message: "Log watcher started", data: logWatcher.getStatus() });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to start log watcher",
+      });
+    }
+  });
+
+  // Stop watching logs
+  app.post("/api/watcher/stop", (req, res) => {
+    try {
+      logWatcher.stop();
+      res.json({ success: true, message: "Log watcher stopped" });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to stop log watcher",
+      });
+    }
+  });
+
+  // Enable/disable automation
+  app.post("/api/automation/toggle", (req, res) => {
+    try {
+      const { enabled } = req.body;
+      if (typeof enabled !== "boolean") {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid request. 'enabled' boolean is required.",
+        });
+      }
+      errorAutomation.setEnabled(enabled);
+      res.json({
+        success: true,
+        message: `Automation ${enabled ? "enabled" : "disabled"}`,
+        data: errorAutomation.getStatistics(),
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to toggle automation",
+      });
+    }
+  });
+
+  // Receive events from Demo POS (webhook)
+  app.post("/api/demo-events", async (req, res) => {
+    try {
+      const { type, orderId, storeNumber, kioskNumber, error, timestamp } = req.body;
+
+      if (type === "error_detected") {
+        console.log(
+          `[Demo POS Event] Error detected in order ${orderId}:`,
+          error
+        );
+        res.json({ success: true, message: "Event received" });
+        // You can add further processing here (e.g., save to database, trigger automation)
+      } else {
+        res.status(400).json({ success: false, error: "Unknown event type" });
+      }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to process event",
+      });
+    }
+  });
+
+  // Real-time monitoring stream (Server-Sent Events)
+  app.get("/api/monitoring/live", (req, res) => {
+    // Set SSE headers
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    // Send initial connection message
+    res.write("data: " + JSON.stringify({ type: "connected", message: "Monitoring stream started" }) + "\n\n");
+
+    // Event listeners
+    const onError = (data: unknown) => {
+      res.write("data: " + JSON.stringify({ type: "error-detected", data }) + "\n\n");
+    };
+
+    const onTicketCreated = (data: unknown) => {
+      res.write("data: " + JSON.stringify({ type: "ticket-created", data }) + "\n\n");
+    };
+
+    const onTicketUpdated = (data: unknown) => {
+      res.write("data: " + JSON.stringify({ type: "ticket-updated", data }) + "\n\n");
+    };
+
+    // Attach listeners
+    logWatcher.on("error-detected", onError);
+    errorAutomation.on("ticket-created", onTicketCreated);
+    errorAutomation.on("ticket-updated", onTicketUpdated);
+
+    // Cleanup on disconnect
+    req.on("close", () => {
+      logWatcher.off("error-detected", onError);
+      errorAutomation.off("ticket-created", onTicketCreated);
+      errorAutomation.off("ticket-updated", onTicketUpdated);
+      res.end();
+    });
+  });
+
+  // 🔥 CRITICAL FIX #2: Start LogWatcher service for real-time file monitoring
+  try {
+    console.log("Starting LogWatcher service for real-time monitoring...");
+
+    // 🔥 FIX #2: Watch correct directory where Demo POS app logs
+    // Demo POS logs to: <project-root>/data/pos-application.log
+    const logPathsToWatch = [
+      path.resolve("./data"),  // ✅ CORRECT: Demo POS logs here
+      path.resolve("./logs"),  // Fallback for other log sources
+    ].filter((p) => {
+      // Create directory if it doesn't exist
+      if (!fs.existsSync(p)) {
+        try {
+          fs.mkdirSync(p, { recursive: true });
+          console.log(`✅ Created log directory: ${p}`);
+        } catch (err) {
+          console.warn(`Failed to create log directory ${p}:`, err);
+          return false;
+        }
+      }
+      return true;
+    });
+
+    if (logPathsToWatch.length > 0) {
+      console.log(`📍 Watching directories: ${logPathsToWatch.join(", ")}`);
+      await logWatcher.start(logPathsToWatch);
+      console.log("✅ LogWatcher service started successfully");
+
+      // 🔥 CRITICAL FIX #3: Connect LogWatcher errors to automation flow
+      logWatcher.on("error-detected", async (detectedError: any) => {
+        try {
+          console.log(
+            `[LogWatcher] Detected error: ${detectedError.errorType} - ${detectedError.message}`
+          );
+
+          // Trigger automation for Jira ticket creation
+          const automationResult = await errorAutomation.executeAutomation(
+            detectedError,
+            0.85  // Default ML confidence
+          );
+          console.log(`✅ Error automation executed:`, automationResult);
+        } catch (automationError) {
+          console.error("[LogWatcher Automation] Failed to process error:", automationError);
+        }
+      });
+
+      logWatcher.on("error", (error: any) => {
+        console.error("[LogWatcher] Monitoring error:", error);
+      });
+    } else {
+      console.log(
+        "⚠️  No log directories found. Error detection will be unavailable."
+      );
+    }
+  } catch (error) {
+    console.error("Failed to start LogWatcher service:", error);
+  }
 
   // Create HTTP server
   const httpServer = createServer(app);

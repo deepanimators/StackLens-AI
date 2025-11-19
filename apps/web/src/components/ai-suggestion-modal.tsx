@@ -98,10 +98,8 @@ export default function AISuggestionModal({
         "POST",
         `/api/errors/${error.id}/suggestion`
       );
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      return response.json();
+      // authenticatedRequest already returns JSON, no need to call .json()
+      return response;
     },
     onSuccess: (data) => {
       setSuggestion(data.suggestion); // Fix: Extract suggestion from response

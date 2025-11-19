@@ -15,8 +15,11 @@ export class AIService {
 
   async generateSuggestion(errorText: string, errorType: string, severity: string): Promise<AISuggestion> {
     if (!this.apiKey) {
+      console.log('⚠️ No API key available for AI service, using fallback suggestion');
       return this.getFallbackSuggestion(errorText, errorType, severity);
     }
+
+    console.log('🤖 AI Service: Generating suggestion using Gemini API');
 
     try {
       const prompt = this.buildPrompt(errorText, errorType, severity);
@@ -35,15 +38,19 @@ export class AIService {
       });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Gemini API error: ${response.status} - ${errorText}`);
         throw new Error(`Gemini API error: ${response.status}`);
       }
 
       const data = await response.json();
       const generatedText = data.candidates[0]?.content?.parts[0]?.text || '';
 
+      console.log('✅ AI Service: Generated suggestion successfully');
       return this.parseAIResponse(generatedText);
     } catch (error) {
       console.error('AI Service Error:', error);
+      console.log('🔄 AI Service: Falling back to static suggestions');
       return this.getFallbackSuggestion(errorText, errorType, severity);
     }
   }
@@ -162,6 +169,67 @@ Focus on practical, actionable solutions that a developer can implement immediat
       ],
       confidence: 0.6
     };
+  }
+
+  async analyzeLogBatch(errors: any[]): Promise<any> {
+    try {
+      const analysis = {
+        totalErrors: errors.length,
+        errorsByType: {} as Record<string, number>,
+        errorsBySeverity: {} as Record<string, number>,
+        suggestions: [] as any[],
+        commonPatterns: [] as string[],
+        recommendation: 'Review errors by severity and apply suggested fixes',
+      };
+
+      // Count errors by type and severity
+      for (const error of errors) {
+        analysis.errorsByType[error.errorType] = (analysis.errorsByType[error.errorType] || 0) + 1;
+        analysis.errorsBySeverity[error.severity] = (analysis.errorsBySeverity[error.severity] || 0) + 1;
+      }
+
+      // Generate suggestions for the first few critical errors
+      const criticalErrors = errors.filter(e => e.severity === 'critical').slice(0, 3);
+      for (const error of criticalErrors) {
+        try {
+          const suggestion = await this.generateSuggestion(error.message, error.errorType, error.severity);
+          analysis.suggestions.push({
+            errorId: error.id,
+            errorMessage: error.message.substring(0, 100) + '...',
+            suggestion
+          });
+        } catch (err) {
+          console.warn('Failed to generate suggestion for error:', error.id);
+        }
+      }
+
+      // Extract common patterns
+      const messageWords = errors.flatMap(e => e.message.toLowerCase().split(/\s+/));
+      const wordCounts = messageWords.reduce((acc, word) => {
+        if (word.length > 3) {
+          acc[word] = (acc[word] || 0) + 1;
+        }
+        return acc;
+      }, {} as Record<string, number>);
+
+      analysis.commonPatterns = Object.entries(wordCounts)
+        .filter(([_, count]) => (count as number) > 1)
+        .sort(([_, a], [__, b]) => (b as number) - (a as number))
+        .slice(0, 5)
+        .map(([word]) => word);
+
+      return analysis;
+    } catch (error) {
+      console.error('Batch analysis error:', error);
+      return {
+        totalErrors: errors.length,
+        errorsByType: {},
+        errorsBySeverity: {},
+        suggestions: [],
+        commonPatterns: [],
+        recommendation: 'Unable to complete batch analysis. Review errors manually.',
+      };
+    }
   }
 }
 
