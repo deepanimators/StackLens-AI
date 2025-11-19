@@ -35,6 +35,7 @@ import {
   Menu,
   LayoutGrid,
   LayoutPanelLeft,
+  Activity,
 } from "lucide-react";
 import { useLayout } from "@/contexts/layout-context";
 import {
@@ -51,12 +52,14 @@ interface TopNavProps {
 // Primary navigation items (shown in top nav)
 const primaryNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Real-time", href: "/realtime", icon: Activity },
   { name: "Analysis History", href: "/analysis-history", icon: History },
-  { name: "AI Analysis", href: "/ai-analysis", icon: Brain },
+  
 ];
 
 // Secondary navigation items (shown in hamburger menu)
 const secondaryNavigation = [
+  { name: "AI Analysis", href: "/ai-analysis", icon: Brain },
   { name: "All Errors", href: "/all-errors", icon: List },
   { name: "Reports", href: "/reports", icon: FileText },
   { name: "Settings", href: "/settings", icon: Settings },

@@ -22,6 +22,10 @@ export default defineConfig(async () => {
         "@assets": path.resolve(import.meta.dirname, "attached_assets")
       }
     },
+    optimizeDeps: {
+      include: ["react", "react-dom", "react-chartjs-2", "chart.js", "wouter", "@tanstack/react-query"],
+      exclude: []
+    },
     root: path.resolve(import.meta.dirname, "apps/web"),
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
@@ -31,6 +35,9 @@ export default defineConfig(async () => {
       fs: {
         strict: true,
         deny: ["**/.*"]
+      },
+      hmr: {
+        overlay: false
       },
       proxy: {
         "/api": {

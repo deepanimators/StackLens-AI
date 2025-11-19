@@ -5094,6 +5094,7 @@ Format as JSON with the following structure:
       }
 
       // Get similar errors for context
+      const allErrors = await storage.getAllErrors();
       const similarErrors = allErrors.filter(
         (e: any) => e.errorType === error.errorType && e.id !== error.id
       );
@@ -6190,9 +6191,21 @@ Format as JSON with the following structure:
       // Get all system data (reports should show data from all users)
       const allFiles = await storage.getAllLogFiles();
       const allErrors = await storage.getAllErrors();
-      // For analysis history, we'll need to get all analysis records
-      // Since there's no getAllAnalysisHistory method, we'll collect all analysis for all files
-      const analysisHistory: any[] = [];
+      // For analysis history, collect all analysis records
+      let analysisHistory: any[] = [];
+      try {
+        // Get analysis history for each file and collect them
+        for (const file of allFiles) {
+          const fileAnalysis = await storage.getAnalysisHistoryByFileId(file.id);
+          if (fileAnalysis) {
+            analysisHistory.push(fileAnalysis);
+          }
+        }
+      } catch (err) {
+        // If analysis history retrieval fails, continue with empty array
+        console.warn("Could not retrieve analysis history:", err);
+        analysisHistory = [];
+      }
 
       console.log(`🔍 [DEBUG] Reports - Range: ${range}, From: ${fromDate.toISOString()}, To: ${now.toISOString()}`);
       console.log(`🔍 [DEBUG] Reports - Total files before filter: ${allFiles.length}, Total errors before filter: ${allErrors.length}`);
@@ -6407,28 +6420,41 @@ Format as JSON with the following structure:
           .sort(([, a], [, b]) => b - a)
           .slice(0, 10)
           .map(async ([fileId, errorCount]) => {
-            const file = await storage.getLogFile(fileId);
-            const criticalCount = filteredErrors.filter(
-              (e) => e.fileId === fileId && e.severity === "critical"
-            ).length;
-            const highCount = filteredErrors.filter(
-              (e) => e.fileId === fileId && e.severity === "high"
-            ).length;
-            const mediumCount = filteredErrors.filter(
-              (e) => e.fileId === fileId && e.severity === "medium"
-            ).length;
-            const lowCount = filteredErrors.filter(
-              (e) => e.fileId === fileId && e.severity === "low"
-            ).length;
-            return {
-              fileName: file?.originalName || file?.filename || "Unknown",
-              totalErrors: errorCount,
-              critical: criticalCount,
-              high: highCount,
-              medium: mediumCount,
-              low: lowCount,
-              analysisDate: file?.uploadTimestamp || new Date(),
-            };
+            try {
+              const file = await storage.getLogFile(fileId);
+              const criticalCount = filteredErrors.filter(
+                (e) => e.fileId === fileId && e.severity === "critical"
+              ).length;
+              const highCount = filteredErrors.filter(
+                (e) => e.fileId === fileId && e.severity === "high"
+              ).length;
+              const mediumCount = filteredErrors.filter(
+                (e) => e.fileId === fileId && e.severity === "medium"
+              ).length;
+              const lowCount = filteredErrors.filter(
+                (e) => e.fileId === fileId && e.severity === "low"
+              ).length;
+              return {
+                fileName: file?.originalName || file?.filename || `File ${fileId}`,
+                totalErrors: errorCount,
+                critical: criticalCount,
+                high: highCount,
+                medium: mediumCount,
+                low: lowCount,
+                analysisDate: file?.uploadTimestamp || new Date(),
+              };
+            } catch (err) {
+              console.warn(`Failed to get file ${fileId}:`, err);
+              return {
+                fileName: `File ${fileId}`,
+                totalErrors: errorCount,
+                critical: 0,
+                high: 0,
+                medium: 0,
+                low: 0,
+                analysisDate: new Date(),
+              };
+            }
           })
       );
 

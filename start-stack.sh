@@ -106,6 +106,7 @@ if lsof -i :3000 >/dev/null; then
     lsof -ti :3000 | xargs kill -9
 fi
 export KAFKA_BROKERS=localhost:9094
+export ANALYTICS_URL=http://localhost:4000/api/analytics/events
 npm install
 npm start > "$ROOT_DIR/pos_backend.log" 2>&1 &
 POS_BACKEND_PID=$!

@@ -31,55 +31,165 @@ interface Alert {
     status: 'active' | 'resolved';
 }
 
-// In-memory storage for demo (in production use database)
-const metrics: Metric[] = [];
-const alerts: Alert[] = [];
-
-// Initialize with sample data
-function initializeSampleData() {
-    const now = new Date();
-
-    // Add sample metrics
-    for (let i = 20; i > 0; i--) {
-        metrics.push({
-            window: '1min',
-            timestamp: new Date(now.getTime() - i * 3000).toISOString(),
-            total_requests: Math.floor(Math.random() * 1000) + 500,
-            error_count: Math.floor(Math.random() * 50),
-            error_rate: Math.random() * 5,
-            latency_p50: Math.random() * 100 + 50,
-            latency_p99: Math.random() * 200 + 150,
-            throughput: Math.random() * 100 + 50,
-        });
-    }
-
-    // Add sample alerts
-    alerts.push({
-        id: 'alert-1',
-        rule_name: 'High Latency',
-        severity: 'warning',
-        message: 'Transaction latency above threshold',
-        metric: 'latency_p99',
-        value: 450.75,
-        threshold: 400,
-        timestamp: new Date(now.getTime() - 60000).toISOString(),
-        status: 'active'
-    });
-
-    alerts.push({
-        id: 'alert-2',
-        rule_name: 'POS Sync Status',
-        severity: 'info',
-        message: 'POS Demo connected and syncing',
-        metric: 'connection_status',
-        value: 1,
-        threshold: 1,
-        timestamp: new Date(now.getTime() - 30000).toISOString(),
-        status: 'active'
-    });
+interface POSEvent {
+    type: 'info' | 'error' | 'checkout' | 'log';
+    message: string;
+    timestamp: string;
+    source: string;
+    [key: string]: any;
 }
 
-initializeSampleData();
+// In-memory storage for collected metrics and events
+const metrics: Metric[] = [];
+const alerts: Alert[] = [];
+const posEvents: POSEvent[] = [];
+let startTime = Date.now();
+
+// Function to generate metrics from POS events
+function generateMetricsFromEvents(window: string = '1min'): Metric {
+    const now = new Date();
+    const recentEvents = posEvents.filter(e => {
+        const eventTime = new Date(e.timestamp).getTime();
+        const windowMs = window === '1min' ? 60000 : window === '5min' ? 300000 : 3600000;
+        return eventTime >= Date.now() - windowMs;
+    });
+
+    const errorEvents = recentEvents.filter(e => e.type === 'error');
+    const checkoutEvents = recentEvents.filter(e => e.type === 'checkout');
+
+    const totalRequests = recentEvents.length;
+    const errorCount = errorEvents.length;
+    const errorRate = totalRequests > 0 ? (errorCount / totalRequests) * 100 : 0;
+
+    // Simulate latency based on request count
+    const latency_p50 = Math.max(10, 50 - (totalRequests / 100));
+    const latency_p99 = Math.max(50, 200 - (totalRequests / 50));
+
+    // Throughput: transactions per second
+    const throughput = totalRequests > 0 ? totalRequests / 60 : 0;
+
+    return {
+        window,
+        timestamp: now.toISOString(),
+        total_requests: totalRequests,
+        error_count: errorCount,
+        error_rate: Math.round(errorRate * 100) / 100,
+        latency_p50: Math.round(latency_p50 * 100) / 100,
+        latency_p99: Math.round(latency_p99 * 100) / 100,
+        throughput: Math.round(throughput * 100) / 100,
+    };
+}
+
+// Function to update alerts based on metrics
+function updateAlerts(latestMetric: Metric) {
+    // Remove old alerts (older than 1 hour)
+    const oneHourAgo = Date.now() - 3600000;
+    alerts.length = alerts.filter(a => new Date(a.timestamp).getTime() > oneHourAgo).length;
+
+    // Check for high latency alert
+    if (latestMetric.latency_p99 > 200) {
+        const existingAlert = alerts.find(a => a.rule_name === 'High Latency' && a.status === 'active');
+        if (!existingAlert) {
+            alerts.push({
+                id: `alert-${Date.now()}`,
+                rule_name: 'High Latency',
+                severity: 'warning',
+                message: 'Transaction latency exceeded threshold',
+                metric: 'latency_p99',
+                value: latestMetric.latency_p99,
+                threshold: 200,
+                timestamp: new Date().toISOString(),
+                status: 'active'
+            });
+        }
+    }
+
+    // Check for high error rate alert
+    if (latestMetric.error_rate > 5) {
+        const existingAlert = alerts.find(a => a.rule_name === 'High Error Rate' && a.status === 'active');
+        if (!existingAlert) {
+            alerts.push({
+                id: `alert-${Date.now()}-errors`,
+                rule_name: 'High Error Rate',
+                severity: 'critical',
+                message: 'Error rate exceeded acceptable threshold',
+                metric: 'error_rate',
+                value: latestMetric.error_rate,
+                threshold: 5,
+                timestamp: new Date().toISOString(),
+                status: 'active'
+            });
+        }
+    }
+
+    // Add info alert for successful checkouts
+    if (latestMetric.total_requests > 0) {
+        const checkoutRate = posEvents.filter(e => e.type === 'checkout').length / latestMetric.total_requests;
+        if (checkoutRate > 0.3) {
+            const existingAlert = alerts.find(a => a.rule_name === 'High Activity' && a.status === 'active');
+            if (!existingAlert) {
+                alerts.push({
+                    id: `alert-${Date.now()}-activity`,
+                    rule_name: 'High Activity',
+                    severity: 'info',
+                    message: 'POS system showing high transaction activity',
+                    metric: 'checkout_rate',
+                    value: Math.round(checkoutRate * 100),
+                    threshold: 30,
+                    timestamp: new Date().toISOString(),
+                    status: 'active'
+                });
+            }
+        }
+    }
+}
+
+/**
+ * POST /api/analytics/events
+ * Receive POS events and convert them to metrics
+ */
+analyticsRouter.post('/events', (req, res) => {
+    try {
+        const event: POSEvent = {
+            type: req.body.type || 'log',
+            message: req.body.message || '',
+            timestamp: req.body.timestamp || new Date().toISOString(),
+            source: req.body.source || 'pos-app',
+            ...req.body
+        };
+
+        // Add event to collection
+        posEvents.push(event);
+
+        // Keep only last 1000 events (5 minutes of data)
+        if (posEvents.length > 1000) {
+            posEvents.shift();
+        }
+
+        // Generate new metrics from updated events
+        const newMetric = generateMetricsFromEvents('1min');
+        metrics.push(newMetric);
+
+        // Keep only last 500 metrics per window
+        if (metrics.length > 500) {
+            metrics.shift();
+        }
+
+        // Update alerts based on new metrics
+        updateAlerts(newMetric);
+
+        res.status(201).json({
+            success: true,
+            message: 'Event recorded',
+            metrics: { total_events: posEvents.length, total_metrics: metrics.length }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error instanceof Error ? error.message : 'Failed to record event'
+        });
+    }
+});
 
 /**
  * GET /api/analytics/metrics

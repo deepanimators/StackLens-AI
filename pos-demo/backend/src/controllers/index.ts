@@ -4,6 +4,30 @@ import * as orderService from '../services/orderService';
 import { logger } from '../utils/logger';
 import { AppError } from '../utils/AppError';
 
+// Helper function to send event to StackLens analytics
+async function sendToAnalytics(type: 'info' | 'error' | 'checkout' | 'log', message: string, metadata: any = {}) {
+    try {
+        const analyticsUrl = process.env.ANALYTICS_URL || 'http://localhost:4000/api/analytics/events';
+        const response = await fetch(analyticsUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type,
+                message,
+                timestamp: new Date().toISOString(),
+                source: 'pos-backend',
+                ...metadata
+            })
+        });
+        if (!response.ok) {
+            logger.warn(`Failed to send analytics event: ${response.statusText}`);
+        }
+    } catch (err) {
+        logger.warn('Failed to send analytics event:', err);
+        // Don't throw - analytics failure shouldn't break the main operation
+    }
+}
+
 export const listProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const products = await productService.listProducts();
@@ -59,12 +83,19 @@ export const healthCheck = (req: Request, res: Response) => {
 // Manual log trigger endpoints for POS demo UI
 export const logInfo = (req: Request, res: Response, next: NextFunction) => {
     try {
-        logger.info('POS Demo: Item scan initiated', {
+        const message = 'POS Demo: Item scan initiated';
+        logger.info(message, {
             source: 'pos-frontend',
             type: 'info',
             timestamp: new Date().toISOString(),
             userAgent: req.get('user-agent'),
         });
+
+        // Send to analytics
+        sendToAnalytics('info', message, {
+            userAgent: req.get('user-agent'),
+        });
+
         res.json({ status: 'logged', type: 'info' });
     } catch (err) {
         next(err);
@@ -73,12 +104,19 @@ export const logInfo = (req: Request, res: Response, next: NextFunction) => {
 
 export const logError = (req: Request, res: Response, next: NextFunction) => {
     try {
-        logger.error('POS Demo: Payment error simulated', {
+        const message = 'POS Demo: Payment error simulated';
+        logger.error(message, {
             source: 'pos-frontend',
             type: 'error',
             timestamp: new Date().toISOString(),
             userAgent: req.get('user-agent'),
         });
+
+        // Send to analytics
+        sendToAnalytics('error', message, {
+            userAgent: req.get('user-agent'),
+        });
+
         res.json({ status: 'logged', type: 'error' });
     } catch (err) {
         next(err);
@@ -87,12 +125,19 @@ export const logError = (req: Request, res: Response, next: NextFunction) => {
 
 export const logCheckout = (req: Request, res: Response, next: NextFunction) => {
     try {
-        logger.info('POS Demo: Checkout simulation', {
+        const message = 'POS Demo: Checkout simulation';
+        logger.info(message, {
             source: 'pos-frontend',
             type: 'checkout',
             timestamp: new Date().toISOString(),
             userAgent: req.get('user-agent'),
         });
+
+        // Send to analytics
+        sendToAnalytics('checkout', message, {
+            userAgent: req.get('user-agent'),
+        });
+
         res.json({ status: 'logged', type: 'checkout' });
     } catch (err) {
         next(err);
@@ -101,18 +146,23 @@ export const logCheckout = (req: Request, res: Response, next: NextFunction) => 
 
 export const logCustom = (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { message, source } = req.body;
-        if (!message) {
-            throw new AppError('Message is required', 'VALIDATION_ERROR', 400, 'Provide a message field');
-        }
+        const { message = 'POS Demo: Custom event', type = 'log' } = req.body;
 
-        logger.info(`POS Demo: ${message}`, {
-            source: source || 'pos-frontend',
-            type: 'custom',
+        logger.info(message, {
+            source: 'pos-frontend',
+            type,
             timestamp: new Date().toISOString(),
             userAgent: req.get('user-agent'),
+            customData: req.body,
         });
-        res.json({ status: 'logged', type: 'custom', message });
+
+        // Send to analytics
+        sendToAnalytics(type as any, message, {
+            userAgent: req.get('user-agent'),
+            customData: req.body,
+        });
+
+        res.json({ status: 'logged', type, message });
     } catch (err) {
         next(err);
     }

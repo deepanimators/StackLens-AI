@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useQuery } from "@tanstack/react-query";
 import { authManager } from "./lib/auth";
-import { useEffect, Suspense, lazy } from "react";
+import { useEffect, Suspense, lazy, Component, ReactNode } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutProvider } from "@/contexts/layout-context";
 import { SettingsProvider } from "@/contexts/settings-context";
@@ -28,6 +28,43 @@ const StoreKioskManagement = lazy(() => import("@/pages/store-kiosk-management")
 // Keep Login and NotFound as synchronous to avoid loading delay on auth pages
 import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
+
+// Error Boundary for catching module loading errors
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean; error?: Error }> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error) {
+    console.error("ErrorBoundary caught:", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+            <p className="text-muted-foreground mb-4">{this.state.error?.message}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 // Loading skeleton component
 const PageLoader = () => (
@@ -99,20 +136,22 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="stacklens-ui-theme">
-        <LayoutProvider>
-          <SettingsProvider>
-            <TooltipProvider>
-              <FirebaseAuthWrapper>
-                <Toaster />
-                <Router />
-              </FirebaseAuthWrapper>
-            </TooltipProvider>
-          </SettingsProvider>
-        </LayoutProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider defaultTheme="dark" storageKey="stacklens-ui-theme">
+          <LayoutProvider>
+            <SettingsProvider>
+              <TooltipProvider>
+                <FirebaseAuthWrapper>
+                  <Toaster />
+                  <Router />
+                </FirebaseAuthWrapper>
+              </TooltipProvider>
+            </SettingsProvider>
+          </LayoutProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
