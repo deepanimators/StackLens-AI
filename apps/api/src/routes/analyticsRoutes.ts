@@ -3,9 +3,14 @@ import { Router } from 'express';
 const analyticsRouter = Router();
 
 interface Metric {
+    window: string;
     timestamp: string;
-    value: number;
-    name: string;
+    total_requests: number;
+    error_count: number;
+    error_rate: number;
+    latency_p50: number;
+    latency_p99: number;
+    throughput: number;
 }
 
 interface HealthStatus {
@@ -16,8 +21,12 @@ interface HealthStatus {
 
 interface Alert {
     id: string;
+    rule_name: string;
     severity: 'critical' | 'warning' | 'info';
     message: string;
+    metric: string;
+    value: number;
+    threshold: number;
     timestamp: string;
     status: 'active' | 'resolved';
 }
@@ -33,25 +42,38 @@ function initializeSampleData() {
     // Add sample metrics
     for (let i = 20; i > 0; i--) {
         metrics.push({
+            window: '1min',
             timestamp: new Date(now.getTime() - i * 3000).toISOString(),
-            value: Math.random() * 100 + 50,
-            name: 'Transaction Success Rate'
+            total_requests: Math.floor(Math.random() * 1000) + 500,
+            error_count: Math.floor(Math.random() * 50),
+            error_rate: Math.random() * 5,
+            latency_p50: Math.random() * 100 + 50,
+            latency_p99: Math.random() * 200 + 150,
+            throughput: Math.random() * 100 + 50,
         });
     }
 
     // Add sample alerts
     alerts.push({
         id: 'alert-1',
+        rule_name: 'High Latency',
         severity: 'warning',
         message: 'Transaction latency above threshold',
+        metric: 'latency_p99',
+        value: 450.75,
+        threshold: 400,
         timestamp: new Date(now.getTime() - 60000).toISOString(),
         status: 'active'
     });
 
     alerts.push({
         id: 'alert-2',
+        rule_name: 'POS Sync Status',
         severity: 'info',
         message: 'POS Demo connected and syncing',
+        metric: 'connection_status',
+        value: 1,
+        threshold: 1,
         timestamp: new Date(now.getTime() - 30000).toISOString(),
         status: 'active'
     });
@@ -97,14 +119,14 @@ analyticsRouter.get('/health-status', (req, res) => {
 
         // Determine status based on metrics
         const recentMetrics = metrics.slice(-10);
-        const avgMetric = recentMetrics.length > 0
-            ? recentMetrics.reduce((sum, m) => sum + m.value, 0) / recentMetrics.length
-            : 75;
+        const avgErrorRate = recentMetrics.length > 0
+            ? recentMetrics.reduce((sum, m) => sum + m.error_rate, 0) / recentMetrics.length
+            : 2;
 
         let status: 'healthy' | 'degraded' | 'offline' = 'healthy';
-        if (avgMetric < 50) {
+        if (avgErrorRate > 5) {
             status = 'degraded';
-        } else if (avgMetric < 30) {
+        } else if (avgErrorRate > 10) {
             status = 'offline';
         }
 
@@ -172,19 +194,25 @@ analyticsRouter.get('/alerts', (req, res) => {
  */
 analyticsRouter.post('/metrics', (req, res) => {
     try {
-        const { value, name } = req.body;
-
-        if (typeof value !== 'number' || !name) {
-            return res.status(400).json({
-                success: false,
-                error: 'Missing or invalid fields: value (number) and name (string) required'
-            });
-        }
+        const {
+            total_requests = 0,
+            error_count = 0,
+            error_rate = 0,
+            latency_p50 = 0,
+            latency_p99 = 0,
+            throughput = 0,
+            window = '1min'
+        } = req.body;
 
         const metric: Metric = {
+            window,
             timestamp: new Date().toISOString(),
-            value,
-            name
+            total_requests,
+            error_count,
+            error_rate,
+            latency_p50,
+            latency_p99,
+            throughput
         };
 
         metrics.push(metric);
@@ -212,19 +240,31 @@ analyticsRouter.post('/metrics', (req, res) => {
  */
 analyticsRouter.post('/alerts', (req, res) => {
     try {
-        const { severity, message, status = 'active' } = req.body;
+        const {
+            rule_name,
+            severity,
+            message,
+            metric = 'unknown',
+            value = 0,
+            threshold = 0,
+            status = 'active'
+        } = req.body;
 
-        if (!severity || !message) {
+        if (!rule_name || !severity || !message) {
             return res.status(400).json({
                 success: false,
-                error: 'Missing required fields: severity and message'
+                error: 'Missing required fields: rule_name, severity, and message'
             });
         }
 
         const alert: Alert = {
             id: `alert-${Date.now()}`,
+            rule_name,
             severity: severity as 'critical' | 'warning' | 'info',
             message,
+            metric,
+            value,
+            threshold,
             timestamp: new Date().toISOString(),
             status: status as 'active' | 'resolved'
         };

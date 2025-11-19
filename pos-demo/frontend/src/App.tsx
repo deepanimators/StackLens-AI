@@ -36,8 +36,6 @@ interface HomePageProps {
 
 function HomePage({ onNavigateToProducts }: HomePageProps) {
   const [status, setStatus] = useState<string>('');
-  const { ShoppingCart, AlertTriangle, CheckCircle } = require('lucide-react');
-  const axios = require('axios');
 
   const sendLog = async (type: 'info' | 'error' | 'checkout') => {
     try {

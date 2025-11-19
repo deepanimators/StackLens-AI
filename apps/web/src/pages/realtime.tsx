@@ -56,7 +56,8 @@ interface RealtimeMetrics {
 interface AlertData {
   id: string;
   rule_name: string;
-  severity: "INFO" | "WARNING" | "CRITICAL";
+  severity: "critical" | "warning" | "info";
+  message: string;
   metric: string;
   value: number;
   threshold: number;
@@ -104,7 +105,7 @@ export default function Realtime() {
   });
 
   // Prepare chart data
-  const metrics: RealtimeMetrics[] = metricsData?.data || [];
+  const metrics: RealtimeMetrics[] = metricsData?.data?.metrics || [];
   
   const chartData = {
     labels: metrics.map((m) => m.timestamp).reverse(),
@@ -218,16 +219,16 @@ export default function Realtime() {
     },
   };
 
-  const latestMetric = metrics[0] || {
+  const latestMetric = metrics[metrics.length - 1] || {
     error_rate: 0,
     latency_p99: 0,
     throughput: 0,
     error_count: 0,
   };
 
-  const alerts: AlertData[] = alertsData?.data || [];
-  const criticalAlerts = alerts.filter((a) => a.severity === "CRITICAL").length;
-  const warningAlerts = alerts.filter((a) => a.severity === "WARNING").length;
+  const alerts: AlertData[] = alertsData?.data?.alerts || [];
+  const criticalAlerts = alerts.filter((a) => a.severity === "critical").length;
+  const warningAlerts = alerts.filter((a) => a.severity === "warning").length;
 
   return (
     <AdaptiveLayout
@@ -304,20 +305,20 @@ export default function Realtime() {
               <div>
                 <p className="text-sm text-muted-foreground">Status</p>
                 <p className="text-lg font-semibold text-green-600">
-                  {healthData?.status === "healthy" ? "✓ Healthy" : "⚠ Degraded"}
+                  {healthData?.data?.status === "healthy" ? "✓ Healthy" : "⚠ Degraded"}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Uptime</p>
-                <p className="text-lg font-semibold">{healthData?.uptime_hours || 0}h</p>
+                <p className="text-lg font-semibold">{Math.floor((healthData?.data?.uptime || 0) / 3600)}h</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Messages/s</p>
-                <p className="text-lg font-semibold">{latestMetric.throughput.toFixed(2)}</p>
+                <p className="text-lg font-semibold">{(latestMetric?.throughput ?? 0).toFixed(2)}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Latency (P99)</p>
-                <p className="text-lg font-semibold">{latestMetric.latency_p99.toFixed(0)}ms</p>
+                <p className="text-lg font-semibold">{(latestMetric?.latency_p99 ?? 0).toFixed(0)}ms</p>
               </div>
             </div>
           </CardContent>
@@ -327,17 +328,17 @@ export default function Realtime() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           <StatsCard
             title="Error Rate"
-            value={`${latestMetric.error_rate.toFixed(2)}%`}
+            value={`${((latestMetric?.error_rate ?? 0)).toFixed(2)}%`}
             icon={AlertTriangle}
             trend={{
               value: `${(Math.random() * 10 - 5).toFixed(1)}%`,
-              isPositive: latestMetric.error_rate < 5,
+              isPositive: (latestMetric?.error_rate ?? 0) < 5,
             }}
             className="bg-gradient-to-br from-red-50 to-red-100 border-red-200/50 dark:from-red-950/20 dark:to-red-900/20 dark:border-red-800/30"
           />
           <StatsCard
             title="Throughput"
-            value={`${latestMetric.throughput.toFixed(0)}`}
+            value={`${((latestMetric?.throughput ?? 0)).toFixed(0)}`}
             icon={Zap}
             trend={{ value: "↑ Active", isPositive: true }}
             className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 dark:from-green-950/20 dark:to-green-900/20 dark:border-green-800/30"
@@ -345,22 +346,22 @@ export default function Realtime() {
           />
           <StatsCard
             title="P99 Latency"
-            value={`${latestMetric.latency_p99.toFixed(0)}`}
+            value={`${((latestMetric?.latency_p99 ?? 0)).toFixed(0)}`}
             icon={Clock}
             trend={{
               value: "Optimal",
-              isPositive: latestMetric.latency_p99 < 500,
+              isPositive: (latestMetric?.latency_p99 ?? 0) < 500,
             }}
             className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200/50 dark:from-purple-950/20 dark:to-purple-900/20 dark:border-purple-800/30"
             suffix="ms"
           />
           <StatsCard
             title="Total Errors"
-            value={latestMetric.error_count}
+            value={latestMetric?.error_count ?? 0}
             icon={TrendingUp}
             trend={{
               value: `Last ${selectedWindow}`,
-              isPositive: latestMetric.error_count === 0,
+              isPositive: (latestMetric?.error_count ?? 0) === 0,
             }}
             className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200/50 dark:from-orange-950/20 dark:to-orange-900/20 dark:border-orange-800/30"
           />
@@ -438,14 +439,14 @@ export default function Realtime() {
                     <div className="flex-1">
                       <p className="font-medium text-sm">{alert.rule_name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {alert.metric}: {alert.value.toFixed(2)} (threshold: {alert.threshold.toFixed(2)})
+                        {alert.metric}: {(alert.value ?? 0).toFixed(2)} (threshold: {(alert.threshold ?? 0).toFixed(2)})
                       </p>
                     </div>
                     <Badge
                       variant={
-                        alert.severity === "CRITICAL"
+                        alert.severity === "critical"
                           ? "destructive"
-                          : alert.severity === "WARNING"
+                          : alert.severity === "warning"
                           ? "secondary"
                           : "outline"
                       }
