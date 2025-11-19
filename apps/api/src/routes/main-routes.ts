@@ -53,6 +53,8 @@ import { logWatcher } from "../services/log-watcher.js";
 import { errorAutomation } from "../services/error-automation.js";
 import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
 import { createRAGRoutes } from "./rag-routes.js";
+import posRouter from "./posIntegration.js";
+import analyticsRouter from "./analyticsRoutes.js";
 import crypto from "crypto";
 
 const upload = multer({
@@ -152,6 +154,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json({ user: userResponse, token });
     } catch (error) {
+      console.error("Login error:", error);
       res.status(500).json({ message: "Login failed" });
     }
   });
@@ -8343,6 +8346,16 @@ Format as JSON with the following structure:
   // Enhanced RAG Routes for vector-powered suggestions
   const ragRoutes = createRAGRoutes(sqlite);
   app.use("/api/rag", ragRoutes);
+
+  // ============================================================================
+  // ANALYTICS ROUTES
+  // ============================================================================
+  app.use("/api/analytics", analyticsRouter);
+
+  // ============================================================================
+  // POS INTEGRATION ROUTES
+  // ============================================================================
+  app.use("/api/pos-integration", posRouter);
 
   // ============================================================================
   // JIRA INTEGRATION & AUTOMATION ROUTES

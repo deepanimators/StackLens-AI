@@ -1,29 +1,38 @@
-[dotenv@17.2.1] injecting env (12) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
-[dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
-[dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
-[dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+
+> stacklens-ai-platform@1.0.0 dev:server
+> cross-env NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts
+
+[dotenv@17.2.3] injecting env (13) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
 🚀 RAG: Vector database initialized
+{"level":"WARN","timestamp":"2025-11-19T12:11:08.865Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
 🔄 Starting server initialization...
+Starting LogWatcher service for real-time monitoring...
+📍 Watching directories: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/data, /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/logs
+[LogWatcherService] Started watching 2 file(s)
+✅ LogWatcher service started successfully
 ✅ Routes registered successfully
+🔄 Setting up Vite...
 📚 RAG: Indexing 50 resolved error patterns...
 ✅ RAG: Knowledge base populated with 50 patterns
-node:events:502
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use :::4000
-    at Server.setupListenHandle [as _listen2] (node:net:1908:16)
-    at listenInCluster (node:net:1965:12)
-    at Server.listen (node:net:2067:7)
-    at file:///Users/deepak/Downloads/Projects/StackLens-AI-Deploy/dist/index.js:13025:12
-Emitted 'error' event on Server instance at:
-    at emitErrorNT (node:net:1944:8)
-    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
-  code: 'EADDRINUSE',
-  errno: -48,
-  syscall: 'listen',
-  address: '::',
-  port: 4000
-}
-
-Node.js v20.19.0
+🔄 Indexing existing errors for RAG system...
+⚠️ Vector DB not initialized, storing patterns locally
+✅ Successfully indexed 808 errors for RAG
+✅ Enhanced RAG Suggestor initialized
+🎯 Enhanced RAG system ready with vector database
+🚀 Starting Python vector database service...
+⚠️ Enhanced vector service not found, using fallback similarity search
+✅ Vector database service initialized
+Re-optimizing dependencies because vite config has changed
+✅ Vite setup complete
+5:41:59 PM [express] serving on port 4000
+5:42:06 PM [express] GET /api/auth/me 200 in 69ms :: {"user":{"id":1,"username":"deepanimators","ema…
+5:42:06 PM [express] GET /api/admin/api-settings 200 in 15ms :: {"geminiApiKey":"","webhookUrl":"","…
+5:42:06 PM [express] GET /api/admin/ui-settings 200 in 6ms :: {"theme":"light","sidebarCollapsed":fa…
+5:42:18 PM [express] GET /api/auth/me 200 in 129ms :: {"user":{"id":1,"username":"deepanimators","em…
+5:42:18 PM [express] GET /api/admin/ui-settings 200 in 13ms :: {"theme":"light","sidebarCollapsed":f…
+5:42:18 PM [express] GET /api/admin/api-settings 200 in 43ms :: {"geminiApiKey":"","webhookUrl":"","…
+5:42:31 PM [express] GET /api/auth/me 200 in 61ms :: {"user":{"id":1,"username":"deepanimators","ema…
+5:42:31 PM [express] GET /api/admin/ui-settings 200 in 16ms :: {"theme":"light","sidebarCollapsed":f…
+5:42:32 PM [express] GET /api/admin/api-settings 200 in 43ms :: {"geminiApiKey":"","webhookUrl":"","…

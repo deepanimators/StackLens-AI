@@ -23,58 +23,9 @@ export default defineConfig(async () => {
       }
     },
     root: path.resolve(import.meta.dirname, "apps/web"),
-    optimizeDeps: {
-      include: [
-        "react",
-        "react-dom",
-        "react-router-dom",
-        "@tanstack/react-query",
-        "chart.js",
-        "react-chartjs-2",
-        "lucide-react",
-        "axios"
-      ]
-    },
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
-      emptyOutDir: true,
-      chunkSizeWarningLimit: 750,
-      rollupOptions: {
-        output: {
-          manualChunks: (id: string) => {
-            // Vendor chunks
-            if (id.includes("node_modules/react")) {
-              return "react";
-            }
-            if (id.includes("node_modules/@tanstack")) {
-              return "tanstack";
-            }
-            if (id.includes("node_modules/@radix-ui")) {
-              return "ui";
-            }
-            if (id.includes("node_modules/lucide-react")) {
-              return "icons";
-            }
-
-            // Feature-based code splitting
-            if (id.includes("pages/admin") || id.includes("jira-integration-admin")) {
-              return "admin";
-            }
-            if (id.includes("pages/dashboard") || id.includes("pages/ai-enhanced-dashboard")) {
-              return "dashboard";
-            }
-            if (id.includes("pages/upload")) {
-              return "upload";
-            }
-            if (id.includes("pages/") && id.includes("analysis")) {
-              return "analysis";
-            }
-            if (id.includes("lib/") || id.includes("utils/")) {
-              return "utils";
-            }
-          }
-        }
-      }
+      emptyOutDir: true
     },
     server: {
       fs: {

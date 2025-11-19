@@ -6,13 +6,40 @@ import { analyzeLog } from './analyzer';
 
 const kafka = new Kafka({
     clientId: 'stacklens-consumer',
-    brokers: (process.env.KAFKA_BROKERS || 'localhost:9092').split(',')
+    brokers: (process.env.KAFKA_BROKERS || 'localhost:9094').split(','),
+    connectionTimeout: 10000,
+    requestTimeout: 30000,
+    retry: {
+        initialRetryTime: 300,
+        retries: 8,
+        maxRetryTime: 30000,
+        multiplier: 2
+    }
 });
 
 const consumer = kafka.consumer({ groupId: 'stacklens-log-group' });
 
 export const startConsumer = async () => {
-    await consumer.connect();
+    let retries = 0;
+    const maxRetries = 15;
+    const delayMs = 1000;
+
+    while (retries < maxRetries) {
+        try {
+            await consumer.connect();
+            console.log('✅ Kafka Consumer connected successfully');
+            break;
+        } catch (error) {
+            retries++;
+            console.warn(`⚠️ Kafka Consumer connection attempt ${retries}/${maxRetries} failed, retrying in ${delayMs}ms...`);
+            if (retries >= maxRetries) {
+                console.error('❌ Failed to connect to Kafka Consumer after maximum retries');
+                throw error;
+            }
+            await new Promise(resolve => setTimeout(resolve, delayMs));
+        }
+    }
+
     await consumer.subscribe({ topic: 'otel-logs', fromBeginning: false });
 
     await consumer.run({
@@ -27,7 +54,7 @@ export const startConsumer = async () => {
             }
         },
     });
-    console.log('Kafka Consumer started');
+    console.log('✅ Kafka Consumer started and listening for messages');
 };
 
 const processLog = async (log: any) => {
