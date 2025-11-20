@@ -71,6 +71,8 @@ if lsof -i :4000 >/dev/null; then
     echo "⚠️  Port 4000 is in use. Killing..."
     lsof -ti :4000 | xargs kill -9
 fi
+# Load environment variables
+export $(cat .env | grep -v '^#' | xargs)
 npm run dev:server > "$ROOT_DIR/server.log" 2>&1 &
 API_PID=$!
 

@@ -28,6 +28,10 @@ import {
   RefreshCw,
   Pause,
   Play,
+  Lightbulb,
+  Zap as AlertIcon,
+  AlertCircle,
+  CheckCircle,
 } from "lucide-react";
 
 ChartJS.register(
@@ -102,6 +106,33 @@ export default function Realtime() {
       return response.json();
     },
     refetchInterval: isAutoRefresh ? 5000 : false,
+  });
+
+  // Fetch AI analysis for active alerts
+  const { data: aiAnalysisData } = useQuery({
+    queryKey: ["realtime-ai-analysis", alertsData],
+    queryFn: async () => {
+      const alerts = alertsData?.data?.alerts || [];
+      if (alerts.length === 0) return null;
+      
+      try {
+        const response = await fetch("/api/analytics/ai-analysis", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            alerts: alerts,
+            metrics: metricsData?.data?.metrics?.[metricsData.data.metrics.length - 1] || null
+          })
+        });
+        if (!response.ok) throw new Error("Failed to fetch AI analysis");
+        return response.json();
+      } catch (error) {
+        console.error("AI analysis error:", error);
+        return null;
+      }
+    },
+    enabled: Boolean(alertsData?.data?.alerts?.length),
+    refetchInterval: isAutoRefresh ? 15000 : false, // Refresh AI analysis every 15 seconds
   });
 
   // Prepare chart data
@@ -323,6 +354,122 @@ export default function Realtime() {
             </div>
           </CardContent>
         </Card>
+
+        {/* AI Error Analysis */}
+        {aiAnalysisData?.data?.hasErrors && aiAnalysisData?.data?.analysis && (
+          <Card className="border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-50/50 to-orange-50/50 dark:from-amber-950/20 dark:to-orange-950/20">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center space-x-2">
+                  <Lightbulb className="h-5 w-5 text-amber-600" />
+                  <span>AI Error Analysis</span>
+                </CardTitle>
+                <Badge 
+                  className={`${
+                    aiAnalysisData.data.analysis.severity === "critical" 
+                      ? "bg-red-600 hover:bg-red-700" 
+                      : aiAnalysisData.data.analysis.severity === "high"
+                      ? "bg-orange-600 hover:bg-orange-700"
+                      : aiAnalysisData.data.analysis.severity === "medium"
+                      ? "bg-yellow-600 hover:bg-yellow-700"
+                      : "bg-blue-600 hover:bg-blue-700"
+                  } text-white`}
+                >
+                  {aiAnalysisData.data.analysis.severity?.toUpperCase()}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Error Categories and Types */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">Error Categories</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {aiAnalysisData.data.analysis.errorCategories?.map((category: string, idx: number) => (
+                      <Badge key={idx} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                        {category}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">Error Types</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {aiAnalysisData.data.analysis.errorTypes?.map((type: string, idx: number) => (
+                      <Badge key={idx} variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+                        {type}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Pattern and Root Cause */}
+              <div>
+                <h4 className="text-sm font-semibold text-muted-foreground mb-1">Error Pattern</h4>
+                <p className="text-sm text-foreground">{aiAnalysisData.data.analysis.pattern}</p>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-muted-foreground mb-1">Root Cause</h4>
+                <p className="text-sm text-foreground">{aiAnalysisData.data.analysis.rootCause}</p>
+              </div>
+
+              {/* Impact */}
+              <div>
+                <h4 className="text-sm font-semibold text-muted-foreground mb-1">System Impact</h4>
+                <p className="text-sm text-foreground">{aiAnalysisData.data.analysis.estimatedImpact}</p>
+              </div>
+
+              {/* Immediate Actions */}
+              <div>
+                <h4 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center space-x-1">
+                  <AlertCircle className="h-4 w-4" />
+                  <span>Immediate Actions</span>
+                </h4>
+                <ul className="space-y-1">
+                  {aiAnalysisData.data.analysis.immediateActions?.map((action: string, idx: number) => (
+                    <li key={idx} className="text-sm flex items-start space-x-2">
+                      <span className="text-red-600 font-bold">→</span>
+                      <span>{action}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Suggestions */}
+              <div>
+                <h4 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center space-x-1">
+                  <Lightbulb className="h-4 w-4" />
+                  <span>AI Suggestions</span>
+                </h4>
+                <ul className="space-y-1">
+                  {aiAnalysisData.data.analysis.suggestions?.map((suggestion: string, idx: number) => (
+                    <li key={idx} className="text-sm flex items-start space-x-2">
+                      <span className="text-amber-600 font-bold">✓</span>
+                      <span>{suggestion}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Long Term Fixes */}
+              <div>
+                <h4 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center space-x-1">
+                  <CheckCircle className="h-4 w-4" />
+                  <span>Long-term Fixes</span>
+                </h4>
+                <ul className="space-y-1">
+                  {aiAnalysisData.data.analysis.longTermFixes?.map((fix: string, idx: number) => (
+                    <li key={idx} className="text-sm flex items-start space-x-2">
+                      <span className="text-green-600 font-bold">⚙</span>
+                      <span>{fix}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Key Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">

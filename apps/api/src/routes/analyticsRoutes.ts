@@ -429,4 +429,141 @@ analyticsRouter.put('/alerts/:id', (req, res) => {
     }
 });
 
+/**
+ * POST /api/analytics/ai-analysis
+ * Analyze errors and provide AI-powered insights via Gemini
+ */
+analyticsRouter.post('/ai-analysis', async (req, res) => {
+    try {
+        const { alerts: alertsToAnalyze, metrics: metricsToAnalyze } = req.body;
+
+        if (!alertsToAnalyze || alertsToAnalyze.length === 0) {
+            return res.json({
+                success: true,
+                data: {
+                    hasErrors: false,
+                    analysis: null
+                }
+            });
+        }
+
+        // Prepare analysis context
+        const alertSummary = alertsToAnalyze.map((alert: any) => ({
+            name: alert.rule_name,
+            severity: alert.severity,
+            metric: alert.metric,
+            value: alert.value,
+            threshold: alert.threshold,
+            message: alert.message
+        }));
+
+        const metricsSummary = metricsToAnalyze ? {
+            errorRate: metricsToAnalyze.error_rate,
+            throughput: metricsToAnalyze.throughput,
+            latencyP99: metricsToAnalyze.latency_p99,
+            totalRequests: metricsToAnalyze.total_requests,
+            errorCount: metricsToAnalyze.error_count
+        } : null;
+
+        // Build analysis prompt
+        const analysisPrompt = `
+Analyze the following POS system alerts and metrics and provide structured insights:
+
+ACTIVE ALERTS:
+${JSON.stringify(alertSummary, null, 2)}
+
+RECENT METRICS:
+${metricsSummary ? JSON.stringify(metricsSummary, null, 2) : 'No recent metrics'}
+
+Please provide a comprehensive analysis in JSON format with the following structure:
+{
+  "errorCategories": ["category1", "category2"],
+  "severity": "critical|high|medium|low",
+  "pattern": "description of error pattern detected",
+  "errorTypes": ["type1", "type2"],
+  "rootCause": "likely root cause",
+  "suggestions": ["suggestion1", "suggestion2", "suggestion3"],
+  "immediateActions": ["action1", "action2"],
+  "longTermFixes": ["fix1", "fix2"],
+  "estimatedImpact": "description of system impact"
+}
+
+Make the analysis practical and actionable for a POS system operator.
+        `;
+
+        // Call Gemini API
+        let aiAnalysis = null;
+        try {
+            const apiKey = process.env.GEMINI_API_KEY;
+            if (apiKey) {
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: analysisPrompt
+                            }]
+                        }]
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    const analysisText = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+                    // Parse JSON from response
+                    const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        aiAnalysis = JSON.parse(jsonMatch[0]);
+                    }
+                }
+            }
+        } catch (aiError) {
+            console.warn('AI analysis failed, returning basic analysis', aiError);
+        }
+
+        // Fallback analysis if AI not available
+        if (!aiAnalysis) {
+            aiAnalysis = {
+                errorCategories: alertsToAnalyze.map((a: any) => a.rule_name),
+                severity: alertsToAnalyze.some((a: any) => a.severity === 'critical') ? 'critical' : 'high',
+                pattern: `${alertsToAnalyze.length} alert(s) detected in system`,
+                errorTypes: alertsToAnalyze.map((a: any) => a.metric),
+                rootCause: 'System experiencing elevated error conditions',
+                suggestions: [
+                    'Monitor system metrics in real-time',
+                    'Check POS service status',
+                    'Review recent transaction logs'
+                ],
+                immediateActions: [
+                    'Increase monitoring frequency',
+                    'Notify operations team',
+                    'Prepare rollback procedure if needed'
+                ],
+                longTermFixes: [
+                    'Implement rate limiting',
+                    'Optimize database queries',
+                    'Add redundancy to critical services'
+                ],
+                estimatedImpact: `${alertsToAnalyze.length} active alerts affecting system reliability`
+            };
+        }
+
+        res.json({
+            success: true,
+            data: {
+                hasErrors: true,
+                analysis: aiAnalysis,
+                alertsCount: alertsToAnalyze.length
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error instanceof Error ? error.message : 'Failed to analyze alerts'
+        });
+    }
+});
+
 export default analyticsRouter;
