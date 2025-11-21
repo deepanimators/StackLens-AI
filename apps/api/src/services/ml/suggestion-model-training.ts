@@ -124,11 +124,10 @@ export class SuggestionModelTrainingService {
         usabilityScore: this.metrics.usabilityScore,
         suggestionCount: this.metrics.suggestionCount,
         categoryDistribution: this.metrics.categoryDistribution,
-        message: `Suggestion Model trained successfully with ${
-          this.trainingData.length
-        } suggestion samples. Relevance: ${this.metrics.relevanceScore.toFixed(
-          3
-        )}`,
+        message: `Suggestion Model trained successfully with ${this.trainingData.length
+          } suggestion samples. Relevance: ${this.metrics.relevanceScore.toFixed(
+            3
+          )}`,
       };
     } catch (error) {
       console.error("❌ Suggestion Model training failed:", error);
@@ -141,9 +140,8 @@ export class SuggestionModelTrainingService {
         usabilityScore: defaultMetrics.usabilityScore,
         suggestionCount: defaultMetrics.suggestionCount,
         categoryDistribution: defaultMetrics.categoryDistribution,
-        message: `Training failed: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
+        message: `Training failed: ${error instanceof Error ? error.message : "Unknown error"
+          }`,
       };
     }
   }
@@ -345,6 +343,15 @@ export class SuggestionModelTrainingService {
     if (normalized.includes("transaction") || normalized.includes("payment")) {
       return "TRANSACTION";
     }
+    if (
+      normalized.includes("hardware") ||
+      normalized.includes("printer") ||
+      normalized.includes("scanner") ||
+      normalized.includes("device") ||
+      normalized.includes("terminal")
+    ) {
+      return "HARDWARE";
+    }
 
     return "APPLICATION";
   }
@@ -456,8 +463,7 @@ export class SuggestionModelTrainingService {
     }
 
     console.log(
-      `✅ Enhanced with Gemini: added ${
-        this.trainingData.filter((d) => d.source === "gemini").length
+      `✅ Enhanced with Gemini: added ${this.trainingData.filter((d) => d.source === "gemini").length
       } AI-generated suggestions`
     );
   }
@@ -709,7 +715,7 @@ export class SuggestionModelTrainingService {
           (this.metrics.relevanceScore +
             this.metrics.completenessScore +
             this.metrics.usabilityScore) /
-            3,
+          3,
           this.trainingData.length,
           1, // is_active
           new Date().toISOString(),

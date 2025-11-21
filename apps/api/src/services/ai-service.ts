@@ -1,58 +1,69 @@
-interface AISuggestion {
-  rootCause: string;
-  resolutionSteps: string[];
-  codeExample?: string;
-  preventionMeasures: string[];
-  confidence: number;
-}
+import { AISuggestion, LLMProvider } from "./ai/providers/types";
+import { GeminiProvider } from "./ai/providers/gemini-provider";
+import { OpenAIProvider } from "./ai/providers/openai-provider";
+import { AnthropicProvider } from "./ai/providers/anthropic-provider";
+import { OpenRouterProvider } from "./ai/providers/openrouter-provider";
+import { GroqProvider } from "./ai/providers/groq-provider";
 
 export class AIService {
-  private apiKey: string;
+  private providers: LLMProvider[] = [];
 
   constructor() {
-    this.apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || "";
+    this.initializeProviders();
+  }
+
+  private initializeProviders() {
+    // Initialize providers in priority order
+    // 1. Gemini (Primary)
+    if (process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY) {
+      this.providers.push(new GeminiProvider(process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || ""));
+    }
+
+    // 2. OpenAI (Secondary)
+    if (process.env.OPENAI_API_KEY) {
+      this.providers.push(new OpenAIProvider(process.env.OPENAI_API_KEY));
+    }
+
+    // 3. Anthropic (Tertiary)
+    if (process.env.ANTHROPIC_API_KEY) {
+      this.providers.push(new AnthropicProvider(process.env.ANTHROPIC_API_KEY));
+    }
+
+    // 4. OpenRouter (Quaternary)
+    if (process.env.OPENROUTER_API_KEY) {
+      this.providers.push(new OpenRouterProvider(process.env.OPENROUTER_API_KEY));
+    }
+
+    // 5. Groq (Quinary)
+    if (process.env.GROQ_API_KEY) {
+      this.providers.push(new GroqProvider(process.env.GROQ_API_KEY));
+    }
+
+    console.log(`🤖 AI Service initialized with ${this.providers.length} providers: ${this.providers.map(p => p.name).join(", ")}`);
   }
 
   async generateSuggestion(errorText: string, errorType: string, severity: string): Promise<AISuggestion> {
-    if (!this.apiKey) {
-      console.log('⚠️ No API key available for AI service, using fallback suggestion');
+    if (this.providers.length === 0) {
+      console.log('⚠️ No AI providers configured, using fallback suggestion');
       return this.getFallbackSuggestion(errorText, errorType, severity);
     }
 
-    console.log('🤖 AI Service: Generating suggestion using Gemini API');
+    const prompt = this.buildPrompt(errorText, errorType, severity);
 
-    try {
-      const prompt = this.buildPrompt(errorText, errorType, severity);
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + this.apiKey, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: prompt
-            }]
-          }]
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`Gemini API error: ${response.status} - ${errorText}`);
-        throw new Error(`Gemini API error: ${response.status}`);
+    for (const provider of this.providers) {
+      try {
+        console.log(`🤖 Attempting generation with ${provider.name}...`);
+        const suggestion = await provider.generateSuggestion(prompt);
+        console.log(`✅ ${provider.name} generated suggestion successfully`);
+        return suggestion;
+      } catch (error) {
+        console.warn(`⚠️ ${provider.name} failed:`, error);
+        // Continue to next provider
       }
-
-      const data = await response.json();
-      const generatedText = data.candidates[0]?.content?.parts[0]?.text || '';
-
-      console.log('✅ AI Service: Generated suggestion successfully');
-      return this.parseAIResponse(generatedText);
-    } catch (error) {
-      console.error('AI Service Error:', error);
-      console.log('🔄 AI Service: Falling back to static suggestions');
-      return this.getFallbackSuggestion(errorText, errorType, severity);
     }
+
+    console.error('❌ All AI providers failed. Falling back to static suggestions.');
+    return this.getFallbackSuggestion(errorText, errorType, severity);
   }
 
   private buildPrompt(errorText: string, errorType: string, severity: string): string {
@@ -70,33 +81,6 @@ Please provide a response in the following JSON format:
 }
 
 Focus on practical, actionable solutions that a developer can implement immediately.`;
-  }
-
-  private parseAIResponse(response: string): AISuggestion {
-    try {
-      // Try to extract JSON from the response
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        return {
-          rootCause: parsed.rootCause || "AI analysis unavailable",
-          resolutionSteps: parsed.resolutionSteps || ["Review the error context and application logs"],
-          codeExample: parsed.codeExample,
-          preventionMeasures: parsed.preventionMeasures || ["Implement proper error handling"],
-          confidence: parsed.confidence || 0.7
-        };
-      }
-    } catch (error) {
-      console.error('Error parsing AI response:', error);
-    }
-
-    // Fallback parsing
-    return {
-      rootCause: "AI analysis could not be parsed",
-      resolutionSteps: ["Review the error message and stack trace", "Check application logs for context"],
-      preventionMeasures: ["Implement proper error handling and logging"],
-      confidence: 0.5
-    };
   }
 
   private getFallbackSuggestion(errorText: string, errorType: string, severity: string): AISuggestion {
@@ -148,6 +132,21 @@ Focus on practical, actionable solutions that a developer can implement immediat
           "Monitor network latency",
           "Configure appropriate timeouts",
           "Add health checks for dependencies"
+        ],
+        confidence: 0.7
+      },
+      'Hardware': {
+        rootCause: "Physical hardware or peripheral malfunction",
+        resolutionSteps: [
+          "Check power and cable connections",
+          "Restart the peripheral device",
+          "Verify device drivers are up to date",
+          "Check for physical damage or obstructions"
+        ],
+        preventionMeasures: [
+          "Regular hardware maintenance",
+          "Secure cable management",
+          "Keep spare peripherals for critical components"
         ],
         confidence: 0.7
       }
@@ -235,3 +234,4 @@ Focus on practical, actionable solutions that a developer can implement immediat
 
 // Export singleton instance for convenience
 export const aiService = new AIService();
+
