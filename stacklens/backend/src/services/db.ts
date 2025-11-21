@@ -1,10 +1,21 @@
 import { Pool } from 'pg';
 
-export const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || 'postgresql://stacklens:password@localhost:5432/stacklens'
-});
+// Only create pool if DATABASE_URL is explicitly set (not using default PostgreSQL)
+const pool = process.env.DATABASE_URL?.startsWith('postgresql')
+    ? new Pool({
+        connectionString: process.env.DATABASE_URL
+    })
+    : null;
+
+export { pool };
 
 export const initDb = async () => {
+    // Skip database initialization if not configured for PostgreSQL
+    if (!pool) {
+        console.log('Database not configured - skipping database initialization');
+        return;
+    }
+
     const client = await pool.connect();
     try {
         await client.query(`
@@ -37,6 +48,10 @@ export const initDb = async () => {
 };
 
 export const persistLog = async (log: any) => {
+    if (!pool) {
+        console.log('Database not configured - skipping log persistence');
+        return;
+    }
     try {
         await pool.query(
             'INSERT INTO raw_logs (request_id, trace_id, service, level, timestamp) VALUES ($1, $2, $3, $4, $5)',
@@ -48,6 +63,10 @@ export const persistLog = async (log: any) => {
 };
 
 export const persistAlert = async (alert: any) => {
+    if (!pool) {
+        console.log('Database not configured - skipping alert persistence');
+        return undefined;
+    }
     try {
         const res = await pool.query(
             'INSERT INTO alerts (issue_code, severity, suggested_fix, status) VALUES ($1, $2, $3, $4) RETURNING id',

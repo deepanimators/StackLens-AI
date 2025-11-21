@@ -1,4 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables from .env file
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * StackLens AI - Playwright Test Configuration
@@ -55,7 +65,7 @@ export default defineConfig({
             name: 'api-tests',
             testMatch: /tests\/api\/.*\.test\.ts/,
             use: {
-                baseURL: 'http://localhost:4000',
+                baseURL: 'http://localhost:4001',
                 storageState: 'tests/.auth/user.json',
             },
             dependencies: ['setup'],
@@ -160,13 +170,13 @@ export default defineConfig({
     ],
 
     // Web server configuration - auto-start servers for local development
-    // Backend API server runs on port 5000, Frontend client on port 5173
+    // Backend API server runs on port 4001, Frontend client on port 5173
     // In CI, SKIP_SERVER env var is checked - servers are started manually in workflow
     webServer: process.env.SKIP_SERVER ? undefined : [
         // Backend API server
         {
-            command: 'PORT=5000 npm run dev:server',
-            url: 'http://localhost:5000/health',
+            command: 'PORT=4001 npm run dev:server',
+            url: 'http://localhost:4001/health',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,
             stdout: 'ignore',

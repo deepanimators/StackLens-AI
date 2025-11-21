@@ -24,6 +24,7 @@
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "pretest": "node scripts/generate-test-token.js",
     "test": "playwright test",
     "test:with-servers": "./test-with-servers.sh",
     "test:unit": "playwright test tests/unit",

@@ -6,13 +6,13 @@ import { test, expect } from '../fixtures';
  */
 
 test.describe('Authentication API', () => {
-    const API_BASE = process.env.VITE_API_URL || 'http://localhost:4000';
+    const API_BASE = process.env.VITE_API_URL || `http://localhost:${process.env.API_PORT || '4001'}`;
 
     test('POST /api/auth/firebase-signin - should authenticate user', async ({ request }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
         const response = await request.post(`${API_BASE}/api/auth/firebase-signin`, {
             data: {
-                token: process.env.TEST_FIREBASE_TOKEN,
+                idToken: process.env.TEST_FIREBASE_TOKEN,
                 email: 'test@stacklens.ai',
             },
         });
@@ -30,7 +30,7 @@ test.describe('Authentication API', () => {
 
         const response = await request.post(`${API_BASE}/api/auth/firebase-verify`, {
             data: {
-                token: process.env.TEST_FIREBASE_TOKEN,
+                idToken: process.env.TEST_FIREBASE_TOKEN,
             },
         });
 
@@ -81,7 +81,7 @@ test.describe('Authentication API', () => {
  */
 
 test.describe('File Upload API', () => {
-    const API_BASE = process.env.VITE_API_URL || 'http://localhost:4000';
+    const API_BASE = process.env.VITE_API_URL || `http://localhost:${process.env.API_PORT || '4001'}`;
 
     test('POST /api/upload - should upload Excel file', async ({ apiContext }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');

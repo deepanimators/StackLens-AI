@@ -6,6 +6,11 @@ export const createTicket = async (req: Request, res: Response) => {
     const { alertId } = req.params;
 
     try {
+        // Check if database is available
+        if (!pool) {
+            return res.status(503).json({ error: 'Database not configured' });
+        }
+
         // Fetch alert details
         const result = await pool.query('SELECT * FROM alerts WHERE id = $1', [alertId]);
         if (result.rows.length === 0) {

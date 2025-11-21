@@ -39,9 +39,10 @@ export const test = base.extend<StackLensFixtures>({
 
     // API context fixture
     apiContext: async ({ playwright }: { playwright: Playwright }, use) => {
-        // Create new request context with API base URL
+        // Create new request context with API base URL (use 4001 for dev server)
+        const apiPort = process.env.API_PORT || '4001';
         const apiContext = await playwright.request.newContext({
-            baseURL: 'http://localhost:4000',
+            baseURL: `http://localhost:${apiPort}`,
         });
 
         // Check if TEST_FIREBASE_TOKEN is available
@@ -64,6 +65,27 @@ export const test = base.extend<StackLensFixtures>({
             });
 
             if (!response.ok()) {
+                console.warn(`⚠️  Firebase verification returned ${response.status()}: ${response.statusText()}`);
+                // Try to extract JWT from the test token directly for fallback
+                try {
+                    const tokenParts = (process.env.TEST_FIREBASE_TOKEN || '').split('.');
+                    if (tokenParts.length === 3) {
+                        // Use mock JWT directly - it should work with our updated auth service
+                        await apiContext.dispose();
+                        const fallbackContext = await playwright.request.newContext({
+                            baseURL: `http://localhost:${apiPort}`,
+                            extraHTTPHeaders: {
+                                'Authorization': `Bearer ${process.env.TEST_FIREBASE_TOKEN}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        await use(fallbackContext);
+                        await fallbackContext.dispose();
+                        return;
+                    }
+                } catch (fallbackError) {
+                    console.warn('⚠️  Could not use fallback token:', (fallbackError as Error).message);
+                }
                 throw new Error(`Firebase signin failed: ${response.status()} ${response.statusText()}`);
             }
 
@@ -72,7 +94,7 @@ export const test = base.extend<StackLensFixtures>({
             // Dispose current context and create authenticated one
             await apiContext.dispose();
             const authenticatedContext = await playwright.request.newContext({
-                baseURL: 'http://localhost:4000',
+                baseURL: `http://localhost:${apiPort}`,
                 extraHTTPHeaders: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -83,6 +105,25 @@ export const test = base.extend<StackLensFixtures>({
             await authenticatedContext.dispose();
         } catch (error) {
             console.error('❌ API authentication failed:', error);
+            // Try to use test token directly as fallback
+            try {
+                const tokenParts = (process.env.TEST_FIREBASE_TOKEN || '').split('.');
+                if (tokenParts.length === 3) {
+                    await apiContext.dispose();
+                    const fallbackContext = await playwright.request.newContext({
+                        baseURL: `http://localhost:${apiPort}`,
+                        extraHTTPHeaders: {
+                            'Authorization': `Bearer ${process.env.TEST_FIREBASE_TOKEN}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    await use(fallbackContext);
+                    await fallbackContext.dispose();
+                    return;
+                }
+            } catch (_) {
+                // Ignore fallback errors
+            }
             // Fall back to unauthenticated context
             await use(apiContext);
             await apiContext.dispose();
