@@ -251,7 +251,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "failed",
-                  "duration": 2,
+                  "duration": 3,
                   "error": {
                     "message": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                     "stack": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -264,7 +264,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-11-21T14:33:19.198Z",
+                  "startTime": "2025-11-21T14:53:28.045Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -293,7 +293,7 @@
                   "workerIndex": 1,
                   "parallelIndex": 1,
                   "status": "failed",
-                  "duration": 7,
+                  "duration": 2,
                   "error": {
                     "message": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                     "stack": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -306,7 +306,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-11-21T14:33:19.197Z",
+                  "startTime": "2025-11-21T14:53:28.043Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1434,8 +1434,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-21T14:33:18.286Z",
-    "duration": 955.9820000000001,
+    "startTime": "2025-11-21T14:53:26.068Z",
+    "duration": 2027.022,
     "expected": 0,
     "skipped": 49,
     "unexpected": 2,

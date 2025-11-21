@@ -66,8 +66,8 @@ export class POSErrorDataCollector {
     ): SuggestionTrainingData {
         return {
             errorCode: scenario.errorCode,
-            errorDescription: scenario.description,
-            errorType: scenario.type,
+            errorDescription: scenario.errorDescription,
+            errorType: scenario.errorType,
             severity: scenario.severity,
             category: scenario.category,
             resolutionSteps: scenario.resolutionSteps,
@@ -78,7 +78,7 @@ export class POSErrorDataCollector {
             systemMetrics: scenario.systemMetrics,
             businessContext: scenario.businessContext,
             preventionMeasures: scenario.preventionMeasures,
-            context: `POS Error: ${scenario.description}`,
+            context: `POS Error: ${scenario.errorDescription}`,
         };
     }
 

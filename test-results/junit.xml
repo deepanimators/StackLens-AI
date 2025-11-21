@@ -1,6 +1,6 @@
-<testsuites id="" name="" tests="51" failures="2" skipped="49" errors="0" time="0.9559820000000001">
-<testsuite name="auth.setup.ts" timestamp="2025-11-21T14:33:18.577Z" hostname="setup" tests="2" failures="2" skipped="0" time="0.009" errors="0">
-<testcase name="authenticate user" classname="auth.setup.ts" time="0.002">
+<testsuites id="" name="" tests="51" failures="2" skipped="49" errors="0" time="2.027022">
+<testsuite name="auth.setup.ts" timestamp="2025-11-21T14:53:27.436Z" hostname="setup" tests="2" failures="2" skipped="0" time="0.005" errors="0">
+<testcase name="authenticate user" classname="auth.setup.ts" time="0.003">
 <failure message="auth.setup.ts:15:1 authenticate user" type="FAILURE">
 <![CDATA[  [setup] › auth.setup.ts:15:1 › authenticate user ─────────────────────────────────────────────────
 
@@ -16,7 +16,7 @@
 ]]>
 </failure>
 </testcase>
-<testcase name="verify auth state" classname="auth.setup.ts" time="0.007">
+<testcase name="verify auth state" classname="auth.setup.ts" time="0.002">
 <failure message="auth.setup.ts:109:1 verify auth state" type="FAILURE">
 <![CDATA[  [setup] › auth.setup.ts:109:1 › verify auth state ────────────────────────────────────────────────
 
@@ -33,7 +33,7 @@
 </failure>
 </testcase>
 </testsuite>
-<testsuite name="unit/utilities.test.ts" timestamp="2025-11-21T14:33:18.577Z" hostname="unit-tests" tests="49" failures="0" skipped="49" time="0" errors="0">
+<testsuite name="unit/utilities.test.ts" timestamp="2025-11-21T14:53:27.436Z" hostname="unit-tests" tests="49" failures="0" skipped="49" time="0" errors="0">
 <testcase name="Unit Tests - Utilities › cn() - Class Name Utility › should merge class names" classname="unit/utilities.test.ts" time="0">
 <skipped>
 </skipped>

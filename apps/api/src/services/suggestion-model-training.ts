@@ -820,6 +820,7 @@ export class SuggestionModelTrainingService {
 
       // Step 5: Calculate advanced metrics
       const advancedMetrics = this.calculateAdvancedMetrics();
+      this.metrics = advancedMetrics;
 
       // Step 6: Save to database
       await this.saveModelToDatabase();

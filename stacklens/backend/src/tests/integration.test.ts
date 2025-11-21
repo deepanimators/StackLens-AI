@@ -1,11 +1,12 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../app';
 import { connectProducer } from '../services/kafkaProducer';
 
 // Mock Kafka
-jest.mock('../services/kafkaProducer', () => ({
-    connectProducer: jest.fn(),
-    sendToKafka: jest.fn().mockResolvedValue(true)
+vi.mock('../services/kafkaProducer', () => ({
+    connectProducer: vi.fn(),
+    sendToKafka: vi.fn().mockResolvedValue(true)
 }));
 
 describe('Ingest API', () => {

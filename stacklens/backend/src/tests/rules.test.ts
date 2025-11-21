@@ -1,19 +1,20 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { analyzeLog } from '../services/analyzer';
 import { persistAlert } from '../services/db';
 import { broadcastAlert } from '../services/websocket';
 
 // Mock dependencies
-jest.mock('../services/db', () => ({
-    persistAlert: jest.fn().mockResolvedValue(1)
+vi.mock('../services/db', () => ({
+    persistAlert: vi.fn().mockResolvedValue(1)
 }));
 
-jest.mock('../services/websocket', () => ({
-    broadcastAlert: jest.fn()
+vi.mock('../services/websocket', () => ({
+    broadcastAlert: vi.fn()
 }));
 
 describe('Rule Engine', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should trigger PRICE_MISSING alert', async () => {
