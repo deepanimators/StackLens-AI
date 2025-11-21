@@ -1814,3 +1814,398 @@ Re-optimizing dependencies because vite config has changed
 7:04:23 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
 7:04:23 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
 7:04:23 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:04:27 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:04:27 PM [express] POST /api/analytics/ai-analysis 200 in 460ms :: {"success":true,"data":{"hasErr…
+7:04:28 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:28 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:04:28 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:04:28 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:32 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:04:32 PM [express] POST /api/analytics/ai-analysis 200 in 295ms :: {"success":true,"data":{"hasErr…
+7:04:33 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:04:33 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:04:33 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:04:33 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:37 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:04:37 PM [express] POST /api/analytics/ai-analysis 200 in 758ms :: {"success":true,"data":{"hasErr…
+7:04:38 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:38 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:04:38 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:04:38 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:04:42 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:04:43 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:43 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:04:43 PM [express] POST /api/analytics/ai-analysis 200 in 801ms :: {"success":true,"data":{"hasErr…
+7:04:43 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:04:43 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:04:47 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:04:47 PM [express] POST /api/analytics/ai-analysis 200 in 593ms :: {"success":true,"data":{"hasErr…
+7:04:48 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:48 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:04:48 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:04:48 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:52 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:04:52 PM [express] POST /api/analytics/ai-analysis 200 in 339ms :: {"success":true,"data":{"hasErr…
+7:04:53 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:53 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:04:53 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:04:53 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:57 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:04:58 PM [express] POST /api/analytics/ai-analysis 200 in 1096ms :: {"success":true,"data":{"hasEr…
+7:04:58 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:04:58 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:04:58 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+7:04:58 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:02 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:02 PM [express] POST /api/analytics/ai-analysis 200 in 231ms :: {"success":true,"data":{"hasErr…
+7:05:03 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:03 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:03 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:03 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:07 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:07 PM [express] POST /api/analytics/ai-analysis 200 in 279ms :: {"success":true,"data":{"hasErr…
+7:05:08 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:08 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+7:05:08 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:08 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:12 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:13 PM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+7:05:13 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:13 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:13 PM [express] POST /api/analytics/ai-analysis 200 in 1123ms :: {"success":true,"data":{"hasEr…
+7:05:13 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:17 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:17 PM [express] POST /api/analytics/ai-analysis 200 in 246ms :: {"success":true,"data":{"hasErr…
+7:05:18 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:18 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:18 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:18 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:22 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:23 PM [express] POST /api/analytics/ai-analysis 200 in 397ms :: {"success":true,"data":{"hasErr…
+7:05:23 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:23 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:23 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:23 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:27 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:27 PM [express] POST /api/analytics/ai-analysis 200 in 458ms :: {"success":true,"data":{"hasErr…
+7:05:28 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:28 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:28 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:29 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:32 PM [express] GET /api/analytics/alerts 200 in 5ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:33 PM [express] POST /api/analytics/ai-analysis 200 in 304ms :: {"success":true,"data":{"hasErr…
+7:05:33 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:33 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:33 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:34 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:37 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:37 PM [express] POST /api/analytics/ai-analysis 200 in 475ms :: {"success":true,"data":{"hasErr…
+7:05:38 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:38 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:38 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:39 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:42 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:42 PM [express] POST /api/analytics/ai-analysis 200 in 131ms :: {"success":true,"data":{"hasErr…
+7:05:43 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:43 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:43 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:44 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:47 PM [express] GET /api/analytics/alerts 200 in 11ms :: {"success":true,"data":{"alerts":[{"id…
+7:05:47 PM [express] POST /api/analytics/ai-analysis 200 in 252ms :: {"success":true,"data":{"hasErr…
+7:05:48 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:48 PM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1min…
+7:05:48 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:49 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:52 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:52 PM [express] POST /api/analytics/ai-analysis 200 in 106ms :: {"success":true,"data":{"hasErr…
+7:05:53 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:05:53 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:53 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:54 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:57 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:05:57 PM [express] POST /api/analytics/ai-analysis 200 in 163ms :: {"success":true,"data":{"hasErr…
+7:05:58 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:05:58 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:05:58 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:05:59 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:02 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:02 PM [express] POST /api/analytics/ai-analysis 200 in 123ms :: {"success":true,"data":{"hasErr…
+7:06:03 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:03 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:03 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:04 PM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+7:06:07 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:07 PM [express] POST /api/analytics/ai-analysis 200 in 265ms :: {"success":true,"data":{"hasErr…
+7:06:08 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:08 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:08 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:09 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:06:12 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:12 PM [express] POST /api/analytics/ai-analysis 200 in 127ms :: {"success":true,"data":{"hasErr…
+7:06:13 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:06:13 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:13 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:14 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:17 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:17 PM [express] POST /api/analytics/ai-analysis 200 in 332ms :: {"success":true,"data":{"hasErr…
+7:06:18 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:18 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:18 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:19 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:22 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:22 PM [express] POST /api/analytics/ai-analysis 200 in 110ms :: {"success":true,"data":{"hasErr…
+7:06:23 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:23 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:23 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:24 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:27 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:27 PM [express] POST /api/analytics/ai-analysis 200 in 135ms :: {"success":true,"data":{"hasErr…
+7:06:28 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:28 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:28 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:29 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:32 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:33 PM [express] POST /api/analytics/ai-analysis 200 in 405ms :: {"success":true,"data":{"hasErr…
+7:06:33 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:33 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:33 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:34 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:37 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:37 PM [express] POST /api/analytics/ai-analysis 200 in 116ms :: {"success":true,"data":{"hasErr…
+7:06:38 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:38 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:38 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:39 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:42 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:42 PM [express] POST /api/analytics/ai-analysis 200 in 120ms :: {"success":true,"data":{"hasErr…
+7:06:43 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:06:43 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:43 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:44 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:47 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:47 PM [express] POST /api/analytics/ai-analysis 200 in 161ms :: {"success":true,"data":{"hasErr…
+7:06:48 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:48 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:48 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:49 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:06:52 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:53 PM [express] POST /api/analytics/ai-analysis 200 in 434ms :: {"success":true,"data":{"hasErr…
+7:06:53 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:06:53 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:53 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:54 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:57 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:06:57 PM [express] POST /api/analytics/ai-analysis 200 in 135ms :: {"success":true,"data":{"hasErr…
+7:06:58 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:06:58 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:06:58 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:06:59 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:02 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:02 PM [express] POST /api/analytics/ai-analysis 200 in 120ms :: {"success":true,"data":{"hasErr…
+7:07:03 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:03 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:03 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:04 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:07 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:07 PM [express] POST /api/analytics/ai-analysis 200 in 116ms :: {"success":true,"data":{"hasErr…
+7:07:08 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:08 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:09 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:07:09 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:12 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:13 PM [express] POST /api/analytics/ai-analysis 200 in 323ms :: {"success":true,"data":{"hasErr…
+7:07:13 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:13 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:14 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:14 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:17 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:17 PM [express] POST /api/analytics/ai-analysis 200 in 128ms :: {"success":true,"data":{"hasErr…
+7:07:18 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:18 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:19 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:19 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:22 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:22 PM [express] POST /api/analytics/ai-analysis 200 in 171ms :: {"success":true,"data":{"hasErr…
+7:07:23 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:23 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:24 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:24 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:27 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:27 PM [express] POST /api/analytics/ai-analysis 200 in 110ms :: {"success":true,"data":{"hasErr…
+7:07:28 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:28 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:07:29 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:29 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:32 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:33 PM [express] POST /api/analytics/ai-analysis 200 in 326ms :: {"success":true,"data":{"hasErr…
+7:07:33 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:33 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:07:34 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:07:34 PM [express] GET /api/analytics/health-status 200 in 8ms :: {"success":true,"data":{"status"…
+7:07:37 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:37 PM [express] POST /api/analytics/ai-analysis 200 in 335ms :: {"success":true,"data":{"hasErr…
+7:07:38 PM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+7:07:38 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:39 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:39 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:42 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:43 PM [express] POST /api/analytics/ai-analysis 200 in 308ms :: {"success":true,"data":{"hasErr…
+7:07:43 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:43 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:44 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:44 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:47 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:47 PM [express] POST /api/analytics/ai-analysis 200 in 294ms :: {"success":true,"data":{"hasErr…
+7:07:48 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:48 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:49 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:49 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:52 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:52 PM [express] POST /api/analytics/ai-analysis 200 in 100ms :: {"success":true,"data":{"hasErr…
+7:07:53 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:07:53 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:07:54 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:54 PM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+7:07:57 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:07:57 PM [express] POST /api/analytics/ai-analysis 200 in 368ms :: {"success":true,"data":{"hasErr…
+7:07:58 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:07:58 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:07:59 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:07:59 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:02 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+7:08:02 PM [express] POST /api/analytics/ai-analysis 200 in 99ms :: {"success":true,"data":{"hasErro…
+7:08:03 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:08:03 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:04 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:04 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:07 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+7:08:07 PM [express] POST /api/analytics/ai-analysis 200 in 336ms :: {"success":true,"data":{"hasErr…
+7:08:08 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:08 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:08:09 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:09 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:08:12 PM [express] GET /api/version 304 in 4ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+7:08:12 PM [express] GET /api/auth/me 200 in 6ms :: {"user":{"id":1,"username":"deepanimators","emai…
+7:08:12 PM [express] GET /api/settings 200 in 7ms :: {"id":1,"userId":1,"denseMode":true,"autoRefres…
+7:08:12 PM [express] GET /api/stores 200 in 14ms :: [{"id":1,"storeNumber":"BK-14959","name":"Appleg…
+7:08:12 PM [express] GET /api/kiosks 200 in 3ms :: [{"id":24,"kioskNumber":"BK-14959-K1","storeId":1…
+7:08:14 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:14 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:17 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:08:17 PM [express] GET /api/admin/users 200 in 51ms :: [{"id":11,"username":"Rajasbc@gmail.com","e…
+Error fetching admin stats: SqliteError: no such column: "updated_at" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+7:08:17 PM [express] GET /api/admin/stats 500 in 30ms :: {"message":"Failed to fetch admin stats"}
+Error fetching roles: SqliteError: no such column: "updated_at" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+7:08:17 PM [express] GET /api/admin/roles 500 in 14ms :: {"message":"Failed to fetch roles"}
+Error fetching training modules: SqliteError: no such column: "difficulty" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+7:08:17 PM [express] GET /api/admin/training-modules 500 in 3ms :: {"message":"Failed to fetch train…
+Error fetching models: SqliteError: no such column: "training_data" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+7:08:17 PM [express] GET /api/admin/models 500 in 3ms :: {"message":"Failed to fetch models"}
+7:08:17 PM [express] GET /api/version 304 in 1ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+7:08:17 PM [express] POST /api/analytics/ai-analysis 200 in 249ms :: {"success":true,"data":{"hasErr…
+7:08:19 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:19 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:08:24 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:24 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:27 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:08:27 PM [express] POST /api/analytics/ai-analysis 200 in 403ms :: {"success":true,"data":{"hasErr…
+7:08:29 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:29 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:34 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+7:08:34 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:08:37 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:08:37 PM [express] POST /api/analytics/ai-analysis 200 in 164ms :: {"success":true,"data":{"hasErr…
+7:08:39 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:39 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:44 PM [express] GET /api/analytics/metrics 200 in 11ms :: {"success":true,"data":{"window":"1mi…
+7:08:44 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:08:47 PM [express] GET /api/analytics/alerts 200 in 10ms :: {"success":true,"data":{"alerts":[{"id…
+7:08:47 PM [express] POST /api/analytics/ai-analysis 200 in 148ms :: {"success":true,"data":{"hasErr…
+7:08:49 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:08:49 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:08:54 PM [express] GET /api/analytics/metrics 200 in 4ms :: {"success":true,"data":{"window":"1min…
+7:08:54 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:08:57 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+7:08:57 PM [express] POST /api/analytics/ai-analysis 200 in 138ms :: {"success":true,"data":{"hasErr…
+7:08:59 PM [express] GET /api/analytics/metrics 200 in 3ms :: {"success":true,"data":{"window":"1min…
+7:08:59 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:09:04 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:09:04 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:09:07 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+7:09:08 PM [express] POST /api/analytics/ai-analysis 200 in 274ms :: {"success":true,"data":{"hasErr…
+7:09:09 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:09:09 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:09:14 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:09:14 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:09:17 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:09:17 PM [express] POST /api/analytics/ai-analysis 200 in 117ms :: {"success":true,"data":{"hasErr…
+7:09:19 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:09:19 PM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+7:09:24 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+7:09:24 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:09:27 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+7:09:27 PM [express] POST /api/analytics/ai-analysis 200 in 145ms :: {"success":true,"data":{"hasErr…
+7:09:29 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+7:09:29 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+7:09:34 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:09:34 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:09:37 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+7:09:38 PM [express] POST /api/analytics/ai-analysis 200 in 343ms :: {"success":true,"data":{"hasErr…
+7:09:39 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:09:39 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:09:44 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:09:44 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:09:47 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+7:09:48 PM [express] POST /api/analytics/ai-analysis 200 in 266ms :: {"success":true,"data":{"hasErr…
+7:09:49 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+7:09:49 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+7:09:54 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+7:09:55 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+🔧 Checking for stuck processing jobs...
+🔧 Checking for stuck processing jobs...
+🔧 Checking for stuck processing jobs...
+🔧 Checking for stuck processing jobs...
+🔧 Checking for stuck processing jobs...
+8:03:14 PM [vite] page reload playwright-report/index.html
+8:03:19 PM [vite] page reload playwright-report/index.html
+🔧 Checking for stuck processing jobs...

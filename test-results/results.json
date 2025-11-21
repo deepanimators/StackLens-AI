@@ -1,0 +1,1444 @@
+{
+  "config": {
+    "configFile": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/playwright.config.ts",
+    "rootDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 5
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/junit.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "setup",
+        "name": "setup",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "api-tests",
+        "name": "api-tests",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/api\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "unit-tests",
+        "name": "unit-tests",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/unit\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "integration-tests",
+        "name": "integration-tests",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/integration\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "e2e-chromium",
+        "name": "e2e-chromium",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "e2e-firefox",
+        "name": "e2e-firefox",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "e2e-webkit",
+        "name": "e2e-webkit",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/.*\\.mobile\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/.*\\.mobile\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "accessibility",
+        "name": "accessibility",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/accessibility\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "performance",
+        "name": "performance",
+        "testDir": "/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/performance\\/.*\\.test\\.ts/"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "auth.setup.ts",
+      "file": "auth.setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "authenticate user",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 2,
+                  "error": {
+                    "message": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-21T14:33:19.198Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-75a0657db6abc6631f47",
+          "file": "auth.setup.ts",
+          "line": 15,
+          "column": 1
+        },
+        {
+          "title": "verify auth state",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 7,
+                  "error": {
+                    "message": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-21T14:33:19.197Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-1b9bad3e890e28ef7205",
+          "file": "auth.setup.ts",
+          "line": 109,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "unit/utilities.test.ts",
+      "file": "unit/utilities.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Unit Tests - Utilities",
+          "file": "unit/utilities.test.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "cn() - Class Name Utility",
+              "file": "unit/utilities.test.ts",
+              "line": 5,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should merge class names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "unit-tests",
+                      "projectName": "unit-tests",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "98ca3563efbcced499b4-d2364adc91d1bc657a34",
+                  "file": "unit/utilities.test.ts",
+                  "line": 6,
+                  "column": 9
+                },
+                {
+                  "title": "should handle conditional classes",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "unit-tests",
+                      "projectName": "unit-tests",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "98ca3563efbcced499b4-3fb710806b163c4ab796",
+                  "file": "unit/utilities.test.ts",
+                  "line": 12,
+                  "column": 9
+                },
+                {
+                  "title": "should handle undefined and null values",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "unit-tests",
+                      "projectName": "unit-tests",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "98ca3563efbcced499b4-808d155c3d78500d3ebe",
+                  "file": "unit/utilities.test.ts",
+                  "line": 19,
+                  "column": 9
+                },
+                {
+                  "title": "should merge tailwind classes correctly",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "unit-tests",
+                      "projectName": "unit-tests",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "98ca3563efbcced499b4-e2458050eb5c7543b19e",
+                  "file": "unit/utilities.test.ts",
+                  "line": 25,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "buildApiUrl() - API URL Builder",
+              "file": "unit/utilities.test.ts",
+              "line": 32,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should build API URL with path",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "unit-tests",
+                      "projectName": "unit-tests",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "98ca3563efbcced499b4-f38ed53de1e7bdde3361",
+                  "file": "unit/utilities.test.ts",
+                  "line": 33,
+                  "column": 9
+                },
+                {
+                  "title": "should handle paths without leading slash",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "unit-tests",
+                      "projectName": "unit-tests",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "98ca3563efbcced499b4-7ffb0d3eb97b144bf2d1",
+                  "file": "unit/utilities.test.ts",
+                  "line": 44,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Error Handling",
+          "file": "unit/utilities.test.ts",
+          "line": 57,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should validate error log structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-1cc88fefaafb7648de70",
+              "file": "unit/utilities.test.ts",
+              "line": 58,
+              "column": 5
+            },
+            {
+              "title": "should validate severity levels",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-8a80b5a178cf5c6a7256",
+              "file": "unit/utilities.test.ts",
+              "line": 75,
+              "column": 5
+            },
+            {
+              "title": "should validate error types",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-c9f91a17c7c37747acd2",
+              "file": "unit/utilities.test.ts",
+              "line": 83,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Data Validation",
+          "file": "unit/utilities.test.ts",
+          "line": 92,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should validate file upload constraints",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-a38cdfc8325c600dc594",
+              "file": "unit/utilities.test.ts",
+              "line": 93,
+              "column": 5
+            },
+            {
+              "title": "should validate store/kiosk number format",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-546f5817792252012266",
+              "file": "unit/utilities.test.ts",
+              "line": 103,
+              "column": 5
+            },
+            {
+              "title": "should validate pagination parameters",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-15d4ca2cfb3cf68c64f6",
+              "file": "unit/utilities.test.ts",
+              "line": 112,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Date/Time Utilities",
+          "file": "unit/utilities.test.ts",
+          "line": 122,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should format dates correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-044002bc1658d95c6b26",
+              "file": "unit/utilities.test.ts",
+              "line": 123,
+              "column": 5
+            },
+            {
+              "title": "should calculate time differences",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-e94cb2fd43e75e6c1339",
+              "file": "unit/utilities.test.ts",
+              "line": 131,
+              "column": 5
+            },
+            {
+              "title": "should validate timestamp ranges",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-c7a6e8a81afafeefe2e2",
+              "file": "unit/utilities.test.ts",
+              "line": 141,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Filter Logic",
+          "file": "unit/utilities.test.ts",
+          "line": 151,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should filter by severity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-f1d1dce78e63726142db",
+              "file": "unit/utilities.test.ts",
+              "line": 152,
+              "column": 5
+            },
+            {
+              "title": "should filter by multiple criteria",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-8fb7ee669b8da272463a",
+              "file": "unit/utilities.test.ts",
+              "line": 164,
+              "column": 5
+            },
+            {
+              "title": "should handle empty filter results",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-3726fc440f2c0797b224",
+              "file": "unit/utilities.test.ts",
+              "line": 178,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Search Functionality",
+          "file": "unit/utilities.test.ts",
+          "line": 188,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should search by message content",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-077db0c561f1cfc08d67",
+              "file": "unit/utilities.test.ts",
+              "line": 189,
+              "column": 5
+            },
+            {
+              "title": "should be case-insensitive",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-11ff6b8dbac62f6aeb59",
+              "file": "unit/utilities.test.ts",
+              "line": 204,
+              "column": 5
+            },
+            {
+              "title": "should handle special characters in search",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-481e6d6865c87d1fcf09",
+              "file": "unit/utilities.test.ts",
+              "line": 217,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Sorting Logic",
+          "file": "unit/utilities.test.ts",
+          "line": 229,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should sort by timestamp descending",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-a70a6fd638699bd6db5b",
+              "file": "unit/utilities.test.ts",
+              "line": 230,
+              "column": 5
+            },
+            {
+              "title": "should sort by severity priority",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-bbad336dd47590b5bbf9",
+              "file": "unit/utilities.test.ts",
+              "line": 245,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Export Functionality",
+          "file": "unit/utilities.test.ts",
+          "line": 263,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should format data for CSV export",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-a02684fc58a7fe05064b",
+              "file": "unit/utilities.test.ts",
+              "line": 264,
+              "column": 5
+            },
+            {
+              "title": "should escape special characters for CSV",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-fe127203a2f9f2bf0e16",
+              "file": "unit/utilities.test.ts",
+              "line": 278,
+              "column": 5
+            },
+            {
+              "title": "should handle null values in CSV export",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-048fb9e33fee705786ca",
+              "file": "unit/utilities.test.ts",
+              "line": 285,
+              "column": 5
+            },
+            {
+              "title": "should format timestamps for export",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-8e970103f6fa2f79c454",
+              "file": "unit/utilities.test.ts",
+              "line": 296,
+              "column": 5
+            },
+            {
+              "title": "should handle large datasets for export",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-1730f06a2a191075ec6c",
+              "file": "unit/utilities.test.ts",
+              "line": 304,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - URL and Path Utilities",
+          "file": "unit/utilities.test.ts",
+          "line": 317,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should validate URL format",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-71b83db0f5fa755fc8fd",
+              "file": "unit/utilities.test.ts",
+              "line": 318,
+              "column": 5
+            },
+            {
+              "title": "should extract query parameters from URL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-168279c6dc4c32835004",
+              "file": "unit/utilities.test.ts",
+              "line": 330,
+              "column": 5
+            },
+            {
+              "title": "should build URLs with query parameters",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-113348991b7f958ed707",
+              "file": "unit/utilities.test.ts",
+              "line": 339,
+              "column": 5
+            },
+            {
+              "title": "should handle URL encoding",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-e255575fc7e935fea25e",
+              "file": "unit/utilities.test.ts",
+              "line": 350,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Math and Statistics",
+          "file": "unit/utilities.test.ts",
+          "line": 360,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should calculate average severity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-ef2b8ed1d12dd83e9e79",
+              "file": "unit/utilities.test.ts",
+              "line": 361,
+              "column": 5
+            },
+            {
+              "title": "should calculate percentage distribution",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-73b5f3c1153614332e5a",
+              "file": "unit/utilities.test.ts",
+              "line": 376,
+              "column": 5
+            },
+            {
+              "title": "should calculate error rate trends",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-8088eef8b05d4bb50b76",
+              "file": "unit/utilities.test.ts",
+              "line": 391,
+              "column": 5
+            },
+            {
+              "title": "should identify outliers",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-54c6b586e80095cf9799",
+              "file": "unit/utilities.test.ts",
+              "line": 403,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - String Utilities",
+          "file": "unit/utilities.test.ts",
+          "line": 415,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should truncate long messages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-f0f7162beeb794a851b9",
+              "file": "unit/utilities.test.ts",
+              "line": 416,
+              "column": 5
+            },
+            {
+              "title": "should sanitize HTML in error messages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-598f444eac896f73f9c0",
+              "file": "unit/utilities.test.ts",
+              "line": 424,
+              "column": 5
+            },
+            {
+              "title": "should format error codes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-8b5a3dbd6838e5daf765",
+              "file": "unit/utilities.test.ts",
+              "line": 433,
+              "column": 5
+            },
+            {
+              "title": "should convert camelCase to readable format",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-61b9be4ba2f8807f0f4b",
+              "file": "unit/utilities.test.ts",
+              "line": 443,
+              "column": 5
+            },
+            {
+              "title": "should highlight search terms",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-6020a6f35fc1bf189e24",
+              "file": "unit/utilities.test.ts",
+              "line": 452,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Array Utilities",
+          "file": "unit/utilities.test.ts",
+          "line": 464,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should remove duplicates from array",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-ff8ed409773675d52e7a",
+              "file": "unit/utilities.test.ts",
+              "line": 465,
+              "column": 5
+            },
+            {
+              "title": "should group errors by severity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-5cc3b839195af9316a25",
+              "file": "unit/utilities.test.ts",
+              "line": 479,
+              "column": 5
+            },
+            {
+              "title": "should chunk array into batches",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-2ad152623db632faa1d4",
+              "file": "unit/utilities.test.ts",
+              "line": 496,
+              "column": 5
+            },
+            {
+              "title": "should find intersection of arrays",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-706b85ad6458260d6591",
+              "file": "unit/utilities.test.ts",
+              "line": 510,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Unit Tests - Validation Rules",
+          "file": "unit/utilities.test.ts",
+          "line": 519,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should validate email format",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-bd358f5e91041727601d",
+              "file": "unit/utilities.test.ts",
+              "line": 520,
+              "column": 5
+            },
+            {
+              "title": "should validate phone numbers",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-0d4980ce6d6248a334e6",
+              "file": "unit/utilities.test.ts",
+              "line": 529,
+              "column": 5
+            },
+            {
+              "title": "should validate IP addresses",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-9edd42af98e785514eb7",
+              "file": "unit/utilities.test.ts",
+              "line": 537,
+              "column": 5
+            },
+            {
+              "title": "should validate numeric ranges",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "unit-tests",
+                  "projectName": "unit-tests",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98ca3563efbcced499b4-bc18f908c861e932631d",
+              "file": "unit/utilities.test.ts",
+              "line": 545,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-11-21T14:33:18.286Z",
+    "duration": 955.9820000000001,
+    "expected": 0,
+    "skipped": 49,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

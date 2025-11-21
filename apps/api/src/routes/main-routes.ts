@@ -55,6 +55,8 @@ import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyze
 import { createRAGRoutes } from "./rag-routes.js";
 import posRouter from "./posIntegration.js";
 import analyticsRouter from "./analyticsRoutes.js";
+import trainingRoutes from "./training-routes.js";
+import abTestingRoutes from "./ab-testing-routes.js";
 import crypto from "crypto";
 
 const upload = multer({
@@ -8382,6 +8384,16 @@ Format as JSON with the following structure:
   // POS INTEGRATION ROUTES
   // ============================================================================
   app.use("/api/pos-integration", posRouter);
+
+  // ============================================================================
+  // ML MODEL TRAINING ROUTES
+  // ============================================================================
+  app.use(trainingRoutes);
+
+  // ============================================================================
+  // A/B TESTING ROUTES
+  // ============================================================================
+  app.use(abTestingRoutes);
 
   // ============================================================================
   // JIRA INTEGRATION & AUTOMATION ROUTES

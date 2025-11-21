@@ -24,6 +24,7 @@ import Reports from "@/pages/reports";
 import Settings from "@/pages/settings";
 import Admin from "@/pages/admin";
 import StoreKioskManagement from "@/pages/store-kiosk-management";
+import POSScenariosPage from "@/pages/pos-scenarios";
 import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
 
@@ -80,6 +81,7 @@ function Router() {
       <Route path="/ai-analysis" component={AIAnalysis} />
       <Route path="/enhanced-ai-analysis" component={EnhancedAIAnalysis} />
       <Route path="/reports" component={Reports} />
+      <Route path="/pos-scenarios" component={POSScenariosPage} />
       <Route path="/settings" component={Settings} />
       <Route path="/admin" component={Admin} />
       <Route path="/store-kiosk-management" component={StoreKioskManagement} />

@@ -1,0 +1,234 @@
+<testsuites id="" name="" tests="51" failures="2" skipped="49" errors="0" time="0.9559820000000001">
+<testsuite name="auth.setup.ts" timestamp="2025-11-21T14:33:18.577Z" hostname="setup" tests="2" failures="2" skipped="0" time="0.009" errors="0">
+<testcase name="authenticate user" classname="auth.setup.ts" time="0.002">
+<failure message="auth.setup.ts:15:1 authenticate user" type="FAILURE">
+<![CDATA[  [setup] › auth.setup.ts:15:1 › authenticate user ─────────────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="verify auth state" classname="auth.setup.ts" time="0.007">
+<failure message="auth.setup.ts:109:1 verify auth state" type="FAILURE">
+<![CDATA[  [setup] › auth.setup.ts:109:1 › verify auth state ────────────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/deepak/Library/Caches/ms-playwright/chromium_headless_shell-1194/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="unit/utilities.test.ts" timestamp="2025-11-21T14:33:18.577Z" hostname="unit-tests" tests="49" failures="0" skipped="49" time="0" errors="0">
+<testcase name="Unit Tests - Utilities › cn() - Class Name Utility › should merge class names" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Utilities › cn() - Class Name Utility › should handle conditional classes" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Utilities › cn() - Class Name Utility › should handle undefined and null values" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Utilities › cn() - Class Name Utility › should merge tailwind classes correctly" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Utilities › buildApiUrl() - API URL Builder › should build API URL with path" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Utilities › buildApiUrl() - API URL Builder › should handle paths without leading slash" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Error Handling › should validate error log structure" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Error Handling › should validate severity levels" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Error Handling › should validate error types" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Data Validation › should validate file upload constraints" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Data Validation › should validate store/kiosk number format" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Data Validation › should validate pagination parameters" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Date/Time Utilities › should format dates correctly" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Date/Time Utilities › should calculate time differences" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Date/Time Utilities › should validate timestamp ranges" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Filter Logic › should filter by severity" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Filter Logic › should filter by multiple criteria" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Filter Logic › should handle empty filter results" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Search Functionality › should search by message content" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Search Functionality › should be case-insensitive" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Search Functionality › should handle special characters in search" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Sorting Logic › should sort by timestamp descending" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Sorting Logic › should sort by severity priority" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Export Functionality › should format data for CSV export" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Export Functionality › should escape special characters for CSV" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Export Functionality › should handle null values in CSV export" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Export Functionality › should format timestamps for export" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Export Functionality › should handle large datasets for export" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - URL and Path Utilities › should validate URL format" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - URL and Path Utilities › should extract query parameters from URL" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - URL and Path Utilities › should build URLs with query parameters" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - URL and Path Utilities › should handle URL encoding" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Math and Statistics › should calculate average severity" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Math and Statistics › should calculate percentage distribution" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Math and Statistics › should calculate error rate trends" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Math and Statistics › should identify outliers" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - String Utilities › should truncate long messages" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - String Utilities › should sanitize HTML in error messages" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - String Utilities › should format error codes" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - String Utilities › should convert camelCase to readable format" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - String Utilities › should highlight search terms" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Array Utilities › should remove duplicates from array" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Array Utilities › should group errors by severity" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Array Utilities › should chunk array into batches" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Array Utilities › should find intersection of arrays" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Validation Rules › should validate email format" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Validation Rules › should validate phone numbers" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Validation Rules › should validate IP addresses" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - Validation Rules › should validate numeric ranges" classname="unit/utilities.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

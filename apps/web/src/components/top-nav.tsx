@@ -53,16 +53,16 @@ interface TopNavProps {
 const primaryNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Real-time", href: "/realtime", icon: Activity },
-  { name: "Analysis History", href: "/analysis-history", icon: History },
-  
+  { name: "Store Kiosk", href: "/store-kiosk-management", icon: History },
 ];
 
 // Secondary navigation items (shown in hamburger menu)
 const secondaryNavigation = [
-  { name: "AI Analysis", href: "/ai-analysis", icon: Brain },
   { name: "All Errors", href: "/all-errors", icon: List },
+  { name: "AI Analysis", href: "/ai-analysis", icon: Brain },
   { name: "Reports", href: "/reports", icon: FileText },
   { name: "Settings", href: "/settings", icon: Settings },
+  { name: "POS Scenarios", href: "/pos-scenarios", icon: FileText },
 ];
 
 export default function TopNav({ className }: TopNavProps) {
