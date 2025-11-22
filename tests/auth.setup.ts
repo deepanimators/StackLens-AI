@@ -33,35 +33,46 @@ setup('authenticate user', async ({ page, context }) => {
         const testEmail = process.env.TEST_USER_EMAIL || 'test@stacklens.ai';
 
         if (testToken) {
-            // If we have a test token, inject it directly
+            // If we have a test token, we need to exchange it for a session token
             console.log('Using TEST_FIREBASE_TOKEN for authentication...');
 
             try {
-                await page.evaluate((token) => {
-                    localStorage.setItem('firebase_token', token);
-                    localStorage.setItem('user_authenticated', 'true');
-                    localStorage.setItem('test_mode', 'true');
-                }, testToken);
+                // Exchange Firebase token for session token
+                const response = await page.request.post('/api/auth/firebase-signin', {
+                    data: {
+                        idToken: testToken
+                    }
+                });
 
-                // Reload to apply authentication
-                await page.reload({ waitUntil: 'networkidle' });
+                if (response.ok()) {
+                    const { token, user } = await response.json();
+                    console.log('✓ Token exchange successful');
 
-                // Try to verify authentication - but don't fail if elements aren't found
-                // (frontend might still be loading or token might be expired)
-                const authVerified = await page.locator('[data-testid="user-profile"]')
-                    .or(page.locator('text=Dashboard'))
-                    .isVisible({ timeout: 5000 })
-                    .catch(() => false);
+                    await page.evaluate(({ token, user }) => {
+                        localStorage.setItem('auth_token', token);
+                        localStorage.setItem('auth_user', JSON.stringify(user));
+                        localStorage.setItem('user_authenticated', 'true');
+                    }, { token, user });
 
-                if (authVerified) {
-                    console.log('✓ Authentication successful with token');
+                    // Reload to apply authentication
+                    await page.reload({ waitUntil: 'networkidle' });
+
+                    // Verify authentication
+                    const authVerified = await page.locator('[data-testid="user-profile"]')
+                        .or(page.locator('text=Dashboard'))
+                        .isVisible({ timeout: 5000 })
+                        .catch(() => false);
+
+                    if (authVerified) {
+                        console.log('✓ Authentication successful with session token');
+                    } else {
+                        console.log('⚠️  Token injected but UI elements not found');
+                    }
                 } else {
-                    console.log('⚠️  Token injected but UI elements not found (frontend may not be ready or token invalid)');
-                    // Still consider it a partial success - at least token is in storage
+                    console.error('❌ Token exchange failed:', await response.text());
                 }
             } catch (error) {
                 console.log('⚠️  Failed to verify token authentication:', error);
-                // Don't throw - let tests continue with whatever state we have
             }
         } else {
             // Fallback: Try to find and click sign-in button

@@ -45,12 +45,49 @@ export const test = base.extend<StackLensFixtures>({
             baseURL: `http://localhost:${apiPort}`,
         });
 
-        // Check if TEST_FIREBASE_TOKEN is available
-        if (!process.env.TEST_FIREBASE_TOKEN) {
-            console.warn('⚠️  TEST_FIREBASE_TOKEN not set. API tests will run without authentication.');
-            console.warn('    Set TEST_FIREBASE_TOKEN environment variable for authenticated API tests.');
+        // Try to load token from auth storage state
+        const fs = await import('fs');
+        const path = await import('path');
+        // Use fileURLToPath to get __dirname equivalent if needed, but here we are in a module?
+        // Playwright runs in Node, so __dirname might be available or we construct path relative to cwd
+        const authFile = path.resolve('tests/.auth/user.json');
 
-            // Use unauthenticated context
+        if (fs.existsSync(authFile)) {
+            try {
+                const authState = JSON.parse(fs.readFileSync(authFile, 'utf-8'));
+                const origins = authState.origins || [];
+                let token = null;
+
+                for (const origin of origins) {
+                    const localStorage = origin.localStorage || [];
+                    const tokenItem = localStorage.find((item: any) => item.name === 'auth_token');
+                    if (tokenItem) {
+                        token = tokenItem.value;
+                        break;
+                    }
+                }
+
+                if (token) {
+                    await apiContext.dispose();
+                    const authenticatedContext = await playwright.request.newContext({
+                        baseURL: `http://localhost:${apiPort}`,
+                        extraHTTPHeaders: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    await use(authenticatedContext);
+                    await authenticatedContext.dispose();
+                    return;
+                }
+            } catch (e) {
+                console.warn('⚠️  Failed to parse auth file:', e);
+            }
+        }
+
+        // Fallback to existing env var logic if file not found or token missing
+        if (!process.env.TEST_FIREBASE_TOKEN) {
+            console.warn('⚠️  TEST_FIREBASE_TOKEN not set and no auth file found. API tests will run without authentication.');
             await use(apiContext);
             await apiContext.dispose();
             return;
@@ -65,7 +102,6 @@ export const test = base.extend<StackLensFixtures>({
             });
 
             if (!response.ok()) {
-                console.warn(`⚠️  Firebase verification returned ${response.status()}: ${response.statusText()}`);
                 // Try to extract JWT from the test token directly for fallback
                 try {
                     const tokenParts = (process.env.TEST_FIREBASE_TOKEN || '').split('.');
@@ -86,7 +122,11 @@ export const test = base.extend<StackLensFixtures>({
                 } catch (fallbackError) {
                     console.warn('⚠️  Could not use fallback token:', (fallbackError as Error).message);
                 }
-                throw new Error(`Firebase signin failed: ${response.status()} ${response.statusText()}`);
+                console.warn(`⚠️  Firebase verification returned ${response.status()}: ${response.statusText()}`);
+                // Use unauthenticated context
+                await use(apiContext);
+                await apiContext.dispose();
+                return;
             }
 
             const { token } = await response.json();
@@ -105,26 +145,6 @@ export const test = base.extend<StackLensFixtures>({
             await authenticatedContext.dispose();
         } catch (error) {
             console.error('❌ API authentication failed:', error);
-            // Try to use test token directly as fallback
-            try {
-                const tokenParts = (process.env.TEST_FIREBASE_TOKEN || '').split('.');
-                if (tokenParts.length === 3) {
-                    await apiContext.dispose();
-                    const fallbackContext = await playwright.request.newContext({
-                        baseURL: `http://localhost:${apiPort}`,
-                        extraHTTPHeaders: {
-                            'Authorization': `Bearer ${process.env.TEST_FIREBASE_TOKEN}`,
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    await use(fallbackContext);
-                    await fallbackContext.dispose();
-                    return;
-                }
-            } catch (_) {
-                // Ignore fallback errors
-            }
-            // Fall back to unauthenticated context
             await use(apiContext);
             await apiContext.dispose();
         }

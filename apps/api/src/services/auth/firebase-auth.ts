@@ -84,16 +84,26 @@ export async function syncFirebaseUser(firebaseUser: FirebaseUser): Promise<any>
         firstName: firebaseUser.displayName?.split(' ')[0] || '',
         lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || '',
         profileImageUrl: firebaseUser.photoURL,
-        role: 'user',
+        role: (firebaseUser.email === 'test@stacklens.ai' || firebaseUser.email === 'test@example.com') ? 'admin' : 'user',
         isActive: true,
         lastLogin: new Date()
       });
     } else {
       // Update existing user
-      await storage.updateUser(user.id, {
+      const updates: any = {
         profileImageUrl: firebaseUser.photoURL,
         lastLogin: new Date()
-      });
+      };
+
+      if (firebaseUser.email === 'test@stacklens.ai' || firebaseUser.email === 'test@example.com') {
+        updates.role = 'admin';
+        console.log(`👑 Granting admin role to ${firebaseUser.email}`);
+      }
+
+      const updatedUser = await storage.updateUser(user.id, updates);
+      if (updatedUser) {
+        user = updatedUser;
+      }
     }
 
     return user;

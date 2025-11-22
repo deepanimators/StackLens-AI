@@ -184,7 +184,7 @@ export default defineConfig({
         },
         // Frontend client server
         {
-            command: 'npm run dev:client',
+            command: 'VITE_API_URL=http://localhost:4001 npm run dev:client',
             url: 'http://localhost:5173',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,

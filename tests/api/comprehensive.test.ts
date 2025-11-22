@@ -6,8 +6,8 @@ test.describe('API Tests - Error Management Endpoints', () => {
             const response = await apiContext.get('/api/errors');
 
             expect(response.ok()).toBeTruthy();
-            const errors = await response.json();
-            expect(Array.isArray(errors)).toBeTruthy();
+            const data = await response.json();
+            expect(Array.isArray(data.errors)).toBeTruthy();
         });
 
         test('should support pagination', async ({ apiContext }) => {
@@ -26,8 +26,9 @@ test.describe('API Tests - Error Management Endpoints', () => {
             const response = await apiContext.get('/api/errors?severity=critical');
 
             expect(response.ok()).toBeTruthy();
-            const errors = await response.json();
-            errors.forEach((error: any) => {
+            const data = await response.json();
+            expect(Array.isArray(data.errors)).toBeTruthy();
+            data.errors.forEach((error: any) => {
                 expect(error.severity).toBe('critical');
             });
         });
@@ -36,8 +37,9 @@ test.describe('API Tests - Error Management Endpoints', () => {
             const response = await apiContext.get('/api/errors?errorType=Runtime');
 
             expect(response.ok()).toBeTruthy();
-            const errors = await response.json();
-            errors.forEach((error: any) => {
+            const data = await response.json();
+            expect(Array.isArray(data.errors)).toBeTruthy();
+            data.errors.forEach((error: any) => {
                 expect(error.errorType).toBe('Runtime');
             });
         });
@@ -57,8 +59,9 @@ test.describe('API Tests - Error Management Endpoints', () => {
             const response = await apiContext.get('/api/errors?search=database');
 
             expect(response.ok()).toBeTruthy();
-            const errors = await response.json();
-            errors.forEach((error: any) => {
+            const data = await response.json();
+            expect(Array.isArray(data.errors)).toBeTruthy();
+            data.errors.forEach((error: any) => {
                 expect(error.message.toLowerCase()).toContain('database');
             });
         });
@@ -67,8 +70,9 @@ test.describe('API Tests - Error Management Endpoints', () => {
             const response = await apiContext.get('/api/errors?resolved=false');
 
             expect(response.ok()).toBeTruthy();
-            const errors = await response.json();
-            errors.forEach((error: any) => {
+            const data = await response.json();
+            expect(Array.isArray(data.errors)).toBeTruthy();
+            data.errors.forEach((error: any) => {
                 expect(error.resolved).toBe(false);
             });
         });
@@ -77,8 +81,9 @@ test.describe('API Tests - Error Management Endpoints', () => {
             const response = await apiContext.get('/api/errors?store=STORE-0001');
 
             expect(response.ok()).toBeTruthy();
-            const errors = await response.json();
-            errors.forEach((error: any) => {
+            const data = await response.json();
+            expect(Array.isArray(data.errors)).toBeTruthy();
+            data.errors.forEach((error: any) => {
                 expect(error.store).toBe('STORE-0001');
             });
         });
@@ -824,25 +829,39 @@ test.describe('API Tests - Authentication & Authorization', () => {
 
     test.describe('GET /api/admin/users', () => {
         test('should require admin role', async ({ apiContext }) => {
-            const response = await apiContext.get('/api/admin/users');
+            const response = await apiContext.get('/api/admin/users', {
+                headers: { Authorization: '' }
+            });
             expect(response.status()).toBe(401);
         });
 
         test('should allow access with admin token', async ({ apiContext }) => {
             // Login as admin
-            const loginResponse = await apiContext.post('/api/auth/firebase', {
-                data: { idToken: 'admin-token', role: 'admin' }
+            const mockPayload = Buffer.from(JSON.stringify({
+                email: 'test@stacklens.ai',
+                sub: 'admin-user',
+                name: 'Admin User',
+                picture: 'https://example.com/avatar.jpg'
+            })).toString('base64');
+            const mockToken = `header.${mockPayload}.signature`;
+
+            const loginResponse = await apiContext.post('/api/auth/firebase-signin', {
+                data: { idToken: mockToken }
             });
 
             const auth = await loginResponse.json();
+            console.log('Auth response:', auth);
 
             // Access admin endpoint
             const response = await apiContext.get('/api/admin/users', {
                 headers: {
-                    'Authorization': `Bearer ${auth.sessionToken}`
+                    'Authorization': `Bearer ${auth.token}`
                 }
             });
 
+            if (!response.ok()) {
+                console.log('Admin access failed:', response.status(), await response.text());
+            }
             expect(response.ok()).toBeTruthy();
         });
     });
@@ -1134,7 +1153,7 @@ test.describe('API Tests - Concurrent Operations', () => {
 
         const responses = await Promise.all(createRequests);
 
-        const allSuccessful = responses.every(r => r.ok());
+        const allSuccessful = responses.every((r: any) => r.ok());
         expect(allSuccessful).toBeTruthy();
     });
 
@@ -1152,7 +1171,7 @@ test.describe('API Tests - Concurrent Operations', () => {
 
         // Concurrent updates
         const updates = Array.from({ length: 5 }, (_, i) =>
-            request.put(`/api/errors/${created.id}`, {
+            apiContext.put(`/api/errors/${created.id}`, {
                 data: {
                     message: `Updated ${i}`,
                     severity: 'high',

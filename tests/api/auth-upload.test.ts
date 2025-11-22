@@ -10,7 +10,7 @@ test.describe('Authentication API', () => {
 
     test('POST /api/auth/firebase-signin - should authenticate user', async ({ request }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
-        const response = await request.post(`${API_BASE}/api/auth/firebase-signin`, {
+        const response = await request.post('/api/auth/firebase-signin', {
             data: {
                 idToken: process.env.TEST_FIREBASE_TOKEN,
                 email: 'test@stacklens.ai',
@@ -28,7 +28,7 @@ test.describe('Authentication API', () => {
     test('POST /api/auth/firebase-verify - should verify token', async ({ request }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await request.post(`${API_BASE}/api/auth/firebase-verify`, {
+        const response = await request.post('/api/auth/firebase-verify', {
             data: {
                 idToken: process.env.TEST_FIREBASE_TOKEN,
             },
@@ -44,7 +44,7 @@ test.describe('Authentication API', () => {
     test('GET /api/auth/me - should return current user', async ({ apiContext }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.get(`${API_BASE}/api/auth/me`);
+        const response = await apiContext.get('/api/auth/me');
 
         expect(response.status()).toBe(200);
 
@@ -57,7 +57,7 @@ test.describe('Authentication API', () => {
     test('POST /api/auth/firebase-signin - should reject invalid token', async ({ request }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await request.post(`${API_BASE}/api/auth/firebase-signin`, {
+        const response = await request.post('/api/auth/firebase-signin', {
             data: {
                 token: 'invalid-token',
             },
@@ -70,7 +70,7 @@ test.describe('Authentication API', () => {
     });
 
     test('GET /api/auth/me - should reject unauthenticated request', async ({ request }) => {
-        const response = await request.get(`${API_BASE}/api/auth/me`);
+        const response = await request.get('/api/auth/me');
 
         expect(response.status()).toBe(401);
     });
@@ -86,7 +86,7 @@ test.describe('File Upload API', () => {
     test('POST /api/upload - should upload Excel file', async ({ apiContext }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.post(`${API_BASE}/api/upload`, {
+        const response = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test-errors.xlsx',
@@ -107,7 +107,7 @@ test.describe('File Upload API', () => {
     test('POST /api/upload - should upload CSV file', async ({ apiContext }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.post(`${API_BASE}/api/upload`, {
+        const response = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test-errors.csv',
@@ -123,7 +123,7 @@ test.describe('File Upload API', () => {
     test('POST /api/upload - should reject invalid file type', async ({ apiContext }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.post(`${API_BASE}/api/upload`, {
+        const response = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test.pdf',
@@ -143,7 +143,7 @@ test.describe('File Upload API', () => {
     test('GET /api/files - should list uploaded files', async ({ apiContext }) => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.get(`${API_BASE}/api/files`);
+        const response = await apiContext.get('/api/files');
 
         expect(response.status()).toBe(200);
 
@@ -161,7 +161,7 @@ test.describe('File Upload API', () => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
         // First upload a file
-        const uploadResponse = await apiContext.post(`${API_BASE}/api/upload`, {
+        const uploadResponse = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test.xlsx',
@@ -174,7 +174,7 @@ test.describe('File Upload API', () => {
         const { fileId } = await uploadResponse.json();
 
         // Get file details
-        const response = await apiContext.get(`${API_BASE}/api/files/${fileId}`);
+        const response = await apiContext.get(`/api/files/${fileId}`);
 
         expect(response.status()).toBe(200);
 
@@ -187,7 +187,7 @@ test.describe('File Upload API', () => {
         test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
         // First upload a file
-        const uploadResponse = await apiContext.post(`${API_BASE}/api/upload`, {
+        const uploadResponse = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test.xlsx',
@@ -200,7 +200,7 @@ test.describe('File Upload API', () => {
         const { fileId } = await uploadResponse.json();
 
         // Delete file
-        const response = await apiContext.delete(`${API_BASE}/api/files/${fileId}`);
+        const response = await apiContext.delete(`/api/files/${fileId}`);
 
         expect(response.status()).toBe(200);
 

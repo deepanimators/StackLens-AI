@@ -6,6 +6,11 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 
+// Health check endpoint for Playwright
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // CORS configuration for development
 app.use(cors({
   origin: ["http://localhost:5173", "http://localhost:3000"],
@@ -15,8 +20,19 @@ app.use(cors({
 }));
 
 // Increase body parser limit to 50MB for large file uploads and ML training data
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: false, limit: '50mb' }));
+// BUT skip multipart/form-data requests (let multer handle those)
+app.use((req, res, next) => {
+  if (req.is('multipart/form-data')) {
+    return next();
+  }
+  express.json({ limit: '50mb' })(req, res, next);
+});
+app.use((req, res, next) => {
+  if (req.is('multipart/form-data')) {
+    return next();
+  }
+  express.urlencoded({ extended: false, limit: '50mb' })(req, res, next);
+});
 
 // Rate limiting for API routes
 const apiLimiter = rateLimit({
