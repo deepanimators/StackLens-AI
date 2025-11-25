@@ -1,5 +1,0 @@
-2025-01-14T10:30:45.123Z ERROR [UserService] User authentication failed: Invalid credentials
-2025-01-14T10:30:46.234Z WARN  [DatabaseService] Connection timeout after 5000ms
-2025-01-14T10:30:47.345Z ERROR [PaymentService] Payment processing failed: Insufficient funds
-2025-01-14T10:30:48.456Z INFO  [OrderService] Order completed successfully
-2025-01-14T10:30:49.567Z ERROR [EmailService] Failed to send notification email

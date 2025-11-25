@@ -1,8 +1,0 @@
-2025-07-27/02:13:47.860/GMT-07:00  INFO WincorUsbPrinter:[localhost-startStop-2] - Loading library 'C:\Windows\System32\clmon.dll'
-
-2025-07-27/02:13:48.846/GMT-07:00  INFO WincorUsbPrinter:[localhost-startStop-2] - Printer API function response code: 00, Status reason: OK
-
-2025-07-27/02:13:48.846/GMT-07:00  INFO WincorUsbPrinter:[localhost-startStop-2] - Printer status response reason: OK
-
-2025-07-27/02:13:48.846/GMT-07:00  INFO WindowsPrinterBase:[localhost-startStop-2] - Initialized printer with name 'P1200 Single Station Printer' 
-
