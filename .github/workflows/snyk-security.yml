@@ -107,6 +107,14 @@ jobs:
             echo "dockerfiles_found=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Build Docker image for scanning
+        if: steps.check-dockerfiles.outputs.dockerfiles_found == 'true'
+        run: |
+          if [ -f python-services/Dockerfile ]; then
+            docker build -t stacklens-python-services:scan python-services/
+          fi
+        continue-on-error: true
+
       - name: Run Snyk to check Docker images (Python services)
         if: steps.check-dockerfiles.outputs.dockerfiles_found == 'true'
         uses: snyk/actions/docker@master
@@ -114,7 +122,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: python-services
+          image: stacklens-python-services:scan
           args: --file=python-services/Dockerfile --severity-threshold=high
 
   # Job 4: Infrastructure as Code (IaC) Security Scan
@@ -142,7 +150,7 @@ jobs:
           sarif_file: snyk.sarif
         continue-on-error: true
 
-  # Job 5: Code Security Analysis
+  # Job 5: Code Security Analysis (SAST)
   snyk-code:
     name: Snyk Code Security Analysis
     runs-on: ubuntu-latest
@@ -152,14 +160,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Snyk CLI
+        uses: snyk/actions/setup@master
+
       - name: Run Snyk Code analysis
-        uses: snyk/actions/node@master
+        run: snyk code test --severity-threshold=high || true
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Generate SARIF report for Code analysis
+        run: snyk code test --sarif-file-output=snyk-code.sarif || true
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Upload Snyk Code results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
         with:
-          command: code test
-          args: --severity-threshold=high
+          sarif_file: snyk-code.sarif
+        continue-on-error: true
 
   # Job 6: Security Summary Report
   security-summary:
