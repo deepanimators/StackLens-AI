@@ -2,11 +2,12 @@
 > stacklens-ai-platform@1.0.0 dev:server
 > cross-env NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts
 
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+🤖 AI Service initialized with 1 providers: gemini
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
 🚀 RAG: Vector database initialized
-{"level":"WARN","timestamp":"2025-11-21T18:46:36.346Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+{"level":"WARN","timestamp":"2025-11-25T17:41:41.864Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
 🔄 Starting server initialization...
 Starting LogWatcher service for real-time monitoring...
 📍 Watching directories: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/data, /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/logs
@@ -24,85 +25,233 @@ Starting LogWatcher service for real-time monitoring...
 🚀 Starting Python vector database service...
 ⚠️ Enhanced vector service not found, using fallback similarity search
 ✅ Vector database service initialized
+Re-optimizing dependencies because vite config has changed
 ✅ Vite setup complete
-12:16:53 AM [express] serving on port 4000
-12:18:00 AM [vite] page reload playwright-report/index.html
-12:19:01 AM [express] GET /api/auth/me 200 in 47ms :: {"user":{"id":1,"username":"deepanimators","ema…
-12:19:01 AM [express] GET /api/admin/ui-settings 200 in 9ms :: {"theme":"light","sidebarCollapsed":fa…
-12:19:01 AM [express] GET /api/admin/api-settings 200 in 6ms :: {"geminiApiKey":"","webhookUrl":"","m…
-12:19:01 AM [express] GET /api/analytics/alerts 200 in 11ms :: {"success":true,"data":{"alerts":[],"t…
-12:19:01 AM [express] GET /api/analytics/health-status 200 in 9ms :: {"success":true,"data":{"status"…
-12:19:01 AM [express] GET /api/analytics/metrics 200 in 4ms :: {"success":true,"data":{"window":"1min…
-12:19:01 AM [express] GET /api/version 200 in 11ms :: {"version":"0.9.5","releaseDate":"2025-11-19","…
-12:19:08 AM [express] GET /api/auth/me 200 in 141ms :: {"user":{"id":1,"username":"deepanimators","em…
-12:19:12 AM [express] GET /api/analytics/alerts 200 in 3ms :: {"success":true,"data":{"alerts":[],"to…
-12:19:12 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
-12:19:12 AM [express] GET /api/analytics/metrics 200 in 4ms :: {"success":true,"data":{"window":"1min…
-12:19:17 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-12:19:17 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
-12:19:22 AM [express] GET /api/analytics/alerts 200 in 3ms :: {"success":true,"data":{"alerts":[],"to…
-12:19:22 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-12:19:22 AM [express] GET /api/analytics/metrics 200 in 3ms :: {"success":true,"data":{"window":"1min…
-12:19:27 AM [express] GET /api/files 200 in 65ms :: {"files":[{"id":117,"filename":"files-17597387954…
-🔍 [DEBUG] Dashboard - Resolution Rate: 130 resolved out of 152394 total = 0.1%
-12:19:34 AM [express] GET /api/dashboard/stats 200 in 7407ms :: {"totalFiles":96,"totalErrors":152394…
-🔍 [DEBUG] Total user errors: 152394
-12:19:40 AM [express] GET /api/errors 200 in 5994ms :: {"errors":[{"id":155382,"fileId":117,"filename…
-12:19:40 AM [express] GET /api/version 200 in 6ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
-12:19:40 AM [express] GET /api/version 200 in 3ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+11:11:57 PM [express] serving on port 4000
+11:12:21 PM [express] GET /api/auth/me 200 in 42ms :: {"user":{"id":1,"username":"deepanimators","ema…
+11:12:21 PM [express] GET /api/admin/ui-settings 304 in 5ms :: {"theme":"light","sidebarCollapsed":fa…
+11:12:21 PM [express] GET /api/admin/api-settings 304 in 90ms :: {"geminiApiKey":"","webhookUrl":"","…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:19:40 AM [express] GET /api/analysis/history 200 in 42ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:19:40 AM [express] GET /api/version 200 in 2ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+11:12:22 PM [express] GET /api/analysis/history 200 in 75ms :: {"history":[{"id":108,"fileId":117,"fi…
+🔍 [DEBUG] Dashboard - Resolution Rate: 160 resolved out of 152814 total = 0.1%
+11:12:28 PM [express] GET /api/dashboard/stats 200 in 6844ms :: {"totalFiles":96,"totalErrors":152814…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:19:40 AM [express] GET /api/analysis/history 200 in 23ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:19:40 AM [express] GET /api/stores 200 in 6ms :: [{"id":1,"storeNumber":"BK-14959","name":"Applegr…
-12:19:40 AM [express] GET /api/kiosks 200 in 7ms :: [{"id":24,"kioskNumber":"BK-14959-K1","storeId":1…
-12:19:44 AM [express] GET /api/version 200 in 11ms :: {"version":"0.9.5","releaseDate":"2025-11-19","…
-12:19:48 AM [express] GET /api/version 200 in 10ms :: {"version":"0.9.5","releaseDate":"2025-11-19","…
-12:19:48 AM [express] GET /api/ai/train-suggestion-model/scenarios 200 in 102ms :: {"success":true,"t…
+11:12:28 PM [express] GET /api/analysis/history 200 in 15ms :: {"history":[{"id":108,"fileId":117,"fi…
+11:12:28 PM [express] GET /api/files 200 in 3ms :: {"files":[{"id":117,"filename":"files-175973879543…
+11:12:28 PM [express] GET /api/version 304 in 3ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+11:12:29 PM [express] GET /api/errors 200 in 482ms :: {"errors":[{"id":155382,"fileId":117,"storeNumb…
+11:12:29 PM [express] GET /api/version 200 in 2ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+11:12:29 PM [express] GET /api/analytics/metrics 200 in 7ms :: {"success":true,"data":{"window":"1min…
+11:12:29 PM [express] GET /api/analytics/health-status 200 in 7ms :: {"success":true,"data":{"status"…
+11:12:29 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+11:12:32 PM [express] GET /api/auth/me 200 in 13ms :: {"user":{"id":1,"username":"deepanimators","ema…
+11:12:34 PM [express] GET /api/analytics/metrics 200 in 8ms :: {"success":true,"data":{"window":"1min…
+11:12:34 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+11:12:39 PM [express] GET /api/auth/me 200 in 15ms :: {"user":{"id":1,"username":"deepanimators","ema…
+11:12:39 PM [express] GET /api/analytics/alerts 200 in 3ms :: {"success":true,"data":{"alerts":[],"to…
+11:12:39 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+11:12:39 PM [express] GET /api/analytics/health-status 200 in 13ms :: {"success":true,"data":{"status…
+11:12:44 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+11:12:44 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:19:58 AM [express] GET /api/analysis/history 200 in 71ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:20:05 AM [express] GET /api/auth/me 200 in 18ms :: {"user":{"id":1,"username":"deepanimators","ema…
-12:20:08 AM [express] GET /api/auth/me 200 in 7ms :: {"user":{"id":1,"username":"deepanimators","emai…
-12:20:08 AM [express] GET /api/admin/ui-settings 200 in 5ms :: {"theme":"light","sidebarCollapsed":fa…
-12:20:08 AM [express] GET /api/admin/api-settings 200 in 14ms :: {"geminiApiKey":"","webhookUrl":"","…
+11:12:46 PM [express] GET /api/analysis/history 200 in 20ms :: {"history":[{"id":108,"fileId":117,"fi…
+11:12:49 PM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+11:12:49 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+11:12:49 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+11:12:51 PM [express] GET /api/version 200 in 12ms :: {"version":"0.9.5","releaseDate":"2025-11-19","…
+11:12:51 PM [express] GET /api/ai/train-suggestion-model/scenarios 200 in 86ms :: {"success":true,"to…
+11:12:57 PM [express] GET /api/auth/me 200 in 14ms :: {"user":{"id":1,"username":"deepanimators","ema…
+11:12:57 PM [express] GET /api/version 200 in 23ms :: {"version":"0.9.5","releaseDate":"2025-11-19","…
+11:12:57 PM [express] GET /api/settings 200 in 14ms :: {"id":1,"userId":1,"denseMode":true,"autoRefre…
+11:12:57 PM [express] GET /api/stores 200 in 4ms :: [{"id":3,"storeNumber":"BK-10","name":"BKC","loca…
+11:12:57 PM [express] GET /api/kiosks 200 in 4ms :: [{"id":24,"kioskNumber":"BK-14959-K1","storeId":1…
+11:13:03 PM [express] GET /api/version 200 in 9ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+Error fetching admin stats: SqliteError: no such column: "updated_at" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+11:13:03 PM [express] GET /api/admin/stats 500 in 148ms :: {"message":"Failed to fetch admin stats"}
+11:13:03 PM [express] GET /api/admin/users 200 in 67ms :: [{"id":11,"username":"Rajasbc@gmail.com","e…
+Error fetching roles: SqliteError: no such column: "updated_at" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+11:13:03 PM [express] GET /api/admin/roles 500 in 8ms :: {"message":"Failed to fetch roles"}
+Error fetching training modules: SqliteError: no such column: "difficulty" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+11:13:03 PM [express] GET /api/admin/training-modules 500 in 11ms :: {"message":"Failed to fetch trai…
+Error fetching models: SqliteError: no such column: "training_data" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+11:13:03 PM [express] GET /api/admin/models 500 in 7ms :: {"message":"Failed to fetch models"}
+11:13:09 PM [vite] page reload playwright-report/index.html
+11:13:09 PM [vite] page reload playwright-report/index.html
+11:13:10 PM [vite] page reload playwright-report/index.html
+11:13:10 PM [vite] page reload playwright-report/index.html
+11:13:27 PM [express] GET /api/auth/me 200 in 6ms :: {"user":{"id":1,"username":"deepanimators","emai…
+11:13:28 PM [express] GET /api/jira/status 200 in 12ms :: {"success":true,"data":{"configured":false,…
+11:13:28 PM [express] GET /api/automation/status 200 in 5ms :: {"success":true,"data":{"enabled":true…
+11:13:28 PM [express] GET /api/watcher/status 200 in 77ms :: {"success":true,"data":{"isWatching":tru…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:20:08 AM [express] GET /api/analysis/history 200 in 18ms :: {"history":[{"id":108,"fileId":117,"fi…
+11:13:33 PM [express] GET /api/analysis/history 200 in 224ms :: {"history":[{"id":108,"fileId":117,"f…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:20:08 AM [express] GET /api/analysis/history 200 in 76ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:20:09 AM [express] GET /api/version 200 in 4ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
-12:20:09 AM [express] GET /api/ai/train-suggestion-model/scenarios 200 in 11ms :: {"success":true,"to…
+11:13:33 PM [express] GET /api/analysis/history 200 in 52ms :: {"history":[{"id":108,"fileId":117,"fi…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:20:19 AM [express] GET /api/analysis/history 200 in 38ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:20:23 AM [express] GET /api/ai/train-suggestion-model/scenarios 200 in 40ms :: {"success":true,"to…
+11:13:43 PM [express] GET /api/analysis/history 200 in 88ms :: {"history":[{"id":108,"fileId":117,"fi…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:20:29 AM [express] GET /api/analysis/history 200 in 23ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:20:30 AM [express] GET /api/ai/train-suggestion-model/scenarios 200 in 16ms :: {"success":true,"to…
+11:13:53 PM [express] GET /api/analysis/history 200 in 87ms :: {"history":[{"id":108,"fileId":117,"fi…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:20:39 AM [express] GET /api/analysis/history 200 in 45ms :: {"history":[{"id":108,"fileId":117,"fi…
+11:14:03 PM [express] GET /api/analysis/history 200 in 159ms :: {"history":[{"id":108,"fileId":117,"f…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:20:39 AM [express] GET /api/analysis/history 200 in 20ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:20:39 AM [express] GET /api/ai/train-suggestion-model/scenarios 200 in 5ms :: {"success":true,"tot…
-12:20:41 AM [express] GET /api/ai/train-suggestion-model/scenarios 200 in 3ms :: {"success":true,"tot…
+11:14:03 PM [express] GET /api/analysis/history 200 in 6ms :: {"history":[{"id":108,"fileId":117,"fil…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:20:49 AM [express] GET /api/analysis/history 200 in 87ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:20:50 AM [express] GET /api/version 200 in 16ms :: {"version":"0.9.5","releaseDate":"2025-11-19","…
-12:20:50 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:20:50 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-12:20:50 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
-12:20:55 AM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1min…
-12:20:55 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+11:14:13 PM [express] GET /api/analysis/history 200 in 17ms :: {"history":[{"id":108,"fileId":117,"fi…
+⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+👑 Granting admin role to test@stacklens.ai
+11:14:22 PM [express] POST /api/auth/firebase-signin 200 in 107ms :: {"user":{"id":15,"username":"tes…
+11:14:22 PM [express] GET /api/auth/me 200 in 3ms :: {"user":{"id":15,"username":"test","email":"test…
+11:14:22 PM [express] GET /api/admin/ui-settings 200 in 2ms :: {"theme":"light","sidebarCollapsed":fa…
+11:14:22 PM [express] GET /api/admin/api-settings 200 in 3ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 15 }
+11:14:22 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 15 }
+11:14:22 PM [express] GET /api/analysis/history 200 in 6ms :: {"history":[],"pagination":{"page":1,"l…
+11:14:22 PM [express] GET /api/files 200 in 5ms :: {"files":[{"id":117,"filename":"files-175973879543…
+🔍 [DEBUG] Dashboard - Resolution Rate: 160 resolved out of 152814 total = 0.1%
+11:14:26 PM [express] GET /api/dashboard/stats 200 in 3556ms :: {"totalFiles":96,"totalErrors":152814…
+11:14:26 PM [express] GET /api/errors 200 in 387ms :: {"errors":[{"id":155382,"fileId":117,"storeNumb…
+11:14:26 PM [express] GET /api/version 200 in 2ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:21:00 AM [express] GET /api/analysis/history 200 in 34ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:21:00 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
-12:21:00 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
-12:21:00 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-12:21:05 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
-12:21:05 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+11:14:26 PM [express] GET /api/analysis/history 200 in 7ms :: {"history":[{"id":108,"fileId":117,"fil…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:21:10 AM [express] GET /api/analysis/history 200 in 15ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:21:10 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
-12:21:10 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:21:10 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
-12:21:15 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
-12:21:15 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+11:14:33 PM [express] GET /api/analysis/history 200 in 45ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:14:36 PM [express] GET /api/analysis/history 200 in 11ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:14:46 PM [express] GET /api/analysis/history 200 in 10ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:14:56 PM [express] GET /api/analysis/history 200 in 14ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:15:03 PM [express] GET /api/analysis/history 200 in 93ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:15:06 PM [express] GET /api/analysis/history 200 in 9ms :: {"history":[{"id":108,"fileId":117,"fil…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:15:16 PM [express] GET /api/analysis/history 200 in 17ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:15:26 PM [express] GET /api/analysis/history 200 in 7ms :: {"history":[{"id":108,"fileId":117,"fil…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:15:33 PM [express] GET /api/analysis/history 200 in 14ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:15:36 PM [express] GET /api/analysis/history 200 in 5ms :: {"history":[{"id":108,"fileId":117,"fil…
+11:15:41 PM [vite] page reload playwright-report/index.html
+11:15:41 PM [vite] page reload playwright-report/index.html
+🔧 Checking for stuck processing jobs...
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:23:59 PM [express] GET /api/analysis/history 200 in 121ms :: {"history":[{"id":108,"fileId":117,"f…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:23:59 PM [express] GET /api/analysis/history 200 in 17ms :: {"history":[{"id":108,"fileId":117,"fi…
+11:23:59 PM [express] GET /api/auth/me 200 in 1ms :: {"user":{"id":1,"username":"deepanimators","emai…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:09 PM [express] GET /api/analysis/history 200 in 30ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:19 PM [express] GET /api/analysis/history 200 in 16ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:29 PM [express] GET /api/analysis/history 200 in 21ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:29 PM [express] GET /api/analysis/history 200 in 12ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:39 PM [express] GET /api/analysis/history 200 in 24ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:49 PM [express] GET /api/analysis/history 200 in 22ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:59 PM [express] GET /api/analysis/history 200 in 44ms :: {"history":[{"id":108,"fileId":117,"fi…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+11:24:59 PM [express] GET /api/analysis/history 200 in 7ms :: {"history":[{"id":108,"fileId":117,"fil…
+⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+👑 Granting admin role to test@stacklens.ai
+11:29:23 PM [express] POST /api/auth/firebase-signin 200 in 11ms :: {"user":{"id":15,"username":"test…
+11:29:24 PM [express] GET /api/auth/me 200 in 2ms :: {"user":{"id":15,"username":"test","email":"test…
+11:29:24 PM [express] GET /api/admin/ui-settings 200 in 1ms :: {"theme":"light","sidebarCollapsed":fa…
+11:29:24 PM [express] GET /api/admin/api-settings 200 in 2ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 15 }
+11:29:24 PM [express] GET /api/analysis/history 200 in 3ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 15 }
+11:29:24 PM [express] GET /api/analysis/history 200 in 3ms :: {"history":[],"pagination":{"page":1,"l…
+11:29:24 PM [express] GET /api/files 200 in 7ms :: {"files":[{"id":117,"filename":"files-175973879543…
+🔍 [DEBUG] Dashboard - Resolution Rate: 161 resolved out of 152828 total = 0.1%
+11:29:26 PM [express] GET /api/dashboard/stats 200 in 2790ms :: {"totalFiles":96,"totalErrors":152828…
+11:29:27 PM [express] GET /api/errors 200 in 323ms :: {"errors":[{"id":155382,"fileId":117,"storeNumb…
+11:29:27 PM [express] GET /api/version 200 in 3ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+11:29:37 PM [vite] page reload playwright-report/index.html
+11:29:37 PM [vite] page reload playwright-report/index.html
+🔧 Checking for stuck processing jobs...
+⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+👑 Granting admin role to test@stacklens.ai
+11:33:09 PM [express] POST /api/auth/firebase-signin 200 in 17ms :: {"user":{"id":15,"username":"test…
+11:33:09 PM [express] GET /api/auth/me 200 in 2ms :: {"user":{"id":15,"username":"test","email":"test…
+11:33:09 PM [express] GET /api/admin/ui-settings 200 in 1ms :: {"theme":"light","sidebarCollapsed":fa…
+11:33:09 PM [express] GET /api/admin/api-settings 200 in 1ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 15 }
+11:33:09 PM [express] GET /api/analysis/history 200 in 2ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 15 }
+11:33:09 PM [express] GET /api/analysis/history 200 in 2ms :: {"history":[],"pagination":{"page":1,"l…
+🔍 [DEBUG] Dashboard - Resolution Rate: 161 resolved out of 152828 total = 0.1%
+11:33:12 PM [express] GET /api/dashboard/stats 200 in 3146ms :: {"totalFiles":96,"totalErrors":152828…
+11:33:12 PM [express] GET /api/files 200 in 3ms :: {"files":[{"id":117,"filename":"files-175973879543…
+11:33:13 PM [express] GET /api/errors 200 in 429ms :: {"errors":[{"id":155382,"fileId":117,"storeNumb…
+11:33:13 PM [express] GET /api/version 200 in 2ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+11:33:23 PM [vite] page reload playwright-report/index.html
+11:33:23 PM [vite] page reload playwright-report/index.html
+⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+👑 Granting admin role to test@stacklens.ai
+User sync failed: SqliteError: attempt to write a readonly database
+    at PreparedQuery.values (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:156:26)
+    at PreparedQuery.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:124:21)
+    at QueryPromise.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/update.ts:441:26)
+    at QueryPromise.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/update.ts:453:40)
+    at QueryPromise.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_READONLY_DBMOVED'
+}
+Firebase token verification error: SqliteError: attempt to write a readonly database
+    at PreparedQuery.values (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:156:26)
+    at PreparedQuery.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:124:21)
+    at QueryPromise.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/update.ts:441:26)
+    at QueryPromise.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/update.ts:453:40)
+    at QueryPromise.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_READONLY_DBMOVED'
+}
+11:35:30 PM [express] POST /api/auth/firebase-signin 500 in 15ms :: {"message":"Token verification fa…
+11:35:40 PM [vite] page reload playwright-report/index.html

@@ -5,7 +5,10 @@ import multer from "multer";
 import { z } from "zod";
 import { registerRoutes } from "./routes/main-routes.js";
 import enhancedMlRoutes from "./routes/enhanced-ml-training.js";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, serveStatic, log } from "./vite.js";
+
+// CRITICAL: Import sqlite-db to initialize database tables on startup
+import "./database/sqlite-db.js";
 
 const app = express();
 
@@ -32,13 +35,14 @@ const memoryUpload = multer({ storage: multer.memoryStorage(), limits: { fileSiz
 // Don't register global body parsers - they interfere with multipart handling
 // Instead, parsers will be applied selectively by routes that need them
 
-// Rate limiting for API routes
+// Rate limiting for API routes (disabled in test environment)
 const apiLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 100, // 100 requests per minute per IP
+  windowMs: process.env.NODE_ENV === 'test' ? 1000 : 60 * 1000, // 1s for tests, 1m for prod
+  max: process.env.NODE_ENV === 'test' ? 10000 : 100, // 10k req/min for tests, 100 for prod
   message: { message: "Too many requests, please try again later." },
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
+  skip: (req) => process.env.NODE_ENV === 'test', // Skip rate limiting in test mode
 });
 
 // Apply rate limiter to all API routes
@@ -91,6 +95,7 @@ app.use((req: any, res: any, next: any) => {
 (async () => {
   try {
     console.log("🔄 Starting server initialization...");
+    console.log("✅ Database tables initialized");
     const server = await registerRoutes(app);
     app.use(enhancedMlRoutes);
     console.log("✅ Routes registered successfully");

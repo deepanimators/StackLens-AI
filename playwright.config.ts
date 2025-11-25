@@ -173,9 +173,9 @@ export default defineConfig({
     // Backend API server runs on port 4001, Frontend client on port 5173
     // In CI, SKIP_SERVER env var is checked - servers are started manually in workflow
     webServer: process.env.SKIP_SERVER ? undefined : [
-        // Backend API server
+        // Backend API server (using test:server to disable rate limiting)
         {
-            command: 'PORT=4001 npm run dev:server',
+            command: 'PORT=4001 pnpm run test:server',
             url: 'http://localhost:4001/health',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,
@@ -184,7 +184,7 @@ export default defineConfig({
         },
         // Frontend client server
         {
-            command: 'VITE_API_URL=http://localhost:4001 npm run dev:client',
+            command: 'VITE_API_URL=http://localhost:4001 pnpm run dev:client',
             url: 'http://localhost:5173',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,
