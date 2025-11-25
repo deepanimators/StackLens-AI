@@ -9,6 +9,13 @@ node_modules/
 # Database files
 *.db
 *.sqlite
+*.db-shm
+*.db-wal
+*.db-journal
+data/Database/
+data/database/
+db/*.db
+python-services/**/*.db
 
 
 # Logs
