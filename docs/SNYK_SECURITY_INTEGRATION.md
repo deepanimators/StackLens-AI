@@ -161,6 +161,22 @@ To include medium severity:
 args: --severity-threshold=medium
 ```
 
+### Build Behavior
+By default, the workflow uses `continue-on-error: true` which means:
+- Security vulnerabilities are reported but don't block the build
+- This allows for gradual adoption and awareness building
+
+**For production environments**, consider changing to `continue-on-error: false`:
+```yaml
+- name: Run Snyk to check for vulnerabilities
+  uses: snyk/actions/node@master
+  continue-on-error: false  # Change to false to fail the build on vulnerabilities
+  env:
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+```
+
+This change will block PRs with high/critical vulnerabilities from being merged.
+
 ## Viewing Results
 
 ### GitHub Security Tab
