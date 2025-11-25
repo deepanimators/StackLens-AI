@@ -3011,7 +3011,7 @@ Format as JSON with the following structure:
       }
 
       const stores = await storage.getAllStores();
-      res.json({ stores }); // Return as object with stores array
+      res.json(stores); // Return array directly
     } catch (error) {
       console.error("Error fetching stores:", error);
       res.status(500).json({ message: "Failed to fetch stores" });
@@ -4638,6 +4638,39 @@ Format as JSON with the following structure:
   });
 
 
+  // Get file details endpoint
+  app.get("/api/files/:id", requireAuth, async (req: any, res: any) => {
+    try {
+      const fileId = parseInt(req.params.id);
+      if (isNaN(fileId) || fileId <= 0) {
+        return res.status(400).json({ error: "Invalid file ID" });
+      }
+
+      const file = await storage.getLogFile(fileId);
+      if (!file) {
+        return res.status(404).json({ error: "File not found" });
+      }
+
+      // Verify user has access to this file
+      if (file.uploadedBy !== req.user.id && req.user.role !== "admin") {
+        return res.status(403).json({ error: "Access denied" });
+      }
+
+      res.json({
+        id: file.id,
+        filename: file.originalName,
+        status: file.status || "processed",
+        uploadTimestamp: file.uploadTimestamp,
+        uploadedBy: file.uploadedBy,
+        fileSize: (file as any).fileSize,
+        mimeType: (file as any).mimeType
+      });
+    } catch (error) {
+      console.error("Error fetching file:", error);
+      res.status(500).json({ error: error instanceof Error ? error.message : "Failed to fetch file" });
+    }
+  });
+
   // Test endpoint to check file
   app.get("/api/files/:id/test", requireAuth, async (req: any, res: any) => {
     try {
@@ -5576,10 +5609,8 @@ Format as JSON with the following structure:
       const severity = req.query.severity as string;
       const search = req.query.search as string;
       const errorTypeFilter = req.query.errorType as string;
-      const errorTypeFilter = req.query.errorType as string;
       // Support both store and storeNumber query params
       const storeNumber = (req.query.storeNumber || req.query.store) as string;
-      const kioskNumber = req.query.kioskNumber as string;
       const kioskNumber = req.query.kioskNumber as string;
       const fileFilter = req.query.fileFilter as string;
       const userId = req.query.userId as string;
