@@ -14,7 +14,9 @@ node_modules/
 *.db-journal
 data/Database/
 data/database/
+data/[Dd]atabase/*.db
 db/*.db
+db/**/*.db
 python-services/**/*.db
 
 
