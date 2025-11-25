@@ -735,7 +735,7 @@ test.describe('Integration Tests - Batch Operations', () => {
 test.describe('Integration Tests - Real-time Updates', () => {
     test('should support server-sent events for real-time updates', async ({ request }) => {
         // Check if SSE endpoint exists
-        const response = await request.get('http://localhost:4000/api/events/errors');
+        const response = await request.get('http://localhost:4000/api/monitoring/live');
 
         // SSE should return text/event-stream
         if (response.ok()) {

@@ -228,6 +228,10 @@ export interface IStorage {
 
   // Store Management
   getAllStores(): Promise<Store[]>;
+  getAllStoresWithPagination(
+    page: number,
+    limit: number
+  ): Promise<{ stores: Store[]; total: number }>;
   getStore(id: number): Promise<Store | undefined>;
   getStoreByNumber(storeNumber: string): Promise<Store | undefined>;
   createStore(store: InsertStore): Promise<Store>;
@@ -1391,7 +1395,26 @@ export class DatabaseStorage implements IStorage {
   // ============= STORE MANAGEMENT =============
 
   async getAllStores(): Promise<Store[]> {
-    return await db.select().from(stores).orderBy(asc(stores.name));
+    return await db.select().from(stores).orderBy(asc(stores.storeNumber));
+  }
+
+  async getAllStoresWithPagination(
+    page: number,
+    limit: number
+  ): Promise<{ stores: Store[]; total: number }> {
+    const offset = (page - 1) * limit;
+    const result = await db
+      .select()
+      .from(stores)
+      .limit(limit)
+      .offset(offset)
+      .orderBy(asc(stores.storeNumber));
+
+    const totalResult = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(stores);
+
+    return { stores: result, total: totalResult[0].count };
   }
 
   async getStore(id: number): Promise<Store | undefined> {

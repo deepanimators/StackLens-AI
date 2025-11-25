@@ -1,7 +1,10 @@
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import multer from "multer";
+import { z } from "zod";
 import { registerRoutes } from "./routes/main-routes.js";
+import enhancedMlRoutes from "./routes/enhanced-ml-training.js";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
@@ -19,16 +22,28 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
+// Configure multer for file uploads (must come BEFORE json body parser)
+const memoryUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
+
+// Apply multer to upload endpoint BEFORE other middleware
+app.post('/api/upload', memoryUpload.single('file'), (req, res, next) => {
+  // This just passes through - the actual handler will be registered later
+  next();
+});
+
 // Increase body parser limit to 50MB for large file uploads and ML training data
 // BUT skip multipart/form-data requests (let multer handle those)
 app.use((req, res, next) => {
-  if (req.is('multipart/form-data')) {
+  const contentType = req.headers['content-type'] || '';
+  console.log(`[DEBUG] Middleware Content-Type: ${contentType}`);
+  if (contentType.includes('multipart/form-data')) {
     return next();
   }
   express.json({ limit: '50mb' })(req, res, next);
 });
 app.use((req, res, next) => {
-  if (req.is('multipart/form-data')) {
+  const contentType = req.headers['content-type'] || '';
+  if (contentType.includes('multipart/form-data')) {
     return next();
   }
   express.urlencoded({ extended: false, limit: '50mb' })(req, res, next);
@@ -80,9 +95,18 @@ app.use((req, res, next) => {
   try {
     console.log("🔄 Starting server initialization...");
     const server = await registerRoutes(app);
+    app.use(enhancedMlRoutes);
     console.log("✅ Routes registered successfully");
 
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      // Handle Zod validation errors
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({
+          message: "Validation failed",
+          errors: err.errors,
+        });
+      }
+
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
 
