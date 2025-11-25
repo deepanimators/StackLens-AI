@@ -4676,8 +4676,12 @@ Format as JSON with the following structure:
     upload.single('file'),
     requireAuth,
     async (req: any, res: any) => {
+      console.log('POST /api/upload hit');
+      console.log('req.file:', req.file);
+      console.log('req.user:', req.user);
       try {
         if (!req.file) {
+          console.log('No file uploaded');
           return res.status(400).json({ message: "No file uploaded" });
         }
 

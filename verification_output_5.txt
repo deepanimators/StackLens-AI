@@ -1,0 +1,2071 @@
+
+> stacklens-ai-platform@1.0.0 test:api
+> playwright test tests/api
+
+[dotenv@17.2.3] injecting env (14) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[2m[WebServer] [22m{"level":"WARN","timestamp":"2025-11-25T19:09:26.451Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+[2m[WebServer] [22m⚠️ Enhanced vector service not found, using fallback similarity search
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22mError creating store: SqliteError: UNIQUE constraint failed: stores.store_number
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_UNIQUE'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+
+Running 102 tests using 5 workers
+
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m❌ Server error: SyntaxError: Unexpected token '"', ""{invalid json}"" is not valid JSON
+[2m[WebServer] [22m    at JSON.parse (<anonymous>)
+[2m[WebServer] [22m    at createStrictSyntaxError [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:169:10[90m)[39m
+[2m[WebServer] [22m    at parse [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:86:15[90m)[39m
+[2m[WebServer] [22m    at [90m/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/read.js:128:18
+[2m[WebServer] [22m[90m    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)[39m
+[2m[WebServer] [22m    at invokeCallback [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:238:16[90m)[39m
+[2m[WebServer] [22m    at done [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:227:7[90m)[39m
+[2m[WebServer] [22m    at IncomingMessage.onEnd [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:287:7[90m)[39m
+[2m[WebServer] [22m[90m    at IncomingMessage.emit (node:events:518:28)[39m
+[2m[WebServer] [22m[90m    at endReadableNT (node:internal/streams/readable:1698:12)[39m {
+[2m[WebServer] [22m  expose: [33mtrue[39m,
+[2m[WebServer] [22m  statusCode: [33m400[39m,
+[2m[WebServer] [22m  status: [33m400[39m,
+[2m[WebServer] [22m  body: [32m'"{invalid json}"'[39m,
+[2m[WebServer] [22m  type: [32m'entity.parse.failed'[39m
+[2m[WebServer] [22m}
+Starting authentication setup...
+✓ Auth state file verified
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+  ✓    1 [setup] › tests/auth.setup.ts:135:1 › verify auth state (950ms)
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+Using TEST_FIREBASE_TOKEN for authentication...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+✓ Token exchange successful
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+✓ Authentication successful with session token
+✓ Authentication state saved to /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/.auth/user.json
+  ✓    2 [setup] › tests/auth.setup.ts:15:1 › authenticate user (17.9s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+  ✓    3 [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token (1.6s)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+  ✓    7 [api-tests] › tests/api/auth-upload.test.ts:68:5 › Authentication API › GET /api/auth/me - should reject unauthenticated request (1.6s)
+  ✓    5 [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token (1.6s)
+  ✓    4 [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user (1.6s)
+  ✓    6 [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user (1.6s)
+  ✘    8 [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file (34ms)
+  ✘    9 [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file (30ms)
+  ✘   11 [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type (36ms)
+  ✘   10 [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files (32ms)
+  ✘   12 [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details (39ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+  ✘   13 [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file (165ms)
+  ✓   14 [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type (166ms)
+  ✓   17 [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination (201ms)
+  ✘   18 [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message (70ms)
+  ✓   15 [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors (235ms)
+  ✓   16 [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity (253ms)
+  ✓   20 [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting (322ms)
+  ✓   21 [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully (254ms)
+  ✘   19 [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status (611ms)
+  ✓   23 [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields (257ms)
+  ✓   22 [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error (163ms)
+  ✓   24 [api-tests] › tests/api/comprehensive.test.ts:165:9 › API Tests - Error Management Endpoints › POST /api/errors › should set default values for optional fields (119ms)
+  ✓   25 [api-tests] › tests/api/comprehensive.test.ts:185:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should retrieve specific error by ID (127ms)
+  ✓   26 [api-tests] › tests/api/comprehensive.test.ts:208:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 404 for non-existent error (390ms)
+  ✓   27 [api-tests] › tests/api/comprehensive.test.ts:213:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 400 for invalid ID format (457ms)
+  ✓   29 [api-tests] › tests/api/comprehensive.test.ts:253:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should validate updated field values (120ms)
+  ✓   28 [api-tests] › tests/api/comprehensive.test.ts:220:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should update error fields (369ms)
+  ✓   31 [api-tests] › tests/api/comprehensive.test.ts:281:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should delete error (87ms)
+  ✓   30 [api-tests] › tests/api/comprehensive.test.ts:271:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should return 404 when updating non-existent error (142ms)
+  ✓   33 [api-tests] › tests/api/comprehensive.test.ts:311:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should create multiple errors in bulk (50ms)
+  ✓   32 [api-tests] › tests/api/comprehensive.test.ts:304:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should return 404 when deleting non-existent error (118ms)
+  ✓   34 [api-tests] › tests/api/comprehensive.test.ts:330:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should handle validation errors in bulk creation (45ms)
+  ✘   35 [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics (43ms)
+  ✘   36 [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range (29ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+  ✓   38 [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range (164ms)
+  ✓   37 [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store (176ms)
+  ✓   39 [api-tests] › tests/api/comprehensive.test.ts:392:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as JSON (22ms)
+  ✓   40 [api-tests] › tests/api/comprehensive.test.ts:405:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as Excel (20ms)
+  ✓   42 [api-tests] › tests/api/comprehensive.test.ts:422:9 › API Tests - Store & Kiosk Management › GET /api/stores › should retrieve all stores (26ms)
+  ✓   43 [api-tests] › tests/api/comprehensive.test.ts:430:9 › API Tests - Store & Kiosk Management › GET /api/stores › should support pagination for stores (22ms)
+  ✓   44 [api-tests] › tests/api/comprehensive.test.ts:438:9 › API Tests - Store & Kiosk Management › GET /api/stores › should search stores by name (23ms)
+  ✓   41 [api-tests] › tests/api/comprehensive.test.ts:151:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate severity values (88ms)
+  ✓   45 [api-tests] › tests/api/comprehensive.test.ts:446:9 › API Tests - Store & Kiosk Management › POST /api/stores › should create new store (35ms)
+[2m[WebServer] [22mError creating store: SqliteError: UNIQUE constraint failed: stores.store_number
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_UNIQUE'[39m
+[2m[WebServer] [22m}
+  ✓   48 [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store (28ms)
+  ✓   47 [api-tests] › tests/api/comprehensive.test.ts:463:9 › API Tests - Store & Kiosk Management › POST /api/stores › should prevent duplicate store numbers (35ms)
+  ✓   46 [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks (37ms)
+  ✓   50 [api-tests] › tests/api/comprehensive.test.ts:517:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should validate kiosk belongs to valid store (20ms)
+  ✘   49 [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk (27ms)
+  ✓   51 [api-tests] › tests/api/comprehensive.test.ts:535:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should initiate ML training job (33ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+  ✓   52 [api-tests] › tests/api/comprehensive.test.ts:554:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should validate training configuration (63ms)
+  ✓   53 [api-tests] › tests/api/comprehensive.test.ts:594:9 › API Tests - ML Training Endpoints › POST /api/ml/predict › should make prediction with trained model (69ms)
+  ✓   55 [api-tests] › tests/api/comprehensive.test.ts:623:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should filter models by status (299ms)
+  ✓   56 [api-tests] › tests/api/comprehensive.test.ts:637:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should analyze error with AI (33ms)
+  ✓   54 [api-tests] › tests/api/comprehensive.test.ts:615:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should list all trained models (511ms)
+  ✓   58 [api-tests] › tests/api/comprehensive.test.ts:666:9 › API Tests - AI Analysis Endpoints › POST /api/ai/suggest › should provide fix suggestions (53ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+  ✓   57 [api-tests] › tests/api/comprehensive.test.ts:655:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should handle timeout for long-running analysis (299ms)
+  ✓   59 [api-tests] › tests/api/comprehensive.test.ts:685:9 › API Tests - AI Analysis Endpoints › POST /api/ai/summarize › should summarize multiple errors (201ms)
+  ✘   61 [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload (21ms)
+  ✘   62 [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit (50ms)
+  ✓   60 [api-tests] › tests/api/comprehensive.test.ts:369:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should provide statistics by store (146ms)
+  ✘   64 [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token (51ms)
+  ✓   63 [api-tests] › tests/api/comprehensive.test.ts:379:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as CSV (127ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+  ✘   65 [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user (32ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+  ✓   66 [api-tests] › tests/api/comprehensive.test.ts:568:9 › API Tests - ML Training Endpoints › GET /api/ml/jobs/:jobId › should retrieve training job status (430ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+Auth response: {
+  user: {
+    id: [33m1[39m,
+    username: [32m'Test User'[39m,
+    email: [32m'test@stacklens.ai'[39m,
+    role: [32m'admin'[39m,
+    firstName: [32m'Test'[39m,
+    lastName: [32m'User'[39m,
+    profileImageUrl: [32m'https://example.com/avatar.jpg'[39m,
+    department: [1mnull[22m,
+    isActive: [33mtrue[39m,
+    lastLogin: [32m'2025-11-25T19:10:09.000Z'[39m,
+    createdAt: [32m'+057872-01-12T00:20:00.000Z'[39m,
+    updatedAt: [32m'+057872-01-12T00:20:00.000Z'[39m
+  },
+  token: [32m'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5NzgwOSwiZXhwIjoxNzY0MTg0MjA5fQ.SQtWnoUAGRErW05YREALLVyyEhKaRyQxzrMmY5gWmdU'[39m,
+  provider: [32m'firebase'[39m
+}
+  ✓   67 [api-tests] › tests/api/comprehensive.test.ts:838:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should allow access with admin token (39ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+  ✓   69 [api-tests] › tests/api/comprehensive.test.ts:871:5 › API Tests - Request Validation › should reject requests with invalid Content-Type (573ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+  ✓   70 [api-tests] › tests/api/comprehensive.test.ts:742:9 › API Tests - File Upload & Processing › POST /api/upload › should reject unsupported file types (548ms)
+[2m[WebServer] [22m❌ Server error: SyntaxError: Unexpected token '"', ""{invalid json}"" is not valid JSON
+[2m[WebServer] [22m    at JSON.parse (<anonymous>)
+[2m[WebServer] [22m    at createStrictSyntaxError [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:169:10[90m)[39m
+[2m[WebServer] [22m    at parse [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:86:15[90m)[39m
+[2m[WebServer] [22m    at [90m/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/read.js:128:18
+[2m[WebServer] [22m[90m    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)[39m
+[2m[WebServer] [22m    at invokeCallback [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:238:16[90m)[39m
+[2m[WebServer] [22m    at done [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:227:7[90m)[39m
+[2m[WebServer] [22m    at IncomingMessage.onEnd [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:287:7[90m)[39m
+[2m[WebServer] [22m[90m    at IncomingMessage.emit (node:events:518:28)[39m
+[2m[WebServer] [22m[90m    at endReadableNT (node:internal/streams/readable:1698:12)[39m {
+[2m[WebServer] [22m  expose: [33mtrue[39m,
+[2m[WebServer] [22m  statusCode: [33m400[39m,
+[2m[WebServer] [22m  status: [33m400[39m,
+[2m[WebServer] [22m  body: [32m'"{invalid json}"'[39m,
+[2m[WebServer] [22m  type: [32m'entity.parse.failed'[39m
+[2m[WebServer] [22m}
+  ✘   68 [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status (940ms)
+  ✓   71 [api-tests] › tests/api/comprehensive.test.ts:882:5 › API Tests - Request Validation › should validate JSON syntax (115ms)
+  ✓   74 [api-tests] › tests/api/comprehensive.test.ts:918:5 › API Tests - Request Validation › should handle missing request body (152ms)
+  ✘   73 [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size (233ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+  ✘   75 [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats (141ms)
+  ✓   72 [api-tests] › tests/api/comprehensive.test.ts:799:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should reject invalid token (166ms)
+  ✓   77 [api-tests] › tests/api/comprehensive.test.ts:948:5 › API Tests - Response Format Validation › should include CORS headers (139ms)
+  ✓   76 [api-tests] › tests/api/comprehensive.test.ts:831:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should require admin role (217ms)
+  ✓   78 [api-tests] › tests/api/comprehensive.test.ts:959:5 › API Tests - Response Format Validation › should return consistent error response format (274ms)
+  ✓   80 [api-tests] › tests/api/comprehensive.test.ts:981:5 › API Tests - Response Format Validation › should return timestamps in ISO format (511ms)
+  ✓   79 [api-tests] › tests/api/comprehensive.test.ts:969:5 › API Tests - Response Format Validation › should include pagination metadata (919ms)
+  ✓   81 [api-tests] › tests/api/comprehensive.test.ts:995:5 › API Tests - Error Handling › should handle database connection errors gracefully (164ms)
+  ✓   82 [api-tests] › tests/api/comprehensive.test.ts:1003:5 › API Tests - Error Handling › should return 404 for non-existent routes (161ms)
+  ✓   83 [api-tests] › tests/api/comprehensive.test.ts:1009:5 › API Tests - Error Handling › should handle malformed route parameters (44ms)
+  ✘   84 [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages (34ms)
+  ✓   85 [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures (121ms)
+  ✓   86 [api-tests] › tests/api/comprehensive.test.ts:1057:5 › API Tests - Rate Limiting › should include rate limit headers (78ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+  ✓   89 [api-tests] › tests/api/comprehensive.test.ts:930:5 › API Tests - Request Validation › should handle special characters in query params (8.1s)
+  ✓   88 [api-tests] › tests/api/comprehensive.test.ts:907:5 › API Tests - Request Validation › should validate required headers (8.1s)
+  ✓   93 [api-tests] › tests/api/comprehensive.test.ts:1100:5 › API Tests - Pagination Edge Cases › should handle negative page numbers (146ms)
+  ✓   90 [api-tests] › tests/api/comprehensive.test.ts:941:5 › API Tests - Response Format Validation › should return proper Content-Type headers (8.2s)
+  ✓   94 [api-tests] › tests/api/comprehensive.test.ts:1106:5 › API Tests - Pagination Edge Cases › should handle excessive page numbers (176ms)
+  ✓   92 [api-tests] › tests/api/comprehensive.test.ts:1093:5 › API Tests - Pagination Edge Cases › should handle page=0 (429ms)
+  ✓   96 [api-tests] › tests/api/comprehensive.test.ts:1122:5 › API Tests - Pagination Edge Cases › should enforce maximum limit (55ms)
+  ✘   95 [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 (447ms)
+  ✘   91 [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting (8.8s)
+  ✓   87 [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window (12.0s)
+  ✓   99 [api-tests] › tests/api/comprehensive.test.ts:1208:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests (147ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+  ✓  100 [api-tests] › tests/api/comprehensive.test.ts:1223:5 › API Tests - Cache Control › should support If-Modified-Since (161ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+  ✓   98 [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation (6.5s)
+  ✓  102 [api-tests] › tests/api/comprehensive.test.ts:1197:5 › API Tests - Cache Control › should include appropriate cache headers (7.7s)
+  ✘  101 [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates (9.2s)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+  ✓   97 [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely (10.5s)
+
+
+  1) [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      94 |         });
+      95 |
+    > 96 |         expect(response.status()).toBe(200);
+         |                                   ^
+      97 |
+      98 |         const data = await response.json();
+      99 |         expect(data).toHaveProperty('fileId');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:96:35
+
+  2) [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      114 |         });
+      115 |
+    > 116 |         expect(response.status()).toBe(200);
+          |                                   ^
+      117 |     });
+      118 |
+      119 |     test('POST /api/upload - should reject invalid file type', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:116:35
+
+  3) [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"Invalid file type"[39m
+    Received string:    [31m"No file uploaded"[39m
+
+      133 |         const data = await response.json();
+      134 |         expect(data).toHaveProperty('message');
+    > 135 |         expect(data.message).toContain('Invalid file type');
+          |                              ^
+      136 |     });
+      137 |
+      138 |     test('GET /api/files - should list uploaded files', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:135:30
+
+  4) [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      143 |
+      144 |         const data = await response.json();
+    > 145 |         expect(Array.isArray(data)).toBe(true);
+          |                                     ^
+      146 |
+      147 |         if (data.length > 0) {
+      148 |             expect(data[0]).toHaveProperty('id');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:145:37
+
+  5) [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      170 |         const response = await apiContext.get(`/api/files/${fileId}`);
+      171 |
+    > 172 |         expect(response.status()).toBe(200);
+          |                                   ^
+      173 |
+      174 |         const data = await response.json();
+      175 |         expect(data).toHaveProperty('id', fileId);
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:172:35
+
+  6) [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      195 |         const response = await apiContext.delete(`/api/files/${fileId}`);
+      196 |
+    > 197 |         expect(response.status()).toBe(200);
+          |                                   ^
+      198 |
+      199 |         const data = await response.json();
+      200 |         expect(data).toHaveProperty('message', 'File deleted successfully');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:197:35
+
+  7) [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"database"[39m
+    Received string:    [31m"bulk error 2"[39m
+
+      63 |             expect(Array.isArray(data.errors)).toBeTruthy();
+      64 |             data.errors.forEach((error: any) => {
+    > 65 |                 expect(error.message.toLowerCase()).toContain('database');
+         |                                                     ^
+      66 |             });
+      67 |         });
+      68 |
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:65:53)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:64:25
+
+  8) [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mfalse[39m
+    Received: [31mtrue[39m
+
+      74 |             expect(Array.isArray(data.errors)).toBeTruthy();
+      75 |             data.errors.forEach((error: any) => {
+    > 76 |                 expect(error.resolved).toBe(false);
+         |                                        ^
+      77 |             });
+      78 |         });
+      79 |
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:76:40)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:75:25
+
+  9) [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      348 |             const response = await apiContext.get('/api/errors/stats');
+      349 |
+    > 350 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      351 |             const stats = await response.json();
+      352 |             expect(stats).toHaveProperty('total');
+      353 |             expect(stats).toHaveProperty('bySeverity');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:350:35
+
+  10) [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      362 |             );
+      363 |
+    > 364 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      365 |             const stats = await response.json();
+      366 |             expect(stats).toHaveProperty('dateRange');
+      367 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:364:35
+
+  11) [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      510 |             });
+      511 |
+    > 512 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      513 |             const created = await response.json();
+      514 |             expect(created.kioskNumber).toBe(newKiosk.kioskNumber);
+      515 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:512:35
+
+  12) [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      718 |             });
+      719 |
+    > 720 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      721 |             const result = await response.json();
+      722 |             expect(result).toHaveProperty('fileId');
+      723 |             expect(result).toHaveProperty('filename');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:720:35
+
+  13) [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m413[39m
+    Received: [31m400[39m
+
+      737 |             });
+      738 |
+    > 739 |             expect(response.status()).toBe(413); // Payload Too Large
+          |                                       ^
+      740 |         });
+      741 |
+      742 |         test('should reject unsupported file types', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:739:39
+
+  14) [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      771 |             // Check status
+      772 |             const statusResponse = await apiContext.get(`/api/uploads/${upload.fileId}`);
+    > 773 |             expect(statusResponse.ok()).toBeTruthy();
+          |                                         ^
+      774 |
+      775 |             const status = await statusResponse.json();
+      776 |             expect(status).toHaveProperty('fileId');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:773:41
+
+  15) [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
+
+    Expected path: [32m"sessionToken"[39m
+    Received path: [31m[][39m
+
+    Received value: [31m{"email": "test@stacklens.ai", "provider": "firebase", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5NzgwOCwiZXhwIjoxNzY0MTg0MjA4fQ.w8I_oWN4yRVVlaGqgbSYnZmzOTIBN6U6ISQnwQXfMIg", "user": {"createdAt": "+057872-01-12T00:20:00.000Z", "department": null, "email": "test@stacklens.ai", "firstName": "Test", "id": 1, "isActive": true, "lastLogin": "2025-11-25T19:10:08.000Z", "lastName": "User", "profileImageUrl": "https://example.com/photo.jpg", "role": "admin", "updatedAt": "+057872-01-12T00:20:00.000Z", "username": "Test User"}, "userId": 1}[39m
+
+      794 |             expect(auth).toHaveProperty('userId');
+      795 |             expect(auth).toHaveProperty('email');
+    > 796 |             expect(auth).toHaveProperty('sessionToken');
+          |                          ^
+      797 |         });
+      798 |
+      799 |         test('should reject invalid token', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:796:26
+
+  16) [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      824 |             });
+      825 |
+    > 826 |             expect(logoutResponse.ok()).toBeTruthy();
+          |                                         ^
+      827 |         });
+      828 |     });
+      829 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:826:41
+
+  17) [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m201[39m
+    Received array: [31m[413, 400][39m
+
+      902 |         });
+      903 |
+    > 904 |         expect([413, 400]).toContain(response.status());
+          |                            ^
+      905 |     });
+      906 |
+      907 |     test('should validate required headers', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:904:28
+
+  18) [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      925 |         const response = await apiContext.get('/api/errors?page=invalid');
+      926 |
+    > 927 |         expect([400, 422]).toContain(response.status());
+          |                            ^
+      928 |     });
+      929 |
+      930 |     test('should handle special characters in query params', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:927:28
+
+  19) [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mundefined[39m
+
+      1021 |         const error = await response.json();
+      1022 |
+    > 1023 |         expect(error.message).toBeTruthy();
+           |                               ^
+      1024 |         expect(error.message.length).toBeGreaterThan(0);
+      1025 |     });
+      1026 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1023:31
+
+  20) [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5Nzc5NSwiZXhwIjoxNzY0MTg0MTk1fQ.v2B_hkbx-3wfGkS_eq5g7fV6Q681Edm-HC47ZgAa6Q0[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - x-test-force-ratelimit: true[22m
+
+        at apiRequestContext.get: connect ETIMEDOUT ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1043:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1042:32
+
+  21) [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      1117 |         const response = await apiContext.get('/api/errors?page=1&limit=0');
+      1118 |
+    > 1119 |         expect([400, 422]).toContain(response.status());
+           |                            ^
+      1120 |     });
+      1121 |
+      1122 |     test('should enforce maximum limit', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1119:28
+
+  22) [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m404[39m
+    Received array: [31m[200, 409][39m
+
+      1189 |         // All should succeed or have proper conflict handling
+      1190 |         responses.forEach(r => {
+    > 1191 |             expect([200, 409]).toContain(r.status());
+           |                                ^
+      1192 |         });
+      1193 |     });
+      1194 | });
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1191:32)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1190:19
+
+  22 failed
+    [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+    [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+    [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+    [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+    [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+    [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+    [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+    [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+    [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+    [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+    [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+    [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+    [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+    [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+    [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+    [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+    [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+    [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+    [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+    [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+    [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+    [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+  80 passed (1.2m)
+
+[36m  Serving HTML report at http://localhost:53543. Press Ctrl+C to quit.[39m
+wnloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097762276[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+  ✘   14 [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity (768ms)
+  ✘   15 [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors (710ms)
+  ✘   16 [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type (691ms)
+  ✘   17 [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination (853ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097764204[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097764337[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097764433[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097764439[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+  ✘   18 [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range (728ms)
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097764537[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+  ✘   19 [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status (765ms)
+  ✘   21 [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message (669ms)
+  ✘   20 [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store (686ms)
+  ✘   22 [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting (653ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097767057[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097767192[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+❌ API authentication failed: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+Call log:
+[2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+[2m    - accept: application/json[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - content-type: application/json[22m
+[2m    - content-length: 568[22m
+
+    at Object.apiContext [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mtests/fixtures.ts:98:47[90m)[39m {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    location: {
+      file: [32m'/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts'[39m,
+      line: [33m98[39m,
+      column: [33m47[39m,
+      function: [32m'Object.apiContext'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'POST "/api/auth/firebase-verify"'[39m,
+    apiName: [32m'apiRequestContext.post'[39m,
+    params: {
+      url: [32m'/api/auth/firebase-verify'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'POST'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [32m'{"idToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ"}'[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    group: [90mundefined[39m,
+    stepId: [32m'pw:api@28'[39m,
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@28'[39m,
+      _title: [32m'POST "/api/auth/firebase-verify"'[39m,
+      _parentStep: [36m[TestStepInfoImpl][39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1764097767408[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → POST http://localhost:4001/api/auth/firebase-verify\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-type: application/json\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - content-length: 568\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at apiRequestContext.post: connect ECONNREFUSED ::1:4001\n'[39m +
+        [32m'    at Object.apiContext (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/fixtures.ts:98:47)'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+  ✘   23 [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully (862ms)
+  ✘   24 [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error (1.0s)
+  ✘   25 [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields (1.0s)
+  ✓   26 [api-tests] › tests/api/comprehensive.test.ts:151:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate severity values (5.8s)
+  ✓   27 [api-tests] › tests/api/comprehensive.test.ts:165:9 › API Tests - Error Management Endpoints › POST /api/errors › should set default values for optional fields (5.5s)
+  ✓   28 [api-tests] › tests/api/comprehensive.test.ts:220:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should update error fields (123ms)
+  ✓   29 [api-tests] › tests/api/comprehensive.test.ts:253:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should validate updated field values (371ms)
+  ✓   31 [api-tests] › tests/api/comprehensive.test.ts:271:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should return 404 when updating non-existent error (71ms)
+  ✓   30 [api-tests] › tests/api/comprehensive.test.ts:281:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should delete error (61ms)
+  ✓   32 [api-tests] › tests/api/comprehensive.test.ts:304:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should return 404 when deleting non-existent error (27ms)
+  ✓   34 [api-tests] › tests/api/comprehensive.test.ts:330:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should handle validation errors in bulk creation (50ms)
+  ✓   33 [api-tests] › tests/api/comprehensive.test.ts:311:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should create multiple errors in bulk (62ms)
+  ✘   35 [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics (48ms)
+  ✘   36 [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range (44ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+  ✓   37 [api-tests] › tests/api/comprehensive.test.ts:185:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should retrieve specific error by ID (614ms)
+  ✓   38 [api-tests] › tests/api/comprehensive.test.ts:213:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 400 for invalid ID format (126ms)
+  ✓   40 [api-tests] › tests/api/comprehensive.test.ts:392:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as JSON (32ms)
+  ✓   39 [api-tests] › tests/api/comprehensive.test.ts:208:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 404 for non-existent error (146ms)
+  ✓   41 [api-tests] › tests/api/comprehensive.test.ts:405:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as Excel (40ms)
+  ✓   42 [api-tests] › tests/api/comprehensive.test.ts:422:9 › API Tests - Store & Kiosk Management › GET /api/stores › should retrieve all stores (49ms)
+  ✓   43 [api-tests] › tests/api/comprehensive.test.ts:430:9 › API Tests - Store & Kiosk Management › GET /api/stores › should support pagination for stores (57ms)
+  ✓   44 [api-tests] › tests/api/comprehensive.test.ts:438:9 › API Tests - Store & Kiosk Management › GET /api/stores › should search stores by name (286ms)
+  ✓   45 [api-tests] › tests/api/comprehensive.test.ts:446:9 › API Tests - Store & Kiosk Management › POST /api/stores › should create new store (339ms)
+  ✓   47 [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks (286ms)
+  ✓   46 [api-tests] › tests/api/comprehensive.test.ts:463:9 › API Tests - Store & Kiosk Management › POST /api/stores › should prevent duplicate store numbers (404ms)
+  ✓   48 [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store (519ms)
+  ✓   51 [api-tests] › tests/api/comprehensive.test.ts:535:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should initiate ML training job (85ms)
+  ✓   50 [api-tests] › tests/api/comprehensive.test.ts:517:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should validate kiosk belongs to valid store (108ms)
+  ✘   49 [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk (156ms)
+  ✓   53 [api-tests] › tests/api/comprehensive.test.ts:568:9 › API Tests - ML Training Endpoints › GET /api/ml/jobs/:jobId › should retrieve training job status (194ms)
+  ✓   52 [api-tests] › tests/api/comprehensive.test.ts:554:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should validate training configuration (185ms)
+  ✓   54 [api-tests] › tests/api/comprehensive.test.ts:615:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should list all trained models (40ms)
+  ✓   55 [api-tests] › tests/api/comprehensive.test.ts:623:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should filter models by status (40ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+  ✓   57 [api-tests] › tests/api/comprehensive.test.ts:655:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should handle timeout for long-running analysis (68ms)
+  ✓   56 [api-tests] › tests/api/comprehensive.test.ts:637:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should analyze error with AI (152ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+  ✓   59 [api-tests] › tests/api/comprehensive.test.ts:685:9 › API Tests - AI Analysis Endpoints › POST /api/ai/summarize › should summarize multiple errors (56ms)
+  ✓   58 [api-tests] › tests/api/comprehensive.test.ts:666:9 › API Tests - AI Analysis Endpoints › POST /api/ai/suggest › should provide fix suggestions (71ms)
+  ✘   61 [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit (69ms)
+  ✘   60 [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload (161ms)
+  ✓   63 [api-tests] › tests/api/comprehensive.test.ts:369:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should provide statistics by store (228ms)
+  ✓   62 [api-tests] › tests/api/comprehensive.test.ts:379:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as CSV (218ms)
+  ✓   65 [api-tests] › tests/api/comprehensive.test.ts:799:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should reject invalid token (115ms)
+  ✘   64 [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token (154ms)
+  ✘   66 [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user (47ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+  ✓   67 [api-tests] › tests/api/comprehensive.test.ts:594:9 › API Tests - ML Training Endpoints › POST /api/ml/predict › should make prediction with trained model (551ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+  ✓   68 [api-tests] › tests/api/comprehensive.test.ts:871:5 › API Tests - Request Validation › should reject requests with invalid Content-Type (499ms)
+  ✓   69 [api-tests] › tests/api/comprehensive.test.ts:882:5 › API Tests - Request Validation › should validate JSON syntax (172ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+  ✘   71 [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size (329ms)
+  ✓   70 [api-tests] › tests/api/comprehensive.test.ts:742:9 › API Tests - File Upload & Processing › POST /api/upload › should reject unsupported file types (641ms)
+  ✘   72 [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status (791ms)
+  ✓   75 [api-tests] › tests/api/comprehensive.test.ts:918:5 › API Tests - Request Validation › should handle missing request body (504ms)
+  ✓   73 [api-tests] › tests/api/comprehensive.test.ts:831:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should require admin role (950ms)
+Auth response: {
+  user: {
+    id: [33m1[39m,
+    username: [32m'Test User'[39m,
+    email: [32m'test@stacklens.ai'[39m,
+    role: [32m'admin'[39m,
+    firstName: [32m'Test'[39m,
+    lastName: [32m'User'[39m,
+    profileImageUrl: [32m'https://example.com/avatar.jpg'[39m,
+    department: [1mnull[22m,
+    isActive: [33mtrue[39m,
+    lastLogin: [32m'2025-11-25T19:09:41.000Z'[39m,
+    createdAt: [32m'+057872-01-12T00:20:00.000Z'[39m,
+    updatedAt: [32m'+057872-01-12T00:20:00.000Z'[39m
+  },
+  token: [32m'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5Nzc4MSwiZXhwIjoxNzY0MTg0MTgxfQ.n5MJrmf56EP-3xyoWGkxNTc_isgD9i9Us7R1_hKQ284'[39m,
+  provider: [32m'firebase'[39m
+}
+  ✓   74 [api-tests] › tests/api/comprehensive.test.ts:838:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should allow access with admin token (1.0s)
+  ✓   76 [api-tests] › tests/api/comprehensive.test.ts:930:5 › API Tests - Request Validation › should handle special characters in query params (297ms)
+  ✓   79 [api-tests] › tests/api/comprehensive.test.ts:959:5 › API Tests - Response Format Validation › should return consistent error response format (217ms)
+  ✓   78 [api-tests] › tests/api/comprehensive.test.ts:948:5 › API Tests - Response Format Validation › should include CORS headers (221ms)
+  ✓   77 [api-tests] › tests/api/comprehensive.test.ts:941:5 › API Tests - Response Format Validation › should return proper Content-Type headers (351ms)
+  ✓   81 [api-tests] › tests/api/comprehensive.test.ts:981:5 › API Tests - Response Format Validation › should return timestamps in ISO format (197ms)
+  ✓   80 [api-tests] › tests/api/comprehensive.test.ts:969:5 › API Tests - Response Format Validation › should include pagination metadata (235ms)
+  ✓   82 [api-tests] › tests/api/comprehensive.test.ts:995:5 › API Tests - Error Handling › should handle database connection errors gracefully (237ms)
+  ✓   83 [api-tests] › tests/api/comprehensive.test.ts:1003:5 › API Tests - Error Handling › should return 404 for non-existent routes (258ms)
+  ✓   84 [api-tests] › tests/api/comprehensive.test.ts:1009:5 › API Tests - Error Handling › should handle malformed route parameters (239ms)
+  ✘   85 [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages (367ms)
+  ✓   86 [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures (825ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+  ✘   88 [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window (8.3s)
+  ✘   87 [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting (9.1s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+  ✓   89 [api-tests] › tests/api/comprehensive.test.ts:907:5 › API Tests - Request Validation › should validate required headers (11.7s)
+  ✓   91 [api-tests] › tests/api/comprehensive.test.ts:1057:5 › API Tests - Rate Limiting › should include rate limit headers (10.2s)
+  ✓   94 [api-tests] › tests/api/comprehensive.test.ts:1106:5 › API Tests - Pagination Edge Cases › should handle excessive page numbers (217ms)
+  ✓   96 [api-tests] › tests/api/comprehensive.test.ts:1122:5 › API Tests - Pagination Edge Cases › should enforce maximum limit (102ms)
+  ✘   95 [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 (271ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+  ✘   90 [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats (12.5s)
+  ✓   93 [api-tests] › tests/api/comprehensive.test.ts:1093:5 › API Tests - Pagination Edge Cases › should handle page=0 (4.4s)
+  ✓   92 [api-tests] › tests/api/comprehensive.test.ts:1100:5 › API Tests - Pagination Edge Cases › should handle negative page numbers (4.5s)
+  ✓   99 [api-tests] › tests/api/comprehensive.test.ts:1197:5 › API Tests - Cache Control › should include appropriate cache headers (102ms)
+  ✓  101 [api-tests] › tests/api/comprehensive.test.ts:1223:5 › API Tests - Cache Control › should support If-Modified-Since (130ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+  ✓  100 [api-tests] › tests/api/comprehensive.test.ts:1208:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests (458ms)
+  ✓   97 [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely (3.9s)
+  ✓   98 [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation (3.3s)
+  ✘  102 [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates (2.6s)
+
+
+  1) [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/auth/firebase-signin[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: application/json[22m
+    [2m    - content-length: 58[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:12:43
+
+  2) [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/auth/firebase-verify[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: application/json[22m
+    [2m    - content-length: 30[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:29:43
+
+  3) [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/auth/me[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:44:43
+
+  4) [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/auth/firebase-signin[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: application/json[22m
+    [2m    - content-length: 27[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:56:43
+
+  5) [api-tests] › tests/api/auth-upload.test.ts:68:5 › Authentication API › GET /api/auth/me - should reject unauthenticated request 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/auth/me[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:69:40
+
+  6) [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: multipart/form-data; boundary=----WebKitFormBoundaryrOZiq7TBEgBA389e[22m
+    [2m    - content-length: 254[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:86:43
+
+  7) [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: multipart/form-data; boundary=----WebKitFormBoundaryvgUw3SeCrWNxTVxW[22m
+    [2m    - content-length: 220[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:106:43
+
+  8) [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: multipart/form-data; boundary=----WebKitFormBoundaryBFPWOYDvXnhj9Veo[22m
+    [2m    - content-length: 196[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:121:43
+
+  9) [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/files[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:140:43
+
+  10) [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: multipart/form-data; boundary=----WebKitFormBoundary641iHBu494lYNILd[22m
+    [2m    - content-length: 242[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:157:49
+
+  11) [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: multipart/form-data; boundary=----WebKitFormBoundaryVhkJcJpiNFtgibGv[22m
+    [2m    - content-length: 242[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:182:49
+
+  12) [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:6:47
+
+  13) [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=1&limit=10[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:14:47
+
+  14) [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?severity=critical[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:26:47
+
+  15) [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?errorType=Runtime[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:37:47
+
+  16) [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?startDate=2025-01-01&endDate=2025-12-31[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:51:47
+
+  17) [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?search=database[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:59:47
+
+  18) [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?resolved=false[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:70:47
+
+  19) [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?store=STORE-0001[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:81:47
+
+  20) [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?sortBy=timestamp&order=desc[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:92:47
+
+  21) [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=-1&limit=1000[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:106:47
+
+  22) [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: application/json[22m
+    [2m    - content-length: 139[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:125:47
+
+  23) [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: application/json[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - content-type: application/json[22m
+    [2m    - content-length: 19[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:142:47
+
+  24) [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      348 |             const response = await apiContext.get('/api/errors/stats');
+      349 |
+    > 350 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      351 |             const stats = await response.json();
+      352 |             expect(stats).toHaveProperty('total');
+      353 |             expect(stats).toHaveProperty('bySeverity');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:350:35
+
+  25) [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      362 |             );
+      363 |
+    > 364 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      365 |             const stats = await response.json();
+      366 |             expect(stats).toHaveProperty('dateRange');
+      367 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:364:35
+
+  26) [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      510 |             });
+      511 |
+    > 512 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      513 |             const created = await response.json();
+      514 |             expect(created.kioskNumber).toBe(newKiosk.kioskNumber);
+      515 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:512:35
+
+  27) [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      718 |             });
+      719 |
+    > 720 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      721 |             const result = await response.json();
+      722 |             expect(result).toHaveProperty('fileId');
+      723 |             expect(result).toHaveProperty('filename');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:720:35
+
+  28) [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m413[39m
+    Received: [31m400[39m
+
+      737 |             });
+      738 |
+    > 739 |             expect(response.status()).toBe(413); // Payload Too Large
+          |                                       ^
+      740 |         });
+      741 |
+      742 |         test('should reject unsupported file types', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:739:39
+
+  29) [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      771 |             // Check status
+      772 |             const statusResponse = await apiContext.get(`/api/uploads/${upload.fileId}`);
+    > 773 |             expect(statusResponse.ok()).toBeTruthy();
+          |                                         ^
+      774 |
+      775 |             const status = await statusResponse.json();
+      776 |             expect(status).toHaveProperty('fileId');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:773:41
+
+  30) [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
+
+    Expected path: [32m"sessionToken"[39m
+    Received path: [31m[][39m
+
+    Received value: [31m{"email": "test@stacklens.ai", "provider": "firebase", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5Nzc3NiwiZXhwIjoxNzY0MTg0MTc2fQ.rcY5r5YfFfu-m4VBM7M6-y9jXoqDGvP0ZQuGrm3ITAo", "user": {"createdAt": "+057872-01-12T00:20:00.000Z", "department": null, "email": "test@stacklens.ai", "firstName": "Test", "id": 1, "isActive": true, "lastLogin": "2025-11-25T19:09:36.000Z", "lastName": "User", "profileImageUrl": "https://example.com/photo.jpg", "role": "admin", "updatedAt": "+057872-01-12T00:20:00.000Z", "username": "Test User"}, "userId": 1}[39m
+
+      794 |             expect(auth).toHaveProperty('userId');
+      795 |             expect(auth).toHaveProperty('email');
+    > 796 |             expect(auth).toHaveProperty('sessionToken');
+          |                          ^
+      797 |         });
+      798 |
+      799 |         test('should reject invalid token', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:796:26
+
+  31) [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      824 |             });
+      825 |
+    > 826 |             expect(logoutResponse.ok()).toBeTruthy();
+          |                                         ^
+      827 |         });
+      828 |     });
+      829 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:826:41
+
+  32) [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m201[39m
+    Received array: [31m[413, 400][39m
+
+      902 |         });
+      903 |
+    > 904 |         expect([413, 400]).toContain(response.status());
+          |                            ^
+      905 |     });
+      906 |
+      907 |     test('should validate required headers', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:904:28
+
+  33) [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      925 |         const response = await apiContext.get('/api/errors?page=invalid');
+      926 |
+    > 927 |         expect([400, 422]).toContain(response.status());
+          |                            ^
+      928 |     });
+      929 |
+      930 |     test('should handle special characters in query params', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:927:28
+
+  34) [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mundefined[39m
+
+      1021 |         const error = await response.json();
+      1022 |
+    > 1023 |         expect(error.message).toBeTruthy();
+           |                               ^
+      1024 |         expect(error.message.length).toBeGreaterThan(0);
+      1025 |     });
+      1026 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1023:31
+
+  35) [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5Nzc4MiwiZXhwIjoxNzY0MTg0MTgyfQ.6jRKK_GUdtKz1gNFr7kgq7JlVH-TAXjyeZ75PfsJOw0[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - x-test-force-ratelimit: true[22m
+
+        at apiRequestContext.get: connect ETIMEDOUT ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1043:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1042:32
+
+  36) [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5Nzc4MywiZXhwIjoxNzY0MTg0MTgzfQ.b3n-XeL9VQjgHdAONIAfbmqzyDYyx-pf5-v4eYcQQUU[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - x-test-force-ratelimit: true[22m
+
+        at apiRequestContext.get: connect ETIMEDOUT ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1076:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1075:39
+
+  37) [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      1117 |         const response = await apiContext.get('/api/errors?page=1&limit=0');
+      1118 |
+    > 1119 |         expect([400, 422]).toContain(response.status());
+           |                            ^
+      1120 |     });
+      1121 |
+      1122 |     test('should enforce maximum limit', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1119:28
+
+  38) [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m404[39m
+    Received array: [31m[200, 409][39m
+
+      1189 |         // All should succeed or have proper conflict handling
+      1190 |         responses.forEach(r => {
+    > 1191 |             expect([200, 409]).toContain(r.status());
+           |                                ^
+      1192 |         });
+      1193 |     });
+      1194 | });
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1191:32)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1190:19
+
+  38 failed
+    [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user 
+    [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token 
+    [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user 
+    [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token 
+    [api-tests] › tests/api/auth-upload.test.ts:68:5 › Authentication API › GET /api/auth/me - should reject unauthenticated request 
+    [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+    [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+    [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+    [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+    [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+    [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+    [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors 
+    [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination 
+    [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity 
+    [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type 
+    [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range 
+    [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+    [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+    [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store 
+    [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting 
+    [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully 
+    [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error 
+    [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields 
+    [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+    [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+    [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+    [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+    [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+    [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+    [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+    [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+    [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+    [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+    [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+    [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+    [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+    [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+    [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+  64 passed (54.9s)
+
+[36m  Serving HTML report at http://localhost:52856. Press Ctrl+C to quit.[39m

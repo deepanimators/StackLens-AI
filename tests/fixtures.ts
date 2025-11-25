@@ -42,7 +42,7 @@ export const test = base.extend<StackLensFixtures>({
         // Create new request context with API base URL (use 4001 for dev server)
         const apiPort = process.env.API_PORT || '4001';
         const apiContext = await playwright.request.newContext({
-            baseURL: `http://localhost:${apiPort}`,
+            baseURL: `http://127.0.0.1:${apiPort}`,
         });
 
         // Try to load token from auth storage state
@@ -70,7 +70,7 @@ export const test = base.extend<StackLensFixtures>({
                 if (token) {
                     await apiContext.dispose();
                     const authenticatedContext = await playwright.request.newContext({
-                        baseURL: `http://localhost:${apiPort}`,
+                        baseURL: `http://127.0.0.1:${apiPort}`,
                         extraHTTPHeaders: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export const test = base.extend<StackLensFixtures>({
                         // Use mock JWT directly - it should work with our updated auth service
                         await apiContext.dispose();
                         const fallbackContext = await playwright.request.newContext({
-                            baseURL: `http://localhost:${apiPort}`,
+                            baseURL: `http://127.0.0.1:${apiPort}`,
                             extraHTTPHeaders: {
                                 'Authorization': `Bearer ${process.env.TEST_FIREBASE_TOKEN}`,
                                 'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ export const test = base.extend<StackLensFixtures>({
             // Dispose current context and create authenticated one
             await apiContext.dispose();
             const authenticatedContext = await playwright.request.newContext({
-                baseURL: `http://localhost:${apiPort}`,
+                baseURL: `http://127.0.0.1:${apiPort}`,
                 extraHTTPHeaders: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',

@@ -83,3 +83,492 @@ Using TEST_FIREBASE_TOKEN for authentication...
   ✓   45 [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks (19ms)
   ✓   46 [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store (17ms)
   ✘   47 [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk (28ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+  ✓   49 [api-tests] › tests/api/comprehensive.test.ts:405:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as Excel (94ms)
+  ✓   48 [api-tests] › tests/api/comprehensive.test.ts:379:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as CSV (105ms)
+  ✓   50 [api-tests] › tests/api/comprehensive.test.ts:392:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as JSON (110ms)
+  ✓   52 [api-tests] › tests/api/comprehensive.test.ts:535:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should initiate ML training job (127ms)
+  ✓   53 [api-tests] › tests/api/comprehensive.test.ts:554:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should validate training configuration (136ms)
+  ✓   54 [api-tests] › tests/api/comprehensive.test.ts:568:9 › API Tests - ML Training Endpoints › GET /api/ml/jobs/:jobId › should retrieve training job status (40ms)
+  ✓   51 [api-tests] › tests/api/comprehensive.test.ts:422:9 › API Tests - Store & Kiosk Management › GET /api/stores › should retrieve all stores (186ms)
+  ✓   56 [api-tests] › tests/api/comprehensive.test.ts:615:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should list all trained models (53ms)
+  ✓   57 [api-tests] › tests/api/comprehensive.test.ts:623:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should filter models by status (55ms)
+  ✓   55 [api-tests] › tests/api/comprehensive.test.ts:594:9 › API Tests - ML Training Endpoints › POST /api/ml/predict › should make prediction with trained model (69ms)
+  ✓   59 [api-tests] › tests/api/comprehensive.test.ts:655:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should handle timeout for long-running analysis (47ms)
+  ✓   58 [api-tests] › tests/api/comprehensive.test.ts:637:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should analyze error with AI (75ms)
+  ✓   61 [api-tests] › tests/api/comprehensive.test.ts:685:9 › API Tests - AI Analysis Endpoints › POST /api/ai/summarize › should summarize multiple errors (44ms)
+  ✘   62 [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload (32ms)
+  ✓   64 [api-tests] › tests/api/comprehensive.test.ts:742:9 › API Tests - File Upload & Processing › POST /api/upload › should reject unsupported file types (33ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+  ✘   65 [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token (32ms)
+  ✘   63 [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit (57ms)
+  ✓   60 [api-tests] › tests/api/comprehensive.test.ts:666:9 › API Tests - AI Analysis Endpoints › POST /api/ai/suggest › should provide fix suggestions (155ms)
+  ✓   66 [api-tests] › tests/api/comprehensive.test.ts:831:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should require admin role (26ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+Auth response: {
+  user: {
+    id: [33m1[39m,
+    username: [32m'Test User'[39m,
+    email: [32m'test@stacklens.ai'[39m,
+    role: [32m'admin'[39m,
+    firstName: [32m'Test'[39m,
+    lastName: [32m'User'[39m,
+    profileImageUrl: [32m'https://example.com/avatar.jpg'[39m,
+    department: [1mnull[22m,
+    isActive: [33mtrue[39m,
+    lastLogin: [32m'2025-11-25T19:07:50.000Z'[39m,
+    createdAt: [32m'+057872-01-12T00:20:00.000Z'[39m,
+    updatedAt: [32m'+057872-01-12T00:20:00.000Z'[39m
+  },
+  token: [32m'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5NzY3MCwiZXhwIjoxNzY0MTg0MDcwfQ.CF7mXeYcv1cfxsu-o2kkZxQN84mKwJHYRci9jz2P348'[39m,
+  provider: [32m'firebase'[39m
+}
+  ✓   68 [api-tests] › tests/api/comprehensive.test.ts:838:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should allow access with admin token (19ms)
+  ✓   69 [api-tests] › tests/api/comprehensive.test.ts:871:5 › API Tests - Request Validation › should reject requests with invalid Content-Type (17ms)
+  ✓   67 [api-tests] › tests/api/comprehensive.test.ts:517:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should validate kiosk belongs to valid store (81ms)
+[2m[WebServer] [22m❌ Server error: SyntaxError: Unexpected token '"', ""{invalid json}"" is not valid JSON
+[2m[WebServer] [22m    at JSON.parse (<anonymous>)
+[2m[WebServer] [22m    at createStrictSyntaxError [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:169:10[90m)[39m
+[2m[WebServer] [22m    at parse [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:86:15[90m)[39m
+[2m[WebServer] [22m    at [90m/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/read.js:128:18
+[2m[WebServer] [22m[90m    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)[39m
+[2m[WebServer] [22m    at invokeCallback [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:238:16[90m)[39m
+[2m[WebServer] [22m    at done [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:227:7[90m)[39m
+[2m[WebServer] [22m    at IncomingMessage.onEnd [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:287:7[90m)[39m
+[2m[WebServer] [22m[90m    at IncomingMessage.emit (node:events:518:28)[39m
+[2m[WebServer] [22m[90m    at endReadableNT (node:internal/streams/readable:1698:12)[39m {
+[2m[WebServer] [22m  expose: [33mtrue[39m,
+[2m[WebServer] [22m  statusCode: [33m400[39m,
+[2m[WebServer] [22m  status: [33m400[39m,
+[2m[WebServer] [22m  body: [32m'"{invalid json}"'[39m,
+[2m[WebServer] [22m  type: [32m'entity.parse.failed'[39m
+[2m[WebServer] [22m}
+  ✓   70 [api-tests] › tests/api/comprehensive.test.ts:882:5 › API Tests - Request Validation › should validate JSON syntax (19ms)
+  ✓   72 [api-tests] › tests/api/comprehensive.test.ts:907:5 › API Tests - Request Validation › should validate required headers (260ms)
+  ✘   71 [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size (222ms)
+  ✓   73 [api-tests] › tests/api/comprehensive.test.ts:918:5 › API Tests - Request Validation › should handle missing request body (450ms)
+  ✓   74 [api-tests] › tests/api/comprehensive.test.ts:930:5 › API Tests - Request Validation › should handle special characters in query params (30ms)
+  ✓   75 [api-tests] › tests/api/comprehensive.test.ts:941:5 › API Tests - Response Format Validation › should return proper Content-Type headers (43ms)
+  ✓   76 [api-tests] › tests/api/comprehensive.test.ts:948:5 › API Tests - Response Format Validation › should include CORS headers (46ms)
+  ✓   77 [api-tests] › tests/api/comprehensive.test.ts:959:5 › API Tests - Response Format Validation › should return consistent error response format (45ms)
+  ✓   78 [api-tests] › tests/api/comprehensive.test.ts:969:5 › API Tests - Response Format Validation › should include pagination metadata (68ms)
+  ✓   79 [api-tests] › tests/api/comprehensive.test.ts:981:5 › API Tests - Response Format Validation › should return timestamps in ISO format (45ms)
+  ✓   80 [api-tests] › tests/api/comprehensive.test.ts:995:5 › API Tests - Error Handling › should handle database connection errors gracefully (41ms)
+  ✓   81 [api-tests] › tests/api/comprehensive.test.ts:1003:5 › API Tests - Error Handling › should return 404 for non-existent routes (17ms)
+  ✓   82 [api-tests] › tests/api/comprehensive.test.ts:1009:5 › API Tests - Error Handling › should handle malformed route parameters (13ms)
+  ✘   83 [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages (18ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+  ✘   84 [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status (210ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+  ✓   85 [api-tests] › tests/api/comprehensive.test.ts:799:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should reject invalid token (208ms)
+  ✘   86 [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user (294ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+  ✓   87 [api-tests] › tests/api/comprehensive.test.ts:1057:5 › API Tests - Rate Limiting › should include rate limit headers (121ms)
+  ✓   88 [api-tests] › tests/api/comprehensive.test.ts:1093:5 › API Tests - Pagination Edge Cases › should handle page=0 (117ms)
+  ✓   90 [api-tests] › tests/api/comprehensive.test.ts:1100:5 › API Tests - Pagination Edge Cases › should handle negative page numbers (14ms)
+  ✓   91 [api-tests] › tests/api/comprehensive.test.ts:1106:5 › API Tests - Pagination Edge Cases › should handle excessive page numbers (25ms)
+  ✘   89 [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats (444ms)
+  ✘   92 [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 (333ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+  ✓   93 [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures (940ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+  ✓   95 [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation (103ms)
+  ✘   97 [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates (87ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+  ✘   94 [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting (6.9s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+  ✘   98 [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely (8.4s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+  ✓   99 [api-tests] › tests/api/comprehensive.test.ts:1122:5 › API Tests - Pagination Edge Cases › should enforce maximum limit (11.8s)
+  ✓  101 [api-tests] › tests/api/comprehensive.test.ts:1208:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests (6.2s)
+  ✓   96 [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window (13.4s)
+  ✓  102 [api-tests] › tests/api/comprehensive.test.ts:1223:5 › API Tests - Cache Control › should support If-Modified-Since (4.1s)
+  ✓  100 [api-tests] › tests/api/comprehensive.test.ts:1197:5 › API Tests - Cache Control › should include appropriate cache headers (10.2s)
+
+
+  1) [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      94 |         });
+      95 |
+    > 96 |         expect(response.status()).toBe(200);
+         |                                   ^
+      97 |
+      98 |         const data = await response.json();
+      99 |         expect(data).toHaveProperty('fileId');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:96:35
+
+  2) [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      114 |         });
+      115 |
+    > 116 |         expect(response.status()).toBe(200);
+          |                                   ^
+      117 |     });
+      118 |
+      119 |     test('POST /api/upload - should reject invalid file type', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:116:35
+
+  3) [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"Invalid file type"[39m
+    Received string:    [31m"No file uploaded"[39m
+
+      133 |         const data = await response.json();
+      134 |         expect(data).toHaveProperty('message');
+    > 135 |         expect(data.message).toContain('Invalid file type');
+          |                              ^
+      136 |     });
+      137 |
+      138 |     test('GET /api/files - should list uploaded files', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:135:30
+
+  4) [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      143 |
+      144 |         const data = await response.json();
+    > 145 |         expect(Array.isArray(data)).toBe(true);
+          |                                     ^
+      146 |
+      147 |         if (data.length > 0) {
+      148 |             expect(data[0]).toHaveProperty('id');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:145:37
+
+  5) [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      170 |         const response = await apiContext.get(`/api/files/${fileId}`);
+      171 |
+    > 172 |         expect(response.status()).toBe(200);
+          |                                   ^
+      173 |
+      174 |         const data = await response.json();
+      175 |         expect(data).toHaveProperty('id', fileId);
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:172:35
+
+  6) [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      195 |         const response = await apiContext.delete(`/api/files/${fileId}`);
+      196 |
+    > 197 |         expect(response.status()).toBe(200);
+          |                                   ^
+      198 |
+      199 |         const data = await response.json();
+      200 |         expect(data).toHaveProperty('message', 'File deleted successfully');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:197:35
+
+  7) [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      348 |             const response = await apiContext.get('/api/errors/stats');
+      349 |
+    > 350 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      351 |             const stats = await response.json();
+      352 |             expect(stats).toHaveProperty('total');
+      353 |             expect(stats).toHaveProperty('bySeverity');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:350:35
+
+  8) [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      362 |             );
+      363 |
+    > 364 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      365 |             const stats = await response.json();
+      366 |             expect(stats).toHaveProperty('dateRange');
+      367 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:364:35
+
+  9) [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      510 |             });
+      511 |
+    > 512 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      513 |             const created = await response.json();
+      514 |             expect(created.kioskNumber).toBe(newKiosk.kioskNumber);
+      515 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:512:35
+
+  10) [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      718 |             });
+      719 |
+    > 720 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      721 |             const result = await response.json();
+      722 |             expect(result).toHaveProperty('fileId');
+      723 |             expect(result).toHaveProperty('filename');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:720:35
+
+  11) [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m413[39m
+    Received: [31m400[39m
+
+      737 |             });
+      738 |
+    > 739 |             expect(response.status()).toBe(413); // Payload Too Large
+          |                                       ^
+      740 |         });
+      741 |
+      742 |         test('should reject unsupported file types', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:739:39
+
+  12) [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      771 |             // Check status
+      772 |             const statusResponse = await apiContext.get(`/api/uploads/${upload.fileId}`);
+    > 773 |             expect(statusResponse.ok()).toBeTruthy();
+          |                                         ^
+      774 |
+      775 |             const status = await statusResponse.json();
+      776 |             expect(status).toHaveProperty('fileId');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:773:41
+
+  13) [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
+
+    Expected path: [32m"sessionToken"[39m
+    Received path: [31m[][39m
+
+    Received value: [31m{"email": "test@stacklens.ai", "provider": "firebase", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5NzY2OSwiZXhwIjoxNzY0MTg0MDY5fQ.vfo90wMkk6P_sdeL1Ei3Y8zXXF0EPEP0Km9jr1CGFDg", "user": {"createdAt": "+057872-01-12T00:20:00.000Z", "department": null, "email": "test@stacklens.ai", "firstName": "Test", "id": 1, "isActive": true, "lastLogin": "2025-11-25T19:07:49.000Z", "lastName": "User", "profileImageUrl": "https://example.com/photo.jpg", "role": "admin", "updatedAt": "+057872-01-12T00:20:00.000Z", "username": "Test User"}, "userId": 1}[39m
+
+      794 |             expect(auth).toHaveProperty('userId');
+      795 |             expect(auth).toHaveProperty('email');
+    > 796 |             expect(auth).toHaveProperty('sessionToken');
+          |                          ^
+      797 |         });
+      798 |
+      799 |         test('should reject invalid token', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:796:26
+
+  14) [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      824 |             });
+      825 |
+    > 826 |             expect(logoutResponse.ok()).toBeTruthy();
+          |                                         ^
+      827 |         });
+      828 |     });
+      829 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:826:41
+
+  15) [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m201[39m
+    Received array: [31m[413, 400][39m
+
+      902 |         });
+      903 |
+    > 904 |         expect([413, 400]).toContain(response.status());
+          |                            ^
+      905 |     });
+      906 |
+      907 |     test('should validate required headers', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:904:28
+
+  16) [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      925 |         const response = await apiContext.get('/api/errors?page=invalid');
+      926 |
+    > 927 |         expect([400, 422]).toContain(response.status());
+          |                            ^
+      928 |     });
+      929 |
+      930 |     test('should handle special characters in query params', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:927:28
+
+  17) [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mundefined[39m
+
+      1021 |         const error = await response.json();
+      1022 |
+    > 1023 |         expect(error.message).toBeTruthy();
+           |                               ^
+      1024 |         expect(error.message.length).toBeGreaterThan(0);
+      1025 |     });
+      1026 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1023:31
+
+  18) [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+
+    Error: apiRequestContext.get: Parse Error: Expected HTTP/, RTSP/ or ICE/
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5NzY2MiwiZXhwIjoxNzY0MTg0MDYyfQ.TcG1NOZ2Vop39N6qMlvIihiYErM6HvHsVBgk5h-fpeA[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - x-test-force-ratelimit: true[22m
+    [2m  - ← 200 OK[22m
+    [2m    - x-powered-by: Express[22m
+    [2m    - vary: Origin[22m
+    [2m    - access-control-allow-credentials: true[22m
+    [2m    - ratelimit-policy: 100;w=1[22m
+    [2m    - ratelimit-limit: 100[22m
+    [2m    - ratelimit-remaining: 76[22m
+    [2m    - ratelimit-reset: 1[22m
+    [2m    - content-type: application/json; charset=utf-8[22m
+    [2m    - content-length: 3009604[22m
+    [2m    - etag: W/"2dec44-YqSyzd7eJaLlIszv+r3zJMnxohE"[22m
+    [2m    - date: Tue, 25 Nov 2025 19:07:55 GMT[22m
+    [2m    - connection: keep-alive[22m
+    [2m    - keep-alive: timeout=5[22m
+
+
+      1041 |     test('should implement rate limiting', async ({ apiContext }) => {
+      1042 |         const requests = Array.from({ length: 150 }, () =>
+    > 1043 |             apiContext.get('/api/errors', {
+           |                        ^
+      1044 |                 headers: { 'x-test-force-ratelimit': 'true' }
+      1045 |             })
+      1046 |         );
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1043:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1042:32
+
+  19) [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      1117 |         const response = await apiContext.get('/api/errors?page=1&limit=0');
+      1118 |
+    > 1119 |         expect([400, 422]).toContain(response.status());
+           |                            ^
+      1120 |     });
+      1121 |
+      1122 |     test('should enforce maximum limit', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1119:28
+
+  20) [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5NzY2MiwiZXhwIjoxNzY0MTg0MDYyfQ.TcG1NOZ2Vop39N6qMlvIihiYErM6HvHsVBgk5h-fpeA[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ETIMEDOUT ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1138:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1137:32
+
+  21) [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m404[39m
+    Received array: [31m[200, 409][39m
+
+      1189 |         // All should succeed or have proper conflict handling
+      1190 |         responses.forEach(r => {
+    > 1191 |             expect([200, 409]).toContain(r.status());
+           |                                ^
+      1192 |         });
+      1193 |     });
+      1194 | });
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1191:32)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1190:19
+
+  21 failed
+    [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+    [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+    [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+    [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+    [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+    [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+    [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+    [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+    [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+    [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+    [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+    [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+    [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+    [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+    [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+    [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+    [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+    [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+    [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+    [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+    [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+  81 passed (34.0s)
+
+[36m  Serving HTML report at http://localhost:51159. Press Ctrl+C to quit.[39m

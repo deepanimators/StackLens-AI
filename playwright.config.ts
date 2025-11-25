@@ -65,7 +65,7 @@ export default defineConfig({
             name: 'api-tests',
             testMatch: /tests\/api\/.*\.test\.ts/,
             use: {
-                baseURL: 'http://localhost:4001',
+                baseURL: 'http://127.0.0.1:4001',
                 storageState: 'tests/.auth/user.json',
             },
             dependencies: ['setup'],
@@ -176,10 +176,10 @@ export default defineConfig({
         // Backend API server (using test:server to disable rate limiting)
         {
             command: 'PORT=4001 pnpm run test:server',
-            url: 'http://localhost:4001/health',
+            url: 'http://127.0.0.1:4001/health',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,
-            stdout: 'ignore',
+            stdout: 'pipe',
             stderr: 'pipe',
         },
         // Frontend client server
