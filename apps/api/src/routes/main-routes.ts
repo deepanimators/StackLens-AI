@@ -3247,6 +3247,11 @@ Format as JSON with the following structure:
           }
         }
 
+        // Generate default name if not provided (required by schema)
+        if (!kioskData.name) {
+          kioskData.name = `Kiosk ${kioskData.kioskNumber}`;
+        }
+
         // Validate store exists if storeId provided
         if (kioskData.storeId) {
           const stores = await storage.getAllStores();
@@ -5575,12 +5580,18 @@ Format as JSON with the following structure:
 
       // Validation - message and severity required, errorType defaults to 'Unknown'
       if (!errorData.message || !errorData.severity) {
-        return res.status(400).json({ error: "Missing required fields: message and severity" });
+        return res.status(400).json({
+          error: "Missing required fields: message and severity",
+          message: "Missing required fields: message and severity"
+        });
       }
 
       const validSeverities = ['low', 'medium', 'high', 'critical'];
       if (!validSeverities.includes(errorData.severity)) {
-        return res.status(400).json({ error: "Invalid severity" });
+        return res.status(400).json({
+          error: "Invalid severity",
+          message: "Invalid severity"
+        });
       }
 
       const newError = await storage.createErrorLog({
@@ -5856,13 +5867,15 @@ Format as JSON with the following structure:
   // Error listing and management endpoints
   app.get("/api/errors", requireAuth, async (req: any, res: any) => {
     try {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 20;
+      const page = req.query.page !== undefined ? parseInt(req.query.page as string) : 1;
+      // Handle limit=0 explicitly
+      const limit = req.query.limit !== undefined ? parseInt(req.query.limit as string) : 20;
 
       // Validate query parameters
       if (req.query.page && (isNaN(page) || page < 1)) {
         return res.status(400).json({ error: "Invalid page parameter" });
       }
+      // Allow limit=0 to return empty list (handled by limit(0) in query)
       if (req.query.limit && (isNaN(limit) || limit <= 0 || limit > 1000)) {
         return res.status(400).json({ error: "Invalid limit parameter" });
       }
@@ -5877,8 +5890,13 @@ Format as JSON with the following structure:
       const kioskNumber = req.query.kioskNumber as string;
       const fileFilter = req.query.fileFilter as string;
       const userId = req.query.userId as string;
+      const resolved = req.query.resolved;
 
       const conditions = [];
+
+      if (resolved !== undefined) {
+        conditions.push(eq(errorLogs.resolved, resolved === 'true'));
+      }
 
       if (severity && severity !== "all") {
         conditions.push(eq(errorLogs.severity, severity));

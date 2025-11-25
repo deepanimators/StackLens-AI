@@ -56,6 +56,15 @@ test.describe('API Tests - Error Management Endpoints', () => {
         });
 
         test('should search by message', async ({ apiContext }) => {
+            // Create a test error first
+            await apiContext.post('/api/errors', {
+                data: {
+                    message: 'Database connection failed',
+                    severity: 'critical',
+                    errorType: 'DatabaseError'
+                }
+            });
+
             const response = await apiContext.get('/api/errors?search=database');
 
             expect(response.ok()).toBeTruthy();
@@ -822,7 +831,7 @@ test.describe('API Tests - Authentication & Authorization', () => {
         test('should logout user', async ({ apiContext }) => {
             // Login first
             const loginResponse = await apiContext.post('/api/auth/firebase', {
-                data: { idToken: 'valid-token' }
+                data: { idToken: 'valid-test-token' }
             });
 
             const auth = await loginResponse.json();

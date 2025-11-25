@@ -573,3 +573,441 @@ Auth response: {
 [2m[WebServer] [22m1:09:52 AM [express] GET /api/errors 200 in 1859ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
 [2m[WebServer] [22m1:09:52 AM [express] GET /api/errors 200 in 884ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
 [2m[WebServer] [22m1:09:52 AM [express] GET /api/errors 200 in 1332ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m1:09:53 AM [express] GET /api/errors 200 in 1623ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m1:09:54 AM [express] GET /api/errors 200 in 1875ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m1:09:54 AM [express] GET /api/errors 200 in 2145ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m1:09:54 AM [express] GET /api/errors 200 in 1732ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m1:09:54 AM [express] GET /api/errors 200 in 1216ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m1:09:55 AM [express] GET /api/errors 200 in 703ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:55 AM [express] GET /api/errors 200 in 846ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+  ✘   89 [api-tests] › tests/api/comprehensive.test.ts:1052:5 › API Tests - Rate Limiting › should implement rate limiting (9.4s)
+[2m[WebServer] [22m1:09:55 AM [express] GET /api/errors 200 in 744ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:55 AM [express] GET /api/errors 200 in 649ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:55 AM [express] GET /api/errors 200 in 469ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:55 AM [express] GET /api/errors 200 in 798ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:56 AM [express] GET /api/errors 200 in 203ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:57 AM [express] GET /api/errors 200 in 552ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:57 AM [express] GET /api/errors 200 in 1221ms :: {"errors":[{"id":363,"fileId":null,"storeNumbe…
+  ✘   98 [api-tests] › tests/api/comprehensive.test.ts:1084:5 › API Tests - Rate Limiting › should reset rate limits after time window (8.5s)
+[2m[WebServer] [22m1:09:57 AM [express] GET /api/errors 200 in 172ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:58 AM [express] GET /api/errors 200 in 440ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[2m[WebServer] [22m1:09:58 AM [express] GET /api/errors 200 in 203ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+  ✘   99 [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent reads safely (9.0s)
+[2m[WebServer] [22m1:09:59 AM [express] GET /api/errors 200 in 965ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:59 AM [express] GET /api/errors 200 in 403ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:59 AM [express] GET /api/errors 200 in 139ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:59 AM [express] GET /api/errors 200 in 412ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[2m[WebServer] [22m1:09:59 AM [express] GET /api/errors 200 in 160ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:59 AM [express] GET /api/errors 200 in 142ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:09:59 AM [express] GET /api/errors 200 in 254ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:00 AM [express] GET /api/errors 200 in 141ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:00 AM [express] GET /api/errors 200 in 240ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:00 AM [express] GET /api/errors 200 in 411ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:00 AM [express] GET /api/errors 200 in 262ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:00 AM [express] GET /api/errors 200 in 224ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 176ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 205ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 116ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 251ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 189ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 335ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 163ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:01 AM [express] GET /api/errors 200 in 141ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 144ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 73ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 164ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 113ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 128ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 136ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 136ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 136ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 137ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 144ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 160ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:02 AM [express] GET /api/errors 200 in 274ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:03 AM [express] GET /api/errors 200 in 172ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:03 AM [express] GET /api/errors 200 in 436ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:03 AM [express] GET /api/errors 200 in 716ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:04 AM [express] GET /api/errors 200 in 214ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:04 AM [express] GET /api/errors 200 in 158ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:04 AM [express] GET /api/errors 200 in 294ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:04 AM [express] GET /api/errors 200 in 154ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:04 AM [express] GET /api/errors 200 in 426ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:05 AM [express] GET /api/errors 200 in 180ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:05 AM [express] GET /api/errors 200 in 71ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:05 AM [express] GET /api/errors 200 in 165ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:05 AM [express] GET /api/errors 200 in 87ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:05 AM [express] GET /api/errors 200 in 90ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:05 AM [express] GET /api/errors 200 in 136ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:05 AM [express] GET /api/errors 200 in 65ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:06 AM [express] GET /api/errors 200 in 327ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:06 AM [express] GET /api/errors 200 in 299ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:06 AM [express] GET /api/errors 200 in 152ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:06 AM [express] GET /api/errors 200 in 156ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:06 AM [express] GET /api/errors 200 in 217ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:07 AM [express] GET /api/errors 200 in 65ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:07 AM [express] GET /api/errors 200 in 65ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:07 AM [express] GET /api/errors 200 in 70ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:07 AM [express] GET /api/errors 200 in 103ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:07 AM [express] GET /api/errors 200 in 226ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:07 AM [express] GET /api/errors 200 in 157ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:07 AM [express] GET /api/errors 200 in 112ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 64ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 68ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 62ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 68ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 153ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 70ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 61ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 60ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 61ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 61ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:08 AM [express] GET /api/errors 200 in 64ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 105ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 104ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 99ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 127ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 85ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 70ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 74ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 64ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 58ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 61ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:09 AM [express] GET /api/errors 200 in 71ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:10 AM [express] GET /api/errors 200 in 97ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:10 AM [express] GET /api/errors 200 in 318ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:10 AM [express] GET /api/errors 200 in 152ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:10 AM [express] GET /api/errors 200 in 90ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:10 AM [express] GET /api/errors 200 in 69ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:10 AM [express] GET /api/errors 200 in 73ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:10 AM [express] GET /api/errors 200 in 69ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 108ms :: {"errors":[{"id":363,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 65ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 61ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 60ms :: {"errors":[{"id":363,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 1ms :: {"id":365,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 1ms :: {"id":366,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 1ms :: {"id":367,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 1ms :: {"id":368,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 0ms :: {"id":369,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 0ms :: {"id":370,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 1ms :: {"id":371,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 0ms :: {"id":372,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m1:10:11 AM [express] POST /api/errors 201 in 1ms :: {"id":373,"fileId":null,"storeNumber":null,"kios…
+  ✓   96 [api-tests] › tests/api/comprehensive.test.ts:1158:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation (23.5s)
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 77ms :: {"errors":[{"id":365,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 63ms :: {"errors":[{"id":365,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 64ms :: {"errors":[{"id":365,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:11 AM [express] GET /api/errors 200 in 134ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:12 AM [express] GET /api/errors 200 in 764ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:13 AM [express] GET /api/errors 200 in 501ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:13 AM [express] GET /api/errors 200 in 337ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:13 AM [express] GET /api/errors 200 in 158ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:15 AM [express] GET /api/errors 200 in 955ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:15 AM [express] GET /api/errors 200 in 462ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:16 AM [express] GET /api/errors 200 in 356ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:16 AM [express] GET /api/errors 200 in 187ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+  ✓  100 [api-tests] › tests/api/comprehensive.test.ts:1208:5 › API Tests - Cache Control › should include appropriate cache headers (25.2s)
+[2m[WebServer] [22m1:10:16 AM [express] GET /api/errors 200 in 144ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:16 AM [express] GET /api/errors 200 in 560ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:17 AM [express] GET /api/errors 200 in 509ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:17 AM [express] GET /api/errors 200 in 340ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:18 AM [express] GET /api/errors 200 in 709ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:18 AM [express] GET /api/errors 200 in 184ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:18 AM [express] GET /api/errors 200 in 275ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:19 AM [express] GET /api/errors 200 in 122ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:19 AM [express] GET /api/errors 200 in 79ms :: {"errors":[{"id":365,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:19 AM [express] GET /api/errors 200 in 75ms :: {"errors":[{"id":365,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:19 AM [express] GET /api/errors 200 in 86ms :: {"errors":[{"id":365,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:19 AM [express] GET /api/errors 200 in 80ms :: {"errors":[{"id":365,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m1:10:20 AM [express] GET /api/errors 200 in 353ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+[2m[WebServer] [22m1:10:20 AM [express] GET /api/errors 200 in 789ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+  ✓  102 [api-tests] › tests/api/comprehensive.test.ts:1234:5 › API Tests - Cache Control › should support If-Modified-Since (21.3s)
+[2m[WebServer] [22m1:10:21 AM [express] GET /api/errors 304 in 305ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+  ✓  101 [api-tests] › tests/api/comprehensive.test.ts:1219:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests (23.1s)
+[2m[WebServer] [22m1:10:21 AM [express] GET /api/errors 200 in 679ms :: {"errors":[{"id":365,"fileId":null,"storeNumber…
+
+
+  1) [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      153 |
+      154 |         const data = await response.json();
+    > 155 |         expect(Array.isArray(data)).toBe(true);
+          |                                     ^
+      156 |         expect(data.length).toBeGreaterThan(0);
+      157 |
+      158 |         if (data.length > 0) {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:155:37
+
+  2) [api-tests] › tests/api/auth-upload.test.ts:190:5 › File Upload API › DELETE /api/files/:id - should delete file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
+
+    Expected path: [32m"message"[39m
+
+    Expected value: [32m"File deleted successfully"[39m
+    Received value: [31m"File [7mand all related data [27mdeleted successfully"[39m
+
+      209 |
+      210 |         const data = await response.json();
+    > 211 |         expect(data).toHaveProperty('message', 'File deleted successfully');
+          |                      ^
+      212 |     });
+      213 | });
+      214 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:211:22
+
+  3) [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"database"[39m
+    Received string:    [31m"bulk error 2"[39m
+
+      63 |             expect(Array.isArray(data.errors)).toBeTruthy();
+      64 |             data.errors.forEach((error: any) => {
+    > 65 |                 expect(error.message.toLowerCase()).toContain('database');
+         |                                                     ^
+      66 |             });
+      67 |         });
+      68 |
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:65:53)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:64:25
+
+  4) [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mfalse[39m
+    Received: [31mtrue[39m
+
+      74 |             expect(Array.isArray(data.errors)).toBeTruthy();
+      75 |             data.errors.forEach((error: any) => {
+    > 76 |                 expect(error.resolved).toBe(false);
+         |                                        ^
+      77 |             });
+      78 |         });
+      79 |
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:76:40)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:75:25
+
+  5) [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      521 |             });
+      522 |
+    > 523 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      524 |             const created = await response.json();
+      525 |             expect(created.kioskNumber).toBe(newKiosk.kioskNumber);
+      526 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:523:35
+
+  6) [api-tests] › tests/api/comprehensive.test.ts:737:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m413[39m
+    Received: [31m400[39m
+
+      748 |             });
+      749 |
+    > 750 |             expect(response.status()).toBe(413); // Payload Too Large
+          |                                       ^
+      751 |         });
+      752 |
+      753 |         test('should reject unsupported file types', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:750:39
+
+  7) [api-tests] › tests/api/comprehensive.test.ts:796:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
+
+    Expected path: [32m"sessionToken"[39m
+    Received path: [31m[][39m
+
+    Received value: [31m{"email": "test@stacklens.ai", "provider": "firebase", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5OTU3NCwiZXhwIjoxNzY0MTg1OTc0fQ.GV0xdiBiy-1_wwu12Zlqnwpu-1HpS06EO96YZCgEx50", "user": {"createdAt": "+057872-01-12T00:20:00.000Z", "department": null, "email": "test@stacklens.ai", "firstName": "Test", "id": 1, "isActive": true, "lastLogin": "2025-11-25T19:39:34.000Z", "lastName": "User", "profileImageUrl": "https://example.com/photo.jpg", "role": "admin", "updatedAt": "+057872-01-12T00:20:00.000Z", "username": "Test User"}, "userId": 1}[39m
+
+      805 |             expect(auth).toHaveProperty('userId');
+      806 |             expect(auth).toHaveProperty('email');
+    > 807 |             expect(auth).toHaveProperty('sessionToken');
+          |                          ^
+      808 |         });
+      809 |
+      810 |         test('should reject invalid token', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:807:26
+
+  8) [api-tests] › tests/api/comprehensive.test.ts:904:5 › API Tests - Request Validation › should enforce maximum payload size 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m201[39m
+    Received array: [31m[413, 400][39m
+
+      913 |         });
+      914 |
+    > 915 |         expect([413, 400]).toContain(response.status());
+          |                            ^
+      916 |     });
+      917 |
+      918 |     test('should validate required headers', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:915:28
+
+  9) [api-tests] › tests/api/comprehensive.test.ts:935:5 › API Tests - Request Validation › should validate URL parameter formats 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      936 |         const response = await apiContext.get('/api/errors?page=invalid');
+      937 |
+    > 938 |         expect([400, 422]).toContain(response.status());
+          |                            ^
+      939 |     });
+      940 |
+      941 |     test('should handle special characters in query params', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:938:28
+
+  10) [api-tests] › tests/api/comprehensive.test.ts:1026:5 › API Tests - Error Handling › should provide helpful error messages 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mundefined[39m
+
+      1032 |         const error = await response.json();
+      1033 |
+    > 1034 |         expect(error.message).toBeTruthy();
+           |                               ^
+      1035 |         expect(error.message.length).toBeGreaterThan(0);
+      1036 |     });
+      1037 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1034:31
+
+  11) [api-tests] › tests/api/comprehensive.test.ts:1052:5 › API Tests - Rate Limiting › should implement rate limiting 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT 127.0.0.1:4001
+    Call log:
+    [2m  - → GET http://127.0.0.1:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5OTU2MSwiZXhwIjoxNzY0MTg1OTYxfQ.6h29IkkllGVqAAICzB_QUiJdVOsmZQzKLtH6-QxC5rs[22m
+    [2m    - x-test-force-ratelimit: true[22m
+
+
+      1052 |     test('should implement rate limiting', async ({ apiContext }) => {
+      1053 |         const requests = Array.from({ length: 150 }, () =>
+    > 1054 |             apiContext.get('/api/errors', {
+           |                        ^
+      1055 |                 headers: { 'x-test-force-ratelimit': 'true' }
+      1056 |             })
+      1057 |         );
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1054:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1053:32
+
+  12) [api-tests] › tests/api/comprehensive.test.ts:1084:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT 127.0.0.1:4001
+    Call log:
+    [2m  - → GET http://127.0.0.1:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5OTU2MSwiZXhwIjoxNzY0MTg1OTYxfQ.6h29IkkllGVqAAICzB_QUiJdVOsmZQzKLtH6-QxC5rs[22m
+    [2m    - x-test-force-ratelimit: true[22m
+
+
+      1085 |         // Make requests to hit limit
+      1086 |         const initialRequests = Array.from({ length: 100 }, () =>
+    > 1087 |             apiContext.get('/api/errors', {
+           |                        ^
+      1088 |                 headers: { 'x-test-force-ratelimit': 'true' }
+      1089 |             })
+      1090 |         );
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1087:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1086:39
+
+  13) [api-tests] › tests/api/comprehensive.test.ts:1127:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      1128 |         const response = await apiContext.get('/api/errors?page=1&limit=0');
+      1129 |
+    > 1130 |         expect([400, 422]).toContain(response.status());
+           |                            ^
+      1131 |     });
+      1132 |
+      1133 |     test('should enforce maximum limit', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1130:28
+
+  14) [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT 127.0.0.1:4001
+    Call log:
+    [2m  - → GET http://127.0.0.1:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5OTU2MSwiZXhwIjoxNzY0MTg1OTYxfQ.6h29IkkllGVqAAICzB_QUiJdVOsmZQzKLtH6-QxC5rs[22m
+
+
+      1147 |     test('should handle concurrent reads safely', async ({ apiContext }) => {
+      1148 |         const requests = Array.from({ length: 50 }, () =>
+    > 1149 |             apiContext.get('/api/errors')
+           |                        ^
+      1150 |         );
+      1151 |
+      1152 |         const responses = await Promise.all(requests);
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1149:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1148:32
+
+  15) [api-tests] › tests/api/comprehensive.test.ts:1175:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m404[39m
+    Received array: [31m[200, 409][39m
+
+      1200 |         // All should succeed or have proper conflict handling
+      1201 |         responses.forEach(r => {
+    > 1202 |             expect([200, 409]).toContain(r.status());
+           |                                ^
+      1203 |         });
+      1204 |     });
+      1205 | });
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1202:32)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1201:19
+
+  15 failed
+    [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+    [api-tests] › tests/api/auth-upload.test.ts:190:5 › File Upload API › DELETE /api/files/:id - should delete file 
+    [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+    [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+    [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+    [api-tests] › tests/api/comprehensive.test.ts:737:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+    [api-tests] › tests/api/comprehensive.test.ts:796:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+    [api-tests] › tests/api/comprehensive.test.ts:904:5 › API Tests - Request Validation › should enforce maximum payload size 
+    [api-tests] › tests/api/comprehensive.test.ts:935:5 › API Tests - Request Validation › should validate URL parameter formats 
+    [api-tests] › tests/api/comprehensive.test.ts:1026:5 › API Tests - Error Handling › should provide helpful error messages 
+    [api-tests] › tests/api/comprehensive.test.ts:1052:5 › API Tests - Rate Limiting › should implement rate limiting 
+    [api-tests] › tests/api/comprehensive.test.ts:1084:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+    [api-tests] › tests/api/comprehensive.test.ts:1127:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+    [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+    [api-tests] › tests/api/comprehensive.test.ts:1175:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+  87 passed (1.2m)
+
+[36m  Serving HTML report at http://localhost:51291. Press Ctrl+C to quit.[39m

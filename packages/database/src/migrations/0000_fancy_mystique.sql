@@ -65,6 +65,8 @@ CREATE TABLE `audit_logs` (
 CREATE TABLE `error_logs` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`file_id` integer,
+	`store_number` text,
+	`kiosk_number` text,
 	`line_number` integer NOT NULL,
 	`timestamp` integer,
 	`severity` text NOT NULL,
@@ -73,8 +75,10 @@ CREATE TABLE `error_logs` (
 	`full_text` text NOT NULL,
 	`pattern` text,
 	`resolved` integer DEFAULT false,
+	`notes` text,
 	`ai_suggestion` text,
 	`ml_prediction` text,
+	`ml_confidence` real DEFAULT 0.0,
 	`created_at` integer NOT NULL,
 	FOREIGN KEY (`file_id`) REFERENCES `log_files`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -103,6 +107,8 @@ CREATE TABLE `log_files` (
 	`file_size` integer NOT NULL,
 	`mime_type` text NOT NULL,
 	`uploaded_by` integer,
+	`store_number` text,
+	`kiosk_number` text,
 	`upload_timestamp` integer NOT NULL,
 	`analysis_timestamp` integer,
 	`errors_detected` text,

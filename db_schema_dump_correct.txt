@@ -1,0 +1,268 @@
+CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'user',
+      first_name TEXT,
+      last_name TEXT,
+      department TEXT,
+      profile_image_url TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      last_login DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE log_files (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      filename TEXT NOT NULL,
+      original_name TEXT NOT NULL,
+      file_path TEXT NOT NULL,
+      file_size INTEGER NOT NULL,
+      mime_type TEXT NOT NULL,
+      file_type TEXT NOT NULL,
+      store_number TEXT,
+      kiosk_number TEXT,
+      uploaded_by INTEGER NOT NULL,
+      uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      upload_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      analysis_timestamp DATETIME,
+      processed_at DATETIME,
+      error_count INTEGER DEFAULT 0,
+      total_errors INTEGER DEFAULT 0,
+      critical_errors INTEGER DEFAULT 0,
+      high_errors INTEGER DEFAULT 0,
+      medium_errors INTEGER DEFAULT 0,
+      low_errors INTEGER DEFAULT 0,
+      status TEXT DEFAULT 'pending',
+      errors_detected TEXT,
+      anomalies TEXT,
+      predictions TEXT,
+      suggestions TEXT,
+      error_message TEXT,
+      analysis_result TEXT,
+      FOREIGN KEY (uploaded_by) REFERENCES users(id)
+    );
+CREATE TABLE error_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      file_id INTEGER,
+      store_number TEXT,
+      kiosk_number TEXT,
+      line_number INTEGER NOT NULL,
+      timestamp DATETIME,
+      severity TEXT NOT NULL,
+      error_type TEXT NOT NULL,
+      message TEXT NOT NULL,
+      full_text TEXT NOT NULL,
+      pattern TEXT,
+      resolved BOOLEAN DEFAULT 0,
+      notes TEXT,
+      ai_suggestion TEXT,
+      ml_prediction TEXT,
+      ml_confidence REAL DEFAULT 0.0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (file_id) REFERENCES log_files(id)
+    );
+CREATE TABLE analysis_history (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      file_id INTEGER,
+      user_id INTEGER,
+      filename TEXT NOT NULL,
+      file_type TEXT NOT NULL,
+      file_size INTEGER NOT NULL,
+      upload_timestamp DATETIME NOT NULL,
+      analysis_timestamp DATETIME NOT NULL,
+      errors_detected TEXT,
+      anomalies TEXT,
+      predictions TEXT,
+      suggestions TEXT,
+      total_errors INTEGER NOT NULL,
+      critical_errors INTEGER NOT NULL,
+      high_errors INTEGER NOT NULL,
+      medium_errors INTEGER NOT NULL,
+      low_errors INTEGER NOT NULL,
+      status TEXT NOT NULL,
+      progress INTEGER DEFAULT 0,
+      current_step TEXT DEFAULT 'Initializing',
+      processing_time REAL,
+      model_accuracy REAL,
+      error_message TEXT,
+      ai_suggestions TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (file_id) REFERENCES log_files(id)
+    );
+CREATE TABLE ml_models (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      version TEXT NOT NULL,
+      description TEXT,
+      model_type TEXT NOT NULL,
+      accuracy REAL,
+      precision_score REAL,
+      recall_score REAL,
+      f1_score REAL,
+      training_data TEXT,
+      model_path TEXT,
+      is_active BOOLEAN DEFAULT FALSE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+CREATE TABLE error_patterns (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      pattern TEXT NOT NULL,
+      description TEXT,
+      severity TEXT NOT NULL,
+      category TEXT,
+      suggested_fix TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+CREATE TABLE roles (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE NOT NULL,
+      description TEXT,
+      permissions TEXT NOT NULL,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+CREATE TABLE user_roles (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      role_id INTEGER NOT NULL,
+      assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      assigned_by INTEGER,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (role_id) REFERENCES roles(id),
+      FOREIGN KEY (assigned_by) REFERENCES users(id)
+    );
+CREATE TABLE training_modules (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      description TEXT,
+      content TEXT NOT NULL,
+      difficulty_level TEXT DEFAULT 'beginner',
+      estimated_duration INTEGER,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+CREATE TABLE user_training (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      module_id INTEGER NOT NULL,
+      progress INTEGER DEFAULT 0,
+      completed BOOLEAN DEFAULT FALSE,
+      score INTEGER,
+      started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      completed_at DATETIME,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (module_id) REFERENCES training_modules(id)
+    );
+CREATE TABLE model_deployments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      model_id INTEGER NOT NULL,
+      deployment_name TEXT NOT NULL,
+      environment TEXT NOT NULL,
+      status TEXT DEFAULT 'pending',
+      deployed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      deployed_by INTEGER NOT NULL,
+      FOREIGN KEY (model_id) REFERENCES ml_models(id),
+      FOREIGN KEY (deployed_by) REFERENCES users(id)
+    );
+CREATE TABLE audit_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      action TEXT NOT NULL,
+      resource_type TEXT NOT NULL,
+      resource_id INTEGER,
+      old_values TEXT,
+      new_values TEXT,
+      ip_address TEXT,
+      user_agent TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+CREATE TABLE notifications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      type TEXT DEFAULT 'info',
+      is_read BOOLEAN DEFAULT FALSE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      read_at DATETIME,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+CREATE TABLE user_settings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      dense_mode BOOLEAN DEFAULT FALSE,
+      auto_refresh BOOLEAN DEFAULT FALSE,
+      refresh_interval INTEGER DEFAULT 30,
+      theme TEXT DEFAULT 'light',
+      language TEXT DEFAULT 'en',
+      timezone TEXT DEFAULT 'UTC',
+      notification_preferences TEXT DEFAULT '{"email": true, "push": true, "sms": false}',
+      display_preferences TEXT DEFAULT '{"itemsPerPage": 10, "defaultView": "grid"}',
+      navigation_preferences TEXT DEFAULT '{"topNav": {"logo": true, "search": true, "notifications": true, "userMenu": true}, "sideNav": {"collapsed": false, "showLabels": true, "groupItems": true}}',
+      api_settings TEXT DEFAULT '{"geminiApiKey": "", "webhookUrl": "", "maxFileSize": "10", "autoAnalysis": true}',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+CREATE TABLE stores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      store_number TEXT UNIQUE NOT NULL,
+      name TEXT NOT NULL,
+      location TEXT,
+      address TEXT,
+      city TEXT,
+      state TEXT,
+      zip_code TEXT,
+      country TEXT DEFAULT 'USA',
+      phone_number TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+CREATE TABLE kiosks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      kiosk_number TEXT UNIQUE NOT NULL,
+      store_id INTEGER NOT NULL,
+      name TEXT NOT NULL,
+      location TEXT,
+      device_type TEXT,
+      ip_address TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      last_check_in DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (store_id) REFERENCES stores(id)
+    );
+CREATE TABLE settings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      key TEXT UNIQUE NOT NULL,
+      value TEXT NOT NULL,
+      category TEXT NOT NULL,
+      description TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      updated_by INTEGER,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (updated_by) REFERENCES users(id)
+    );
+CREATE TABLE model_training_sessions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      model_id INTEGER,
+      session_name TEXT NOT NULL,
+      training_data TEXT NOT NULL,
+      hyperparameters TEXT,
+      metrics TEXT,
+      status TEXT DEFAULT 'pending',
+      started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      completed_at DATETIME,
+      initiated_by INTEGER NOT NULL,
+      FOREIGN KEY (model_id) REFERENCES ml_models(id),
+      FOREIGN KEY (initiated_by) REFERENCES users(id)
+    );

@@ -65,10 +65,17 @@ test.describe('Authentication API', () => {
         expect(data).toHaveProperty('message');
     });
 
-    test('GET /api/auth/me - should reject unauthenticated request', async ({ request }) => {
-        const response = await request.get('/api/auth/me');
+    test('GET /api/auth/me - should reject unauthenticated request', async ({ playwright }) => {
+        // Create unauthenticated request context
+        const unauthenticatedContext = await playwright.request.newContext({
+            baseURL: `http://127.0.0.1:${process.env.API_PORT || '4001'}`,
+        });
+        
+        const response = await unauthenticatedContext.get('/api/auth/me');
 
         expect(response.status()).toBe(401);
+        
+        await unauthenticatedContext.dispose();
     });
 });
 
@@ -152,13 +159,14 @@ test.describe('File Upload API', () => {
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(Array.isArray(data)).toBe(true);
-        expect(data.length).toBeGreaterThan(0);
+        // API returns { files: [], pagination: {} }
+        expect(Array.isArray(data.files)).toBe(true);
+        expect(data.files.length).toBeGreaterThan(0);
 
-        if (data.length > 0) {
-            expect(data[0]).toHaveProperty('id');
-            expect(data[0]).toHaveProperty('filename');
-            expect(data[0]).toHaveProperty('uploadTimestamp');
+        if (data.files.length > 0) {
+            expect(data.files[0]).toHaveProperty('id');
+            expect(data.files[0]).toHaveProperty('filename');
+            expect(data.files[0]).toHaveProperty('uploadTimestamp');
         }
     });
 
@@ -208,6 +216,6 @@ test.describe('File Upload API', () => {
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(data).toHaveProperty('message', 'File deleted successfully');
+        expect(data).toHaveProperty('message', 'File and all related data deleted successfully');
     });
 });
