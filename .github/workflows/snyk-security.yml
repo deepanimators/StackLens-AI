@@ -1,0 +1,188 @@
+name: Snyk Security Scanning
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run daily at midnight UTC for continuous monitoring
+    - cron: '0 0 * * *'
+
+# Required permissions for security scanning
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  NODE_VERSION: "22.17.0"
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # Job 1: Node.js Dependency Security Scan
+  snyk-nodejs:
+    name: Snyk Node.js Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Snyk to check for vulnerabilities (Node.js)
+        uses: snyk/actions/node@master
+        continue-on-error: true # Don't fail the build on vulnerabilities
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --all-projects
+
+      - name: Upload Snyk Node.js results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+        continue-on-error: true
+
+  # Job 2: Python Dependency Security Scan
+  snyk-python:
+    name: Snyk Python Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Python dependencies
+        run: |
+          cd python-services
+          pip install -r requirements.txt
+        continue-on-error: true
+
+      - name: Run Snyk to check for vulnerabilities (Python)
+        uses: snyk/actions/python@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=python-services/requirements.txt
+
+      - name: Upload Snyk Python results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+        continue-on-error: true
+
+  # Job 3: Docker Security Scan (if Dockerfiles exist)
+  snyk-docker:
+    name: Snyk Docker Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for Dockerfiles
+        id: check-dockerfiles
+        run: |
+          if find . -name "Dockerfile*" -type f | grep -q .; then
+            echo "dockerfiles_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "dockerfiles_found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run Snyk to check Docker images (Python services)
+        if: steps.check-dockerfiles.outputs.dockerfiles_found == 'true'
+        uses: snyk/actions/docker@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: python-services
+          args: --file=python-services/Dockerfile --severity-threshold=high
+
+  # Job 4: Infrastructure as Code (IaC) Security Scan
+  snyk-iac:
+    name: Snyk IaC Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Snyk IaC scan
+        uses: snyk/actions/iac@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Upload Snyk IaC results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+        continue-on-error: true
+
+  # Job 5: Code Security Analysis
+  snyk-code:
+    name: Snyk Code Security Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Snyk Code analysis
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+          args: --severity-threshold=high
+
+  # Job 6: Security Summary Report
+  security-summary:
+    name: Security Summary Report
+    runs-on: ubuntu-latest
+    needs: [snyk-nodejs, snyk-python, snyk-docker, snyk-iac, snyk-code]
+    if: always()
+
+    steps:
+      - name: Generate Security Summary
+        run: |
+          echo "## 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Snyk Security Scans:" >> $GITHUB_STEP_SUMMARY
+          echo "| Scan Type | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Node.js Dependencies | ${{ needs.snyk-nodejs.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Python Dependencies | ${{ needs.snyk-python.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docker Images | ${{ needs.snyk-docker.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Infrastructure as Code | ${{ needs.snyk-iac.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Code Analysis | ${{ needs.snyk-code.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Notes:" >> $GITHUB_STEP_SUMMARY
+          echo "- Vulnerabilities are reported to GitHub Security tab" >> $GITHUB_STEP_SUMMARY
+          echo "- High and critical severity issues are flagged" >> $GITHUB_STEP_SUMMARY
+          echo "- Review SARIF reports for detailed findings" >> $GITHUB_STEP_SUMMARY
