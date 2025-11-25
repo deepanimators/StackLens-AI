@@ -48,3 +48,6 @@ test-results/
 tmp/
 temp/
 *.tmp
+
+# Upload directories (test and production)
+test-uploads/

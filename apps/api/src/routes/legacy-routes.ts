@@ -52,15 +52,18 @@ import { ErrorPatternAnalyzer } from "./error-pattern-analyzer";
 import { createRAGRoutes } from "./routes/rag-routes.js";
 import crypto from "crypto";
 
+// Use different upload directories for test and production
+const UPLOAD_DIR = process.env.NODE_ENV === 'test' ? 'test-uploads/' : 'uploads/';
+
 const upload = multer({
-  dest: "uploads/",
+  dest: UPLOAD_DIR,
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       // Ensure uploads directory exists
-      if (!fs.existsSync("uploads")) {
-        fs.mkdirSync("uploads", { recursive: true });
+      if (!fs.existsSync(UPLOAD_DIR)) {
+        fs.mkdirSync(UPLOAD_DIR, { recursive: true });
       }
-      cb(null, "uploads/");
+      cb(null, UPLOAD_DIR);
     },
     filename: (req, file, cb) => {
       // Generate unique filename with timestamp and original extension
@@ -4329,7 +4332,7 @@ Format as JSON with the following structure:
       // Step 7: Delete physical file from disk (outside transaction)
       console.log("💾 Deleting physical file from disk...");
       try {
-        const filePath = path.join("uploads", file.filename);
+        const filePath = path.join(UPLOAD_DIR, file.filename);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
           deletionResult.physicalFile = true;

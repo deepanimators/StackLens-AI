@@ -59,15 +59,18 @@ import trainingRoutes from "./training-routes.js";
 import abTestingRoutes from "./ab-testing-routes.js";
 import crypto from "crypto";
 
+// Use different upload directories for test and production
+const UPLOAD_DIR = process.env.NODE_ENV === 'test' ? 'test-uploads/' : 'uploads/';
+
 const upload = multer({
-  dest: "uploads/",
+  dest: UPLOAD_DIR,
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       // Ensure uploads directory exists
-      if (!fs.existsSync("uploads")) {
-        fs.mkdirSync("uploads", { recursive: true });
+      if (!fs.existsSync(UPLOAD_DIR)) {
+        fs.mkdirSync(UPLOAD_DIR, { recursive: true });
       }
-      cb(null, "uploads/");
+      cb(null, UPLOAD_DIR);
     },
     filename: (req, file, cb) => {
       // Generate unique filename with timestamp and original extension
@@ -308,15 +311,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/firebase", async (req, res) => {
     try {
       const { idToken } = req.body;
+      console.log(`[DEBUG] POST /api/auth/firebase received token: '${idToken}'`);
 
       if (!idToken) {
+        console.log('[DEBUG] No idToken provided');
         return res.status(400).json({ message: "Firebase ID token required" });
       }
 
       let firebaseUser = await verifyFirebaseToken(idToken);
+      console.log(`[DEBUG] verifyFirebaseToken result:`, firebaseUser);
 
       // If verification returned null, try to decode as mock token
       if (!firebaseUser) {
+        console.log('[DEBUG] Firebase token verification failed, attempting mock token decode');
         try {
           const parts = idToken.split('.');
           if (parts.length === 3) {
@@ -335,16 +342,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         } catch (decodeError) {
           // Ignore decode errors
+          console.log('[DEBUG] Mock token decode error:', decodeError);
         }
       }
 
       if (!firebaseUser) {
+        console.log('[DEBUG] Final Firebase user check failed');
         return res.status(401).json({ message: "Invalid Firebase token" });
       }
 
       // Sync with database
       const user = await syncFirebaseUser(firebaseUser);
+      console.log(`[DEBUG] User synced: ${user.email}`);
       const token = authService.generateToken(user.id);
+      console.log(`[DEBUG] Token generated for user ID: ${user.id}`);
 
       res.json({
         userId: user.id,
@@ -4578,7 +4589,7 @@ Format as JSON with the following structure:
           try {
             // Get store details
             const stores = await storage.getAllStores();
-            const store = stores.find((s: any) => s.storeNumber === storeNumber);
+            const matchedStore = stores.find((s: any) => s.storeNumber === storeNumber);
 
             // Get kiosk details
             const kiosks = await storage.getAllKiosks();
@@ -4944,7 +4955,7 @@ Format as JSON with the following structure:
       // Step 7: Delete physical file from disk (outside transaction)
       console.log("💾 Deleting physical file from disk...");
       try {
-        const filePath = path.join("uploads", file.filename);
+        const filePath = path.join(UPLOAD_DIR, file.filename);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
           deletionStats.physicalFile = true;
@@ -5221,8 +5232,8 @@ Format as JSON with the following structure:
             // Sort by upload date (keep the latest)
             fileAnalyses.sort(
               (a: any, b: any) =>
-                new Date(b.uploadTimestamp || b.uploadDate).getTime() -
-                new Date(a.uploadTimestamp || a.uploadDate).getTime()
+                new Date(b.uploadTimestamp).getTime() -
+                new Date(a.uploadTimestamp).getTime()
             );
 
             // Keep the first (latest) analysis, remove the rest
@@ -5939,6 +5950,16 @@ Format as JSON with the following structure:
         );
       }
 
+      // Apply filters
+      if (req.query.search) {
+        const search = req.query.search as string;
+        console.log(`[DEBUG] GET /api/errors search query: '${search}'`);
+        conditions.push(or(
+          like(errorLogs.message, `%${search}%`),
+          like(errorLogs.errorType, `%${search}%`),
+          like(errorLogs.fullText, `%${search}%`) // Assuming fullText is stackTrace
+        ));
+      }
       const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
       // Main query with join
