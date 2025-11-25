@@ -38,11 +38,14 @@ const memoryUpload = multer({ storage: multer.memoryStorage(), limits: { fileSiz
 // Rate limiting for API routes (disabled in test environment)
 const apiLimiter = rateLimit({
   windowMs: process.env.NODE_ENV === 'test' ? 1000 : 60 * 1000, // 1s for tests, 1m for prod
-  max: process.env.NODE_ENV === 'test' ? 10000 : 100, // 10k req/min for tests, 100 for prod
+  limit: (req: any) => {
+    if (process.env.NODE_ENV === 'test' && req.headers['x-test-force-ratelimit']) return 100;
+    return process.env.NODE_ENV === 'test' ? 10000 : 100;
+  },
   message: { message: "Too many requests, please try again later." },
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
-  skip: (req) => process.env.NODE_ENV === 'test', // Skip rate limiting in test mode
+  skip: (req) => process.env.NODE_ENV === 'test' && !req.headers['x-test-force-ratelimit'], // Skip rate limiting in test mode unless forced
 });
 
 // Apply rate limiter to all API routes

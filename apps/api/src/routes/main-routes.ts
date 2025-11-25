@@ -4719,6 +4719,9 @@ Format as JSON with the following structure:
   app.get("/api/uploads/:fileId", requireAuth, async (req: any, res: any) => {
     try {
       const fileId = parseInt(req.params.fileId);
+      if (isNaN(fileId) || fileId <= 0) {
+        return res.status(400).json({ message: "Invalid file ID" });
+      }
       const file = await storage.getLogFile(fileId);
 
       if (!file) {

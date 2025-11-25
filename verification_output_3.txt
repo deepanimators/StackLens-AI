@@ -1,0 +1,85 @@
+
+> stacklens-ai-platform@1.0.0 test:api
+> playwright test tests/api
+
+[dotenv@17.2.3] injecting env (14) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[2m[WebServer] [22m{"level":"WARN","timestamp":"2025-11-25T19:07:36.942Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+[2m[WebServer] [22m⚠️ Enhanced vector service not found, using fallback similarity search
+
+Running 102 tests using 5 workers
+
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+✓ Auth state file verified
+Starting authentication setup...
+  ✓    2 [setup] › tests/auth.setup.ts:135:1 › verify auth state (472ms)
+Using TEST_FIREBASE_TOKEN for authentication...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+✓ Token exchange successful
+✓ Authentication successful with session token
+✓ Authentication state saved to /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/.auth/user.json
+  ✓    1 [setup] › tests/auth.setup.ts:15:1 › authenticate user (2.4s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+  ✓    3 [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token (160ms)
+  ✓    4 [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user (118ms)
+  ✓    5 [api-tests] › tests/api/auth-upload.test.ts:68:5 › Authentication API › GET /api/auth/me - should reject unauthenticated request (79ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+  ✓    6 [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token (76ms)
+  ✘    9 [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file (22ms)
+  ✘    8 [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file (27ms)
+  ✘   10 [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type (27ms)
+  ✘   11 [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files (23ms)
+  ✓    7 [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user (75ms)
+  ✓   12 [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity (93ms)
+  ✓   13 [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type (65ms)
+  ✓   14 [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range (254ms)
+  ✓   15 [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message (90ms)
+  ✓   16 [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status (89ms)
+  ✓   17 [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store (31ms)
+  ✓   18 [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting (17ms)
+  ✓   19 [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully (16ms)
+  ✓   20 [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error (17ms)
+  ✓   21 [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields (22ms)
+  ✓   22 [api-tests] › tests/api/comprehensive.test.ts:151:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate severity values (17ms)
+  ✓   23 [api-tests] › tests/api/comprehensive.test.ts:165:9 › API Tests - Error Management Endpoints › POST /api/errors › should set default values for optional fields (18ms)
+  ✓   24 [api-tests] › tests/api/comprehensive.test.ts:185:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should retrieve specific error by ID (24ms)
+  ✓   25 [api-tests] › tests/api/comprehensive.test.ts:208:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 404 for non-existent error (63ms)
+  ✓   26 [api-tests] › tests/api/comprehensive.test.ts:213:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 400 for invalid ID format (79ms)
+  ✓   27 [api-tests] › tests/api/comprehensive.test.ts:220:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should update error fields (88ms)
+  ✓   28 [api-tests] › tests/api/comprehensive.test.ts:253:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should validate updated field values (155ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+  ✓   29 [api-tests] › tests/api/comprehensive.test.ts:271:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should return 404 when updating non-existent error (36ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+  ✓   30 [api-tests] › tests/api/comprehensive.test.ts:281:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should delete error (39ms)
+  ✓   34 [api-tests] › tests/api/comprehensive.test.ts:304:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should return 404 when deleting non-existent error (13ms)
+  ✓   36 [api-tests] › tests/api/comprehensive.test.ts:311:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should create multiple errors in bulk (22ms)
+  ✓   37 [api-tests] › tests/api/comprehensive.test.ts:330:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should handle validation errors in bulk creation (19ms)
+  ✓   31 [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors (104ms)
+  ✓   33 [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination (92ms)
+  ✘   32 [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details (92ms)
+  ✘   38 [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics (17ms)
+  ✘   35 [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file (100ms)
+  ✘   39 [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range (24ms)
+  ✓   40 [api-tests] › tests/api/comprehensive.test.ts:369:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should provide statistics by store (22ms)
+  ✓   41 [api-tests] › tests/api/comprehensive.test.ts:430:9 › API Tests - Store & Kiosk Management › GET /api/stores › should support pagination for stores (21ms)
+  ✓   42 [api-tests] › tests/api/comprehensive.test.ts:438:9 › API Tests - Store & Kiosk Management › GET /api/stores › should search stores by name (17ms)
+  ✓   43 [api-tests] › tests/api/comprehensive.test.ts:446:9 › API Tests - Store & Kiosk Management › POST /api/stores › should create new store (22ms)
+[2m[WebServer] [22mError creating store: SqliteError: UNIQUE constraint failed: stores.store_number
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_UNIQUE'[39m
+[2m[WebServer] [22m}
+  ✓   44 [api-tests] › tests/api/comprehensive.test.ts:463:9 › API Tests - Store & Kiosk Management › POST /api/stores › should prevent duplicate store numbers (26ms)
+  ✓   45 [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks (19ms)
+  ✓   46 [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store (17ms)
+  ✘   47 [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk (28ms)

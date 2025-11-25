@@ -1040,7 +1040,9 @@ test.describe('API Tests - Error Handling', () => {
 test.describe('API Tests - Rate Limiting', () => {
     test('should implement rate limiting', async ({ apiContext }) => {
         const requests = Array.from({ length: 150 }, () =>
-            apiContext.get('/api/errors')
+            apiContext.get('/api/errors', {
+                headers: { 'x-test-force-ratelimit': 'true' }
+            })
         );
 
         const responses = await Promise.all(requests);
@@ -1071,7 +1073,9 @@ test.describe('API Tests - Rate Limiting', () => {
     test('should reset rate limits after time window', async ({ apiContext }) => {
         // Make requests to hit limit
         const initialRequests = Array.from({ length: 100 }, () =>
-            apiContext.get('/api/errors')
+            apiContext.get('/api/errors', {
+                headers: { 'x-test-force-ratelimit': 'true' }
+            })
         );
 
         await Promise.all(initialRequests);

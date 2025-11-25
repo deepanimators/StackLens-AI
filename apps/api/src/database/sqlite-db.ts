@@ -60,7 +60,7 @@ try {
 
     CREATE TABLE IF NOT EXISTS error_logs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      file_id INTEGER NOT NULL,
+      file_id INTEGER,
       store_number TEXT,
       kiosk_number TEXT,
       line_number INTEGER NOT NULL,

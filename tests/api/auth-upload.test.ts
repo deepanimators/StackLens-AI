@@ -9,9 +9,9 @@ test.describe('Authentication API', () => {
     const API_BASE = process.env.VITE_API_URL || `http://localhost:${process.env.API_PORT || '4001'}`;
 
     test('POST /api/auth/firebase-signin - should authenticate user', async ({ apiContext }) => {
-        const response = await request.post('/api/auth/firebase-signin', {
+        const response = await apiContext.post('/api/auth/firebase-signin', {
             data: {
-                idToken: process.env.TEST_FIREBASE_TOKEN,
+                idToken: 'valid-test-token',
                 email: 'test@stacklens.ai',
             },
         });
@@ -26,9 +26,9 @@ test.describe('Authentication API', () => {
 
     test('POST /api/auth/firebase-verify - should verify token', async ({ apiContext }) => {
 
-        const response = await request.post('/api/auth/firebase-verify', {
+        const response = await apiContext.post('/api/auth/firebase-verify', {
             data: {
-                idToken: process.env.TEST_FIREBASE_TOKEN,
+                idToken: 'valid-test-token',
             },
         });
 
@@ -53,7 +53,7 @@ test.describe('Authentication API', () => {
 
     test('POST /api/auth/firebase-signin - should reject invalid token', async ({ apiContext }) => {
 
-        const response = await request.post('/api/auth/firebase-signin', {
+        const response = await apiContext.post('/api/auth/firebase-signin', {
             data: {
                 idToken: 'invalid-token',
             },

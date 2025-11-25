@@ -1,0 +1,1738 @@
+[dotenv@17.2.3] injecting env (14) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+
+Running 102 tests using 5 workers
+
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+Starting authentication setup...
+✓ Auth state file verified
+  ✓    2 [setup] › tests/auth.setup.ts:135:1 › verify auth state (313ms)
+Using TEST_FIREBASE_TOKEN for authentication...
+✓ Token exchange successful
+✓ Authentication successful with session token
+✓ Authentication state saved to /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/.auth/user.json
+  ✓    1 [setup] › tests/auth.setup.ts:15:1 › authenticate user (1.8s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+  ✘    3 [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user (59ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+  ✘    5 [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token (39ms)
+  ✓    4 [api-tests] › tests/api/auth-upload.test.ts:68:5 › Authentication API › GET /api/auth/me - should reject unauthenticated request (63ms)
+  ✓    6 [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user (68ms)
+  ✘    7 [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type (35ms)
+  ✘    8 [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files (34ms)
+  ✘    9 [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token (63ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+  ✘   10 [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file (2.2s)
+  ✘   11 [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file (2.2s)
+  ✘   12 [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details (3.3s)
+  ✘   13 [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file (3.3s)
+  ✘   14 [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors (1.7s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+  ✘   16 [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination (511ms)
+  ✘   15 [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity (598ms)
+  ✘   17 [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type (754ms)
+  ✘   18 [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range (987ms)
+  ✘   19 [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message (834ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+  ✘   20 [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store (424ms)
+  ✘   21 [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status (435ms)
+  ✘   22 [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting (439ms)
+  ✘   23 [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully (413ms)
+  ✘   24 [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error (359ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+  ✘   25 [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields (377ms)
+  ✘   26 [api-tests] › tests/api/comprehensive.test.ts:151:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate severity values (364ms)
+  ✘   27 [api-tests] › tests/api/comprehensive.test.ts:165:9 › API Tests - Error Management Endpoints › POST /api/errors › should set default values for optional fields (351ms)
+  ✘   28 [api-tests] › tests/api/comprehensive.test.ts:185:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should retrieve specific error by ID (345ms)
+  ✘   29 [api-tests] › tests/api/comprehensive.test.ts:208:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 404 for non-existent error (344ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+  ✘   30 [api-tests] › tests/api/comprehensive.test.ts:213:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 400 for invalid ID format (393ms)
+  ✘   31 [api-tests] › tests/api/comprehensive.test.ts:220:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should update error fields (392ms)
+  ✘   32 [api-tests] › tests/api/comprehensive.test.ts:253:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should validate updated field values (379ms)
+  ✘   33 [api-tests] › tests/api/comprehensive.test.ts:271:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should return 404 when updating non-existent error (372ms)
+  ✘   34 [api-tests] › tests/api/comprehensive.test.ts:281:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should delete error (352ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+  ✘   35 [api-tests] › tests/api/comprehensive.test.ts:304:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should return 404 when deleting non-existent error (392ms)
+  ✘   36 [api-tests] › tests/api/comprehensive.test.ts:311:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should create multiple errors in bulk (376ms)
+  ✘   37 [api-tests] › tests/api/comprehensive.test.ts:330:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should handle validation errors in bulk creation (354ms)
+  ✘   38 [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics (347ms)
+  ✘   39 [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range (352ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+  ✘   40 [api-tests] › tests/api/comprehensive.test.ts:369:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should provide statistics by store (448ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+  ✘   41 [api-tests] › tests/api/comprehensive.test.ts:379:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as CSV (408ms)
+  ✘   42 [api-tests] › tests/api/comprehensive.test.ts:392:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as JSON (399ms)
+  ✘   43 [api-tests] › tests/api/comprehensive.test.ts:405:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as Excel (362ms)
+  ✘   44 [api-tests] › tests/api/comprehensive.test.ts:422:9 › API Tests - Store & Kiosk Management › GET /api/stores › should retrieve all stores (345ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+  ✘   45 [api-tests] › tests/api/comprehensive.test.ts:430:9 › API Tests - Store & Kiosk Management › GET /api/stores › should support pagination for stores (386ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+  ✘   46 [api-tests] › tests/api/comprehensive.test.ts:438:9 › API Tests - Store & Kiosk Management › GET /api/stores › should search stores by name (371ms)
+  ✘   47 [api-tests] › tests/api/comprehensive.test.ts:446:9 › API Tests - Store & Kiosk Management › POST /api/stores › should create new store (363ms)
+  ✘   48 [api-tests] › tests/api/comprehensive.test.ts:463:9 › API Tests - Store & Kiosk Management › POST /api/stores › should prevent duplicate store numbers (350ms)
+  ✘   49 [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks (350ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+  ✘   50 [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store (362ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+  ✘   51 [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk (368ms)
+  ✘   52 [api-tests] › tests/api/comprehensive.test.ts:517:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should validate kiosk belongs to valid store (354ms)
+  ✘   53 [api-tests] › tests/api/comprehensive.test.ts:535:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should initiate ML training job (380ms)
+  ✘   54 [api-tests] › tests/api/comprehensive.test.ts:554:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should validate training configuration (358ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+  ✘   55 [api-tests] › tests/api/comprehensive.test.ts:568:9 › API Tests - ML Training Endpoints › GET /api/ml/jobs/:jobId › should retrieve training job status (428ms)
+  ✘   56 [api-tests] › tests/api/comprehensive.test.ts:594:9 › API Tests - ML Training Endpoints › POST /api/ml/predict › should make prediction with trained model (361ms)
+  ✘   58 [api-tests] › tests/api/comprehensive.test.ts:623:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should filter models by status (412ms)
+  ✘   57 [api-tests] › tests/api/comprehensive.test.ts:615:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should list all trained models (427ms)
+  ✘   59 [api-tests] › tests/api/comprehensive.test.ts:637:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should analyze error with AI (417ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+  ✘   60 [api-tests] › tests/api/comprehensive.test.ts:655:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should handle timeout for long-running analysis (372ms)
+  ✘   61 [api-tests] › tests/api/comprehensive.test.ts:666:9 › API Tests - AI Analysis Endpoints › POST /api/ai/suggest › should provide fix suggestions (366ms)
+  ✘   62 [api-tests] › tests/api/comprehensive.test.ts:685:9 › API Tests - AI Analysis Endpoints › POST /api/ai/summarize › should summarize multiple errors (353ms)
+  ✘   63 [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit (361ms)
+  ✘   64 [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload (356ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+  ✘   65 [api-tests] › tests/api/comprehensive.test.ts:742:9 › API Tests - File Upload & Processing › POST /api/upload › should reject unsupported file types (369ms)
+  ✘   66 [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status (354ms)
+  ✘   67 [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token (363ms)
+  ✘   68 [api-tests] › tests/api/comprehensive.test.ts:799:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should reject invalid token (359ms)
+  ✘   69 [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user (358ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+  ✘   70 [api-tests] › tests/api/comprehensive.test.ts:831:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should require admin role (383ms)
+  ✘   71 [api-tests] › tests/api/comprehensive.test.ts:838:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should allow access with admin token (376ms)
+  ✘   72 [api-tests] › tests/api/comprehensive.test.ts:871:5 › API Tests - Request Validation › should reject requests with invalid Content-Type (345ms)
+  ✘   73 [api-tests] › tests/api/comprehensive.test.ts:882:5 › API Tests - Request Validation › should validate JSON syntax (345ms)
+  ✘   74 [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size (342ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+  ✘   75 [api-tests] › tests/api/comprehensive.test.ts:918:5 › API Tests - Request Validation › should handle missing request body (389ms)
+  ✘   76 [api-tests] › tests/api/comprehensive.test.ts:907:5 › API Tests - Request Validation › should validate required headers (375ms)
+  ✘   77 [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats (351ms)
+  ✘   78 [api-tests] › tests/api/comprehensive.test.ts:930:5 › API Tests - Request Validation › should handle special characters in query params (350ms)
+  ✘   79 [api-tests] › tests/api/comprehensive.test.ts:941:5 › API Tests - Response Format Validation › should return proper Content-Type headers (346ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+  ✘   80 [api-tests] › tests/api/comprehensive.test.ts:948:5 › API Tests - Response Format Validation › should include CORS headers (364ms)
+  ✘   81 [api-tests] › tests/api/comprehensive.test.ts:959:5 › API Tests - Response Format Validation › should return consistent error response format (365ms)
+  ✘   82 [api-tests] › tests/api/comprehensive.test.ts:969:5 › API Tests - Response Format Validation › should include pagination metadata (352ms)
+  ✘   84 [api-tests] › tests/api/comprehensive.test.ts:995:5 › API Tests - Error Handling › should handle database connection errors gracefully (387ms)
+  ✘   83 [api-tests] › tests/api/comprehensive.test.ts:981:5 › API Tests - Response Format Validation › should return timestamps in ISO format (389ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+  ✘   85 [api-tests] › tests/api/comprehensive.test.ts:1003:5 › API Tests - Error Handling › should return 404 for non-existent routes (369ms)
+  ✘   86 [api-tests] › tests/api/comprehensive.test.ts:1009:5 › API Tests - Error Handling › should handle malformed route parameters (371ms)
+  ✘   87 [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages (376ms)
+  ✘   88 [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures (390ms)
+  ✘   89 [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting (506ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+  ✘   91 [api-tests] › tests/api/comprehensive.test.ts:1055:5 › API Tests - Rate Limiting › should include rate limit headers (361ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+  ✘   90 [api-tests] › tests/api/comprehensive.test.ts:1071:5 › API Tests - Rate Limiting › should reset rate limits after time window (473ms)
+  ✘   92 [api-tests] › tests/api/comprehensive.test.ts:1089:5 › API Tests - Pagination Edge Cases › should handle page=0 (371ms)
+  ✘   93 [api-tests] › tests/api/comprehensive.test.ts:1096:5 › API Tests - Pagination Edge Cases › should handle negative page numbers (352ms)
+  ✘   94 [api-tests] › tests/api/comprehensive.test.ts:1102:5 › API Tests - Pagination Edge Cases › should handle excessive page numbers (363ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+  ✘   95 [api-tests] › tests/api/comprehensive.test.ts:1112:5 › API Tests - Pagination Edge Cases › should handle limit=0 (426ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+  ✘   96 [api-tests] › tests/api/comprehensive.test.ts:1118:5 › API Tests - Pagination Edge Cases › should enforce maximum limit (402ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+  ✘   97 [api-tests] › tests/api/comprehensive.test.ts:1132:5 › API Tests - Concurrent Operations › should handle concurrent reads safely (446ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+  ✘   98 [api-tests] › tests/api/comprehensive.test.ts:1143:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation (380ms)
+  ✘   99 [api-tests] › tests/api/comprehensive.test.ts:1160:5 › API Tests - Concurrent Operations › should prevent race conditions on updates (360ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+  ✘  100 [api-tests] › tests/api/comprehensive.test.ts:1193:5 › API Tests - Cache Control › should include appropriate cache headers (349ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+  ✘  101 [api-tests] › tests/api/comprehensive.test.ts:1204:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests (347ms)
+  ✘  102 [api-tests] › tests/api/comprehensive.test.ts:1219:5 › API Tests - Cache Control › should support If-Modified-Since (344ms)
+
+
+  1) [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user 
+
+    ReferenceError: request is not defined
+
+      10 |
+      11 |     test('POST /api/auth/firebase-signin - should authenticate user', async ({ apiContext }) => {
+    > 12 |         const response = await request.post('/api/auth/firebase-signin', {
+         |                          ^
+      13 |             data: {
+      14 |                 idToken: process.env.TEST_FIREBASE_TOKEN,
+      15 |                 email: 'test@stacklens.ai',
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:12:26
+
+  2) [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token 
+
+    ReferenceError: request is not defined
+
+      27 |     test('POST /api/auth/firebase-verify - should verify token', async ({ apiContext }) => {
+      28 |
+    > 29 |         const response = await request.post('/api/auth/firebase-verify', {
+         |                          ^
+      30 |             data: {
+      31 |                 idToken: process.env.TEST_FIREBASE_TOKEN,
+      32 |             },
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:29:26
+
+  3) [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token 
+
+    ReferenceError: request is not defined
+
+      54 |     test('POST /api/auth/firebase-signin - should reject invalid token', async ({ apiContext }) => {
+      55 |
+    > 56 |         const response = await request.post('/api/auth/firebase-signin', {
+         |                          ^
+      57 |             data: {
+      58 |                 idToken: 'invalid-token',
+      59 |             },
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:56:26
+
+  4) [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 254[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:86:43
+
+  5) [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 220[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:106:43
+
+  6) [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"Invalid file type"[39m
+    Received string:    [31m"No file uploaded"[39m
+
+      133 |         const data = await response.json();
+      134 |         expect(data).toHaveProperty('message');
+    > 135 |         expect(data.message).toContain('Invalid file type');
+          |                              ^
+      136 |     });
+      137 |
+      138 |     test('GET /api/files - should list uploaded files', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:135:30
+
+  7) [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      143 |
+      144 |         const data = await response.json();
+    > 145 |         expect(Array.isArray(data)).toBe(true);
+          |                                     ^
+      146 |
+      147 |         if (data.length > 0) {
+      148 |             expect(data[0]).toHaveProperty('id');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:145:37
+
+  8) [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 242[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:157:49
+
+  9) [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 242[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:182:49
+
+  10) [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:6:47
+
+  11) [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=1&limit=10[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:14:47
+
+  12) [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?severity=critical[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:26:47
+
+  13) [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?errorType=Runtime[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:37:47
+
+  14) [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?startDate=2025-01-01&endDate=2025-12-31[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:51:47
+
+  15) [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?search=database[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:59:47
+
+  16) [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?resolved=false[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:70:47
+
+  17) [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?store=STORE-0001[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:81:47
+
+  18) [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?sortBy=timestamp&order=desc[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:92:47
+
+  19) [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=-1&limit=1000[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:106:47
+
+  20) [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 139[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:125:47
+
+  21) [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 19[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:142:47
+
+  22) [api-tests] › tests/api/comprehensive.test.ts:151:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate severity values 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 76[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:158:47
+
+  23) [api-tests] › tests/api/comprehensive.test.ts:165:9 › API Tests - Error Management Endpoints › POST /api/errors › should set default values for optional fields 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 69[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:172:47
+
+  24) [api-tests] › tests/api/comprehensive.test.ts:185:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should retrieve specific error by ID 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 69[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:193:53
+
+  25) [api-tests] › tests/api/comprehensive.test.ts:208:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 404 for non-existent error 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/99999999[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:209:47
+
+  26) [api-tests] › tests/api/comprehensive.test.ts:213:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 400 for invalid ID format 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/invalid-id[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:214:47
+
+  27) [api-tests] › tests/api/comprehensive.test.ts:220:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should update error fields 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 66[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:228:53
+
+  28) [api-tests] › tests/api/comprehensive.test.ts:253:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should validate updated field values 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 54[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:254:53
+
+  29) [api-tests] › tests/api/comprehensive.test.ts:271:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should return 404 when updating non-existent error 
+
+    Error: apiRequestContext.patch: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → PATCH http://localhost:4001/api/errors/99999999[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 17[22m
+
+        at apiRequestContext.patch: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:272:47
+
+  30) [api-tests] › tests/api/comprehensive.test.ts:281:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should delete error 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 65[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:289:53
+
+  31) [api-tests] › tests/api/comprehensive.test.ts:304:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should return 404 when deleting non-existent error 
+
+    Error: apiRequestContext.delete: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → DELETE http://localhost:4001/api/errors/99999999[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.delete: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:305:53
+
+  32) [api-tests] › tests/api/comprehensive.test.ts:311:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should create multiple errors in bulk 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors/bulk[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 215[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:318:47
+
+  33) [api-tests] › tests/api/comprehensive.test.ts:330:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should handle validation errors in bulk creation 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors/bulk[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 149[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:336:47
+
+  34) [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/stats[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:348:47
+
+  35) [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/stats?startDate=2025-01-01&endDate=2025-12-31[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:360:47
+
+  36) [api-tests] › tests/api/comprehensive.test.ts:369:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should provide statistics by store 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/stats/by-store[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:370:47
+
+  37) [api-tests] › tests/api/comprehensive.test.ts:379:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as CSV 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors/export[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 50[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:380:47
+
+  38) [api-tests] › tests/api/comprehensive.test.ts:392:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as JSON 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors/export[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 30[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:393:47
+
+  39) [api-tests] › tests/api/comprehensive.test.ts:405:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as Excel 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors/export[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 46[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:406:47
+
+  40) [api-tests] › tests/api/comprehensive.test.ts:422:9 › API Tests - Store & Kiosk Management › GET /api/stores › should retrieve all stores 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/stores[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:423:47
+
+  41) [api-tests] › tests/api/comprehensive.test.ts:430:9 › API Tests - Store & Kiosk Management › GET /api/stores › should support pagination for stores 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/stores?page=1&limit=20[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:431:47
+
+  42) [api-tests] › tests/api/comprehensive.test.ts:438:9 › API Tests - Store & Kiosk Management › GET /api/stores › should search stores by name 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/stores?search=test[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:439:47
+
+  43) [api-tests] › tests/api/comprehensive.test.ts:446:9 › API Tests - Store & Kiosk Management › POST /api/stores › should create new store 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/stores[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 97[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:454:47
+
+  44) [api-tests] › tests/api/comprehensive.test.ts:463:9 › API Tests - Store & Kiosk Management › POST /api/stores › should prevent duplicate store numbers 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/stores[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 78[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:467:30
+
+  45) [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/kiosks[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:482:47
+
+  46) [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/kiosks?store=STORE-0001[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:490:47
+
+  47) [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/kiosks[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 82[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:508:47
+
+  48) [api-tests] › tests/api/comprehensive.test.ts:517:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should validate kiosk belongs to valid store 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/kiosks[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 85[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:524:47
+
+  49) [api-tests] › tests/api/comprehensive.test.ts:535:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should initiate ML training job 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ml/train[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 132[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:543:47
+
+  50) [api-tests] › tests/api/comprehensive.test.ts:554:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should validate training configuration 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ml/train[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 28[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:559:47
+
+  51) [api-tests] › tests/api/comprehensive.test.ts:568:9 › API Tests - ML Training Endpoints › GET /api/ml/jobs/:jobId › should retrieve training job status 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ml/train[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 79[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:576:53
+
+  52) [api-tests] › tests/api/comprehensive.test.ts:594:9 › API Tests - ML Training Endpoints › POST /api/ml/predict › should make prediction with trained model 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ml/predict[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 58[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:601:47
+
+  53) [api-tests] › tests/api/comprehensive.test.ts:615:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should list all trained models 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/ml/models[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:616:47
+
+  54) [api-tests] › tests/api/comprehensive.test.ts:623:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should filter models by status 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/ml/models?status=active[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:624:47
+
+  55) [api-tests] › tests/api/comprehensive.test.ts:637:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should analyze error with AI 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ai/analyze[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 104[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:644:47
+
+  56) [api-tests] › tests/api/comprehensive.test.ts:655:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should handle timeout for long-running analysis 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ai/analyze[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 51[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:656:47
+
+  57) [api-tests] › tests/api/comprehensive.test.ts:666:9 › API Tests - AI Analysis Endpoints › POST /api/ai/suggest › should provide fix suggestions 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ai/suggest[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 55[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:672:47
+
+  58) [api-tests] › tests/api/comprehensive.test.ts:685:9 › API Tests - AI Analysis Endpoints › POST /api/ai/summarize › should summarize multiple errors 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/ai/summarize[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 128[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:692:47
+
+  59) [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 256[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:710:47
+
+  60) [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 11534575[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:729:47
+
+  61) [api-tests] › tests/api/comprehensive.test.ts:742:9 › API Tests - File Upload & Processing › POST /api/upload › should reject unsupported file types 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 208[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:745:47
+
+  62) [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/upload[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 184[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:763:53
+
+  63) [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/auth/firebase[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 30[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:786:47
+
+  64) [api-tests] › tests/api/comprehensive.test.ts:799:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should reject invalid token 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/auth/firebase[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 27[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:800:47
+
+  65) [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/auth/firebase[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 25[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:813:52
+
+  66) [api-tests] › tests/api/comprehensive.test.ts:831:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should require admin role 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/admin/users[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization:[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:832:47
+
+  67) [api-tests] › tests/api/comprehensive.test.ts:838:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should allow access with admin token 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/auth/firebase-signin[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 179[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:848:52
+
+  68) [api-tests] › tests/api/comprehensive.test.ts:871:5 › API Tests - Request Validation › should reject requests with invalid Content-Type 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: text/plain[22m
+    [2m    - content-length: 8[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:872:43
+
+  69) [api-tests] › tests/api/comprehensive.test.ts:882:5 › API Tests - Request Validation › should validate JSON syntax 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 16[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:883:43
+
+  70) [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 1000051[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:900:43
+
+  71) [api-tests] › tests/api/comprehensive.test.ts:907:5 › API Tests - Request Validation › should validate required headers 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:908:43
+
+  72) [api-tests] › tests/api/comprehensive.test.ts:918:5 › API Tests - Request Validation › should handle missing request body 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:919:43
+
+  73) [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=invalid[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:925:43
+
+  74) [api-tests] › tests/api/comprehensive.test.ts:930:5 › API Tests - Request Validation › should handle special characters in query params 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?search=!%40%23%24%25%5E%26*()[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:932:43
+
+  75) [api-tests] › tests/api/comprehensive.test.ts:941:5 › API Tests - Response Format Validation › should return proper Content-Type headers 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:942:43
+
+  76) [api-tests] › tests/api/comprehensive.test.ts:948:5 › API Tests - Response Format Validation › should include CORS headers 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - Origin: http://localhost:5173[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:949:43
+
+  77) [api-tests] › tests/api/comprehensive.test.ts:959:5 › API Tests - Response Format Validation › should return consistent error response format 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/999999[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:960:43
+
+  78) [api-tests] › tests/api/comprehensive.test.ts:969:5 › API Tests - Response Format Validation › should include pagination metadata 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=1&limit=5[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:970:43
+
+  79) [api-tests] › tests/api/comprehensive.test.ts:981:5 › API Tests - Response Format Validation › should return timestamps in ISO format 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:982:43
+
+  80) [api-tests] › tests/api/comprehensive.test.ts:995:5 › API Tests - Error Handling › should handle database connection errors gracefully 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:997:43
+
+  81) [api-tests] › tests/api/comprehensive.test.ts:1003:5 › API Tests - Error Handling › should return 404 for non-existent routes 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/nonexistent[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1004:43
+
+  82) [api-tests] › tests/api/comprehensive.test.ts:1009:5 › API Tests - Error Handling › should handle malformed route parameters 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/not-a-number[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1010:43
+
+  83) [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 22[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1016:43
+
+  84) [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors/999999[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1029:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1028:32
+
+  85) [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1043:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1042:32
+
+  86) [api-tests] › tests/api/comprehensive.test.ts:1055:5 › API Tests - Rate Limiting › should include rate limit headers 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1056:43
+
+  87) [api-tests] › tests/api/comprehensive.test.ts:1071:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1074:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1073:39
+
+  88) [api-tests] › tests/api/comprehensive.test.ts:1089:5 › API Tests - Pagination Edge Cases › should handle page=0 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=0&limit=10[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1090:43
+
+  89) [api-tests] › tests/api/comprehensive.test.ts:1096:5 › API Tests - Pagination Edge Cases › should handle negative page numbers 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=-1&limit=10[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1097:43
+
+  90) [api-tests] › tests/api/comprehensive.test.ts:1102:5 › API Tests - Pagination Edge Cases › should handle excessive page numbers 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=999999&limit=10[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1103:43
+
+  91) [api-tests] › tests/api/comprehensive.test.ts:1112:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=1&limit=0[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1113:43
+
+  92) [api-tests] › tests/api/comprehensive.test.ts:1118:5 › API Tests - Pagination Edge Cases › should enforce maximum limit 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors?page=1&limit=10000[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1119:43
+
+  93) [api-tests] › tests/api/comprehensive.test.ts:1132:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1134:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1133:32
+
+  94) [api-tests] › tests/api/comprehensive.test.ts:1143:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 71[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at map (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1151:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1150:39
+
+  95) [api-tests] › tests/api/comprehensive.test.ts:1160:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+
+    Error: apiRequestContext.post: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → POST http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - content-length: 70[22m
+
+        at apiRequestContext.post: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1162:49
+
+  96) [api-tests] › tests/api/comprehensive.test.ts:1193:5 › API Tests - Cache Control › should include appropriate cache headers 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1194:43
+
+  97) [api-tests] › tests/api/comprehensive.test.ts:1204:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1205:44
+
+  98) [api-tests] › tests/api/comprehensive.test.ts:1219:5 › API Tests - Cache Control › should support If-Modified-Since 
+
+    Error: apiRequestContext.get: connect ECONNREFUSED ::1:4001
+    Call log:
+    [2m  - → GET http://localhost:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTczMDYsImV4cCI6MTc2NDE4MzcwNn0.vN1RFe-0gcwecd7BhLdcnUdauy-HzO1-7i79ZtIlld4[22m
+    [2m    - Content-Type: application/json[22m
+    [2m    - If-Modified-Since: Mon, 24 Nov 2025 19:02:19 GMT[22m
+
+        at apiRequestContext.get: connect ECONNREFUSED ::1:4001
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1222:43
+
+  98 failed
+    [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user 
+    [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token 
+    [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token 
+    [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+    [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+    [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type 
+    [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+    [api-tests] › tests/api/auth-upload.test.ts:154:5 › File Upload API › GET /api/files/:id - should get file details 
+    [api-tests] › tests/api/auth-upload.test.ts:179:5 › File Upload API › DELETE /api/files/:id - should delete file 
+    [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors 
+    [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination 
+    [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity 
+    [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type 
+    [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range 
+    [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+    [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+    [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store 
+    [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting 
+    [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully 
+    [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error 
+    [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields 
+    [api-tests] › tests/api/comprehensive.test.ts:151:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate severity values 
+    [api-tests] › tests/api/comprehensive.test.ts:165:9 › API Tests - Error Management Endpoints › POST /api/errors › should set default values for optional fields 
+    [api-tests] › tests/api/comprehensive.test.ts:185:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should retrieve specific error by ID 
+    [api-tests] › tests/api/comprehensive.test.ts:208:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 404 for non-existent error 
+    [api-tests] › tests/api/comprehensive.test.ts:213:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 400 for invalid ID format 
+    [api-tests] › tests/api/comprehensive.test.ts:220:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should update error fields 
+    [api-tests] › tests/api/comprehensive.test.ts:253:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should validate updated field values 
+    [api-tests] › tests/api/comprehensive.test.ts:271:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should return 404 when updating non-existent error 
+    [api-tests] › tests/api/comprehensive.test.ts:281:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should delete error 
+    [api-tests] › tests/api/comprehensive.test.ts:304:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should return 404 when deleting non-existent error 
+    [api-tests] › tests/api/comprehensive.test.ts:311:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should create multiple errors in bulk 
+    [api-tests] › tests/api/comprehensive.test.ts:330:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should handle validation errors in bulk creation 
+    [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+    [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+    [api-tests] › tests/api/comprehensive.test.ts:369:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should provide statistics by store 
+    [api-tests] › tests/api/comprehensive.test.ts:379:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as CSV 
+    [api-tests] › tests/api/comprehensive.test.ts:392:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as JSON 
+    [api-tests] › tests/api/comprehensive.test.ts:405:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as Excel 
+    [api-tests] › tests/api/comprehensive.test.ts:422:9 › API Tests - Store & Kiosk Management › GET /api/stores › should retrieve all stores 
+    [api-tests] › tests/api/comprehensive.test.ts:430:9 › API Tests - Store & Kiosk Management › GET /api/stores › should support pagination for stores 
+    [api-tests] › tests/api/comprehensive.test.ts:438:9 › API Tests - Store & Kiosk Management › GET /api/stores › should search stores by name 
+    [api-tests] › tests/api/comprehensive.test.ts:446:9 › API Tests - Store & Kiosk Management › POST /api/stores › should create new store 
+    [api-tests] › tests/api/comprehensive.test.ts:463:9 › API Tests - Store & Kiosk Management › POST /api/stores › should prevent duplicate store numbers 
+    [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks 
+    [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store 
+    [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+    [api-tests] › tests/api/comprehensive.test.ts:517:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should validate kiosk belongs to valid store 
+    [api-tests] › tests/api/comprehensive.test.ts:535:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should initiate ML training job 
+    [api-tests] › tests/api/comprehensive.test.ts:554:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should validate training configuration 
+    [api-tests] › tests/api/comprehensive.test.ts:568:9 › API Tests - ML Training Endpoints › GET /api/ml/jobs/:jobId › should retrieve training job status 
+    [api-tests] › tests/api/comprehensive.test.ts:594:9 › API Tests - ML Training Endpoints › POST /api/ml/predict › should make prediction with trained model 
+    [api-tests] › tests/api/comprehensive.test.ts:615:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should list all trained models 
+    [api-tests] › tests/api/comprehensive.test.ts:623:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should filter models by status 
+    [api-tests] › tests/api/comprehensive.test.ts:637:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should analyze error with AI 
+    [api-tests] › tests/api/comprehensive.test.ts:655:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should handle timeout for long-running analysis 
+    [api-tests] › tests/api/comprehensive.test.ts:666:9 › API Tests - AI Analysis Endpoints › POST /api/ai/suggest › should provide fix suggestions 
+    [api-tests] › tests/api/comprehensive.test.ts:685:9 › API Tests - AI Analysis Endpoints › POST /api/ai/summarize › should summarize multiple errors 
+    [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+    [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+    [api-tests] › tests/api/comprehensive.test.ts:742:9 › API Tests - File Upload & Processing › POST /api/upload › should reject unsupported file types 
+    [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+    [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+    [api-tests] › tests/api/comprehensive.test.ts:799:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should reject invalid token 
+    [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+    [api-tests] › tests/api/comprehensive.test.ts:831:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should require admin role 
+    [api-tests] › tests/api/comprehensive.test.ts:838:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should allow access with admin token 
+    [api-tests] › tests/api/comprehensive.test.ts:871:5 › API Tests - Request Validation › should reject requests with invalid Content-Type 
+    [api-tests] › tests/api/comprehensive.test.ts:882:5 › API Tests - Request Validation › should validate JSON syntax 
+    [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+    [api-tests] › tests/api/comprehensive.test.ts:907:5 › API Tests - Request Validation › should validate required headers 
+    [api-tests] › tests/api/comprehensive.test.ts:918:5 › API Tests - Request Validation › should handle missing request body 
+    [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+    [api-tests] › tests/api/comprehensive.test.ts:930:5 › API Tests - Request Validation › should handle special characters in query params 
+    [api-tests] › tests/api/comprehensive.test.ts:941:5 › API Tests - Response Format Validation › should return proper Content-Type headers 
+    [api-tests] › tests/api/comprehensive.test.ts:948:5 › API Tests - Response Format Validation › should include CORS headers 
+    [api-tests] › tests/api/comprehensive.test.ts:959:5 › API Tests - Response Format Validation › should return consistent error response format 
+    [api-tests] › tests/api/comprehensive.test.ts:969:5 › API Tests - Response Format Validation › should include pagination metadata 
+    [api-tests] › tests/api/comprehensive.test.ts:981:5 › API Tests - Response Format Validation › should return timestamps in ISO format 
+    [api-tests] › tests/api/comprehensive.test.ts:995:5 › API Tests - Error Handling › should handle database connection errors gracefully 
+    [api-tests] › tests/api/comprehensive.test.ts:1003:5 › API Tests - Error Handling › should return 404 for non-existent routes 
+    [api-tests] › tests/api/comprehensive.test.ts:1009:5 › API Tests - Error Handling › should handle malformed route parameters 
+    [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+    [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures 
+    [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+    [api-tests] › tests/api/comprehensive.test.ts:1055:5 › API Tests - Rate Limiting › should include rate limit headers 
+    [api-tests] › tests/api/comprehensive.test.ts:1071:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+    [api-tests] › tests/api/comprehensive.test.ts:1089:5 › API Tests - Pagination Edge Cases › should handle page=0 
+    [api-tests] › tests/api/comprehensive.test.ts:1096:5 › API Tests - Pagination Edge Cases › should handle negative page numbers 
+    [api-tests] › tests/api/comprehensive.test.ts:1102:5 › API Tests - Pagination Edge Cases › should handle excessive page numbers 
+    [api-tests] › tests/api/comprehensive.test.ts:1112:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+    [api-tests] › tests/api/comprehensive.test.ts:1118:5 › API Tests - Pagination Edge Cases › should enforce maximum limit 
+    [api-tests] › tests/api/comprehensive.test.ts:1132:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+    [api-tests] › tests/api/comprehensive.test.ts:1143:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation 
+    [api-tests] › tests/api/comprehensive.test.ts:1160:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+    [api-tests] › tests/api/comprehensive.test.ts:1193:5 › API Tests - Cache Control › should include appropriate cache headers 
+    [api-tests] › tests/api/comprehensive.test.ts:1204:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests 
+    [api-tests] › tests/api/comprehensive.test.ts:1219:5 › API Tests - Cache Control › should support If-Modified-Since 
+  4 passed (35.0s)
