@@ -366,6 +366,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(user);
   });
 
+  app.post("/api/auth/logout", (req, res) => {
+    res.json({ message: "Logged out successfully" });
+  });
+
   // ============= ADMIN USER MANAGEMENT =============
 
   // Get all users (Admin only)
@@ -4610,6 +4614,7 @@ Format as JSON with the following structure:
           fileType: uploadedFile.mimetype.includes("text") ? "log" : "other",
           storeNumber: storeNumber,
           kioskNumber: kioskNumber,
+          filePath: uploadedFile.path,
         };
 
         const savedFile = await storage.createLogFile(fileData);
@@ -4675,8 +4680,14 @@ Format as JSON with the following structure:
     "/api/upload",
     upload.single('file'),
     requireAuth,
+    requireAuth,
     async (req: any, res: any) => {
       console.log('POST /api/upload hit');
+      // Handle Multer errors that might have occurred
+      if (req.fileValidationError) {
+        return res.status(400).json({ message: req.fileValidationError });
+      }
+
       console.log('req.file:', req.file);
       console.log('req.user:', req.user);
       try {
@@ -4703,6 +4714,7 @@ Format as JSON with the following structure:
           mimeType: req.file.mimetype,
           uploadedBy: req.user.id,
           fileType: req.file.mimetype.includes("text") ? "log" : "other",
+          filePath: req.file.path,
         };
 
         const savedFile = await storage.createLogFile(fileData);
@@ -4718,6 +4730,17 @@ Format as JSON with the following structure:
       }
     }
   );
+
+  // Add error handling middleware for Multer
+  app.use((err: any, req: any, res: any, next: any) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ message: "File too large" });
+      }
+      return res.status(400).json({ message: err.message });
+    }
+    next(err);
+  });
 
   // Get upload status
   app.get("/api/uploads/:fileId", requireAuth, async (req: any, res: any) => {
@@ -4840,77 +4863,78 @@ Format as JSON with the following structure:
 
       console.log("🔄 Starting comprehensive cascade deletion process...");
 
-      // Use database transaction for atomic operations
-      const deletionResult = await db.transaction(async (tx) => {
-        const deletionStats = {
-          errorEmbeddings: 0,
-          suggestionFeedback: 0,
-          errorLogs: 0,
-          analysisHistory: 0,
-          physicalFile: false,
-          logFile: false
-        };
+      // Execute deletion steps sequentially without transaction wrapper
+      // to avoid "Transaction function cannot return a promise" error with better-sqlite3
+      const deletionStats = {
+        errorEmbeddings: 0,
+        suggestionFeedback: 0,
+        errorLogs: 0,
+        analysisHistory: 0,
+        physicalFile: false,
+        logFile: false
+      };
 
-        try {
-          // Step 1: Get all error IDs for this file to clean up related data
-          console.log("🔍 Finding error logs for file...");
-          const fileErrorLogs = await tx
-            .select({ id: errorLogs.id })
-            .from(errorLogs)
-            .where(eq(errorLogs.fileId, fileId));
+      try {
+        // Step 1: Get all error IDs for this file to clean up related data
+        console.log("🔍 Finding error logs for file...");
+        const fileErrorLogs = await db
+          .select({ id: errorLogs.id })
+          .from(errorLogs)
+          .where(eq(errorLogs.fileId, fileId));
 
-          const errorIds = fileErrorLogs.map(error => error.id);
-          console.log(`📊 Found ${errorIds.length} error logs to clean up`);
+        const errorIds = fileErrorLogs.map(error => error.id);
+        console.log(`📊 Found ${errorIds.length} error logs to clean up`);
 
-          // Step 2: Delete error embeddings (references errorLogs.id)
-          if (errorIds.length > 0) {
-            console.log("🧹 Deleting error embeddings...");
-            for (const errorId of errorIds) {
-              const embeddingResult = await tx
-                .delete(errorEmbeddings)
-                .where(eq(errorEmbeddings.errorId, errorId));
-              deletionStats.errorEmbeddings += embeddingResult.changes || 0;
-            }
+        // Step 2: Delete error embeddings (references errorLogs.id)
+        if (errorIds.length > 0) {
+          console.log("🧹 Deleting error embeddings...");
+          for (const errorId of errorIds) {
+            const embeddingResult = await db
+              .delete(errorEmbeddings)
+              .where(eq(errorEmbeddings.errorId, errorId));
+            deletionStats.errorEmbeddings += embeddingResult.changes || 0;
           }
-
-          // Step 3: Delete suggestion feedback (references errorLogs.id)
-          if (errorIds.length > 0) {
-            console.log("📝 Deleting suggestion feedback...");
-            for (const errorId of errorIds) {
-              const feedbackResult = await tx
-                .delete(suggestionFeedback)
-                .where(eq(suggestionFeedback.errorId, errorId));
-              deletionStats.suggestionFeedback += feedbackResult.changes || 0;
-            }
-          }
-
-          // Step 4: Delete error logs (references logFiles.id)
-          console.log("📋 Deleting error logs...");
-          const errorLogsResult = await tx
-            .delete(errorLogs)
-            .where(eq(errorLogs.fileId, fileId));
-          deletionStats.errorLogs = errorLogsResult.changes || 0;
-
-          // Step 5: Delete analysis history (references logFiles.id)
-          console.log("📈 Deleting analysis history...");
-          const analysisResult = await tx
-            .delete(analysisHistory)
-            .where(eq(analysisHistory.fileId, fileId));
-          deletionStats.analysisHistory = analysisResult.changes || 0;
-
-          // Step 6: Delete the file record from database
-          console.log("📄 Deleting file record...");
-          const fileResult = await tx
-            .delete(logFiles)
-            .where(eq(logFiles.id, fileId));
-          deletionStats.logFile = (fileResult.changes || 0) > 0;
-
-          return deletionStats;
-        } catch (transactionError) {
-          console.error("❌ Transaction error:", transactionError);
-          throw transactionError;
         }
-      });
+
+        // Step 3: Delete suggestion feedback (references errorLogs.id)
+        if (errorIds.length > 0) {
+          console.log("📝 Deleting suggestion feedback...");
+          for (const errorId of errorIds) {
+            const feedbackResult = await db
+              .delete(suggestionFeedback)
+              .where(eq(suggestionFeedback.errorId, errorId));
+            deletionStats.suggestionFeedback += feedbackResult.changes || 0;
+          }
+        }
+
+        // Step 4: Delete error logs (references logFiles.id)
+        console.log("📋 Deleting error logs...");
+        const errorLogsResult = await db
+          .delete(errorLogs)
+          .where(eq(errorLogs.fileId, fileId));
+        deletionStats.errorLogs = errorLogsResult.changes || 0;
+
+        // Step 5: Delete analysis history (references logFiles.id)
+        console.log("📈 Deleting analysis history...");
+        const analysisResult = await db
+          .delete(analysisHistory)
+          .where(eq(analysisHistory.fileId, fileId));
+        deletionStats.analysisHistory = analysisResult.changes || 0;
+
+        // Step 6: Delete the file record from database
+        console.log("📄 Deleting file record...");
+        const fileResult = await db
+          .delete(logFiles)
+          .where(eq(logFiles.id, fileId));
+        deletionStats.logFile = (fileResult.changes || 0) > 0;
+
+        const deletionResult = deletionStats;
+
+      } catch (deletionError) {
+        console.error("❌ Deletion error:", deletionError);
+        throw deletionError;
+      }
+
 
       // Step 7: Delete physical file from disk (outside transaction)
       console.log("💾 Deleting physical file from disk...");
@@ -4918,7 +4942,7 @@ Format as JSON with the following structure:
         const filePath = path.join("uploads", file.filename);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
-          deletionResult.physicalFile = true;
+          deletionStats.physicalFile = true;
           console.log(`✅ Physical file deleted: ${filePath}`);
         } else {
           console.log(`⚠️ Physical file not found: ${filePath}`);
@@ -4929,11 +4953,11 @@ Format as JSON with the following structure:
       }
 
       console.log("✅ Cascade deletion completed successfully");
-      console.log("📊 Deletion statistics:", deletionResult);
+      console.log("📊 Deletion statistics:", deletionStats);
 
       res.json({
         message: "File and all related data deleted successfully",
-        deletionStats: deletionResult,
+        deletionStats: deletionStats,
         fileInfo: {
           id: fileId,
           originalName: file.originalName,
@@ -5573,6 +5597,136 @@ Format as JSON with the following structure:
     } catch (error) {
       console.error("Error creating error:", error);
       res.status(500).json({ error: "Failed to create error" });
+    }
+  });
+
+  // Fast error statistics for AI Analysis dashboard (no pagination, just counts)
+  app.get("/api/errors/stats", async (req: any, res: any) => {
+    try {
+      console.log("🔍 [DEBUG] Error stats requested");
+
+      // Get user from token
+      const token = req.headers.authorization?.replace("Bearer ", "");
+      if (!token) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+
+      const decoded = authService.validateToken(token);
+      if (!decoded) {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+
+      const user = await authService.getUserById(decoded.userId);
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+
+      const userId = user.id;
+
+      // Get date range if provided
+      const startDate = req.query.startDate ? new Date(req.query.startDate as string) : null;
+      const endDate = req.query.endDate ? new Date(req.query.endDate as string) : null;
+
+      // Use system-wide data for AI analysis statistics
+      let allUserErrors = await storage.getAllErrors();
+
+      // Filter by date range if provided
+      if (startDate || endDate) {
+        allUserErrors = allUserErrors.filter((error) => {
+          const errorDate = new Date(error.timestamp || error.createdAt || Date.now());
+          if (startDate && errorDate < startDate) return false;
+          if (endDate && errorDate > endDate) return false;
+          return true;
+        });
+      }
+
+      console.log(
+        `🔍 [DEBUG] Found ${allUserErrors.length} total errors for user ${userId}`
+      );
+
+      // Calculate statistics in expected format
+      const bySeverity: Record<string, number> = {};
+      const byType: Record<string, number> = {};
+      let resolved = 0;
+      let unresolved = 0;
+
+      allUserErrors.forEach((error) => {
+        // Count by severity
+        const severity = error.severity || 'unknown';
+        bySeverity[severity] = (bySeverity[severity] || 0) + 1;
+
+        // Count by type
+        const type = error.errorType || 'unknown';
+        byType[type] = (byType[type] || 0) + 1;
+
+        // Count resolved/unresolved
+        if (error.resolved) {
+          resolved++;
+        } else {
+          unresolved++;
+        }
+      });
+
+      const stats: any = {
+        total: allUserErrors.length,
+        bySeverity,
+        byType,
+        resolved,
+        unresolved,
+      };
+
+      // Add date range if filtering was applied
+      if (startDate || endDate) {
+        stats.dateRange = {
+          start: startDate?.toISOString(),
+          end: endDate?.toISOString(),
+        };
+      }
+
+      console.log(`🔍 [DEBUG] Error stats: ${JSON.stringify(stats)}`);
+
+      res.json(stats);
+    } catch (error) {
+      console.error("Error fetching error statistics:", error);
+      res.status(500).json({ error: "Failed to fetch error statistics" });
+    }
+  });
+
+  // Get error statistics by store
+  app.get("/api/errors/stats/by-store", requireAuth, async (req: any, res: any) => {
+    try {
+      const allErrors = await storage.getAllErrors();
+
+      // Group errors by store
+      const storeStats: Record<string, any> = {};
+
+      allErrors.forEach((error) => {
+        const store = error.storeNumber || 'unknown';
+        if (!storeStats[store]) {
+          storeStats[store] = {
+            storeNumber: store,
+            total: 0,
+            resolved: 0,
+            unresolved: 0,
+            bySeverity: {},
+          };
+        }
+
+        storeStats[store].total++;
+        if (error.resolved) {
+          storeStats[store].resolved++;
+        } else {
+          storeStats[store].unresolved++;
+        }
+
+        const severity = error.severity || 'unknown';
+        storeStats[store].bySeverity[severity] = (storeStats[store].bySeverity[severity] || 0) + 1;
+      });
+
+      res.json(Object.values(storeStats));
+    } catch (error) {
+      console.error("Error fetching store statistics:", error);
+      res.status(500).json({ error: "Failed to fetch store statistics" });
     }
   });
 

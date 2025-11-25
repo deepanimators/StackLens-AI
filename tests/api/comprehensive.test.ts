@@ -499,9 +499,20 @@ test.describe('API Tests - Store & Kiosk Management', () => {
 
     test.describe('POST /api/kiosks', () => {
         test('should create new kiosk', async ({ apiContext }) => {
+            // Create a store first
+            const storeNumber = `STORE-FOR-KIOSK-${Date.now()}`;
+            await apiContext.post('/api/stores', {
+                data: {
+                    storeNumber,
+                    name: 'Store for Kiosk',
+                    location: 'Test City',
+                    region: 'North'
+                }
+            });
+
             const newKiosk = {
                 kioskNumber: `KIOSK-${Date.now()}`,
-                storeNumber: 'STORE-0001',
+                storeNumber: storeNumber,
                 status: 'active'
             };
 

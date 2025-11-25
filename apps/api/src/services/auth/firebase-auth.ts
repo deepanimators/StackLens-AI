@@ -26,6 +26,8 @@ export interface FirebaseUser {
 
 export async function verifyFirebaseToken(idToken: string): Promise<FirebaseUser | null> {
   // In test environment, allow specific test token regardless of firebase init status
+  console.log(`[DEBUG] verifyFirebaseToken called with token: '${idToken}'`);
+  console.log(`[DEBUG] NODE_ENV: '${process.env.NODE_ENV}'`);
   if (process.env.NODE_ENV === 'test' && idToken === 'valid-test-token') {
     return {
       uid: 'test-user-id',
