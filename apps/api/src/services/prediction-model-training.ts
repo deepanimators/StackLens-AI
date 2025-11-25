@@ -105,9 +105,8 @@ export class PredictionModelTrainingService {
         success: false,
         metrics: this.getDefaultMetrics(),
         modelId: "",
-        message: `Training failed: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
+        message: `Training failed: ${error instanceof Error ? error.message : "Unknown error"
+          }`,
       };
     }
   }
@@ -420,7 +419,7 @@ export class PredictionModelTrainingService {
       throw new Error("No metrics available to save");
     }
 
-    const db = require("../db"); // Adjust path as needed
+    const { db } = require("../config/database"); // Get database instance
     const modelName = "StackLens Prediction Model";
     const version = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
 

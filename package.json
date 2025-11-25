@@ -5,17 +5,17 @@
   "license": "MIT",
   "description": "AI-powered error analysis and prediction platform with RAG capabilities",
   "scripts": {
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev": "concurrently \"pnpm run dev:server\" \"pnpm run dev:client\"",
     "dev:client": "vite",
     "dev:server": "cross-env NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts",
     "dev:server-only": "cross-env NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts",
     "dev:safe": "./dev.sh",
     "dev:ml": "cd ml_microservices && python enhanced_vector_db_service.py --port 8001",
-    "build": "npm run build:client && npm run build:server",
+    "build": "pnpm run build:client && pnpm run build:server",
     "build:client": "vite build",
     "build:server": "esbuild apps/api/src/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "cross-env NODE_ENV=production node dist/index.js",
-    "start:dev": "npm run dev",
+    "start:dev": "pnpm run dev",
     "preview": "vite preview",
     "check": "tsc",
     "check:client": "tsc --project client/tsconfig.json",
@@ -48,7 +48,7 @@
     "test:vitest": "vitest run",
     "test:vitest:watch": "vitest watch",
     "clean": "rm -rf dist node_modules/.vite test-results",
-    "reset": "npm run clean && npm install"
+    "reset": "pnpm run clean && pnpm install"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.70.1",

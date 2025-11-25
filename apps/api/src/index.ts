@@ -22,32 +22,15 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// Configure multer for file uploads (must come BEFORE json body parser)
+// Configure multer for file uploads (used only for fallback, main routes handle uploads)
 const memoryUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
-// Apply multer to upload endpoint BEFORE other middleware
-app.post('/api/upload', memoryUpload.single('file'), (req, res, next) => {
-  // This just passes through - the actual handler will be registered later
-  next();
-});
+// CRITICAL: Only register body parsers for routes that are NOT file uploads
+// This prevents express.json() from trying to parse multipart form data
+// Routes with multer will handle their own body parsing
 
-// Increase body parser limit to 50MB for large file uploads and ML training data
-// BUT skip multipart/form-data requests (let multer handle those)
-app.use((req, res, next) => {
-  const contentType = req.headers['content-type'] || '';
-  console.log(`[DEBUG] Middleware Content-Type: ${contentType}`);
-  if (contentType.includes('multipart/form-data')) {
-    return next();
-  }
-  express.json({ limit: '50mb' })(req, res, next);
-});
-app.use((req, res, next) => {
-  const contentType = req.headers['content-type'] || '';
-  if (contentType.includes('multipart/form-data')) {
-    return next();
-  }
-  express.urlencoded({ extended: false, limit: '50mb' })(req, res, next);
-});
+// Don't register global body parsers - they interfere with multipart handling
+// Instead, parsers will be applied selectively by routes that need them
 
 // Rate limiting for API routes
 const apiLimiter = rateLimit({
@@ -61,7 +44,21 @@ const apiLimiter = rateLimit({
 // Apply rate limiter to all API routes
 app.use("/api/", apiLimiter);
 
-app.use((req, res, next) => {
+// CRITICAL: Conditional body parsing middleware
+// This applies body parsing to ALL routes EXCEPT file upload routes
+// This prevents body-parser from interfering with multer
+app.use((req: any, res: any, next: any) => {
+  // Skip body parsing for file upload endpoints - multer will handle them
+  if (req.path === '/api/upload' || req.path.startsWith('/api/files')) {
+    return next();
+  }
+
+  // For all other routes, apply body parsers
+  express.json({ limit: '50mb' })(req, res, (err: any) => {
+    if (err) return next(err);
+    express.urlencoded({ extended: false, limit: '50mb' })(req, res, next);
+  });
+}); app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
   let capturedJsonResponse: Record<string, any> | undefined = undefined;

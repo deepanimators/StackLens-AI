@@ -1,0 +1,12 @@
+packages:
+  # Main demo POS application
+  - 'demo-pos-app'
+  
+  # Standalone StackLens monorepo
+  - 'stacklens/**'
+  
+  # POS Demo monorepo  
+  - 'pos-demo/**'
+  
+  # Shared packages
+  - 'packages/**'
