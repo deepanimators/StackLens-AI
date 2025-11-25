@@ -27,6 +27,7 @@ export const logFiles = sqliteTable("log_files", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   filename: text("filename").notNull(),
   originalName: text("original_name").notNull(),
+  filePath: text("file_path").notNull(),
   fileType: text("file_type").notNull(),
   fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),

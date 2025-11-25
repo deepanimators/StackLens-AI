@@ -1,0 +1,1161 @@
+
+> stacklens-ai-platform@1.0.0 test:api
+> playwright test tests/api
+
+[dotenv@17.2.3] injecting env (14) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[2m[WebServer] [22m
+[2m[WebServer] [22m> stacklens-ai-platform@1.0.0 test:server /Users/deepak/Downloads/Projects/StackLens-AI-Deploy
+[2m[WebServer] [22m> cross-env NODE_ENV=test node --import tsx --no-warnings apps/api/src/index.ts
+[2m[WebServer] [22m
+[2m[WebServer] [22m[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[2m[WebServer] [22m🤖 AI Service initialized with 1 providers: gemini
+[2m[WebServer] [22m[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[2m[WebServer] [22m[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[2m[WebServer] [22m🚀 RAG: Vector database initialized
+[2m[WebServer] [22m{"level":"WARN","timestamp":"2025-11-25T19:24:53.155Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+[2m[WebServer] [22mSetting up SQLite database...
+[2m[WebServer] [22m✅ SQLite database initialized successfully
+[2m[WebServer] [22m🔄 Starting server initialization...
+[2m[WebServer] [22m✅ Database tables initialized
+[2m[WebServer] [22mStarting LogWatcher service for real-time monitoring...
+[2m[WebServer] [22m📍 Watching directories: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/data, /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/logs
+[2m[WebServer] [22m[LogWatcherService] Started watching 2 file(s)
+[2m[WebServer] [22m✅ LogWatcher service started successfully
+[2m[WebServer] [22m✅ Routes registered successfully
+[2m[WebServer] [22m📚 RAG: Indexing 50 resolved error patterns...
+[2m[WebServer] [22m✅ RAG: Knowledge base populated with 50 patterns
+[2m[WebServer] [22m12:54:54 AM [express] serving on port 4001
+[2m[WebServer] [22m🔄 Indexing existing errors for RAG system...
+[2m[WebServer] [22mℹ️ No errors with suggestions found for indexing
+[2m[WebServer] [22m✅ Enhanced RAG Suggestor initialized
+[2m[WebServer] [22m🎯 Enhanced RAG system ready with vector database
+[2m[WebServer] [22m🚀 Starting Python vector database service...
+[2m[WebServer] [22m✅ Vector database service initialized
+[2m[WebServer] [22m⚠️ Enhanced vector service not found, using fallback similarity search
+
+Running 102 tests using 5 workers
+
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+✓ Auth state file verified
+Starting authentication setup...
+  ✓    1 [setup] › tests/auth.setup.ts:135:1 › verify auth state (618ms)
+Using TEST_FIREBASE_TOKEN for authentication...
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m12:55:01 AM [express] POST /api/auth/firebase-signin 200 in 110ms :: {"user":{"id":1,"username":"Test…
+✓ Token exchange successful
+[2m[WebServer] [22m12:55:01 AM [express] GET /api/auth/me 200 in 1ms :: {"id":1,"email":"test@stacklens.ai","username":"…
+[2m[WebServer] [22m12:55:01 AM [express] GET /api/admin/ui-settings 200 in 1ms :: {"theme":"light","sidebarCollapsed":fa…
+[2m[WebServer] [22m12:55:01 AM [express] GET /api/admin/api-settings 200 in 1ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
+✓ Authentication successful with session token
+✓ Authentication state saved to /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/.auth/user.json
+  ✓    2 [setup] › tests/auth.setup.ts:15:1 › authenticate user (2.9s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[2m[WebServer] [22m12:55:03 AM [express] POST /api/auth/firebase-signin 401 in 9ms :: {"message":"Invalid Firebase token…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+  ✓    3 [api-tests] › tests/api/auth-upload.test.ts:54:5 › Authentication API › POST /api/auth/firebase-signin - should reject invalid token (276ms)
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test-errors.xlsx'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098704228-184519761.xlsx'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098704228-184519761.xlsx'[39m,
+[2m[WebServer] [22m  size: [33m9[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mError uploading file: SqliteError: NOT NULL constraint failed: log_files.file_path
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_NOTNULL'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:04 AM [express] POST /api/upload 500 in 29ms :: {"message":"Failed to upload file"}
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+  ✘    5 [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file (127ms)
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m12:55:04 AM [express] POST /api/auth/firebase-verify 200 in 5ms :: {"valid":true,"user":{"id":1,"user…
+  ✓    4 [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token (426ms)
+[2m[WebServer] [22m12:55:04 AM [express] GET /api/auth/me 200 in 2ms :: {"id":1,"email":"test@stacklens.ai","username":"…
+[2m[WebServer] [22m12:55:04 AM [express] GET /api/auth/me 401 in 1ms :: {"message":"Authentication required"}
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test.pdf'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/pdf'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098704492-837432251.pdf'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098704492-837432251.pdf'[39m,
+[2m[WebServer] [22m  size: [33m9[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+  ✓    6 [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user (195ms)
+[2m[WebServer] [22m12:55:04 AM [express] POST /api/upload 400 in 5ms :: {"message":"Invalid file type. Only Excel, CSV, …
+  ✓    7 [api-tests] › tests/api/auth-upload.test.ts:68:5 › Authentication API › GET /api/auth/me - should reject unauthenticated request (58ms)
+  ✓    8 [api-tests] › tests/api/auth-upload.test.ts:119:5 › File Upload API › POST /api/upload - should reject invalid file type (37ms)
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test.xlsx'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098704522-443136636.xlsx'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098704522-443136636.xlsx'[39m,
+[2m[WebServer] [22m  size: [33m4[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mError uploading file: SqliteError: NOT NULL constraint failed: log_files.file_path
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_NOTNULL'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:04 AM [express] POST /api/upload 500 in 6ms :: {"message":"Failed to upload file"}
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'list-test.xlsx'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098704528-926124607.xlsx'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098704528-926124607.xlsx'[39m,
+[2m[WebServer] [22m  size: [33m9[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mError uploading file: SqliteError: NOT NULL constraint failed: log_files.file_path
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_NOTNULL'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:04 AM [express] POST /api/upload 500 in 5ms :: {"message":"Failed to upload file"}
+[2m[WebServer] [22mSkipping body parsing for: /api/files/undefined
+[2m[WebServer] [22m12:55:04 AM [express] GET /api/files/undefined 400 in 2ms :: {"error":"Invalid file ID"}
+[2m[WebServer] [22mSkipping body parsing for: /api/files
+[2m[WebServer] [22m12:55:04 AM [express] GET /api/files 200 in 2ms :: {"files":[{"id":6,"filename":"file-1764098448257-1…
+  ✘   11 [api-tests] › tests/api/auth-upload.test.ts:165:5 › File Upload API › GET /api/files/:id - should get file details (31ms)
+  ✘   10 [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files (50ms)
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test.xlsx'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098704577-963826825.xlsx'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098704577-963826825.xlsx'[39m,
+[2m[WebServer] [22m  size: [33m4[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mError uploading file: SqliteError: NOT NULL constraint failed: log_files.file_path
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_NOTNULL'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:04 AM [express] POST /api/upload 500 in 12ms :: {"message":"Failed to upload file"}
+[2m[WebServer] [22mSkipping body parsing for: /api/files/undefined
+[2m[WebServer] [22m🗑️ Attempting to delete file with ID: NaN
+[2m[WebServer] [22m❌ Invalid file ID provided
+[2m[WebServer] [22m12:55:04 AM [express] DELETE /api/files/undefined 400 in 1ms :: {"message":"Invalid file ID"}
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m12:55:04 AM [express] POST /api/auth/firebase-signin 200 in 2ms :: {"user":{"id":1,"username":"Test U…
+  ✘   12 [api-tests] › tests/api/auth-upload.test.ts:190:5 › File Upload API › DELETE /api/files/:id - should delete file (80ms)
+  ✓    9 [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user (109ms)
+[2m[WebServer] [22m12:55:04 AM [express] GET /api/errors 200 in 4ms :: {"errors":[{"id":273,"fileId":null,"storeNumber":…
+  ✓   13 [api-tests] › tests/api/comprehensive.test.ts:36:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by error type (69ms)
+  ✓   14 [api-tests] › tests/api/comprehensive.test.ts:47:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by date range (99ms)
+[2m[WebServer] [22m12:55:04 AM [express] GET /api/errors 200 in 78ms :: {"errors":[{"id":285,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:55:05 AM [express] GET /api/errors 200 in 108ms :: {"errors":[{"id":270,"fileId":null,"storeNumber…
+  ✘   15 [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message (147ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test-errors.csv'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'text/csv'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098707602-95602276.csv'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098707602-95602276.csv'[39m,
+[2m[WebServer] [22m  size: [33m33[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mError uploading file: SqliteError: NOT NULL constraint failed: log_files.file_path
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_NOTNULL'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:07 AM [express] POST /api/upload 500 in 60ms :: {"message":"Failed to upload file"}
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+  ✘   16 [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file (1.5s)
+[2m[WebServer] [22m12:55:08 AM [express] GET /api/errors 200 in 183ms :: {"errors":[{"id":285,"fileId":null,"storeNumber…
+  ✓   17 [api-tests] › tests/api/comprehensive.test.ts:5:9 › API Tests - Error Management Endpoints › GET /api/errors › should retrieve all errors (1.2s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[2m[WebServer] [22m12:55:09 AM [express] GET /api/errors 200 in 95ms :: {"errors":[{"id":285,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:55:09 AM [express] GET /api/errors 200 in 3ms :: {"errors":[],"total":0,"page":1,"limit":20,"total…
+  ✓   18 [api-tests] › tests/api/comprehensive.test.ts:13:9 › API Tests - Error Management Endpoints › GET /api/errors › should support pagination (1.0s)
+[2m[WebServer] [22m12:55:09 AM [express] GET /api/errors 200 in 505ms :: {"errors":[{"id":285,"fileId":null,"storeNumber…
+  ✓   20 [api-tests] › tests/api/comprehensive.test.ts:91:9 › API Tests - Error Management Endpoints › GET /api/errors › should support sorting (830ms)
+  ✓   19 [api-tests] › tests/api/comprehensive.test.ts:25:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by severity (1.0s)
+[2m[WebServer] [22m12:55:09 AM [express] POST /api/errors 201 in 3ms :: {"id":286,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:55:09 AM [express] GET /api/errors 400 in 1ms :: {"error":"Invalid page parameter"}
+[2m[WebServer] [22m12:55:09 AM [express] POST /api/errors 400 in 1ms :: {"error":"Missing required fields: message and s…
+  ✓   22 [api-tests] › tests/api/comprehensive.test.ts:115:9 › API Tests - Error Management Endpoints › POST /api/errors › should create new error (47ms)
+  ✓   23 [api-tests] › tests/api/comprehensive.test.ts:105:9 › API Tests - Error Management Endpoints › GET /api/errors › should handle invalid query parameters gracefully (38ms)
+  ✓   24 [api-tests] › tests/api/comprehensive.test.ts:136:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate required fields (39ms)
+[2m[WebServer] [22m12:55:09 AM [express] POST /api/errors 201 in 1ms :: {"id":287,"fileId":null,"storeNumber":null,"kios…
+  ✓   25 [api-tests] › tests/api/comprehensive.test.ts:165:9 › API Tests - Error Management Endpoints › POST /api/errors › should set default values for optional fields (511ms)
+[2m[WebServer] [22m12:55:09 AM [express] POST /api/errors 201 in 4ms :: {"id":288,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:55:09 AM [express] POST /api/errors 400 in 0ms :: {"error":"Invalid severity"}
+[2m[WebServer] [22m12:55:09 AM [express] GET /api/errors/99999999 404 in 3ms :: {"error":"Error not found","message":"Er…
+[2m[WebServer] [22m12:55:09 AM [express] GET /api/errors/288 200 in 1ms :: {"id":288,"fileId":null,"storeNumber":null,"k…
+  ✓   26 [api-tests] › tests/api/comprehensive.test.ts:151:9 › API Tests - Error Management Endpoints › POST /api/errors › should validate severity values (625ms)
+  ✓   27 [api-tests] › tests/api/comprehensive.test.ts:185:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should retrieve specific error by ID (657ms)
+[2m[WebServer] [22m12:55:09 AM [express] GET /api/errors 200 in 367ms :: {"errors":[{"id":286,"fileId":null,"storeNumber…
+  ✓   28 [api-tests] › tests/api/comprehensive.test.ts:208:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 404 for non-existent error (186ms)
+  ✘   21 [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status (791ms)
+[2m[WebServer] [22m12:55:10 AM [express] GET /api/errors/invalid-id 400 in 50ms :: {"error":"Invalid error ID","message"…
+[2m[WebServer] [22m12:55:10 AM [express] POST /api/errors 201 in 5ms :: {"id":289,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:55:10 AM [express] POST /api/errors 201 in 5ms :: {"id":290,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:55:10 AM [express] PATCH /api/errors/289 200 in 4ms :: {"id":289,"fileId":null,"storeNumber":null,…
+  ✓   29 [api-tests] › tests/api/comprehensive.test.ts:213:9 › API Tests - Error Management Endpoints › GET /api/errors/:id › should return 400 for invalid ID format (186ms)
+[2m[WebServer] [22m12:55:10 AM [express] PATCH /api/errors/290 400 in 1ms :: {"error":"Invalid severity"}
+  ✓   30 [api-tests] › tests/api/comprehensive.test.ts:220:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should update error fields (223ms)
+[2m[WebServer] [22m12:55:10 AM [express] POST /api/errors 201 in 1ms :: {"id":291,"fileId":null,"storeNumber":null,"kios…
+  ✓   31 [api-tests] › tests/api/comprehensive.test.ts:253:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should validate updated field values (192ms)
+[2m[WebServer] [22m12:55:10 AM [express] DELETE /api/errors/291 200 in 2ms :: {"message":"Error deleted"}
+[2m[WebServer] [22m12:55:10 AM [express] GET /api/errors/291 404 in 2ms :: {"error":"Error not found","message":"Error n…
+[2m[WebServer] [22m12:55:10 AM [express] DELETE /api/errors/99999999 404 in 0ms :: {"error":"Error not found"}
+  ✓   32 [api-tests] › tests/api/comprehensive.test.ts:281:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should delete error (467ms)
+  ✓   33 [api-tests] › tests/api/comprehensive.test.ts:304:9 › API Tests - Error Management Endpoints › DELETE /api/errors/:id › should return 404 when deleting non-existent error (362ms)
+[2m[WebServer] [22m12:55:10 AM [express] POST /api/errors/bulk 400 in 3ms :: {"error":"Validation failed","invalidIndice…
+[2m[WebServer] [22m12:55:10 AM [express] POST /api/errors/bulk 201 in 3ms :: {"created":3,"ids":[293,294,295]}
+  ✓   34 [api-tests] › tests/api/comprehensive.test.ts:311:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should create multiple errors in bulk (444ms)
+  ✓   35 [api-tests] › tests/api/comprehensive.test.ts:330:9 › API Tests - Error Management Endpoints › POST /api/errors/bulk › should handle validation errors in bulk creation (31ms)
+[2m[WebServer] [22m12:55:10 AM [express] GET /api/errors/stats 400 in 0ms :: {"error":"Invalid error ID","message":"Inva…
+  ✘   36 [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics (34ms)
+[2m[WebServer] [22m12:55:10 AM [express] GET /api/errors/stats/by-store 200 in 122ms :: [{"storeNumber":"unknown","total…
+[2m[WebServer] [22m12:55:10 AM [express] GET /api/errors/stats 400 in 0ms :: {"error":"Invalid error ID","message":"Inva…
+  ✘   37 [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range (165ms)
+  ✓   38 [api-tests] › tests/api/comprehensive.test.ts:369:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should provide statistics by store (206ms)
+[2m[WebServer] [22m12:55:11 AM [express] POST /api/errors/export 200 in 2ms
+  ✓   39 [api-tests] › tests/api/comprehensive.test.ts:405:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as Excel (59ms)
+[2m[WebServer] [22m12:55:11 AM [express] GET /api/stores 200 in 3ms :: [{"id":1,"storeNumber":"STORE-1764097667423","nam…
+  ✓   40 [api-tests] › tests/api/comprehensive.test.ts:422:9 › API Tests - Store & Kiosk Management › GET /api/stores › should retrieve all stores (22ms)
+[2m[WebServer] [22m12:55:11 AM [express] GET /api/stores 200 in 1ms :: {"stores":[{"id":1,"storeNumber":"STORE-176409766…
+  ✓   41 [api-tests] › tests/api/comprehensive.test.ts:430:9 › API Tests - Store & Kiosk Management › GET /api/stores › should support pagination for stores (13ms)
+[2m[WebServer] [22m12:55:11 AM [express] GET /api/stores 200 in 1ms :: [{"id":1,"storeNumber":"STORE-1764097667423","nam…
+  ✓   42 [api-tests] › tests/api/comprehensive.test.ts:438:9 › API Tests - Store & Kiosk Management › GET /api/stores › should search stores by name (10ms)
+[2m[WebServer] [22m12:55:11 AM [express] POST /api/stores 201 in 4ms :: {"id":27,"storeNumber":"STORE-1764098711365-42",…
+  ✓   43 [api-tests] › tests/api/comprehensive.test.ts:446:9 › API Tests - Store & Kiosk Management › POST /api/stores › should create new store (19ms)
+[2m[WebServer] [22m12:55:11 AM [express] POST /api/stores 201 in 13ms :: {"id":28,"storeNumber":"STORE-1764098711421-769…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[2m[WebServer] [22mError creating store: SqliteError: UNIQUE constraint failed: stores.store_number
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_UNIQUE'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:11 AM [express] POST /api/stores 409 in 2ms :: {"message":"Store with this number already exist…
+  ✓   44 [api-tests] › tests/api/comprehensive.test.ts:463:9 › API Tests - Store & Kiosk Management › POST /api/stores › should prevent duplicate store numbers (73ms)
+[2m[WebServer] [22m12:55:11 AM [express] GET /api/kiosks 200 in 2ms :: []
+  ✓   45 [api-tests] › tests/api/comprehensive.test.ts:481:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should retrieve all kiosks (71ms)
+[2m[WebServer] [22m12:55:11 AM [express] GET /api/kiosks 200 in 1ms :: []
+  ✓   46 [api-tests] › tests/api/comprehensive.test.ts:489:9 › API Tests - Store & Kiosk Management › GET /api/kiosks › should filter kiosks by store (195ms)
+[2m[WebServer] [22m12:55:12 AM [express] POST /api/kiosks 400 in 5ms :: {"error":"Invalid store number - store does not …
+  ✘   47 [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk (523ms)
+[2m[WebServer] [22m12:55:12 AM [express] GET /api/errors 200 in 2ms :: {"errors":[],"total":0,"page":1,"limit":20,"total…
+  ✓   48 [api-tests] › tests/api/comprehensive.test.ts:80:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by store (831ms)
+[2m[WebServer] [22m12:55:12 AM [express] POST /api/ml/train 200 in 1ms :: {"jobId":"ml-job-1764098712819-sm7d3wx35","sta…
+  ✓   49 [api-tests] › tests/api/comprehensive.test.ts:535:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should initiate ML training job (36ms)
+[2m[WebServer] [22m12:55:12 AM [express] POST /api/ml/train 400 in 0ms :: {"error":"Invalid modelType"}
+  ✓   50 [api-tests] › tests/api/comprehensive.test.ts:554:9 › API Tests - ML Training Endpoints › POST /api/ml/train › should validate training configuration (26ms)
+[2m[WebServer] [22m12:55:12 AM [express] POST /api/ml/train 200 in 1ms :: {"jobId":"ml-job-1764098712925-59h4cr8ov","sta…
+[2m[WebServer] [22m12:55:12 AM [express] GET /api/ml/jobs/ml-job-1764098712925-59h4cr8ov 200 in 2ms :: {"jobId":"ml-job-…
+  ✓   51 [api-tests] › tests/api/comprehensive.test.ts:568:9 › API Tests - ML Training Endpoints › GET /api/ml/jobs/:jobId › should retrieve training job status (62ms)
+[2m[WebServer] [22m12:55:12 AM [express] POST /api/ml/predict 200 in 1ms :: {"prediction":{"type":"Runtime","severity":"…
+  ✓   52 [api-tests] › tests/api/comprehensive.test.ts:594:9 › API Tests - ML Training Endpoints › POST /api/ml/predict › should make prediction with trained model (33ms)
+[2m[WebServer] [22m12:55:13 AM [express] GET /api/ml/models 200 in 1ms :: [{"id":"model-1","name":"Production Model v1",…
+  ✓   53 [api-tests] › tests/api/comprehensive.test.ts:615:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should list all trained models (74ms)
+[2m[WebServer] [22m12:55:13 AM [express] GET /api/ml/models 200 in 0ms :: [{"id":"model-1","name":"Production Model v1",…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+  ✓   54 [api-tests] › tests/api/comprehensive.test.ts:623:9 › API Tests - ML Training Endpoints › GET /api/ml/models › should filter models by status (323ms)
+[2m[WebServer] [22m12:55:13 AM [express] POST /api/ai/analyze 200 in 1ms :: {"analysis":"Simulated AI analysis for: unkn…
+  ✓   55 [api-tests] › tests/api/comprehensive.test.ts:637:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should analyze error with AI (51ms)
+[2m[WebServer] [22m12:55:13 AM [express] POST /api/ai/analyze 200 in 2ms :: {"analysis":"Simulated AI analysis for: unkn…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+  ✓   56 [api-tests] › tests/api/comprehensive.test.ts:655:9 › API Tests - AI Analysis Endpoints › POST /api/ai/analyze › should handle timeout for long-running analysis (91ms)
+[2m[WebServer] [22m12:55:13 AM [express] PATCH /api/errors/99999999 404 in 2ms :: {"error":"Error not found"}
+[2m[WebServer] [22m12:55:13 AM [express] POST /api/ai/suggest 200 in 0ms :: {"suggestions":[{"id":"fix-1","title":"Fix N…
+  ✓   58 [api-tests] › tests/api/comprehensive.test.ts:666:9 › API Tests - AI Analysis Endpoints › POST /api/ai/suggest › should provide fix suggestions (170ms)
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/ai/summarize 200 in 0ms :: {"summary":"Simulated summary of multiple …
+  ✓   57 [api-tests] › tests/api/comprehensive.test.ts:271:9 › API Tests - Error Management Endpoints › PATCH /api/errors/:id › should return 404 when updating non-existent error (156ms)
+  ✓   59 [api-tests] › tests/api/comprehensive.test.ts:685:9 › API Tests - AI Analysis Endpoints › POST /api/ai/summarize › should summarize multiple errors (26ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test.xlsx'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098714152-757621323.xlsx'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098714152-757621323.xlsx'[39m,
+[2m[WebServer] [22m  size: [33m18[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mError uploading file: SqliteError: NOT NULL constraint failed: log_files.file_path
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_NOTNULL'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/upload 500 in 8ms :: {"message":"Failed to upload file"}
+  ✘   61 [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload (99ms)
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/errors/export 200 in 0ms
+  ✓   60 [api-tests] › tests/api/comprehensive.test.ts:379:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as CSV (148ms)
+[2m[WebServer] [22m❌ Server error: MulterError: File too large
+[2m[WebServer] [22m    at abortWithCode [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mmulter[24m/lib/make-middleware.js:85:22[90m)[39m
+[2m[WebServer] [22m    at FileStream.<anonymous> [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mmulter[24m/lib/make-middleware.js:155:11[90m)[39m
+[2m[WebServer] [22m[90m    at FileStream.emit (node:events:518:28)[39m
+[2m[WebServer] [22m    at SBMH.ssCb [as _cb] [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbusboy[24m/lib/types/multipart.js:479:32[90m)[39m
+[2m[WebServer] [22m    at feed [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mstreamsearch[24m/lib/sbmh.js:248:10[90m)[39m
+[2m[WebServer] [22m    at SBMH.push [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mstreamsearch[24m/lib/sbmh.js:104:16[90m)[39m
+[2m[WebServer] [22m    at Multipart._write [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbusboy[24m/lib/types/multipart.js:567:19[90m)[39m
+[2m[WebServer] [22m[90m    at writeOrBuffer (node:internal/streams/writable:572:12)[39m
+[2m[WebServer] [22m[90m    at _write (node:internal/streams/writable:501:10)[39m
+[2m[WebServer] [22m[90m    at Writable.write (node:internal/streams/writable:510:10)[39m {
+[2m[WebServer] [22m  code: [32m'LIMIT_FILE_SIZE'[39m,
+[2m[WebServer] [22m  field: [32m'file'[39m,
+[2m[WebServer] [22m  storageErrors: []
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/upload 500 in 112ms :: {"message":"File too large"}
+  ✘   62 [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit (155ms)
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test.csv'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'text/csv'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098714264-261208913.csv'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098714264-261208913.csv'[39m,
+[2m[WebServer] [22m  size: [33m4[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mError uploading file: SqliteError: NOT NULL constraint failed: log_files.file_path
+[2m[WebServer] [22m    at PreparedQuery.values [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:156:26[90m)[39m
+[2m[WebServer] [22m    at PreparedQuery.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/better-sqlite3/session.ts:124:21[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.all [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:396:26[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.execute [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/sqlite-core/query-builders/insert.ts:408:40[90m)[39m
+[2m[WebServer] [22m    at QueryPromise.then [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4msrc[24m/query-promise.ts:31:15[90m)[39m
+[2m[WebServer] [22m[90m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m {
+[2m[WebServer] [22m  code: [32m'SQLITE_CONSTRAINT_NOTNULL'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/upload 500 in 5ms :: {"message":"Failed to upload file"}
+[2m[WebServer] [22m12:55:14 AM [express] GET /api/uploads/undefined 400 in 1ms :: {"message":"Invalid file ID"}
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/errors/export 200 in 1ms :: [{"id":1,"message":"Test"}]
+  ✘   64 [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status (51ms)
+  ✓   63 [api-tests] › tests/api/comprehensive.test.ts:392:9 › API Tests - Error Management Endpoints › POST /api/errors/export › should export errors as JSON (78ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/auth/firebase 401 in 1ms :: {"message":"Invalid Firebase token"}
+[2m[WebServer] [22m12:55:14 AM [express] POST /api/auth/logout 404 in 5ms
+  ✘   65 [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user (40ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[2m[WebServer] [22m12:55:15 AM [express] POST /api/kiosks 400 in 1ms :: {"error":"Invalid store number - store does not …
+  ✓   66 [api-tests] › tests/api/comprehensive.test.ts:517:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should validate kiosk belongs to valid store (423ms)
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[2m[WebServer] [22m✅ Using mock token for user: test@stacklens.ai
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m12:55:15 AM [express] POST /api/auth/firebase-signin 200 in 19ms :: {"user":{"id":1,"username":"Test …
+Auth response: {
+  user: {
+    id: [33m1[39m,
+    username: [32m'Test User'[39m,
+    email: [32m'test@stacklens.ai'[39m,
+    role: [32m'admin'[39m,
+    firstName: [32m'Test'[39m,
+    lastName: [32m'User'[39m,
+    profileImageUrl: [32m'https://example.com/avatar.jpg'[39m,
+    department: [1mnull[22m,
+    isActive: [33mtrue[39m,
+    lastLogin: [32m'2025-11-25T19:25:15.000Z'[39m,
+    createdAt: [32m'+057872-01-12T00:20:00.000Z'[39m,
+    updatedAt: [32m'+057872-01-12T00:20:00.000Z'[39m
+  },
+  token: [32m'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5ODcxNSwiZXhwIjoxNzY0MTg1MTE1fQ.yDnhTxDy_D3sO8_cldNqlAI_SEVqvNs1ZJO-HioskGA'[39m,
+  provider: [32m'firebase'[39m
+}
+[2m[WebServer] [22m12:55:15 AM [express] GET /api/admin/users 200 in 1ms :: [{"id":1,"username":"Test User","email":"tes…
+  ✓   67 [api-tests] › tests/api/comprehensive.test.ts:838:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should allow access with admin token (406ms)
+[2m[WebServer] [22m12:55:15 AM [express] POST /api/errors 400 in 1ms :: {"error":"Missing required fields: message and s…
+  ✓   68 [api-tests] › tests/api/comprehensive.test.ts:871:5 › API Tests - Request Validation › should reject requests with invalid Content-Type (28ms)
+[2m[WebServer] [22m❌ Server error: SyntaxError: Unexpected token '"', ""{invalid json}"" is not valid JSON
+[2m[WebServer] [22m    at JSON.parse (<anonymous>)
+[2m[WebServer] [22m    at createStrictSyntaxError [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:169:10[90m)[39m
+[2m[WebServer] [22m    at parse [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/types/json.js:86:15[90m)[39m
+[2m[WebServer] [22m    at [90m/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mbody-parser[24m/lib/read.js:128:18
+[2m[WebServer] [22m[90m    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)[39m
+[2m[WebServer] [22m    at invokeCallback [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:238:16[90m)[39m
+[2m[WebServer] [22m    at done [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:227:7[90m)[39m
+[2m[WebServer] [22m    at IncomingMessage.onEnd [90m(/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/[39mnode_modules/[4mraw-body[24m/index.js:287:7[90m)[39m
+[2m[WebServer] [22m[90m    at IncomingMessage.emit (node:events:518:28)[39m
+[2m[WebServer] [22m[90m    at endReadableNT (node:internal/streams/readable:1698:12)[39m {
+[2m[WebServer] [22m  expose: [33mtrue[39m,
+[2m[WebServer] [22m  statusCode: [33m400[39m,
+[2m[WebServer] [22m  status: [33m400[39m,
+[2m[WebServer] [22m  body: [32m'"{invalid json}"'[39m,
+[2m[WebServer] [22m  type: [32m'entity.parse.failed'[39m
+[2m[WebServer] [22m}
+  ✓   69 [api-tests] › tests/api/comprehensive.test.ts:882:5 › API Tests - Request Validation › should validate JSON syntax (20ms)
+[2m[WebServer] [22m12:55:15 AM [express] POST /api/errors 201 in 24ms :: {"id":296,"fileId":null,"storeNumber":null,"kio…
+  ✘   70 [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size (47ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test.exe'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/x-msdownload'[39m,
+[2m[WebServer] [22m  destination: [32m'uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764098715912-570917733.exe'[39m,
+[2m[WebServer] [22m  path: [32m'uploads/file-1764098715912-570917733.exe'[39m,
+[2m[WebServer] [22m  size: [33m12[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22m12:55:15 AM [express] POST /api/upload 400 in 5ms :: {"message":"Invalid file type. Only Excel, CSV, …
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m12:55:15 AM [express] POST /api/auth/firebase 200 in 4ms :: {"userId":1,"user":{"id":1,"username":"Te…
+  ✓   71 [api-tests] › tests/api/comprehensive.test.ts:742:9 › API Tests - File Upload & Processing › POST /api/upload › should reject unsupported file types (66ms)
+  ✘   72 [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token (79ms)
+[2m[WebServer] [22m12:55:15 AM [express] POST /api/errors 400 in 0ms :: {"error":"Missing required fields: message and s…
+  ✓   74 [api-tests] › tests/api/comprehensive.test.ts:918:5 › API Tests - Request Validation › should handle missing request body (15ms)
+[2m[WebServer] [22m12:55:16 AM [express] GET /api/errors 200 in 457ms :: {"errors":[],"total":0,"page":1,"limit":20,"tot…
+[2m[WebServer] [22m12:55:16 AM [express] POST /api/auth/firebase 401 in 0ms :: {"message":"Invalid Firebase token"}
+[2m[WebServer] [22mToken verification failed: Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+[2m[WebServer] [22m12:55:16 AM [express] GET /api/admin/users 401 in 0ms :: {"message":"Authentication required"}
+  ✓   75 [api-tests] › tests/api/comprehensive.test.ts:930:5 › API Tests - Request Validation › should handle special characters in query params (499ms)
+  ✓   73 [api-tests] › tests/api/comprehensive.test.ts:799:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should reject invalid token (558ms)
+  ✓   76 [api-tests] › tests/api/comprehensive.test.ts:831:9 › API Tests - Authentication & Authorization › GET /api/admin/users › should require admin role (492ms)
+[2m[WebServer] [22m12:55:16 AM [express] GET /api/errors/999999 404 in 26ms :: {"error":"Error not found","message":"Err…
+  ✓   78 [api-tests] › tests/api/comprehensive.test.ts:959:5 › API Tests - Response Format Validation › should return consistent error response format (92ms)
+  ✓   79 [api-tests] › tests/api/comprehensive.test.ts:948:5 › API Tests - Response Format Validation › should include CORS headers (996ms)
+[2m[WebServer] [22m12:55:17 AM [express] GET /api/errors 200 in 575ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✓   77 [api-tests] › tests/api/comprehensive.test.ts:941:5 › API Tests - Response Format Validation › should return proper Content-Type headers (1.1s)
+[2m[WebServer] [22m12:55:17 AM [express] GET /api/errors 200 in 941ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:17 AM [express] GET /api/errors 200 in 272ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✓   80 [api-tests] › tests/api/comprehensive.test.ts:969:5 › API Tests - Response Format Validation › should include pagination metadata (771ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+  ✓   81 [api-tests] › tests/api/comprehensive.test.ts:981:5 › API Tests - Response Format Validation › should return timestamps in ISO format (396ms)
+[2m[WebServer] [22m12:55:18 AM [express] GET /api/errors 200 in 306ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✓   82 [api-tests] › tests/api/comprehensive.test.ts:995:5 › API Tests - Error Handling › should handle database connection errors gracefully (504ms)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[2m[WebServer] [22m12:55:18 AM [express] GET /api/errors 200 in 701ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:18 AM [express] GET /api/errors/not-a-number 400 in 1ms :: {"error":"Invalid error ID","message…
+[2m[WebServer] [22m12:55:18 AM [express] POST /api/errors 400 in 0ms :: {"error":"Missing required fields: message and s…
+[2m[WebServer] [22m12:55:18 AM [express] GET /api/nonexistent 404 in 590ms
+  ✘   86 [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages (446ms)
+  ✓   85 [api-tests] › tests/api/comprehensive.test.ts:1009:5 › API Tests - Error Handling › should handle malformed route parameters (639ms)
+  ✓   83 [api-tests] › tests/api/comprehensive.test.ts:1003:5 › API Tests - Error Handling › should return 404 for non-existent routes (986ms)
+  ✓   84 [api-tests] › tests/api/comprehensive.test.ts:907:5 › API Tests - Request Validation › should validate required headers (903ms)
+[2m[WebServer] [22m12:55:19 AM [express] GET /api/errors 200 in 427ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✓   89 [api-tests] › tests/api/comprehensive.test.ts:1057:5 › API Tests - Rate Limiting › should include rate limit headers (2.2s)
+[2m[WebServer] [22m12:55:20 AM [express] GET /api/errors 200 in 1476ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+  ✓   91 [api-tests] › tests/api/comprehensive.test.ts:1093:5 › API Tests - Pagination Edge Cases › should handle page=0 (2.4s)
+[2m[WebServer] [22m12:55:23 AM [express] GET /api/errors 200 in 927ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:25 AM [express] GET /api/errors 400 in 1ms :: {"error":"Invalid page parameter"}
+  ✓   92 [api-tests] › tests/api/comprehensive.test.ts:1100:5 › API Tests - Pagination Edge Cases › should handle negative page numbers (2.6s)
+[2m[WebServer] [22m12:55:26 AM [express] GET /api/errors 200 in 247ms :: {"errors":[],"total":282,"page":999999,"limit":…
+  ✓   93 [api-tests] › tests/api/comprehensive.test.ts:1106:5 › API Tests - Pagination Edge Cases › should handle excessive page numbers (454ms)
+[2m[WebServer] [22m12:55:26 AM [express] GET /api/errors 200 in 5525ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:26 AM [express] GET /api/errors 200 in 3161ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[2m[WebServer] [22m12:55:27 AM [express] GET /api/errors 200 in 958ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✘   94 [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 (1.3s)
+  ✘   87 [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats (9.7s)
+[2m[WebServer] [22m12:55:28 AM [express] GET /api/errors 200 in 4200ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:29 AM [express] GET /api/errors 200 in 2883ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:29 AM [express] GET /api/errors 200 in 1804ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:30 AM [express] GET /api/errors 200 in 3571ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:30 AM [express] GET /api/errors 200 in 997ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✘   88 [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting (12.0s)
+[2m[WebServer] [22m12:55:31 AM [express] GET /api/errors 200 in 1902ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[2m[WebServer] [22m12:55:33 AM [express] GET /api/errors 200 in 2924ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:33 AM [express] GET /api/errors 200 in 2858ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:34 AM [express] GET /api/errors 200 in 3397ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:34 AM [express] GET /api/errors 200 in 2556ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+  ✘   95 [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures (8.4s)
+[2m[WebServer] [22m12:55:35 AM [express] GET /api/errors 200 in 2850ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:35 AM [express] GET /api/errors 200 in 2334ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:35 AM [express] GET /api/errors 200 in 1015ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[2m[WebServer] [22m12:55:36 AM [express] GET /api/errors 200 in 538ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:36 AM [express] GET /api/errors 200 in 1188ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:36 AM [express] GET /api/errors 200 in 1023ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:37 AM [express] GET /api/errors 200 in 907ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[2m[WebServer] [22m12:55:38 AM [express] GET /api/errors 200 in 1018ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:38 AM [express] GET /api/errors 200 in 1587ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:38 AM [express] GET /api/errors 200 in 1124ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:38 AM [express] GET /api/errors 200 in 463ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:39 AM [express] GET /api/errors 200 in 1600ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:39 AM [express] GET /api/errors 200 in 1553ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:40 AM [express] GET /api/errors 200 in 575ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:40 AM [express] GET /api/errors 200 in 1329ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:40 AM [express] GET /api/errors 200 in 689ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:40 AM [express] GET /api/errors 200 in 440ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:40 AM [express] GET /api/errors 200 in 365ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✘   97 [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely (8.6s)
+[2m[WebServer] [22m12:55:41 AM [express] GET /api/errors 200 in 817ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:42 AM [express] GET /api/errors 200 in 1255ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:42 AM [express] GET /api/errors 200 in 1761ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:42 AM [express] GET /api/errors 200 in 1893ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:42 AM [express] GET /api/errors 200 in 1429ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:43 AM [express] GET /api/errors 200 in 795ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:43 AM [express] GET /api/errors 200 in 1057ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:43 AM [express] GET /api/errors 200 in 1274ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[2m[WebServer] [22m12:55:44 AM [express] GET /api/errors 200 in 1264ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:44 AM [express] GET /api/errors 200 in 862ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:44 AM [express] GET /api/errors 200 in 540ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:44 AM [express] GET /api/errors 200 in 758ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:44 AM [express] GET /api/errors 200 in 344ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:45 AM [express] GET /api/errors 200 in 724ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:45 AM [express] GET /api/errors 200 in 556ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:45 AM [express] GET /api/errors 200 in 584ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:46 AM [express] GET /api/errors 200 in 1559ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:46 AM [express] GET /api/errors 200 in 1356ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:46 AM [express] GET /api/errors 200 in 829ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:46 AM [express] GET /api/errors 200 in 525ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:47 AM [express] GET /api/errors 200 in 684ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:47 AM [express] GET /api/errors 200 in 832ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:47 AM [express] GET /api/errors 200 in 1134ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:47 AM [express] GET /api/errors 200 in 824ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:47 AM [express] GET /api/errors 200 in 589ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:48 AM [express] GET /api/errors 200 in 343ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:48 AM [express] GET /api/errors 200 in 238ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:48 AM [express] GET /api/errors 200 in 258ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:48 AM [express] GET /api/errors 200 in 153ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✘   90 [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window (30.4s)
+[2m[WebServer] [22m12:55:49 AM [express] GET /api/errors 200 in 778ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:49 AM [express] GET /api/errors 200 in 947ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:49 AM [express] GET /api/errors 200 in 1068ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:49 AM [express] GET /api/errors 200 in 467ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:50 AM [express] GET /api/errors 200 in 390ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:50 AM [express] GET /api/errors 200 in 137ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:50 AM [express] GET /api/errors 200 in 311ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:50 AM [express] GET /api/errors 200 in 134ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:51 AM [express] GET /api/errors 200 in 666ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:51 AM [express] GET /api/errors 200 in 1304ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[2m[WebServer] [22m12:55:52 AM [express] GET /api/errors 200 in 237ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:52 AM [express] GET /api/errors 200 in 405ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:52 AM [express] GET /api/errors 200 in 219ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:52 AM [express] GET /api/errors 200 in 173ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:52 AM [express] GET /api/errors 200 in 343ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:53 AM [express] GET /api/errors 200 in 661ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:53 AM [express] GET /api/errors 200 in 171ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:53 AM [express] GET /api/errors 200 in 580ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:53 AM [express] GET /api/errors 200 in 157ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:53 AM [express] GET /api/errors 200 in 172ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:53 AM [express] GET /api/errors 200 in 75ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:55:53 AM [express] GET /api/errors 200 in 193ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:54 AM [express] GET /api/errors 200 in 144ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:54 AM [express] GET /api/errors 200 in 443ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 312ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 746ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 131ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 331ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 145ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 172ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 164ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:55 AM [express] GET /api/errors 200 in 69ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:55:56 AM [express] GET /api/errors 200 in 167ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:56 AM [express] GET /api/errors 200 in 208ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:57 AM [express] GET /api/errors 200 in 546ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:57 AM [express] GET /api/errors 200 in 388ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:57 AM [express] GET /api/errors 200 in 544ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:58 AM [express] GET /api/errors 200 in 292ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:58 AM [express] GET /api/errors 200 in 319ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:58 AM [express] GET /api/errors 200 in 742ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:59 AM [express] GET /api/errors 200 in 408ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:59 AM [express] GET /api/errors 200 in 1026ms :: {"errors":[{"id":296,"fileId":null,"storeNumbe…
+[2m[WebServer] [22m12:55:59 AM [express] GET /api/errors 200 in 157ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:59 AM [express] GET /api/errors 200 in 122ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:59 AM [express] GET /api/errors 200 in 141ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:55:59 AM [express] GET /api/errors 200 in 82ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:00 AM [express] GET /api/errors 200 in 90ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:00 AM [express] GET /api/errors 200 in 207ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:00 AM [express] GET /api/errors 200 in 144ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:00 AM [express] GET /api/errors 200 in 216ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:01 AM [express] GET /api/errors 200 in 246ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:01 AM [express] GET /api/errors 200 in 76ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:01 AM [express] GET /api/errors 200 in 229ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:01 AM [express] GET /api/errors 200 in 126ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:01 AM [express] GET /api/errors 200 in 74ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:01 AM [express] GET /api/errors 200 in 59ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:02 AM [express] GET /api/errors 200 in 188ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✘   96 [api-tests] › tests/api/comprehensive.test.ts:1122:5 › API Tests - Pagination Edge Cases › should enforce maximum limit (30.0s)
+[2m[WebServer] [22m12:56:02 AM [express] GET /api/errors 200 in 119ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:02 AM [express] GET /api/errors 200 in 114ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:02 AM [express] GET /api/errors 200 in 82ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:02 AM [express] GET /api/errors 200 in 94ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:02 AM [express] GET /api/errors 200 in 69ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:03 AM [express] GET /api/errors 200 in 85ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:03 AM [express] GET /api/errors 200 in 425ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:04 AM [express] GET /api/errors 200 in 245ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[2m[WebServer] [22m12:56:04 AM [express] GET /api/errors 200 in 178ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:04 AM [express] GET /api/errors 200 in 305ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:05 AM [express] GET /api/errors 200 in 496ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:05 AM [express] GET /api/errors 200 in 359ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:05 AM [express] GET /api/errors 200 in 87ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:05 AM [express] GET /api/errors 200 in 83ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:05 AM [express] GET /api/errors 200 in 116ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+  ✘   98 [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation (30.0s)
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors 200 in 130ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors 200 in 377ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors 200 in 139ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors 200 in 115ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors 200 in 89ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors/999999 404 in 2ms :: {"error":"Error not found","message":"Erro…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors/999999 404 in 0ms :: {"error":"Error not found","message":"Erro…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors/999999 404 in 0ms :: {"error":"Error not found","message":"Erro…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors/999999 404 in 0ms :: {"error":"Error not found","message":"Erro…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors 400 in 0ms :: {"error":"Invalid limit parameter"}
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors/999999 404 in 1ms :: {"error":"Error not found","message":"Erro…
+[2m[WebServer] [22m12:56:06 AM [express] GET /api/errors 200 in 68ms :: {"errors":[{"id":296,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:07 AM [express] GET /api/errors 200 in 157ms :: {"errors":[{"id":296,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 3ms :: {"id":297,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 1ms :: {"id":298,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 2ms :: {"id":299,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 1ms :: {"id":300,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 2ms :: {"id":301,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] GET /api/errors 200 in 395ms :: {"errors":[{"id":297,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 2ms :: {"id":302,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 2ms :: {"id":303,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 39ms :: {"id":304,"fileId":null,"storeNumber":null,"kio…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 2ms :: {"id":305,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] PUT /api/errors/304 404 in 4ms
+[2m[WebServer] [22m12:56:07 AM [express] GET /api/errors 200 in 121ms :: {"errors":[{"id":297,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 2ms :: {"id":306,"fileId":null,"storeNumber":null,"kios…
+[2m[WebServer] [22m12:56:07 AM [express] POST /api/errors 201 in 2ms :: {"id":307,"fileId":null,"storeNumber":null,"kios…
+  ✘   99 [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates (30.1s)
+  ✓  100 [api-tests] › tests/api/comprehensive.test.ts:1197:5 › API Tests - Cache Control › should include appropriate cache headers (23.8s)
+[2m[WebServer] [22m12:56:08 AM [express] GET /api/errors 200 in 338ms :: {"errors":[{"id":297,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:08 AM [express] PUT /api/errors/304 404 in 1ms
+[2m[WebServer] [22m12:56:08 AM [express] GET /api/errors 200 in 214ms :: {"errors":[{"id":297,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:08 AM [express] PUT /api/errors/304 404 in 1ms
+  ✓  102 [api-tests] › tests/api/comprehensive.test.ts:1223:5 › API Tests - Cache Control › should support If-Modified-Since (4.1s)
+[2m[WebServer] [22m12:56:08 AM [express] GET /api/errors 304 in 78ms :: {"errors":[{"id":297,"fileId":null,"storeNumber"…
+[2m[WebServer] [22m12:56:08 AM [express] PUT /api/errors/304 404 in 1ms
+  ✓  101 [api-tests] › tests/api/comprehensive.test.ts:1208:5 › API Tests - Cache Control › should respect If-None-Match for conditional requests (16.3s)
+[2m[WebServer] [22m12:56:08 AM [express] GET /api/errors 200 in 224ms :: {"errors":[{"id":297,"fileId":null,"storeNumber…
+[2m[WebServer] [22m12:56:08 AM [express] PUT /api/errors/304 404 in 1ms
+
+
+  1) [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m500[39m
+
+      94 |         });
+      95 |
+    > 96 |         expect(response.status()).toBe(200);
+         |                                   ^
+      97 |
+      98 |         const data = await response.json();
+      99 |         expect(data).toHaveProperty('fileId');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:96:35
+
+  2) [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m500[39m
+
+      114 |         });
+      115 |
+    > 116 |         expect(response.status()).toBe(200);
+          |                                   ^
+      117 |     });
+      118 |
+      119 |     test('POST /api/upload - should reject invalid file type', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:116:35
+
+  3) [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      153 |
+      154 |         const data = await response.json();
+    > 155 |         expect(Array.isArray(data)).toBe(true);
+          |                                     ^
+      156 |         expect(data.length).toBeGreaterThan(0);
+      157 |
+      158 |         if (data.length > 0) {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:155:37
+
+  4) [api-tests] › tests/api/auth-upload.test.ts:165:5 › File Upload API › GET /api/files/:id - should get file details 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      181 |         const response = await apiContext.get(`/api/files/${fileId}`);
+      182 |
+    > 183 |         expect(response.status()).toBe(200);
+          |                                   ^
+      184 |
+      185 |         const data = await response.json();
+      186 |         expect(data).toHaveProperty('id', fileId);
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:183:35
+
+  5) [api-tests] › tests/api/auth-upload.test.ts:190:5 › File Upload API › DELETE /api/files/:id - should delete file 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m400[39m
+
+      206 |         const response = await apiContext.delete(`/api/files/${fileId}`);
+      207 |
+    > 208 |         expect(response.status()).toBe(200);
+          |                                   ^
+      209 |
+      210 |         const data = await response.json();
+      211 |         expect(data).toHaveProperty('message', 'File deleted successfully');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:208:35
+
+  6) [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"database"[39m
+    Received string:    [31m"bulk error 2"[39m
+
+      63 |             expect(Array.isArray(data.errors)).toBeTruthy();
+      64 |             data.errors.forEach((error: any) => {
+    > 65 |                 expect(error.message.toLowerCase()).toContain('database');
+         |                                                     ^
+      66 |             });
+      67 |         });
+      68 |
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:65:53)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:64:25
+
+  7) [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mfalse[39m
+    Received: [31mtrue[39m
+
+      74 |             expect(Array.isArray(data.errors)).toBeTruthy();
+      75 |             data.errors.forEach((error: any) => {
+    > 76 |                 expect(error.resolved).toBe(false);
+         |                                        ^
+      77 |             });
+      78 |         });
+      79 |
+        at forEach (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:76:40)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:75:25
+
+  8) [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      348 |             const response = await apiContext.get('/api/errors/stats');
+      349 |
+    > 350 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      351 |             const stats = await response.json();
+      352 |             expect(stats).toHaveProperty('total');
+      353 |             expect(stats).toHaveProperty('bySeverity');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:350:35
+
+  9) [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      362 |             );
+      363 |
+    > 364 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      365 |             const stats = await response.json();
+      366 |             expect(stats).toHaveProperty('dateRange');
+      367 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:364:35
+
+  10) [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      510 |             });
+      511 |
+    > 512 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      513 |             const created = await response.json();
+      514 |             expect(created.kioskNumber).toBe(newKiosk.kioskNumber);
+      515 |         });
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:512:35
+
+  11) [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      718 |             });
+      719 |
+    > 720 |             expect(response.ok()).toBeTruthy();
+          |                                   ^
+      721 |             const result = await response.json();
+      722 |             expect(result).toHaveProperty('fileId');
+      723 |             expect(result).toHaveProperty('filename');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:720:35
+
+  12) [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m413[39m
+    Received: [31m500[39m
+
+      737 |             });
+      738 |
+    > 739 |             expect(response.status()).toBe(413); // Payload Too Large
+          |                                       ^
+      740 |         });
+      741 |
+      742 |         test('should reject unsupported file types', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:739:39
+
+  13) [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      771 |             // Check status
+      772 |             const statusResponse = await apiContext.get(`/api/uploads/${upload.fileId}`);
+    > 773 |             expect(statusResponse.ok()).toBeTruthy();
+          |                                         ^
+      774 |
+      775 |             const status = await statusResponse.json();
+      776 |             expect(status).toHaveProperty('fileId');
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:773:41
+
+  14) [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
+
+    Expected path: [32m"sessionToken"[39m
+    Received path: [31m[][39m
+
+    Received value: [31m{"email": "test@stacklens.ai", "provider": "firebase", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5ODcxNSwiZXhwIjoxNzY0MTg1MTE1fQ.yDnhTxDy_D3sO8_cldNqlAI_SEVqvNs1ZJO-HioskGA", "user": {"createdAt": "+057872-01-12T00:20:00.000Z", "department": null, "email": "test@stacklens.ai", "firstName": "Test", "id": 1, "isActive": true, "lastLogin": "2025-11-25T19:25:15.000Z", "lastName": "User", "profileImageUrl": "https://example.com/photo.jpg", "role": "admin", "updatedAt": "+057872-01-12T00:20:00.000Z", "username": "Test User"}, "userId": 1}[39m
+
+      794 |             expect(auth).toHaveProperty('userId');
+      795 |             expect(auth).toHaveProperty('email');
+    > 796 |             expect(auth).toHaveProperty('sessionToken');
+          |                          ^
+      797 |         });
+      798 |
+      799 |         test('should reject invalid token', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:796:26
+
+  15) [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      824 |             });
+      825 |
+    > 826 |             expect(logoutResponse.ok()).toBeTruthy();
+          |                                         ^
+      827 |         });
+      828 |     });
+      829 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:826:41
+
+  16) [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m201[39m
+    Received array: [31m[413, 400][39m
+
+      902 |         });
+      903 |
+    > 904 |         expect([413, 400]).toContain(response.status());
+          |                            ^
+      905 |     });
+      906 |
+      907 |     test('should validate required headers', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:904:28
+
+  17) [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      925 |         const response = await apiContext.get('/api/errors?page=invalid');
+      926 |
+    > 927 |         expect([400, 422]).toContain(response.status());
+          |                            ^
+      928 |     });
+      929 |
+      930 |     test('should handle special characters in query params', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:927:28
+
+  18) [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mundefined[39m
+
+      1021 |         const error = await response.json();
+      1022 |
+    > 1023 |         expect(error.message).toBeTruthy();
+           |                               ^
+      1024 |         expect(error.message.length).toBeGreaterThan(0);
+      1025 |     });
+      1026 |
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1023:31
+
+  19) [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT 127.0.0.1:4001
+    Call log:
+    [2m  - → GET http://127.0.0.1:4001/api/errors/999999[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5ODcwMSwiZXhwIjoxNzY0MTg1MTAxfQ.0sV6pZiyijbsY41K3WOPz1pqkrii6bT0grG-Xzkvb_g[22m
+
+
+      1027 |     test('should handle concurrent request failures', async ({ apiContext }) => {
+      1028 |         const requests = Array.from({ length: 20 }, () =>
+    > 1029 |             apiContext.get('/api/errors/999999')
+           |                        ^
+      1030 |         );
+      1031 |
+      1032 |         const responses = await Promise.all(requests);
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1029:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1028:32
+
+  20) [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT 127.0.0.1:4001
+    Call log:
+    [2m  - → GET http://127.0.0.1:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5ODcwMSwiZXhwIjoxNzY0MTg1MTAxfQ.0sV6pZiyijbsY41K3WOPz1pqkrii6bT0grG-Xzkvb_g[22m
+    [2m    - x-test-force-ratelimit: true[22m
+
+
+      1041 |     test('should implement rate limiting', async ({ apiContext }) => {
+      1042 |         const requests = Array.from({ length: 150 }, () =>
+    > 1043 |             apiContext.get('/api/errors', {
+           |                        ^
+      1044 |                 headers: { 'x-test-force-ratelimit': 'true' }
+      1045 |             })
+      1046 |         );
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1043:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1042:32
+
+  21) [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+  22) [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m200[39m
+    Received array: [31m[400, 422][39m
+
+      1117 |         const response = await apiContext.get('/api/errors?page=1&limit=0');
+      1118 |
+    > 1119 |         expect([400, 422]).toContain(response.status());
+           |                            ^
+      1120 |     });
+      1121 |
+      1122 |     test('should enforce maximum limit', async ({ apiContext }) => {
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1119:28
+
+  23) [api-tests] › tests/api/comprehensive.test.ts:1122:5 › API Tests - Pagination Edge Cases › should enforce maximum limit 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+  24) [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+
+    Error: apiRequestContext.get: connect ETIMEDOUT 127.0.0.1:4001
+    Call log:
+    [2m  - → GET http://127.0.0.1:4001/api/errors[22m
+    [2m    - user-agent: Playwright/1.57.0 (arm64; macOS 15.6) node/22.17[22m
+    [2m    - accept: */*[22m
+    [2m    - accept-encoding: gzip,deflate,br[22m
+    [2m    - Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NDA5ODcwMSwiZXhwIjoxNzY0MTg1MTAxfQ.0sV6pZiyijbsY41K3WOPz1pqkrii6bT0grG-Xzkvb_g[22m
+
+
+      1136 |     test('should handle concurrent reads safely', async ({ apiContext }) => {
+      1137 |         const requests = Array.from({ length: 50 }, () =>
+    > 1138 |             apiContext.get('/api/errors')
+           |                        ^
+      1139 |         );
+      1140 |
+      1141 |         const responses = await Promise.all(requests);
+        at from (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1138:24)
+        at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/comprehensive.test.ts:1137:32
+
+  25) [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+  26) [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+  26 failed
+    [api-tests] › tests/api/auth-upload.test.ts:84:5 › File Upload API › POST /api/upload - should upload Excel file 
+    [api-tests] › tests/api/auth-upload.test.ts:104:5 › File Upload API › POST /api/upload - should upload CSV file 
+    [api-tests] › tests/api/auth-upload.test.ts:138:5 › File Upload API › GET /api/files - should list uploaded files 
+    [api-tests] › tests/api/auth-upload.test.ts:165:5 › File Upload API › GET /api/files/:id - should get file details 
+    [api-tests] › tests/api/auth-upload.test.ts:190:5 › File Upload API › DELETE /api/files/:id - should delete file 
+    [api-tests] › tests/api/comprehensive.test.ts:58:9 › API Tests - Error Management Endpoints › GET /api/errors › should search by message 
+    [api-tests] › tests/api/comprehensive.test.ts:69:9 › API Tests - Error Management Endpoints › GET /api/errors › should filter by resolved status 
+    [api-tests] › tests/api/comprehensive.test.ts:347:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should retrieve error statistics 
+    [api-tests] › tests/api/comprehensive.test.ts:359:9 › API Tests - Error Management Endpoints › GET /api/errors/stats › should filter statistics by date range 
+    [api-tests] › tests/api/comprehensive.test.ts:501:9 › API Tests - Store & Kiosk Management › POST /api/kiosks › should create new kiosk 
+    [api-tests] › tests/api/comprehensive.test.ts:707:9 › API Tests - File Upload & Processing › POST /api/upload › should handle Excel file upload 
+    [api-tests] › tests/api/comprehensive.test.ts:726:9 › API Tests - File Upload & Processing › POST /api/upload › should reject files exceeding size limit 
+    [api-tests] › tests/api/comprehensive.test.ts:760:9 › API Tests - File Upload & Processing › GET /api/uploads/:fileId › should retrieve upload status 
+    [api-tests] › tests/api/comprehensive.test.ts:785:9 › API Tests - Authentication & Authorization › POST /api/auth/firebase › should authenticate with valid Firebase token 
+    [api-tests] › tests/api/comprehensive.test.ts:811:9 › API Tests - Authentication & Authorization › POST /api/auth/logout › should logout user 
+    [api-tests] › tests/api/comprehensive.test.ts:893:5 › API Tests - Request Validation › should enforce maximum payload size 
+    [api-tests] › tests/api/comprehensive.test.ts:924:5 › API Tests - Request Validation › should validate URL parameter formats 
+    [api-tests] › tests/api/comprehensive.test.ts:1015:5 › API Tests - Error Handling › should provide helpful error messages 
+    [api-tests] › tests/api/comprehensive.test.ts:1027:5 › API Tests - Error Handling › should handle concurrent request failures 
+    [api-tests] › tests/api/comprehensive.test.ts:1041:5 › API Tests - Rate Limiting › should implement rate limiting 
+    [api-tests] › tests/api/comprehensive.test.ts:1073:5 › API Tests - Rate Limiting › should reset rate limits after time window 
+    [api-tests] › tests/api/comprehensive.test.ts:1116:5 › API Tests - Pagination Edge Cases › should handle limit=0 
+    [api-tests] › tests/api/comprehensive.test.ts:1122:5 › API Tests - Pagination Edge Cases › should enforce maximum limit 
+    [api-tests] › tests/api/comprehensive.test.ts:1136:5 › API Tests - Concurrent Operations › should handle concurrent reads safely 
+    [api-tests] › tests/api/comprehensive.test.ts:1147:5 › API Tests - Concurrent Operations › should handle concurrent writes with proper isolation 
+    [api-tests] › tests/api/comprehensive.test.ts:1164:5 › API Tests - Concurrent Operations › should prevent race conditions on updates 
+  76 passed (1.3m)
+
+[36m  Serving HTML report at http://localhost:62490. Press Ctrl+C to quit.[39m

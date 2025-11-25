@@ -136,6 +136,16 @@ test.describe('File Upload API', () => {
     });
 
     test('GET /api/files - should list uploaded files', async ({ apiContext }) => {
+        // Upload a file first to ensure there is something to list
+        await apiContext.post('/api/upload', {
+            multipart: {
+                file: {
+                    name: 'list-test.xlsx',
+                    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    buffer: Buffer.from('test data'),
+                },
+            },
+        });
 
         const response = await apiContext.get('/api/files');
 
@@ -143,6 +153,7 @@ test.describe('File Upload API', () => {
 
         const data = await response.json();
         expect(Array.isArray(data)).toBe(true);
+        expect(data.length).toBeGreaterThan(0);
 
         if (data.length > 0) {
             expect(data[0]).toHaveProperty('id');

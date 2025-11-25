@@ -57,6 +57,7 @@ app.use("/api/", apiLimiter);
 app.use((req: any, res: any, next: any) => {
   // Skip body parsing for file upload endpoints - multer will handle them
   if (req.path === '/api/upload' || req.path.startsWith('/api/files')) {
+    console.log('Skipping body parsing for:', req.path);
     return next();
   }
 

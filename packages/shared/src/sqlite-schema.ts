@@ -39,10 +39,13 @@ export const logFiles = sqliteTable("log_files", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   filename: text("filename").notNull(),
   originalName: text("original_name").notNull(),
+  filePath: text("file_path").notNull(),
   fileType: text("file_type").notNull(),
   fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),
   uploadedBy: integer("uploaded_by").references(() => users.id),
+  storeNumber: text("store_number"),
+  kioskNumber: text("kiosk_number"),
   uploadTimestamp: integer("upload_timestamp", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
@@ -64,6 +67,8 @@ export const logFiles = sqliteTable("log_files", {
 export const errorLogs = sqliteTable("error_logs", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   fileId: integer("file_id").references(() => logFiles.id),
+  storeNumber: text("store_number"),
+  kioskNumber: text("kiosk_number"),
   lineNumber: integer("line_number").notNull(),
   timestamp: integer("timestamp", { mode: "timestamp" }),
   severity: text("severity").notNull(),

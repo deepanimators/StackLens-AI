@@ -445,7 +445,7 @@ test.describe('API Tests - Store & Kiosk Management', () => {
     test.describe('POST /api/stores', () => {
         test('should create new store', async ({ apiContext }) => {
             const newStore = {
-                storeNumber: `STORE-${Date.now()}`,
+                storeNumber: `STORE-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
                 name: 'Test Store',
                 location: 'Test City',
                 region: 'North'
@@ -461,7 +461,7 @@ test.describe('API Tests - Store & Kiosk Management', () => {
         });
 
         test('should prevent duplicate store numbers', async ({ apiContext }) => {
-            const storeNumber = `STORE-${Date.now()}`;
+            const storeNumber = `STORE-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
             // Create first store
             await apiContext.post('/api/stores', {

@@ -73,7 +73,6 @@ export const test = base.extend<StackLensFixtures>({
                         baseURL: `http://127.0.0.1:${apiPort}`,
                         extraHTTPHeaders: {
                             'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json',
                         },
                     });
                     await use(authenticatedContext);
@@ -112,7 +111,6 @@ export const test = base.extend<StackLensFixtures>({
                             baseURL: `http://127.0.0.1:${apiPort}`,
                             extraHTTPHeaders: {
                                 'Authorization': `Bearer ${process.env.TEST_FIREBASE_TOKEN}`,
-                                'Content-Type': 'application/json',
                             },
                         });
                         await use(fallbackContext);
