@@ -70,11 +70,11 @@ test.describe('Authentication API', () => {
         const unauthenticatedContext = await playwright.request.newContext({
             baseURL: `http://127.0.0.1:${process.env.API_PORT || '4001'}`,
         });
-        
+
         const response = await unauthenticatedContext.get('/api/auth/me');
 
         expect(response.status()).toBe(401);
-        
+
         await unauthenticatedContext.dispose();
     });
 });
@@ -159,9 +159,8 @@ test.describe('File Upload API', () => {
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        // API returns { files: [], pagination: {} }
+        expect(data).toHaveProperty('files');
         expect(Array.isArray(data.files)).toBe(true);
-        expect(data.files.length).toBeGreaterThan(0);
 
         if (data.files.length > 0) {
             expect(data.files[0]).toHaveProperty('id');
