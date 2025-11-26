@@ -96,7 +96,7 @@ if lsof -i :3001 >/dev/null; then
     lsof -ti :3001 | xargs kill -9
 fi
 export KAFKA_BROKERS=localhost:9094
-npm start > "$ROOT_DIR/legacy_backend.log" 2>&1 &
+PORT=3001 npm start > "$ROOT_DIR/legacy_backend.log" 2>&1 &
 BACKEND_PID=$!
 
 # 5. Start POS Demo Backend - Port 3000
@@ -110,7 +110,7 @@ fi
 export KAFKA_BROKERS=localhost:9094
 export ANALYTICS_URL=http://localhost:4000/api/analytics/events
 npm install
-npm start > "$ROOT_DIR/pos_backend.log" 2>&1 &
+PORT=3000 npm start > "$ROOT_DIR/pos_backend.log" 2>&1 &
 POS_BACKEND_PID=$!
 
 # 6. Start POS Demo Frontend - Port 5174

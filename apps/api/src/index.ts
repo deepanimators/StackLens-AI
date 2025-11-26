@@ -9,6 +9,7 @@ import { setupVite, serveStatic, log } from "./vite.js";
 
 // CRITICAL: Import sqlite-db to initialize database tables on startup
 import "./database/sqlite-db.js";
+import { seedSQLiteDatabase } from "./database/seed-sqlite.js";
 
 const app = express();
 
@@ -129,6 +130,14 @@ app.use((req: any, res: any, next: any) => {
       console.log("✅ Vite setup complete");
     } else {
       serveStatic(app);
+    }
+
+    // Seed database if needed
+    try {
+      await seedSQLiteDatabase();
+    } catch (error) {
+      // Ignore errors if data already exists (unique constraint violations)
+      console.log("ℹ️ Database seeding skipped or partial (data may already exist)");
     }
 
     // ALWAYS serve the app on port 4000

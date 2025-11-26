@@ -73,6 +73,11 @@ function Router() {
     <Switch>
       <Route path="/" component={Dashboard} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/login" component={() => {
+        // Redirect to dashboard if user tries to access login page while authenticated
+        window.location.href = "/dashboard";
+        return null;
+      }} />
       <Route path="/realtime" component={Realtime} />
       <Route path="/ai-dashboard" component={AIEnhancedDashboard} />
       <Route path="/upload" component={Upload} />

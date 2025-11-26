@@ -374,7 +374,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Return user object directly and ensure password is removed
     const user = { ...req.user };
     delete user.password;
-    res.json(user);
+    res.json({ user });
   });
 
   app.post("/api/auth/logout", (req, res) => {

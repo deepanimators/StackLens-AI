@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -65,6 +65,14 @@ export default function Login() {
     },
   });
 
+  // Check if already authenticated
+  useEffect(() => {
+    if (authManager.isAuthenticated()) {
+      console.log("🔐 User already authenticated, redirecting to dashboard");
+      setLocation("/dashboard");
+    }
+  }, [setLocation]);
+
   const handleLogin = async (data: LoginForm) => {
     setIsLoading(true);
     try {
@@ -77,19 +85,16 @@ export default function Login() {
 
       // Invalidate and refetch auth queries
       await queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
-      await queryClient.refetchQueries({ queryKey: ["/api/auth/me"] });
-
-      // Add a longer delay to ensure auth state is properly updated
-      setTimeout(() => {
-        setLocation("/dashboard");
-      }, 500);
+      
+      // Force a hard navigation to ensure clean state
+      console.log("🔐 Login successful, forcing navigation to dashboard");
+      window.location.href = "/dashboard";
     } catch (error) {
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Login failed",
         variant: "destructive",
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -110,12 +115,10 @@ export default function Login() {
 
       // Invalidate and refetch auth queries
       await queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
-      await queryClient.refetchQueries({ queryKey: ["/api/auth/me"] });
-
-      // Add a longer delay to ensure auth state is properly updated
-      setTimeout(() => {
-        setLocation("/dashboard");
-      }, 500);
+      
+      // Force a hard navigation to ensure clean state
+      console.log("🔐 Registration successful, forcing navigation to dashboard");
+      window.location.href = "/dashboard";
     } catch (error) {
       toast({
         title: "Error",
@@ -123,7 +126,6 @@ export default function Login() {
           error instanceof Error ? error.message : "Registration failed",
         variant: "destructive",
       });
-    } finally {
       setIsLoading(false);
     }
   };
