@@ -9399,6 +9399,58 @@ Format as JSON with the following structure:
     }
   });
 
+  // Execute Automation (Create Jira Ticket from Realtime Alert)
+  app.post("/api/automation/execute", async (req, res) => {
+    try {
+      const { errorType, severity, message, errorDetails, mlConfidence = 0.9 } = req.body;
+
+      if (!errorType || !severity || !message) {
+        return res.status(400).json({
+          success: false,
+          error: "Missing required fields: errorType, severity, and message",
+        });
+      }
+
+      // Create error object for automation
+      const errorData = {
+        errorType,
+        severity: severity.toLowerCase(),
+        message,
+        errorDetails: errorDetails || {},
+      };
+
+      // Execute automation workflow
+      const result = await errorAutomation.executeAutomation(
+        errorData as any,
+        mlConfidence,
+        errorDetails?.storeNumber,
+        errorDetails?.kioskNumber
+      );
+
+      if (result.success && result.ticketKey) {
+        res.json({
+          success: true,
+          ticketKey: result.ticketKey,
+          action: result.action,
+          message: result.message,
+          ticketUrl: `${process.env.JIRA_HOST}/browse/${result.ticketKey}`,
+        });
+      } else {
+        res.json({
+          success: result.success,
+          action: result.action,
+          message: result.message,
+        });
+      }
+    } catch (error) {
+      console.error("Automation execution error:", error);
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to execute automation",
+      });
+    }
+  });
+
   // Log Watcher Status
   app.get("/api/watcher/status", (req, res) => {
     try {

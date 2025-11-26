@@ -12,8 +12,10 @@ node_modules/
 *.db-shm
 *.db-wal
 *.db-journal
-data/Database/
 data/database/
+data/Database/
+data/Database/*.db
+data/database/*.db
 data/[Dd]atabase/*.db
 db/*.db
 db/**/*.db

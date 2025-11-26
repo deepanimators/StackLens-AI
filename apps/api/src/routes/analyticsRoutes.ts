@@ -260,11 +260,11 @@ analyticsRouter.get('/health-status', (req, res) => {
 
 /**
  * GET /api/analytics/alerts
- * Retrieve active or resolved alerts
+ * Retrieve active or resolved alerts with time window filtering
  */
 analyticsRouter.get('/alerts', (req, res) => {
     try {
-        const { status = 'active', severity, limit = 50 } = req.query;
+        const { status = 'active', severity, limit = 50, window = '1min' } = req.query;
 
         let filteredAlerts = alerts;
 
@@ -278,6 +278,14 @@ analyticsRouter.get('/alerts', (req, res) => {
             filteredAlerts = filteredAlerts.filter(a => a.severity === severity);
         }
 
+        // Filter by time window
+        const windowMs = window === '1min' ? 60000 : window === '5min' ? 300000 : 3600000;
+        const cutoffTime = Date.now() - windowMs;
+        filteredAlerts = filteredAlerts.filter(a => {
+            const alertTime = new Date(a.timestamp).getTime();
+            return alertTime >= cutoffTime;
+        });
+
         // Limit results
         const limitNum = Math.min(parseInt(limit as string) || 50, 200);
         const result = filteredAlerts.slice(-limitNum);
@@ -288,6 +296,7 @@ analyticsRouter.get('/alerts', (req, res) => {
                 alerts: result,
                 total: result.length,
                 timestamp: new Date().toISOString(),
+                window: window
             }
         });
     } catch (error) {
@@ -447,48 +456,86 @@ analyticsRouter.post('/ai-analysis', async (req, res) => {
             });
         }
 
-        // Prepare analysis context
+        // Prepare comprehensive analysis context with detailed information
         const alertSummary = alertsToAnalyze.map((alert: any) => ({
+            id: alert.id,
             name: alert.rule_name,
             severity: alert.severity,
             metric: alert.metric,
             value: alert.value,
             threshold: alert.threshold,
-            message: alert.message
+            message: alert.message,
+            timestamp: alert.timestamp,
+            status: alert.status
         }));
 
         const metricsSummary = metricsToAnalyze ? {
             errorRate: metricsToAnalyze.error_rate,
             throughput: metricsToAnalyze.throughput,
             latencyP99: metricsToAnalyze.latency_p99,
+            latencyP50: metricsToAnalyze.latency_p50,
             totalRequests: metricsToAnalyze.total_requests,
-            errorCount: metricsToAnalyze.error_count
+            errorCount: metricsToAnalyze.error_count,
+            timestamp: metricsToAnalyze.timestamp,
+            window: metricsToAnalyze.window
         } : null;
 
-        // Build analysis prompt
-        const analysisPrompt = `
-Analyze the following POS system alerts and metrics and provide structured insights:
+        // Get recent POS events for additional context
+        const recentPosEvents = posEvents.slice(-20).map(e => ({
+            type: e.type,
+            message: e.message,
+            timestamp: e.timestamp,
+            source: e.source
+        }));
 
-ACTIVE ALERTS:
+        // Build comprehensive analysis prompt with all available context
+        const analysisPrompt = `
+You are an expert system administrator analyzing a Point of Sale (POS) system. Provide a detailed, actionable analysis.
+
+ACTIVE ALERTS (Count: ${alertsToAnalyze.length}):
 ${JSON.stringify(alertSummary, null, 2)}
 
-RECENT METRICS:
-${metricsSummary ? JSON.stringify(metricsSummary, null, 2) : 'No recent metrics'}
+CURRENT SYSTEM METRICS:
+${metricsSummary ? JSON.stringify(metricsSummary, null, 2) : 'No recent metrics available'}
 
-Please provide a comprehensive analysis in JSON format with the following structure:
+RECENT SYSTEM EVENTS (Last 20):
+${JSON.stringify(recentPosEvents, null, 2)}
+
+ANALYSIS REQUIREMENTS:
+1. Identify error patterns and their relationships
+2. Determine the root cause with technical depth
+3. Assess business impact (customer experience, revenue, data integrity)
+4. Provide immediate mitigation steps
+5. Suggest preventive measures for long-term stability
+
+Provide your analysis in this exact JSON format:
 {
   "errorCategories": ["category1", "category2"],
   "severity": "critical|high|medium|low",
-  "pattern": "description of error pattern detected",
+  "pattern": "Detailed description of the error pattern, including frequency and triggers",
   "errorTypes": ["type1", "type2"],
-  "rootCause": "likely root cause",
-  "suggestions": ["suggestion1", "suggestion2", "suggestion3"],
-  "immediateActions": ["action1", "action2"],
-  "longTermFixes": ["fix1", "fix2"],
-  "estimatedImpact": "description of system impact"
+  "rootCause": "Technical root cause with specific components or services affected",
+  "suggestions": [
+    "Specific, actionable suggestion 1",
+    "Specific, actionable suggestion 2",
+    "Specific, actionable suggestion 3"
+  ],
+  "immediateActions": [
+    "Critical action 1 to mitigate impact now",
+    "Critical action 2 to prevent escalation"
+  ],
+  "longTermFixes": [
+    "Architectural fix 1",
+    "Process improvement 1",
+    "Monitoring enhancement 1"
+  ],
+  "estimatedImpact": "Quantified impact on system performance, user experience, and business operations",
+  "affectedComponents": ["component1", "component2"],
+  "relatedLogs": ["Log entry 1 showing the issue", "Log entry 2 with context"],
+  "resolutionTimeEstimate": "Estimated time to resolve (e.g., 15-30 minutes)"
 }
 
-Make the analysis practical and actionable for a POS system operator.
+Be specific, technical, and actionable. Focus on POS-specific impacts like transaction failures, inventory sync issues, payment processing errors, etc.
         `;
 
         // Call Gemini API
@@ -523,30 +570,43 @@ Make the analysis practical and actionable for a POS system operator.
             console.warn('AI analysis failed, returning basic analysis', aiError);
         }
 
-        // Fallback analysis if AI not available
+        // Fallback analysis if AI not available - provide comprehensive default analysis
         if (!aiAnalysis) {
+            const criticalCount = alertsToAnalyze.filter((a: any) => a.severity === 'critical').length;
+            const highCount = alertsToAnalyze.filter((a: any) => a.severity === 'high').length;
+
             aiAnalysis = {
-                errorCategories: alertsToAnalyze.map((a: any) => a.rule_name),
-                severity: alertsToAnalyze.some((a: any) => a.severity === 'critical') ? 'critical' : 'high',
-                pattern: `${alertsToAnalyze.length} alert(s) detected in system`,
-                errorTypes: alertsToAnalyze.map((a: any) => a.metric),
-                rootCause: 'System experiencing elevated error conditions',
+                errorCategories: [...new Set(alertsToAnalyze.map((a: any) => a.rule_name))],
+                severity: criticalCount > 0 ? 'critical' : highCount > 0 ? 'high' : 'medium',
+                pattern: `Multiple system alerts detected: ${criticalCount} critical, ${highCount} high severity issues`,
+                errorTypes: [...new Set(alertsToAnalyze.map((a: any) => a.metric))],
+                rootCause: 'System experiencing elevated error conditions. Common causes: high traffic, resource constraints, configuration issues, or service degradation.',
                 suggestions: [
-                    'Monitor system metrics in real-time',
-                    'Check POS service status',
-                    'Review recent transaction logs'
+                    'Monitor real-time dashboards for anomaly patterns',
+                    'Check POS service health endpoints and logs',
+                    'Review transaction success rates and failure patterns',
+                    'Verify database connection pool status',
+                    'Check external API response times and availability'
                 ],
                 immediateActions: [
-                    'Increase monitoring frequency',
-                    'Notify operations team',
-                    'Prepare rollback procedure if needed'
+                    'Alert on-call engineer immediately for critical issues',
+                    'Increase system monitoring frequency to 1-minute intervals',
+                    'Review and prepare rollback procedures',
+                    'Scale up resources if capacity-related',
+                    'Enable detailed debug logging for affected components'
                 ],
                 longTermFixes: [
-                    'Implement rate limiting',
-                    'Optimize database queries',
-                    'Add redundancy to critical services'
+                    'Implement adaptive rate limiting and circuit breakers',
+                    'Optimize database query performance with indexes',
+                    'Add redundancy and failover for critical services',
+                    'Implement predictive alerting based on trends',
+                    'Enhance error recovery mechanisms',
+                    'Set up comprehensive integration testing'
                 ],
-                estimatedImpact: `${alertsToAnalyze.length} active alerts affecting system reliability`
+                estimatedImpact: `${alertsToAnalyze.length} active alert(s) potentially affecting ${criticalCount > 0 ? 'customer transactions and revenue' : 'system reliability'}`,
+                affectedComponents: [...new Set(alertsToAnalyze.map((a: any) => a.rule_name))],
+                relatedLogs: recentPosEvents.filter(e => e.type === 'error').slice(0, 5).map(e => `[${e.timestamp}] ${e.source}: ${e.message}`),
+                resolutionTimeEstimate: criticalCount > 0 ? '15-30 minutes (urgent)' : highCount > 0 ? '30-60 minutes' : '1-2 hours'
             };
         }
 

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import AdaptiveLayout from "@/components/adaptive-layout";
 import StatsCard from "@/components/stats-card";
+import AlertDetailsModal from "@/components/alert-details-modal";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -72,6 +73,8 @@ interface AlertData {
 export default function Realtime() {
   const [isAutoRefresh, setIsAutoRefresh] = useState(true);
   const [selectedWindow, setSelectedWindow] = useState<"1min" | "5min" | "1hour">("1min");
+  const [selectedAlert, setSelectedAlert] = useState<AlertData | null>(null);
+  const [showAlertModal, setShowAlertModal] = useState(false);
 
   // Fetch realtime metrics
   const { data: metricsData, refetch: refetchMetrics } = useQuery({
@@ -86,11 +89,11 @@ export default function Realtime() {
     refetchInterval: isAutoRefresh ? 5000 : false, // Auto-refresh every 5 seconds
   });
 
-  // Fetch alerts
+  // Fetch alerts with time window filtering
   const { data: alertsData, refetch: refetchAlerts } = useQuery({
-    queryKey: ["realtime-alerts"],
+    queryKey: ["realtime-alerts", selectedWindow],
     queryFn: async () => {
-      const response = await fetch("/api/analytics/alerts?status=active");
+      const response = await fetch(`/api/analytics/alerts?status=active&window=${selectedWindow}`);
       if (!response.ok) throw new Error("Failed to fetch alerts");
       return response.json();
     },
@@ -108,12 +111,12 @@ export default function Realtime() {
     refetchInterval: isAutoRefresh ? 5000 : false,
   });
 
-  // Fetch AI analysis for active alerts
+  // Fetch AI analysis for active alerts - only when there are alerts
   const { data: aiAnalysisData } = useQuery({
-    queryKey: ["realtime-ai-analysis", alertsData],
+    queryKey: ["realtime-ai-analysis", alertsData, selectedWindow],
     queryFn: async () => {
       const alerts = alertsData?.data?.alerts || [];
-      if (alerts.length === 0) return null;
+      if (alerts.length === 0) return { data: { hasErrors: false, analysis: null } };
       
       try {
         const response = await fetch("/api/analytics/ai-analysis", {
@@ -121,14 +124,15 @@ export default function Realtime() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             alerts: alerts,
-            metrics: metricsData?.data?.metrics?.[metricsData.data.metrics.length - 1] || null
+            metrics: metricsData?.data?.metrics?.[metricsData.data.metrics.length - 1] || null,
+            window: selectedWindow
           })
         });
         if (!response.ok) throw new Error("Failed to fetch AI analysis");
         return response.json();
       } catch (error) {
         console.error("AI analysis error:", error);
-        return null;
+        return { data: { hasErrors: false, analysis: null } };
       }
     },
     enabled: Boolean(alertsData?.data?.alerts?.length),
@@ -260,6 +264,11 @@ export default function Realtime() {
   const alerts: AlertData[] = alertsData?.data?.alerts || [];
   const criticalAlerts = alerts.filter((a) => a.severity === "critical").length;
   const warningAlerts = alerts.filter((a) => a.severity === "warning").length;
+
+  const handleViewAlertDetails = (alert: AlertData) => {
+    setSelectedAlert(alert);
+    setShowAlertModal(true);
+  };
 
   return (
     <AdaptiveLayout
@@ -485,22 +494,20 @@ export default function Realtime() {
           />
           <StatsCard
             title="Throughput"
-            value={`${((latestMetric?.throughput ?? 0)).toFixed(0)}`}
+            value={`${((latestMetric?.throughput ?? 0)).toFixed(0)} msg/s`}
             icon={Zap}
             trend={{ value: "↑ Active", isPositive: true }}
             className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 dark:from-green-950/20 dark:to-green-900/20 dark:border-green-800/30"
-            suffix="msg/s"
           />
           <StatsCard
             title="P99 Latency"
-            value={`${((latestMetric?.latency_p99 ?? 0)).toFixed(0)}`}
+            value={`${((latestMetric?.latency_p99 ?? 0)).toFixed(0)} ms`}
             icon={Clock}
             trend={{
               value: "Optimal",
               isPositive: (latestMetric?.latency_p99 ?? 0) < 500,
             }}
             className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200/50 dark:from-purple-950/20 dark:to-purple-900/20 dark:border-purple-800/30"
-            suffix="ms"
           />
           <StatsCard
             title="Total Errors"
@@ -559,7 +566,7 @@ export default function Realtime() {
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
                 <AlertTriangle className="h-5 w-5" />
-                <span>Active Alerts</span>
+                <span>Active Alerts (Last {selectedWindow === "1min" ? "1 Minute" : selectedWindow === "5min" ? "5 Minutes" : "1 Hour"})</span>
               </CardTitle>
               <div className="flex items-center space-x-2">
                 {criticalAlerts > 0 && (
@@ -581,32 +588,44 @@ export default function Realtime() {
                 {alerts.slice(0, 10).map((alert) => (
                   <div
                     key={alert.id}
-                    className="flex items-center justify-between p-3 bg-muted rounded-lg border"
+                    className="flex items-center justify-between p-3 bg-muted rounded-lg border hover:bg-muted/80 transition-colors"
                   >
                     <div className="flex-1">
-                      <p className="font-medium text-sm">{alert.rule_name}</p>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <p className="font-medium text-sm">{alert.rule_name}</p>
+                        <Badge
+                          variant={
+                            alert.severity === "critical"
+                              ? "destructive"
+                              : alert.severity === "warning"
+                              ? "secondary"
+                              : "outline"
+                          }
+                          className="text-xs"
+                        >
+                          {alert.severity}
+                        </Badge>
+                      </div>
                       <p className="text-xs text-muted-foreground">
                         {alert.metric}: {(alert.value ?? 0).toFixed(2)} (threshold: {(alert.threshold ?? 0).toFixed(2)})
                       </p>
                     </div>
-                    <Badge
-                      variant={
-                        alert.severity === "critical"
-                          ? "destructive"
-                          : alert.severity === "warning"
-                          ? "secondary"
-                          : "outline"
-                      }
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleViewAlertDetails(alert)}
+                      className="ml-4"
                     >
-                      {alert.severity}
-                    </Badge>
+                      View More
+                    </Button>
                   </div>
                 ))}
               </div>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <Eye className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                <p>No active alerts</p>
+                <p>No active alerts in the selected time window</p>
+                <p className="text-xs mt-1">Showing alerts from the last {selectedWindow === "1min" ? "1 minute" : selectedWindow === "5min" ? "5 minutes" : "1 hour"}</p>
               </div>
             )}
           </CardContent>
@@ -618,6 +637,14 @@ export default function Realtime() {
           {isAutoRefresh && " • Auto-refreshing every 5 seconds"}
         </div>
       </div>
+
+      {/* Alert Details Modal */}
+      <AlertDetailsModal
+        isOpen={showAlertModal}
+        onClose={() => setShowAlertModal(false)}
+        alert={selectedAlert}
+        aiAnalysis={aiAnalysisData?.data?.analysis || null}
+      />
     </AdaptiveLayout>
   );
 }

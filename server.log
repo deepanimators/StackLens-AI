@@ -748,3 +748,184 @@ Skipping body parsing for: /api/files
 8:00:49 PM [express] DELETE /api/stores/4 200 in 6ms :: {"message":"Store deleted successfully"}
 8:00:49 PM [express] GET /api/stores 200 in 6ms :: [{"id":5,"storeNumber":"STORE-1764097775142","nam…
 8:03:29 PM [express] GET /api/auth/me 304 in 7ms :: {"user":{"id":2,"username":"deepanimators","emai…
+8:06:23 PM [express] GET /api/auth/me 304 in 375ms :: {"user":{"id":2,"username":"deepanimators","em…
+8:06:23 PM [express] GET /api/admin/ui-settings 304 in 22ms :: {"theme":"light","sidebarCollapsed":f…
+8:06:23 PM [express] GET /api/stores 304 in 87ms :: [{"id":5,"storeNumber":"STORE-1764097775142","na…
+8:06:24 PM [express] GET /api/admin/api-settings 304 in 200ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtY…
+8:06:24 PM [express] GET /api/kiosks 304 in 14ms :: [{"id":1,"kioskNumber":"KIOSK-1764099959446","st…
+8:07:51 PM [express] GET /api/auth/me 304 in 74ms :: {"user":{"id":2,"username":"deepanimators","ema…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:07:51 PM [express] GET /api/analysis/history 200 in 11ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:07:51 PM [express] GET /api/analysis/history 200 in 28ms :: {"history":[],"pagination":{"page":1,"…
+🔍 [DEBUG] Error stats requested
+🔍 [DEBUG] Found 744 total errors for user 2
+🔍 [DEBUG] Error stats: {"total":744,"bySeverity":{"critical":18,"high":194,"medium":440,"low":92},"byType":{"System":8,"Test":442,"Database":32,"Unknown":108,"Runtime":116,"Network":28,"DatabaseError":10},"resolved":33,"unresolved":711}
+8:08:00 PM [express] GET /api/errors/stats 200 in 515ms :: {"total":744,"bySeverity":{"critical":18,…
+8:08:00 PM [express] GET /api/errors/enhanced 400 in 5ms :: {"error":"Invalid error ID","message":"I…
+8:08:00 PM [express] GET /api/errors/consolidated 400 in 3ms :: {"error":"Invalid error ID","message…
+Error getting ML status: SqliteError: no such column: "precision" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+8:08:00 PM [express] GET /api/ml/status 500 in 240ms :: {"message":"Failed to get ML model status"}
+8:08:00 PM [express] GET /api/version 304 in 4ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+Error getting suggestion performance: SqliteError: no such column: "precision" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'SQLITE_ERROR'
+}
+8:08:00 PM [express] GET /api/ai/suggestion-performance 500 in 6ms :: {"message":"Failed to get sugg…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:09 PM [express] GET /api/analysis/history 200 in 11ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:19 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+8:08:22 PM [express] GET /api/auth/me 304 in 7ms :: {"user":{"id":2,"username":"deepanimators","emai…
+8:08:22 PM [express] GET /api/admin/ui-settings 304 in 6ms :: {"theme":"light","sidebarCollapsed":fa…
+8:08:22 PM [express] GET /api/admin/api-settings 304 in 9ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:23 PM [express] GET /api/analysis/history 200 in 20ms :: {"history":[],"pagination":{"page":1,"…
+8:08:23 PM [express] GET /api/version 304 in 8ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 2 }
+8:08:23 PM [express] GET /api/analysis/history 200 in 18ms :: {"history":[],"pagination":{"page":1,"…
+Skipping body parsing for: /api/files
+8:08:23 PM [express] GET /api/files 200 in 26ms :: {"files":[{"id":129,"filename":"file-176412838350…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:23 PM [express] GET /api/analysis/history 200 in 31ms :: {"history":[],"pagination":{"page":1,"…
+8:08:31 PM [express] POST /api/analysis/retrigger-pending 200 in 6ms :: {"message":"Successfully ret…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 2 }
+8:08:31 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+Skipping body parsing for: /api/files
+8:08:31 PM [express] GET /api/files 200 in 3ms :: {"files":[{"id":129,"filename":"file-1764128383506…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:33 PM [express] GET /api/analysis/history 200 in 5ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:43 PM [express] GET /api/analysis/history 200 in 15ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:53 PM [express] GET /api/analysis/history 200 in 33ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:08:53 PM [express] GET /api/analysis/history 200 in 8ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 2 }
+8:09:01 PM [express] GET /api/analysis/history 200 in 11ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:03 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:13 PM [express] GET /api/analysis/history 200 in 6ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:23 PM [express] GET /api/analysis/history 200 in 6ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:23 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 2 }
+8:09:31 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:33 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:43 PM [express] GET /api/analysis/history 200 in 8ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:53 PM [express] GET /api/analysis/history 200 in 12ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:09:53 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 2 }
+8:10:01 PM [express] GET /api/analysis/history 200 in 9ms :: {"history":[],"pagination":{"page":1,"l…
+🔧 Checking for stuck processing jobs...
+🔧 Checking for stuck processing jobs...
+8:21:54 PM [express] GET /api/auth/me 200 in 62ms :: {"user":{"id":2,"username":"deepanimators","ema…
+8:21:54 PM [express] GET /api/admin/ui-settings 200 in 3ms :: {"theme":"light","sidebarCollapsed":fa…
+8:21:54 PM [express] GET /api/admin/api-settings 200 in 4ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:21:54 PM [express] GET /api/analysis/history 200 in 25ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:21:54 PM [express] GET /api/analysis/history 200 in 23ms :: {"history":[],"pagination":{"page":1,"…
+🔍 [DEBUG] Dashboard - Resolution Rate: 33 resolved out of 744 total = 4.4%
+8:21:58 PM [express] GET /api/dashboard/stats 200 in 3032ms :: {"totalFiles":112,"totalErrors":744,"…
+8:21:58 PM [express] GET /api/version 200 in 5ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+8:22:05 PM [express] GET /api/auth/me 200 in 21ms :: {"user":{"id":2,"username":"deepanimators","ema…
+8:22:06 PM [express] GET /api/admin/api-settings 200 in 81ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYs…
+8:22:06 PM [express] GET /api/admin/ui-settings 200 in 24ms :: {"theme":"light","sidebarCollapsed":f…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:22:06 PM [express] GET /api/analysis/history 200 in 10ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:22:06 PM [express] GET /api/analysis/history 200 in 42ms :: {"history":[],"pagination":{"page":1,"…
+Skipping body parsing for: /api/files
+8:22:06 PM [express] GET /api/files 200 in 66ms :: {"files":[{"id":129,"filename":"file-176412838350…
+🔍 [DEBUG] Dashboard - Resolution Rate: 33 resolved out of 744 total = 4.4%
+8:22:08 PM [express] GET /api/dashboard/stats 200 in 1599ms :: {"totalFiles":112,"totalErrors":744,"…
+8:22:08 PM [express] GET /api/errors 200 in 321ms :: {"errors":[{"id":777,"fileId":null,"storeNumber…
+8:22:08 PM [express] GET /api/version 200 in 5ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+8:22:39 PM [express] GET /api/auth/me 200 in 13ms :: {"user":{"id":2,"username":"deepanimators","ema…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:22:46 PM [express] GET /api/analysis/history 200 in 15ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:22:57 PM [express] GET /api/analysis/history 200 in 47ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:23:06 PM [express] GET /api/analysis/history 200 in 24ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:23:07 PM [express] GET /api/analysis/history 200 in 18ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:23:17 PM [express] GET /api/analysis/history 200 in 18ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:23:27 PM [express] GET /api/analysis/history 200 in 7ms :: {"history":[],"pagination":{"page":1,"l…
+8:23:29 PM [express] GET /api/stores 200 in 30ms :: [{"id":74,"storeNumber":"BK-10","name":"BKC","lo…
+8:23:29 PM [express] GET /api/kiosks 200 in 214ms :: [{"id":12,"kioskNumber":"BK-14959-K1","storeId"…
+8:23:30 PM [express] GET /api/version 200 in 219ms :: {"version":"0.9.5","releaseDate":"2025-11-19",…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:23:39 PM [express] GET /api/analysis/history 200 in 16ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:23:49 PM [express] GET /api/analysis/history 200 in 41ms :: {"history":[],"pagination":{"page":1,"…
+8:25:13 PM [express] GET /api/auth/me 200 in 36ms :: {"user":{"id":2,"username":"deepanimators","ema…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:25:13 PM [express] GET /api/analysis/history 200 in 9ms :: {"history":[],"pagination":{"page":1,"l…
+8:25:16 PM [express] GET /api/auth/me 200 in 13ms :: {"user":{"id":2,"username":"deepanimators","ema…
+8:25:16 PM [express] GET /api/admin/ui-settings 200 in 14ms :: {"theme":"light","sidebarCollapsed":f…
+8:25:16 PM [express] GET /api/admin/api-settings 200 in 20ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYs…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:25:16 PM [express] GET /api/analysis/history 200 in 5ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:25:16 PM [express] GET /api/analysis/history 200 in 7ms :: {"history":[],"pagination":{"page":1,"l…
+8:25:17 PM [express] GET /api/stores 200 in 20ms :: [{"id":74,"storeNumber":"BK-10","name":"BKC","lo…
+8:25:17 PM [express] GET /api/kiosks 200 in 29ms :: [{"id":12,"kioskNumber":"BK-14959-K1","storeId":…
+8:25:17 PM [express] GET /api/version 200 in 27ms :: {"version":"0.9.5","releaseDate":"2025-11-19","…
+8:25:18 PM [express] GET /api/version 200 in 5ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+🔍 [DEBUG] Dashboard - Resolution Rate: 33 resolved out of 744 total = 4.4%
+8:25:20 PM [express] GET /api/dashboard/stats 200 in 1176ms :: {"totalFiles":112,"totalErrors":744,"…
+Skipping body parsing for: /api/files
+8:25:20 PM [express] GET /api/files 200 in 49ms :: {"files":[{"id":129,"filename":"file-176412838350…
+8:25:20 PM [express] GET /api/errors 200 in 533ms :: {"errors":[{"id":777,"fileId":null,"storeNumber…
+8:25:27 PM [express] GET /api/admin/users 200 in 50ms :: [{"id":1,"username":"Test User","email":"te…
+Skipping body parsing for: /api/files
+8:25:27 PM [express] GET /api/files 200 in 28ms :: {"files":[{"id":129,"filename":"file-176412838350…
+8:25:29 PM [express] GET /api/errors 200 in 1343ms :: {"errors":[{"id":777,"fileId":null,"storeNumbe…
+8:25:29 PM [express] GET /api/stores 200 in 26ms :: [{"id":74,"storeNumber":"BK-10","name":"BKC","lo…
+8:25:29 PM [express] GET /api/errors/types 400 in 24ms :: {"error":"Invalid error ID","message":"Inv…
+8:25:29 PM [express] GET /api/kiosks 200 in 14ms :: [{"id":12,"kioskNumber":"BK-14959-K1","storeId":…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:25:38 PM [express] GET /api/analysis/history 200 in 92ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:25:48 PM [express] GET /api/analysis/history 200 in 16ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:25:57 PM [express] GET /api/analysis/history 200 in 17ms :: {"history":[],"pagination":{"page":1,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:25:58 PM [express] GET /api/analysis/history 200 in 3ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:26:08 PM [express] GET /api/analysis/history 200 in 7ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:26:18 PM [express] GET /api/analysis/history 200 in 6ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:26:27 PM [express] GET /api/analysis/history 200 in 3ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:26:28 PM [express] GET /api/analysis/history 200 in 4ms :: {"history":[],"pagination":{"page":1,"l…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 2 }
+8:26:38 PM [express] GET /api/analysis/history 200 in 24ms :: {"history":[],"pagination":{"page":1,"…
