@@ -32,12 +32,18 @@
   },
   "dependencies": {
     "@opentelemetry/auto-instrumentations-node": "^0.67.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.56.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.208.0",
     "@opentelemetry/resources": "^2.2.0",
+    "@opentelemetry/sdk-logs": "^0.56.0",
     "@opentelemetry/sdk-node": "^0.208.0",
     "@opentelemetry/semantic-conventions": "^1.38.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
     "helmet": "^8.1.0",
     "sqlite": "^5.1.1",
-    "winston": "^3.18.3"
+    "uuid": "^11.0.5",
+    "winston": "^3.18.3",
+    "winston-transport": "^4.9.0"
   }
 }

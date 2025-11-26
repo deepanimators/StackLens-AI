@@ -12,6 +12,8 @@ services:
       - "4318:4318" # OTLP HTTP
       - "8888:8888" # Prometheus metrics
       - "13133:13133" # Health check
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - kafka
       - elasticsearch

@@ -39,12 +39,19 @@ exporters:
     endpoints: ["http://elasticsearch:9200"]
     index: "stacklens-logs-debug"
 
+  # HTTP exporter to send logs to StackLens analytics endpoint
+  otlphttp/stacklens:
+    endpoint: http://host.docker.internal:4000/api/analytics/events
+    compression: none
+    headers:
+      Content-Type: application/json
+
 service:
   pipelines:
     logs:
       receivers: [otlp]
       processors: [attributes/env, batch]
-      exporters: [logging, kafka, elasticsearch]
+      exporters: [logging, kafka, elasticsearch, otlphttp/stacklens]
     traces:
       receivers: [otlp]
       processors: [batch]

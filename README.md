@@ -59,3 +59,9 @@ A production-grade OpenTelemetry pipeline for ingesting, processing, and analyzi
 - **Kafka Lag**: Check consumer group lag using `kafka-consumer-groups`.
 - **ES Indexing**: Check `stacklens-logs-*` indices in Kibana.
 - **WebSocket**: Ensure port 3001 is open and accessible.
+
+
+
+right now you can check in this application there will be a POS application added but I could not see if I run the stacklens and POS using  ./start-stack.sh and click on any button on the POS should trigger a Log and if it is an error it should be populated inside the Stacklens but right now this is not working as expected.
+can you fix and understand the issue correctly.
+Investigate more if you want please write some testcases to validate these scenarios and fix it correctly
