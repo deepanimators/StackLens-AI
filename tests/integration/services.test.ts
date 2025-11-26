@@ -12,7 +12,7 @@ test.describe('Integration Tests - Services', () => {
                 labels: ['critical', 'warning']
             };
 
-            const response = await request.post('http://localhost:4000/api/ml/train', {
+            const response = await request.post('http://localhost:4001/api/ml/train', {
                 data: trainingData
             });
 
@@ -29,7 +29,7 @@ test.describe('Integration Tests - Services', () => {
                 lineNumber: 150
             };
 
-            const response = await request.post('http://localhost:4000/api/ml/predict', {
+            const response = await request.post('http://localhost:4001/api/ml/predict', {
                 data: predictionData
             });
 
@@ -45,7 +45,7 @@ test.describe('Integration Tests - Services', () => {
                 labels: []
             };
 
-            const response = await request.post('http://localhost:4000/api/ml/train', {
+            const response = await request.post('http://localhost:4001/api/ml/train', {
                 data: invalidData
             });
 
@@ -63,7 +63,7 @@ test.describe('Integration Tests - Services', () => {
                 stackTrace: 'Error: Cannot read property of null\n  at main.js:42'
             };
 
-            const response = await request.post('http://localhost:4000/api/ai/analyze', {
+            const response = await request.post('http://localhost:4001/api/ai/analyze', {
                 data: errorData
             });
 
@@ -80,7 +80,7 @@ test.describe('Integration Tests - Services', () => {
                 { message: 'Network error', count: 5 }
             ];
 
-            const response = await request.post('http://localhost:4000/api/ai/summarize', {
+            const response = await request.post('http://localhost:4001/api/ai/summarize', {
                 data: { errors }
             });
 
@@ -96,7 +96,7 @@ test.describe('Integration Tests - Services', () => {
                 errorType: 'Memory'
             };
 
-            const response = await request.post('http://localhost:4000/api/ai/suggest-fix', {
+            const response = await request.post('http://localhost:4001/api/ai/suggest-fix', {
                 data: errorData
             });
 
@@ -118,7 +118,7 @@ test.describe('Integration Tests - Services', () => {
                 store: 'STORE-0001'
             };
 
-            const createResponse = await request.post('http://localhost:4000/api/errors', {
+            const createResponse = await request.post('http://localhost:4001/api/errors', {
                 data: newError
             });
 
@@ -127,7 +127,7 @@ test.describe('Integration Tests - Services', () => {
             expect(created).toHaveProperty('id');
 
             // Retrieve error
-            const getResponse = await request.get(`http://localhost:4000/api/errors/${created.id}`);
+            const getResponse = await request.get(`http://localhost:4001/api/errors/${created.id}`);
             expect(getResponse.ok()).toBeTruthy();
 
             const retrieved = await getResponse.json();
@@ -143,21 +143,21 @@ test.describe('Integration Tests - Services', () => {
                 resolved: false
             };
 
-            const createResponse = await request.post('http://localhost:4000/api/errors', {
+            const createResponse = await request.post('http://localhost:4001/api/errors', {
                 data: newError
             });
 
             const created = await createResponse.json();
 
             // Update error
-            const updateResponse = await request.patch(`http://localhost:4000/api/errors/${created.id}`, {
+            const updateResponse = await request.patch(`http://localhost:4001/api/errors/${created.id}`, {
                 data: { resolved: true }
             });
 
             expect(updateResponse.ok()).toBeTruthy();
 
             // Verify update
-            const getResponse = await request.get(`http://localhost:4000/api/errors/${created.id}`);
+            const getResponse = await request.get(`http://localhost:4001/api/errors/${created.id}`);
             const updated = await getResponse.json();
             expect(updated.resolved).toBe(true);
         });
@@ -169,24 +169,24 @@ test.describe('Integration Tests - Services', () => {
                 severity: 'low'
             };
 
-            const createResponse = await request.post('http://localhost:4000/api/errors', {
+            const createResponse = await request.post('http://localhost:4001/api/errors', {
                 data: newError
             });
 
             const created = await createResponse.json();
 
             // Delete error
-            const deleteResponse = await request.delete(`http://localhost:4000/api/errors/${created.id}`);
+            const deleteResponse = await request.delete(`http://localhost:4001/api/errors/${created.id}`);
             expect(deleteResponse.ok()).toBeTruthy();
 
             // Verify deletion
-            const getResponse = await request.get(`http://localhost:4000/api/errors/${created.id}`);
+            const getResponse = await request.get(`http://localhost:4001/api/errors/${created.id}`);
             expect(getResponse.status()).toBe(404);
         });
 
         test('should handle concurrent database operations', async ({ request }) => {
             const operations = Array.from({ length: 10 }, (_, i) =>
-                request.post('http://localhost:4000/api/errors', {
+                request.post('http://localhost:4001/api/errors', {
                     data: {
                         message: `Concurrent error ${i}`,
                         severity: 'medium'
@@ -203,7 +203,7 @@ test.describe('Integration Tests - Services', () => {
 
     test.describe('Auth Service Integration', () => {
         test('should authenticate user and create session', async ({ request }) => {
-            const authResponse = await request.post('http://localhost:4000/api/auth/firebase', {
+            const authResponse = await request.post('http://localhost:4001/api/auth/firebase', {
                 data: {
                     idToken: 'test-firebase-token'
                 }
@@ -216,7 +216,7 @@ test.describe('Integration Tests - Services', () => {
         });
 
         test('should reject invalid authentication', async ({ request }) => {
-            const authResponse = await request.post('http://localhost:4000/api/auth/firebase', {
+            const authResponse = await request.post('http://localhost:4001/api/auth/firebase', {
                 data: {
                     idToken: 'invalid-token'
                 }
@@ -227,7 +227,7 @@ test.describe('Integration Tests - Services', () => {
 
         test('should verify admin permissions', async ({ request }) => {
             // Authenticate as admin
-            const authResponse = await request.post('http://localhost:4000/api/auth/firebase', {
+            const authResponse = await request.post('http://localhost:4001/api/auth/firebase', {
                 data: {
                     idToken: 'admin-token',
                     role: 'admin'
@@ -237,7 +237,7 @@ test.describe('Integration Tests - Services', () => {
             const auth = await authResponse.json();
 
             // Access admin endpoint
-            const adminResponse = await request.get('http://localhost:4000/api/admin/users', {
+            const adminResponse = await request.get('http://localhost:4001/api/admin/users', {
                 headers: {
                     'Authorization': `Bearer ${auth.sessionId}`
                 }
@@ -254,7 +254,7 @@ test.describe('Integration Tests - Services', () => {
             const formData = new FormData();
             formData.append('file', new Blob([file]), 'test.xlsx');
 
-            const uploadResponse = await request.post('http://localhost:4000/api/upload', {
+            const uploadResponse = await request.post('http://localhost:4001/api/upload', {
                 multipart: {
                     file: {
                         name: 'test.xlsx',
@@ -279,7 +279,7 @@ test.describe('Integration Tests - Services', () => {
 
             const file = Buffer.from(logContent);
 
-            const uploadResponse = await request.post('http://localhost:4000/api/upload', {
+            const uploadResponse = await request.post('http://localhost:4001/api/upload', {
                 multipart: {
                     file: {
                         name: 'test.log',
@@ -304,14 +304,14 @@ test.describe('Integration Tests - Service Interactions', () => {
             errorType: 'Memory'
         };
 
-        const aiResponse = await request.post('http://localhost:4000/api/ai/analyze', {
+        const aiResponse = await request.post('http://localhost:4001/api/ai/analyze', {
             data: errorData
         });
 
         const aiResult = await aiResponse.json();
 
         // Step 2: ML Prediction
-        const mlResponse = await request.post('http://localhost:4000/api/ml/predict', {
+        const mlResponse = await request.post('http://localhost:4001/api/ml/predict', {
             data: {
                 ...errorData,
                 aiAnalysis: aiResult.analysis
@@ -328,7 +328,7 @@ test.describe('Integration Tests - Service Interactions', () => {
         const file = Buffer.from(logContent);
 
         // Upload file
-        const uploadResponse = await request.post('http://localhost:4000/api/upload', {
+        const uploadResponse = await request.post('http://localhost:4001/api/upload', {
             multipart: {
                 file: {
                     name: 'error.log',
@@ -341,7 +341,7 @@ test.describe('Integration Tests - Service Interactions', () => {
         const uploadResult = await uploadResponse.json();
 
         // Trigger AI analysis on uploaded file
-        const analysisResponse = await request.post('http://localhost:4000/api/ai/analyze-file', {
+        const analysisResponse = await request.post('http://localhost:4001/api/ai/analyze-file', {
             data: { fileId: uploadResult.fileId }
         });
 
@@ -358,26 +358,26 @@ test.describe('Integration Tests - Service Interactions', () => {
             errorType: 'Runtime'
         };
 
-        const createResponse = await request.post('http://localhost:4000/api/errors', {
+        const createResponse = await request.post('http://localhost:4001/api/errors', {
             data: errorData
         });
 
         const error = await createResponse.json();
 
         // 2. AI Analysis
-        const aiResponse = await request.post(`http://localhost:4000/api/errors/${error.id}/analyze`, {});
+        const aiResponse = await request.post(`http://localhost:4001/api/errors/${error.id}/analyze`, {});
         expect(aiResponse.ok()).toBeTruthy();
 
         // 3. ML Prediction
-        const mlResponse = await request.post(`http://localhost:4000/api/errors/${error.id}/predict`, {});
+        const mlResponse = await request.post(`http://localhost:4001/api/errors/${error.id}/predict`, {});
         expect(mlResponse.ok()).toBeTruthy();
 
         // 4. Get suggestions
-        const suggestResponse = await request.get(`http://localhost:4000/api/errors/${error.id}/suggestions`);
+        const suggestResponse = await request.get(`http://localhost:4001/api/errors/${error.id}/suggestions`);
         expect(suggestResponse.ok()).toBeTruthy();
 
         // 5. Resolve error
-        const resolveResponse = await request.patch(`http://localhost:4000/api/errors/${error.id}`, {
+        const resolveResponse = await request.patch(`http://localhost:4001/api/errors/${error.id}`, {
             data: { resolved: true }
         });
 
@@ -394,7 +394,7 @@ test.describe('Integration Tests - Data Consistency', () => {
             location: 'Test Location'
         };
 
-        const createStoreResponse = await request.post('http://localhost:4000/api/stores', {
+        const createStoreResponse = await request.post('http://localhost:4001/api/stores', {
             data: store
         });
 
@@ -408,11 +408,11 @@ test.describe('Integration Tests - Data Consistency', () => {
         }));
 
         for (const error of errors) {
-            await request.post('http://localhost:4000/api/errors', { data: error });
+            await request.post('http://localhost:4001/api/errors', { data: error });
         }
 
         // Verify store error count
-        const storeResponse = await request.get(`http://localhost:4000/api/stores/${createdStore.storeNumber}`);
+        const storeResponse = await request.get(`http://localhost:4001/api/stores/${createdStore.storeNumber}`);
         const storeData = await storeResponse.json();
 
         expect(storeData.errorCount).toBe(5);
@@ -428,7 +428,7 @@ test.describe('Integration Tests - Data Consistency', () => {
             ]
         };
 
-        const response = await request.post('http://localhost:4000/api/errors/batch', {
+        const response = await request.post('http://localhost:4001/api/errors/batch', {
             data: batchData
         });
 
@@ -436,7 +436,7 @@ test.describe('Integration Tests - Data Consistency', () => {
         expect(response.status()).toBe(400);
 
         // Verify no partial data was saved
-        const listResponse = await request.get('http://localhost:4000/api/errors?search=Valid error');
+        const listResponse = await request.get('http://localhost:4001/api/errors?search=Valid error');
         const errors = await listResponse.json();
 
         const batchErrors = errors.filter((e: any) =>
@@ -453,12 +453,12 @@ test.describe('Integration Tests - Caching and Performance', () => {
 
         // First request
         const start1 = Date.now();
-        await request.get(`http://localhost:4000/api/errors?${query}`);
+        await request.get(`http://localhost:4001/api/errors?${query}`);
         const time1 = Date.now() - start1;
 
         // Second request (should be cached)
         const start2 = Date.now();
-        const response = await request.get(`http://localhost:4000/api/errors?${query}`);
+        const response = await request.get(`http://localhost:4001/api/errors?${query}`);
         const time2 = Date.now() - start2;
 
         expect(response.ok()).toBeTruthy();
@@ -469,7 +469,7 @@ test.describe('Integration Tests - Caching and Performance', () => {
     test('should handle rate limiting gracefully', async ({ request }) => {
         // Make multiple rapid requests
         const requests = Array.from({ length: 100 }, () =>
-            request.get('http://localhost:4000/api/errors?page=1&limit=10')
+            request.get('http://localhost:4001/api/errors?page=1&limit=10')
         );
 
         const responses = await Promise.all(requests);
@@ -479,8 +479,8 @@ test.describe('Integration Tests - Caching and Performance', () => {
     });
 
     test('should implement query result pagination efficiently', async ({ request }) => {
-        const page1Response = await request.get('http://localhost:4000/api/errors?page=1&limit=10');
-        const page2Response = await request.get('http://localhost:4000/api/errors?page=2&limit=10');
+        const page1Response = await request.get('http://localhost:4001/api/errors?page=1&limit=10');
+        const page2Response = await request.get('http://localhost:4001/api/errors?page=2&limit=10');
 
         expect(page1Response.ok()).toBeTruthy();
         expect(page2Response.ok()).toBeTruthy();
@@ -503,7 +503,7 @@ test.describe('Integration Tests - Error Recovery', () => {
 
         while (attempts < maxAttempts) {
             try {
-                const response = await request.get('http://localhost:4000/api/errors');
+                const response = await request.get('http://localhost:4001/api/errors');
                 if (response.ok()) {
                     expect(response.ok()).toBeTruthy();
                     break;
@@ -523,7 +523,7 @@ test.describe('Integration Tests - Error Recovery', () => {
         const responses = [];
 
         for (let i = 0; i < 5; i++) {
-            const response = await request.get('http://localhost:4000/api/ml/predict', {
+            const response = await request.get('http://localhost:4001/api/ml/predict', {
                 data: { invalid: 'data' }
             });
             responses.push(response);
@@ -535,7 +535,7 @@ test.describe('Integration Tests - Error Recovery', () => {
 
     test('should implement graceful degradation', async ({ request }) => {
         // When AI service is down, should still return partial results
-        const response = await request.get('http://localhost:4000/api/errors');
+        const response = await request.get('http://localhost:4001/api/errors');
 
         expect(response.ok()).toBeTruthy();
         const data = await response.json();
@@ -548,13 +548,13 @@ test.describe('Integration Tests - Error Recovery', () => {
 test.describe('Integration Tests - Security', () => {
     test('should validate authentication tokens', async ({ request }) => {
         // Request without auth should fail
-        const response = await request.get('http://localhost:4000/api/admin/users');
+        const response = await request.get('http://localhost:4001/api/admin/users');
         expect([401, 403]).toContain(response.status());
     });
 
     test('should prevent SQL injection in queries', async ({ request }) => {
         const maliciousQuery = "'; DROP TABLE errors; --";
-        const response = await request.get(`http://localhost:4000/api/errors?search=${encodeURIComponent(maliciousQuery)}`);
+        const response = await request.get(`http://localhost:4001/api/errors?search=${encodeURIComponent(maliciousQuery)}`);
 
         // Should handle safely without error
         expect([200, 400]).toContain(response.status());
@@ -562,7 +562,7 @@ test.describe('Integration Tests - Security', () => {
 
     test('should sanitize user input', async ({ request }) => {
         const xssPayload = '<script>alert("xss")</script>';
-        const response = await request.post('http://localhost:4000/api/errors', {
+        const response = await request.post('http://localhost:4001/api/errors', {
             data: {
                 message: xssPayload,
                 severity: 'high',
@@ -578,7 +578,7 @@ test.describe('Integration Tests - Security', () => {
     });
 
     test('should enforce CORS policies', async ({ request }) => {
-        const response = await request.get('http://localhost:4000/api/errors', {
+        const response = await request.get('http://localhost:4001/api/errors', {
             headers: {
                 'Origin': 'http://malicious-site.com'
             }
@@ -597,7 +597,7 @@ test.describe('Integration Tests - Data Validation', () => {
             severity: 'high'
         };
 
-        const response = await request.post('http://localhost:4000/api/errors', {
+        const response = await request.post('http://localhost:4001/api/errors', {
             data: invalidError
         });
 
@@ -612,7 +612,7 @@ test.describe('Integration Tests - Data Validation', () => {
             errorType: 'Test'
         };
 
-        const response = await request.post('http://localhost:4000/api/errors', {
+        const response = await request.post('http://localhost:4001/api/errors', {
             data: invalidError
         });
 
@@ -626,7 +626,7 @@ test.describe('Integration Tests - Data Validation', () => {
             errorType: 'Test'
         };
 
-        const response = await request.post('http://localhost:4000/api/errors', {
+        const response = await request.post('http://localhost:4001/api/errors', {
             data: invalidError
         });
 
@@ -635,7 +635,7 @@ test.describe('Integration Tests - Data Validation', () => {
 
     test('should enforce maximum string lengths', async ({ request }) => {
         const veryLongMessage = 'A'.repeat(10000);
-        const response = await request.post('http://localhost:4000/api/errors', {
+        const response = await request.post('http://localhost:4001/api/errors', {
             data: {
                 message: veryLongMessage,
                 severity: 'high',
@@ -657,7 +657,7 @@ test.describe('Integration Tests - Webhooks and Notifications', () => {
             store: 'STORE-0001'
         };
 
-        const response = await request.post('http://localhost:4000/api/errors', {
+        const response = await request.post('http://localhost:4001/api/errors', {
             data: criticalError
         });
 
@@ -673,14 +673,14 @@ test.describe('Integration Tests - Webhooks and Notifications', () => {
             errorType: 'Database'
         };
 
-        const createResponse = await request.post('http://localhost:4000/api/errors', {
+        const createResponse = await request.post('http://localhost:4001/api/errors', {
             data: error
         });
 
         const created = await createResponse.json();
 
         // Escalate error
-        const escalateResponse = await request.post(`http://localhost:4000/api/errors/${created.id}/escalate`, {
+        const escalateResponse = await request.post(`http://localhost:4001/api/errors/${created.id}/escalate`, {
             data: { to: 'admin', reason: 'Requires immediate attention' }
         });
 
@@ -699,7 +699,7 @@ test.describe('Integration Tests - Batch Operations', () => {
         }));
 
         const createPromises = errors.map(e =>
-            request.post('http://localhost:4000/api/errors', { data: e })
+            request.post('http://localhost:4001/api/errors', { data: e })
         );
 
         const responses = await Promise.all(createPromises);
@@ -716,7 +716,7 @@ test.describe('Integration Tests - Batch Operations', () => {
         ];
 
         const createResponses = await Promise.all(
-            testErrors.map(e => request.post('http://localhost:4000/api/errors', { data: e }))
+            testErrors.map(e => request.post('http://localhost:4001/api/errors', { data: e }))
         );
 
         const ids = await Promise.all(
@@ -724,7 +724,7 @@ test.describe('Integration Tests - Batch Operations', () => {
         );
 
         // Batch delete
-        const deleteResponse = await request.delete('http://localhost:4000/api/errors/batch', {
+        const deleteResponse = await request.delete('http://localhost:4001/api/errors/batch', {
             data: { ids }
         });
 
@@ -735,7 +735,7 @@ test.describe('Integration Tests - Batch Operations', () => {
 test.describe('Integration Tests - Real-time Updates', () => {
     test('should support server-sent events for real-time updates', async ({ request }) => {
         // Check if SSE endpoint exists
-        const response = await request.get('http://localhost:4000/api/monitoring/live');
+        const response = await request.get('http://localhost:4001/api/monitoring/live');
 
         // SSE should return text/event-stream
         if (response.ok()) {
@@ -752,7 +752,7 @@ test.describe('Integration Tests - Real-time Updates', () => {
             errorType: 'System'
         };
 
-        const response = await request.post('http://localhost:4000/api/errors', {
+        const response = await request.post('http://localhost:4001/api/errors', {
             data: error
         });
 

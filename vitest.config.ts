@@ -5,7 +5,7 @@ import path from "path";
 export default defineConfig({
     plugins: [react()],
     test: {
-        globals: true,
+        globals: false, // Disabled to prevent conflict with Playwright expect
         environment: "node",
         coverage: {
             provider: "v8",

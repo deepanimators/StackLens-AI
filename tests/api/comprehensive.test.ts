@@ -817,7 +817,7 @@ test.describe('API Tests - Authentication & Authorization', () => {
             const auth = await response.json();
             expect(auth).toHaveProperty('userId');
             expect(auth).toHaveProperty('email');
-            expect(auth).toHaveProperty('sessionToken');
+            expect(auth).toHaveProperty('token');
         });
 
         test('should reject invalid token', async ({ apiContext }) => {

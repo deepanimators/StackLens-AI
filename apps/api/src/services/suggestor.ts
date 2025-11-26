@@ -1,7 +1,29 @@
 import { ErrorLog } from "@shared/schema";
 import { predictor } from "./predictor";
-// Removed aiService import to avoid circular dependency
-import errorMap from "./error-map.json" with { type: "json" };
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+// Load error map using fs instead of import assertion for better compatibility
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+interface ErrorMapEntry {
+  pattern: string[];
+  severity: string;
+  root_cause: string;
+  resolution_steps: string[];
+  code_example?: string;
+  prevention_measures: string[];
+}
+
+interface ErrorMap {
+  [category: string]: {
+    [errorType: string]: ErrorMapEntry;
+  };
+}
+
+const errorMap: ErrorMap = JSON.parse(readFileSync(join(__dirname, "error-map.json"), "utf-8"));
 
 export interface SuggestionResult {
   source: 'ml_model' | 'static_map' | 'ai_service' | 'fallback';

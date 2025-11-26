@@ -1,0 +1,97 @@
+
+> stacklens-ai-platform@1.0.0 pretest
+> node scripts/generate-test-token.js
+
+✅ Token is valid
+⏰ Expires in 2 days (2025-11-28T18:00:41.000Z)
+
+> stacklens-ai-platform@1.0.0 test
+> playwright test
+
+[dotenv@17.2.3] injecting env (14) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[2m[WebServer] [22m
+[2m[WebServer] [22m> stacklens-ai-platform@1.0.0 test:server /Users/deepak/Downloads/Projects/StackLens-AI-Deploy
+[2m[WebServer] [22m> cross-env NODE_ENV=test node --import tsx --no-warnings apps/api/src/index.ts
+[2m[WebServer] [22m
+[2m[WebServer] [22m[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[2m[WebServer] [22m🤖 AI Service initialized with 1 providers: gemini
+[2m[WebServer] [22m[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[2m[WebServer] [22m[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[2m[WebServer] [22m🚀 RAG: Vector database initialized
+[2m[WebServer] [22m{"level":"WARN","timestamp":"2025-11-26T03:23:57.221Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+[2m[WebServer] [22mSetting up SQLite database...
+[2m[WebServer] [22m✅ SQLite database initialized successfully
+[2m[WebServer] [22m🔄 Starting server initialization...
+[2m[WebServer] [22m✅ Database tables initialized
+[2m[WebServer] [22mStarting LogWatcher service for real-time monitoring...
+[2m[WebServer] [22m📍 Watching directories: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/data, /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/logs
+[2m[WebServer] [22m[LogWatcherService] Started watching 2 file(s)
+[2m[WebServer] [22m✅ LogWatcher service started successfully
+[2m[WebServer] [22m✅ Routes registered successfully
+[2m[WebServer] [22m📚 RAG: Indexing 50 resolved error patterns...
+[2m[WebServer] [22m✅ RAG: Knowledge base populated with 50 patterns
+[2m[WebServer] [22m8:54:00 AM [express] serving on port 4001
+[2m[WebServer] [22m🔄 Indexing existing errors for RAG system...
+[2m[WebServer] [22mℹ️ No errors with suggestions found for indexing
+[2m[WebServer] [22m✅ Enhanced RAG Suggestor initialized
+[2m[WebServer] [22m🎯 Enhanced RAG system ready with vector database
+[2m[WebServer] [22m🚀 Starting Python vector database service...
+[2m[WebServer] [22m✅ Vector database service initialized
+[2m[WebServer] [22m⚠️ Enhanced vector service not found, using fallback similarity search
+
+Running 417 tests using 5 workers
+
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+Starting authentication setup...
+✓ Auth state file verified
+  ✓    2 [setup] › tests/auth.setup.ts:135:1 › verify auth state (851ms)
+Using TEST_FIREBASE_TOKEN for authentication...
+[2m[WebServer] [22m[DEBUG] verifyFirebaseToken called with token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ'
+[2m[WebServer] [22m[DEBUG] NODE_ENV: 'test'
+[2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m8:54:08 AM [express] POST /api/auth/firebase-signin 200 in 303ms :: {"user":{"id":1,"username":"Test…
+✓ Token exchange successful
+[2m[WebServer] [22m8:54:09 AM [express] GET /api/auth/me 200 in 1ms :: {"id":1,"email":"test@stacklens.ai","username":"…
+[2m[WebServer] [22m8:54:10 AM [express] GET /api/admin/ui-settings 200 in 14ms :: {"theme":"light","sidebarCollapsed":f…
+[2m[WebServer] [22m8:54:10 AM [express] GET /api/admin/api-settings 200 in 8ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
+✓ Authentication successful with session token
+✓ Authentication state saved to /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/.auth/user.json
+  ✓    1 [setup] › tests/auth.setup.ts:15:1 › authenticate user (5.1s)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[2m[WebServer] [22m[DEBUG] verifyFirebaseToken called with token: 'valid-test-token'
+[2m[WebServer] [22m[DEBUG] NODE_ENV: 'test'
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m8:54:14 AM [express] POST /api/auth/firebase-verify 200 in 15ms :: {"valid":true,"user":{"id":1,"use…
+[2m[WebServer] [22m[DEBUG] verifyFirebaseToken called with token: 'valid-test-token'
+[2m[WebServer] [22m[DEBUG] NODE_ENV: 'test'
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[2m[WebServer] [22m8:54:14 AM [express] POST /api/auth/firebase-signin 200 in 4ms :: {"user":{"id":1,"username":"Test U…
+[2m[WebServer] [22m8:54:14 AM [express] GET /api/auth/me 200 in 1ms :: {"id":1,"email":"test@stacklens.ai","username":"…
+  ✓    5 [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token (303ms)
+  ✓    4 [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user (360ms)
+  ✓    3 [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user (325ms)
+[2m[WebServer] [22mSkipping body parsing for: /api/upload
+[2m[WebServer] [22m8:54:14 AM [express] GET /api/auth/me 401 in 0ms :: {"message":"Authentication required"}
+[2m[WebServer] [22mPOST /api/upload hit
+[2m[WebServer] [22mreq.file: {
+[2m[WebServer] [22m  fieldname: [32m'file'[39m,
+[2m[WebServer] [22m  originalname: [32m'test-errors.xlsx'[39m,
+[2m[WebServer] [22m  encoding: [32m'7bit'[39m,
+[2m[WebServer] [22m  mimetype: [32m'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'[39m,
+[2m[WebServer] [22m  destination: [32m'test-uploads/'[39m,
+[2m[WebServer] [22m  filename: [32m'file-1764127454617-80059032.xlsx'[39m,
+[2m[WebServer] [22m  path: [32m'test-uploads/file-1764127454617-80059032.xlsx'[39m,
+[2m[WebServer] [22m  size: [33m9[39m
+[2m[WebServer] [22m}
+[2m[WebServer] [22mreq.user: {
+[2m[WebServer] [22m  id: [33m1[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  username: [32m'testuser'[39m,
+[2m[WebServer] [22m  role: [32m'admin'[39m
+[2m[WebServer] [22m}
