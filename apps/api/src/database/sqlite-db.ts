@@ -31,7 +31,6 @@ try {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       filename TEXT NOT NULL,
       original_name TEXT NOT NULL,
-      file_path TEXT NOT NULL,
       file_size INTEGER NOT NULL,
       mime_type TEXT NOT NULL,
       file_type TEXT NOT NULL,

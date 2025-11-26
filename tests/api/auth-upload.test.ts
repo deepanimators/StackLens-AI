@@ -46,9 +46,10 @@ test.describe('Authentication API', () => {
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(data).toHaveProperty('id');
-        expect(data).toHaveProperty('email');
-        expect(data).toHaveProperty('role');
+        expect(data).toHaveProperty('user');
+        expect(data.user).toHaveProperty('id');
+        expect(data.user).toHaveProperty('email');
+        expect(data.user).toHaveProperty('role');
     });
 
     test('POST /api/auth/firebase-signin - should reject invalid token', async ({ apiContext }) => {

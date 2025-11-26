@@ -195,7 +195,7 @@ export default function AdminDashboard() {
         "GET",
         "/api/admin/ui-settings"
       );
-      return response.json();
+      return response;
     },
   });
 
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
         "GET",
         "/api/admin/api-settings"
       );
-      return response.json();
+      return response;
     },
   });
 
@@ -290,7 +290,7 @@ export default function AdminDashboard() {
         "/api/admin/users",
         userData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
@@ -338,7 +338,7 @@ export default function AdminDashboard() {
         "/api/admin/models/train", // Fixed: use correct endpoint
         modelData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/models"] });
@@ -365,7 +365,7 @@ export default function AdminDashboard() {
         `/api/admin/users/${userData.id}`,
         userData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
@@ -393,7 +393,7 @@ export default function AdminDashboard() {
         "/api/admin/roles",
         roleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/roles"] });
@@ -420,7 +420,7 @@ export default function AdminDashboard() {
         `/api/admin/roles/${roleData.id}`,
         roleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/roles"] });
@@ -448,7 +448,7 @@ export default function AdminDashboard() {
         "/api/admin/training-modules",
         moduleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -477,7 +477,7 @@ export default function AdminDashboard() {
         `/api/admin/training-modules/${moduleData.id}`,
         moduleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -507,7 +507,7 @@ export default function AdminDashboard() {
         `/api/admin/models/${modelData.id}`,
         modelData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/models"] });
@@ -534,7 +534,7 @@ export default function AdminDashboard() {
         "DELETE",
         `/api/admin/models/${modelId}`
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/models"] });

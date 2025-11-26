@@ -1,0 +1,140 @@
+This page is not reloaded
+express-fte-utils.js:495 [vite] connecting...
+express-fte-utils.js:618 [vite] connected.
+255bf9142-aea6-4aee-b…riker.replit.dev/:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) <input data-replit-metadata=​"client/​src/​pages/​login.tsx:​204:​30" data-component-name=​"Input" type=​"password" class=​"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:​border-0 file:​bg-transparent file:​text-sm file:​font-medium file:​text-foreground placeholder:​text-muted-foreground focus-visible:​outline-none focus-visible:​ring-2 focus-visible:​ring-ring focus-visible:​ring-offset-2 disabled:​cursor-not-allowed disabled:​opacity-50 md:​text-sm" placeholder=​"Enter your password" name=​"password" id=​":​r4:​-form-item" aria-describedby=​":​r4:​-form-item-description" aria-invalid=​"false" value>​flex
+9[Violation] Added non-passive event listener to a scroll-blocking <some> event. Consider marking event handler as 'passive' to make the page more responsive. See <URL>
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/runtime-dom.esm-bundler-CxUFb2nC.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/MessageEventType-CYSQdHr9.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/index-BVwbAc3C.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+index.js-fhAr_6jm.js:1  GET chrome-extension://invalid/ net::ERR_FAILEDUnderstand this error
+TypeError: Failed to fetch dynamically imported module: chrome-extension://893918f3-0752-4897-8bd2-9a768075bedc/assets/index.js-fhAr_6jm.js
+Promise.catch
+(anonymous) @ browser-polyfill.min.js:11
+(anonymous) @ browser-polyfill.min.js:13Understand this error
+55bf9142-aea6-4aee-b…riker.replit.dev/:1 Uncaught (in promise) {name: 'FetchError'}
+Promise.then
+main @ bubble_compiled.js:99
+(anonymous) @ bubble_compiled.js:99
+(anonymous) @ bubble_compiled.js:99
+(anonymous) @ bubble_compiled.js:99Understand this error
+contentScript.js:193 This page is not reloaded
+55bf9142-aea6-4aee-b…riker.replit.dev/:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+completion_list.html:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+Navigated to https://error-analysis-f46c6.firebaseapp.com/__/auth/handler?apiKey=AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU&appName=%5BDEFAULT%5D&authType=signInViaRedirect&redirectUrl=https%3A%2F%2F55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev%2F&v=11.10.0&providerId=google.com&scopes=profile%2Cemail
+web-page.js:193 This page is not reloaded
+2handler:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+handler:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/runtime-dom.esm-bundler-CxUFb2nC.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+handler:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/MessageEventType-CYSQdHr9.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+handler:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/index-BVwbAc3C.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+index.js-fhAr_6jm.js:1  GET chrome-extension://invalid/ net::ERR_FAILEDUnderstand this error
+TypeError: Failed to fetch dynamically imported module: chrome-extension://893918f3-0752-4897-8bd2-9a768075bedc/assets/index.js-fhAr_6jm.js
+Promise.catch
+(anonymous) @ react.js?v=3ab741e0:11
+(anonymous) @ react.js?v=3ab741e0:13Understand this error
+handler:1 Uncaught (in promise) {name: 'FetchError'}
+Promise.then
+main @ theme-provider.tsx:66
+(anonymous) @ theme-provider.tsx:66
+(anonymous) @ theme-provider.tsx:66
+(anonymous) @ theme-provider.tsx:66Understand this error
+VM48:191  GET https://error-analysis-f46c6.firebaseapp.com/__/firebase/init.json 404 (Not Found)
+l.send @ VM48:191
+(anonymous) @ VM48:202
+I @ VM48:164
+Wg.He @ VM48:201
+g @ VM48:553
+(anonymous) @ VM48:554
+a @ VM48:163
+(anonymous) @ VM48:163
+c @ VM48:163
+e.Ob @ VM48:171
+ng @ VM48:174
+jg @ VM48:174
+I.Ti @ VM48:173
+a @ VM48:163
+(anonymous) @ VM48:163
+c @ VM48:163
+Tf @ VM48:164
+a
+Mf @ VM48:164
+eg @ VM48:170
+I.then @ VM48:167
+(anonymous) @ VM48:554
+a @ VM48:163
+(anonymous) @ VM48:163
+c @ VM48:163
+e.Ob @ VM48:171
+ng @ VM48:174
+jg @ VM48:174
+I.Ti @ VM48:173
+a @ VM48:163
+(anonymous) @ VM48:163
+c @ VM48:163
+Tf @ VM48:164
+a
+Mf @ VM48:164
+eg @ VM48:170
+I.then @ VM48:167
+Zp.bb @ VM48:552
+Zp.start @ VM48:551
+jq @ VM48:563
+(anonymous) @ client:10Understand this error
+Navigated to https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=619626851108-js3rn695brvco276fjrvbt6k0v89also.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Ferror-analysis-f46c6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDmkwiE0xpzS6QH7GPGc1J2Zi_rL4553agnssbX4CwsbwTJ1j5dV0oZ4pclfqnEhmyFVm_NWD28z-XixC4Mx9DiOrVo27gHWJ8eRLlA3Rjb3MugZ2n1DtMWna4i7h9MNIYee0pCc5N8JPQc1K1AVCRDaSUjFHEifJ1_C2ouL57D6TjpB0AtlzDtJPGzoRMwTW3cP7FYC7n9oe6-96FODQcONfDPH1NDM-yqP-hu4ogior8WLKbpj3ek6bXNqlefevGPeeWlu1BslrrpTcRfyv6UCtisQ50QCnLcfQknufq0wtbkEnIP4w3WD1MUahZBqCsT8qqyRNwjXrvKk&scope=openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20profile%20email&context_uri=https%3A%2F%2F55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev
+contentScript.js:193 This page is not reloaded
+2auth:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+contentScript.js:193 This page is not reloaded
+/o/oauth2/auth/oauth…=GeneralOAuthFlow:1 Uncaught (in promise) {name: 'FetchError'}
+Promise.then
+main @ settings.tsx:97
+(anonymous) @ settings.tsx:97
+(anonymous) @ settings.tsx:97
+(anonymous) @ settings.tsx:97Understand this error
+zod.js?v=3ab741e0:193 This page is not reloaded
+/o/oauth2/auth/oauth…=GeneralOAuthFlow:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+/o/oauth2/auth/oauthchooseaccount?response_type=code&client_id=619626851108-js3rn695brvco276fjrvbt6k0v89also.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Ferror-analysis-f46c6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDmkwiE0xpzS6QH7GPGc1J2Zi_rL4553agnssbX4CwsbwTJ1j5dV0oZ4pclfqnEhmyFVm_NWD28z-XixC4Mx9DiOrVo27gHWJ8eRLlA3Rjb3MugZ2n1DtMWna4i7h9MNIYee0pCc5N8JPQc1K1AVCRDaSUjFHEifJ1_C2ouL57D6TjpB0AtlzDtJPGzoRMwTW3cP7FYC7n9oe6-96FODQcONfDPH1NDM-yqP-hu4ogior8WLKbpj3ek6bXNqlefevGPeeWlu1BslrrpTcRfyv6UCtisQ50QCnLcfQknufq0wtbkEnIP4w3WD1MUahZBqCsT8qqyRNwjXrvKk&scope=openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20profile%20email&context_uri=https%3A%2F%2F55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev&service=lso&o2v=1&flowName=GeneralOAuthFlow:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/runtime-dom.esm-bundler-CxUFb2nC.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+/o/oauth2/auth/oauthchooseaccount?response_type=code&client_id=619626851108-js3rn695brvco276fjrvbt6k0v89also.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Ferror-analysis-f46c6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDmkwiE0xpzS6QH7GPGc1J2Zi_rL4553agnssbX4CwsbwTJ1j5dV0oZ4pclfqnEhmyFVm_NWD28z-XixC4Mx9DiOrVo27gHWJ8eRLlA3Rjb3MugZ2n1DtMWna4i7h9MNIYee0pCc5N8JPQc1K1AVCRDaSUjFHEifJ1_C2ouL57D6TjpB0AtlzDtJPGzoRMwTW3cP7FYC7n9oe6-96FODQcONfDPH1NDM-yqP-hu4ogior8WLKbpj3ek6bXNqlefevGPeeWlu1BslrrpTcRfyv6UCtisQ50QCnLcfQknufq0wtbkEnIP4w3WD1MUahZBqCsT8qqyRNwjXrvKk&scope=openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20profile%20email&context_uri=https%3A%2F%2F55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev&service=lso&o2v=1&flowName=GeneralOAuthFlow:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/MessageEventType-CYSQdHr9.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+/o/oauth2/auth/oauthchooseaccount?response_type=code&client_id=619626851108-js3rn695brvco276fjrvbt6k0v89also.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Ferror-analysis-f46c6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDmkwiE0xpzS6QH7GPGc1J2Zi_rL4553agnssbX4CwsbwTJ1j5dV0oZ4pclfqnEhmyFVm_NWD28z-XixC4Mx9DiOrVo27gHWJ8eRLlA3Rjb3MugZ2n1DtMWna4i7h9MNIYee0pCc5N8JPQc1K1AVCRDaSUjFHEifJ1_C2ouL57D6TjpB0AtlzDtJPGzoRMwTW3cP7FYC7n9oe6-96FODQcONfDPH1NDM-yqP-hu4ogior8WLKbpj3ek6bXNqlefevGPeeWlu1BslrrpTcRfyv6UCtisQ50QCnLcfQknufq0wtbkEnIP4w3WD1MUahZBqCsT8qqyRNwjXrvKk&scope=openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20profile%20email&context_uri=https%3A%2F%2F55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev&service=lso&o2v=1&flowName=GeneralOAuthFlow:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/index-BVwbAc3C.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+index.js-fhAr_6jm.js:1  GET chrome-extension://invalid/ net::ERR_FAILEDUnderstand this error
+TypeError: Failed to fetch dynamically imported module: chrome-extension://893918f3-0752-4897-8bd2-9a768075bedc/assets/index.js-fhAr_6jm.js
+Promise.catch
+(anonymous) @ VM90:11
+(anonymous) @ VM90:13Understand this error
+sidebar.tsx:106 This page is not reloaded
+[Violation] 'requestIdleCallback' handler took 98ms
+/o/oauth2/auth/oauth…=GeneralOAuthFlow:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+Navigated to https://error-analysis-f46c6.firebaseapp.com/__/auth/handler?state=AMbdmDmkwiE0xpzS6QH7GPGc1J2Zi_rL4553agnssbX4CwsbwTJ1j5dV0oZ4pclfqnEhmyFVm_NWD28z-XixC4Mx9DiOrVo27gHWJ8eRLlA3Rjb3MugZ2n1DtMWna4i7h9MNIYee0pCc5N8JPQc1K1AVCRDaSUjFHEifJ1_C2ouL57D6TjpB0AtlzDtJPGzoRMwTW3cP7FYC7n9oe6-96FODQcONfDPH1NDM-yqP-hu4ogior8WLKbpj3ek6bXNqlefevGPeeWlu1BslrrpTcRfyv6UCtisQ50QCnLcfQknufq0wtbkEnIP4w3WD1MUahZBqCsT8qqyRNwjXrvKk&code=4%2F0AVMBsJhMa5D_3FDhrLeJpqHR7kBH7G15J9Cli_3RsAjspejk1glpwlw2aI2zdHx0DcRsjw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none
+contentScript.js:193 This page is not reloaded
+Navigated to https://55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/
+contentScript.js:193 This page is not reloaded
+client:495 [vite] connecting...
+client:618 [vite] connected.
+255bf9142-aea6-4aee-b…riker.replit.dev/:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) <input data-replit-metadata=​"client/​src/​pages/​login.tsx:​204:​30" data-component-name=​"Input" type=​"password" class=​"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:​border-0 file:​bg-transparent file:​text-sm file:​font-medium file:​text-foreground placeholder:​text-muted-foreground focus-visible:​outline-none focus-visible:​ring-2 focus-visible:​ring-ring focus-visible:​ring-offset-2 disabled:​cursor-not-allowed disabled:​opacity-50 md:​text-sm" placeholder=​"Enter your password" name=​"password" id=​":​r4:​-form-item" aria-describedby=​":​r4:​-form-item-description" aria-invalid=​"false" value>​flex
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/runtime-dom.esm-bundler-CxUFb2nC.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/MessageEventType-CYSQdHr9.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+55bf9142-aea6-4aee-bff4-1e2bb13bcb25-00-2wzm0kcdhnhe1.riker.replit.dev/:1 Denying load of chrome-extension://hpemfhlgjkaellhmjaopnpcbfhnaajbp/assets/index-BVwbAc3C.js. Resources must be listed in the web_accessible_resources manifest key in order to be loaded by pages outside the extension.Understand this error
+index.js-fhAr_6jm.js:1  GET chrome-extension://invalid/ net::ERR_FAILEDUnderstand this error
+TypeError: Failed to fetch dynamically imported module: chrome-extension://893918f3-0752-4897-8bd2-9a768075bedc/assets/index.js-fhAr_6jm.js
+Promise.catch
+(anonymous) @ index.js-loader-C7myQSzL.js:11
+(anonymous) @ index.js-loader-C7myQSzL.js:13Understand this error
+55bf9142-aea6-4aee-b…riker.replit.dev/:1 Uncaught (in promise) {name: 'FetchError'}
+Promise.then
+main @ content.js:99
+(anonymous) @ content.js:99
+(anonymous) @ content.js:99
+(anonymous) @ content.js:99Understand this error
+contentScript.js:193 This page is not reloaded
+55bf9142-aea6-4aee-b…riker.replit.dev/:1 Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.Understand this error
+completion_list.html:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUND

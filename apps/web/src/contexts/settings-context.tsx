@@ -83,7 +83,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
           "GET",
           "/api/admin/ui-settings"
         );
-        return response.json();
+        return response;
       } catch (error) {
         // Return defaults if not authenticated or error
         return {};
@@ -106,7 +106,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
           "GET",
           "/api/admin/api-settings"
         );
-        return response.json();
+        return response;
       } catch (error) {
         // Return defaults if not authenticated or error
         return {};

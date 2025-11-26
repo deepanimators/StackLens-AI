@@ -351,23 +351,95 @@ export class DatabaseStorage implements IStorage {
 
   // Log file management
   async getLogFile(id: number): Promise<LogFile | undefined> {
-    const result = await db.select().from(logFiles).where(eq(logFiles.id, id));
-    return result[0];
+    const result = await db.select({
+      id: logFiles.id,
+      filename: logFiles.filename,
+      originalName: logFiles.originalName,
+      fileType: logFiles.fileType,
+      fileSize: logFiles.fileSize,
+      mimeType: logFiles.mimeType,
+      uploadedBy: logFiles.uploadedBy,
+      storeNumber: logFiles.storeNumber,
+      kioskNumber: logFiles.kioskNumber,
+      uploadTimestamp: logFiles.uploadTimestamp,
+      analysisTimestamp: logFiles.analysisTimestamp,
+      errorsDetected: logFiles.errorsDetected,
+      anomalies: logFiles.anomalies,
+      predictions: logFiles.predictions,
+      suggestions: logFiles.suggestions,
+      totalErrors: logFiles.totalErrors,
+      criticalErrors: logFiles.criticalErrors,
+      highErrors: logFiles.highErrors,
+      mediumErrors: logFiles.mediumErrors,
+      lowErrors: logFiles.lowErrors,
+      status: logFiles.status,
+      errorMessage: logFiles.errorMessage,
+      analysisResult: logFiles.analysisResult,
+    }).from(logFiles).where(eq(logFiles.id, id));
+    return result[0] as LogFile;
   }
 
   async getLogFilesByUser(userId: number): Promise<LogFile[]> {
     return await db
-      .select()
+      .select({
+        id: logFiles.id,
+        filename: logFiles.filename,
+        originalName: logFiles.originalName,
+        fileType: logFiles.fileType,
+        fileSize: logFiles.fileSize,
+        mimeType: logFiles.mimeType,
+        uploadedBy: logFiles.uploadedBy,
+        storeNumber: logFiles.storeNumber,
+        kioskNumber: logFiles.kioskNumber,
+        uploadTimestamp: logFiles.uploadTimestamp,
+        analysisTimestamp: logFiles.analysisTimestamp,
+        errorsDetected: logFiles.errorsDetected,
+        anomalies: logFiles.anomalies,
+        predictions: logFiles.predictions,
+        suggestions: logFiles.suggestions,
+        totalErrors: logFiles.totalErrors,
+        criticalErrors: logFiles.criticalErrors,
+        highErrors: logFiles.highErrors,
+        mediumErrors: logFiles.mediumErrors,
+        lowErrors: logFiles.lowErrors,
+        status: logFiles.status,
+        errorMessage: logFiles.errorMessage,
+        analysisResult: logFiles.analysisResult,
+      })
       .from(logFiles)
       .where(eq(logFiles.uploadedBy, userId))
-      .orderBy(desc(logFiles.uploadTimestamp));
+      .orderBy(desc(logFiles.uploadTimestamp)) as Promise<LogFile[]>;
   }
 
   async getAllLogFiles(): Promise<LogFile[]> {
     return await db
-      .select()
+      .select({
+        id: logFiles.id,
+        filename: logFiles.filename,
+        originalName: logFiles.originalName,
+        fileType: logFiles.fileType,
+        fileSize: logFiles.fileSize,
+        mimeType: logFiles.mimeType,
+        uploadedBy: logFiles.uploadedBy,
+        storeNumber: logFiles.storeNumber,
+        kioskNumber: logFiles.kioskNumber,
+        uploadTimestamp: logFiles.uploadTimestamp,
+        analysisTimestamp: logFiles.analysisTimestamp,
+        errorsDetected: logFiles.errorsDetected,
+        anomalies: logFiles.anomalies,
+        predictions: logFiles.predictions,
+        suggestions: logFiles.suggestions,
+        totalErrors: logFiles.totalErrors,
+        criticalErrors: logFiles.criticalErrors,
+        highErrors: logFiles.highErrors,
+        mediumErrors: logFiles.mediumErrors,
+        lowErrors: logFiles.lowErrors,
+        status: logFiles.status,
+        errorMessage: logFiles.errorMessage,
+        analysisResult: logFiles.analysisResult,
+      })
       .from(logFiles)
-      .orderBy(desc(logFiles.uploadTimestamp));
+      .orderBy(desc(logFiles.uploadTimestamp)) as Promise<LogFile[]>;
   }
 
   async createLogFile(file: InsertLogFile): Promise<LogFile> {
@@ -403,10 +475,27 @@ export class DatabaseStorage implements IStorage {
 
   async getErrorLogsByFile(fileId: number): Promise<ErrorLog[]> {
     return await db
-      .select()
+      .select({
+        id: errorLogs.id,
+        fileId: errorLogs.fileId,
+        storeNumber: errorLogs.storeNumber,
+        kioskNumber: errorLogs.kioskNumber,
+        lineNumber: errorLogs.lineNumber,
+        timestamp: errorLogs.timestamp,
+        severity: errorLogs.severity,
+        errorType: errorLogs.errorType,
+        message: errorLogs.message,
+        fullText: errorLogs.fullText,
+        pattern: errorLogs.pattern,
+        resolved: errorLogs.resolved,
+        aiSuggestion: errorLogs.aiSuggestion,
+        mlPrediction: errorLogs.mlPrediction,
+        mlConfidence: errorLogs.mlConfidence,
+        createdAt: errorLogs.createdAt,
+      })
       .from(errorLogs)
       .where(eq(errorLogs.fileId, fileId))
-      .orderBy(asc(errorLogs.lineNumber));
+      .orderBy(asc(errorLogs.lineNumber)) as Promise<ErrorLog[]>;
   }
 
   async getErrorLogsByFileWithPagination(
@@ -452,7 +541,24 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllErrors(): Promise<ErrorLog[]> {
-    return await db.select().from(errorLogs).orderBy(desc(errorLogs.createdAt));
+    return await db.select({
+      id: errorLogs.id,
+      fileId: errorLogs.fileId,
+      storeNumber: errorLogs.storeNumber,
+      kioskNumber: errorLogs.kioskNumber,
+      lineNumber: errorLogs.lineNumber,
+      timestamp: errorLogs.timestamp,
+      severity: errorLogs.severity,
+      errorType: errorLogs.errorType,
+      message: errorLogs.message,
+      fullText: errorLogs.fullText,
+      pattern: errorLogs.pattern,
+      resolved: errorLogs.resolved,
+      aiSuggestion: errorLogs.aiSuggestion,
+      mlPrediction: errorLogs.mlPrediction,
+      mlConfidence: errorLogs.mlConfidence,
+      createdAt: errorLogs.createdAt,
+    }).from(errorLogs).orderBy(desc(errorLogs.createdAt)) as Promise<ErrorLog[]>;
   }
 
   async getErrorsByUser(userId: number): Promise<ErrorLog[]> {
@@ -460,6 +566,8 @@ export class DatabaseStorage implements IStorage {
       .select({
         id: errorLogs.id,
         fileId: errorLogs.fileId,
+        storeNumber: errorLogs.storeNumber,
+        kioskNumber: errorLogs.kioskNumber,
         lineNumber: errorLogs.lineNumber,
         timestamp: errorLogs.timestamp,
         severity: errorLogs.severity,
@@ -485,10 +593,27 @@ export class DatabaseStorage implements IStorage {
 
   async getErrorsByFile(fileId: number): Promise<ErrorLog[]> {
     return await db
-      .select()
+      .select({
+        id: errorLogs.id,
+        fileId: errorLogs.fileId,
+        storeNumber: errorLogs.storeNumber,
+        kioskNumber: errorLogs.kioskNumber,
+        lineNumber: errorLogs.lineNumber,
+        timestamp: errorLogs.timestamp,
+        severity: errorLogs.severity,
+        errorType: errorLogs.errorType,
+        message: errorLogs.message,
+        fullText: errorLogs.fullText,
+        pattern: errorLogs.pattern,
+        resolved: errorLogs.resolved,
+        aiSuggestion: errorLogs.aiSuggestion,
+        mlPrediction: errorLogs.mlPrediction,
+        mlConfidence: errorLogs.mlConfidence,
+        createdAt: errorLogs.createdAt,
+      })
       .from(errorLogs)
       .where(eq(errorLogs.fileId, fileId))
-      .orderBy(desc(errorLogs.createdAt));
+      .orderBy(desc(errorLogs.createdAt)) as Promise<ErrorLog[]>;
   }
 
   async getErrorsBySeverity(severity: string): Promise<ErrorLog[]> {
@@ -630,7 +755,33 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllMlModels(): Promise<MlModel[]> {
-    return await db.select().from(mlModels).orderBy(desc(mlModels.trainedAt));
+    return await db.select({
+      id: mlModels.id,
+      name: mlModels.name,
+      version: mlModels.version,
+      description: mlModels.description,
+      modelType: mlModels.modelType,
+      accuracy: mlModels.accuracy,
+      precision: mlModels.precision,
+      recall: mlModels.recall,
+      f1Score: mlModels.f1Score,
+      cvScore: mlModels.cvScore,
+      trainingLoss: mlModels.trainingLoss,
+      validationLoss: mlModels.validationLoss,
+      topFeatures: mlModels.topFeatures,
+      trainingDataSize: mlModels.trainingDataSize,
+      validationDataSize: mlModels.validationDataSize,
+      testDataSize: mlModels.testDataSize,
+      trainingTime: mlModels.trainingTime,
+      trainedAt: mlModels.trainedAt,
+      createdBy: mlModels.createdBy,
+      hyperparameters: mlModels.hyperparameters,
+      trainingMetrics: mlModels.trainingMetrics,
+      modelPath: mlModels.modelPath,
+      isActive: mlModels.isActive,
+      createdAt: mlModels.createdAt,
+      updatedAt: mlModels.updatedAt,
+    }).from(mlModels).orderBy(desc(mlModels.trainedAt)) as Promise<MlModel[]>;
   }
 
   async createMlModel(model: InsertMlModel): Promise<MlModel> {
@@ -750,10 +901,17 @@ export class DatabaseStorage implements IStorage {
 
   async getAllRoles(): Promise<Role[]> {
     return await db
-      .select()
+      .select({
+        id: roles.id,
+        name: roles.name,
+        description: roles.description,
+        permissions: roles.permissions,
+        isActive: roles.isActive,
+        createdAt: roles.createdAt,
+      })
       .from(roles)
       .where(eq(roles.isActive, true))
-      .orderBy(asc(roles.name));
+      .orderBy(asc(roles.name)) as Promise<Role[]>;
   }
 
   async createRole(role: InsertRole): Promise<Role> {
@@ -818,10 +976,21 @@ export class DatabaseStorage implements IStorage {
 
   async getAllTrainingModules(): Promise<TrainingModule[]> {
     return await db
-      .select()
+      .select({
+        id: trainingModules.id,
+        title: trainingModules.title,
+        description: trainingModules.description,
+        content: trainingModules.content,
+        difficulty: trainingModules.difficulty,
+        estimatedDuration: trainingModules.estimatedDuration,
+        isActive: trainingModules.isActive,
+        createdBy: trainingModules.createdBy,
+        createdAt: trainingModules.createdAt,
+        updatedAt: trainingModules.updatedAt,
+      })
       .from(trainingModules)
       .where(eq(trainingModules.isActive, true))
-      .orderBy(asc(trainingModules.title));
+      .orderBy(asc(trainingModules.title)) as Promise<TrainingModule[]>;
   }
 
   async getTrainingModulesByUser(userId: number): Promise<TrainingModule[]> {
@@ -896,7 +1065,7 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(userTraining)
       .where(eq(userTraining.userId, userId))
-      .orderBy(desc(userTraining.lastActivity));
+      .orderBy(desc(userTraining.startedAt));
   }
 
   async createUserTraining(

@@ -1,0 +1,66 @@
+rest-express@1.0.0 dev
+Setting up SQLite database...rver/index.ts
+✅ SQLite database initialized successfully
+5:10:57 AM [express] serving on port 5000
+Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+5:11:21 AM [express] POST /api/auth/login 200 in 157ms :: {"user":{"id":1,"username":"deepanimators"…
+5:11:21 AM [express] GET /api/auth/me 200 in 4ms :: {"user":{"id":1,"username":"deepanimators","emai…
+5:11:22 AM [express] GET /api/dashboard/stats 200 in 4ms :: {"totalFiles":0,"totalErrors":0,"critica…
+5:11:22 AM [express] GET /api/files 200 in 3ms :: []
+5:11:22 AM [express] GET /api/errors 200 in 2ms :: {"errors":[],"total":0,"page":1,"limit":10}
+5:11:24 AM [express] GET /api/errors 304 in 2ms :: {"errors":[],"total":0,"page":1,"limit":10}
+5:11:33 AM [express] GET /api/admin/users 200 in 3ms :: [{"id":1,"username":"deepanimators","email":…
+5:11:33 AM [express] GET /api/admin/roles 200 in 2ms :: []
+5:11:33 AM [express] GET /api/admin/training-modules 200 in 1ms :: []
+5:11:33 AM [express] GET /api/admin/ml-models 200 in 16ms
+5:11:33 AM [express] GET /api/admin/stats 200 in 14ms
+Error creating user: SqliteError: NOT NULL constraint failed: audit_logs.resource_type
+    at PreparedQuery.values (/home/runner/workspace/node_modules/src/better-sqlite3/session.ts:156:26)
+    at PreparedQuery.all (/home/runner/workspace/node_modules/src/better-sqlite3/session.ts:124:21)
+    at QueryPromise.all (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/insert.ts:396:26)
+    at QueryPromise.execute (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/insert.ts:408:40)
+    at QueryPromise.then (/home/runner/workspace/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'SQLITE_CONSTRAINT_NOTNULL'
+}
+5:12:40 AM [express] POST /api/admin/users 500 in 63ms :: {"message":"Failed to create user"}
+5:12:40 AM [express] GET /api/admin/users 200 in 4ms :: [{"id":1,"username":"deepanimators","email":…
+ML status error: SqliteError: no such column: desc
+    at Database.prepare (/home/runner/workspace/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/home/runner/workspace/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/home/runner/workspace/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/home/runner/workspace/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'SQLITE_ERROR'
+}
+5:14:19 AM [express] GET /api/ml/status 500 in 6ms :: {"message":"Failed to fetch ML status"}
+5:14:21 AM [express] POST /api/ml/train 400 in 2ms :: {"message":"Model name is required"}
+ML status error: SqliteError: no such column: desc
+    at Database.prepare (/home/runner/workspace/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/home/runner/workspace/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/home/runner/workspace/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/home/runner/workspace/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/home/runner/workspace/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'SQLITE_ERROR'
+}
+5:14:21 AM [express] GET /api/ml/status 500 in 2ms :: {"message":"Failed to fetch ML status"}
+5:14:31 AM [express] GET /api/auth/me 304 in 2ms :: {"user":{"id":1,"username":"deepanimators","emai…
+5:14:36 AM [express] GET /api/auth/me 200 in 1ms :: {"user":{"id":1,"username":"deepanimators","emai…
+5:14:36 AM [express] GET /api/admin/stats 200 in 4ms
+5:14:36 AM [express] GET /api/admin/roles 304 in 1ms :: []
+5:14:36 AM [express] GET /api/admin/users 304 in 1ms :: [{"id":1,"username":"deepanimators","email":…
+5:14:36 AM [express] GET /api/admin/training-modules 304 in 2ms :: []
+5:14:36 AM [express] GET /api/admin/ml-models 200 in 8ms
+5:17:34 AM [express] GET /api/errors 304 in 3ms :: {"errors":[],"total":0,"page":1,"limit":10}
+5:17:34 AM [express] GET /api/files 304 in 1ms :: []
+5:17:34 AM [express] GET /api/dashboard/stats 304 in 2ms :: {"totalFiles":0,"totalErrors":0,"critica…
+5:18:15 AM [express] POST /api/files/upload 400 in 2ms :: {"message":"No files uploaded"}
+5:18:49 AM [express] POST /api/files/upload 400 in 3ms :: {"message":"No files uploaded"}

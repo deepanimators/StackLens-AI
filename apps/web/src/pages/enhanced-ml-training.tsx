@@ -93,7 +93,7 @@ export default function EnhancedMLTraining() {
     queryKey: ['/api/ml/training-stats'],
     queryFn: async () => {
       const response = await authenticatedRequest('GET', '/api/ml/training-stats');
-      return response.json();
+      return response;
     },
   });
 
@@ -102,7 +102,7 @@ export default function EnhancedMLTraining() {
     queryKey: ['/api/ml/pattern-analysis'],
     queryFn: async () => {
       const response = await authenticatedRequest('GET', '/api/ml/pattern-analysis');
-      return response.json();
+      return response;
     },
     refetchInterval: 30000, // Refresh every 30 seconds
   });
@@ -112,7 +112,7 @@ export default function EnhancedMLTraining() {
     queryKey: ['/api/ml/enhanced-status'],
     queryFn: async () => {
       const response = await authenticatedRequest('GET', '/api/ml/enhanced-status');
-      return response.json();
+      return response;
     },
   });
 
@@ -120,7 +120,7 @@ export default function EnhancedMLTraining() {
   const trainFromExcelMutation = useMutation({
     mutationFn: async () => {
       const response = await authenticatedRequest('POST', '/api/ml/train-from-excel');
-      return response.json();
+      return response;
     },
     onSuccess: (data) => {
       setIsTraining(false);

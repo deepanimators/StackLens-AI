@@ -112,7 +112,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
   const loadCurrentModels = async () => {
     try {
       const response = await authenticatedRequest("GET", "/api/ml/status");
-      const data = await response.json();
+      const data = response;
 
       if (data.success) {
         setCurrentModels(data.models || []);
@@ -129,7 +129,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
     try {
       const response = await authenticatedRequest("POST", "/api/ml/backup");
 
-      const data = await response.json();
+      const data = response;
 
       if (data.success) {
         setBackupLocation(data.backupLocation || "Backup completed");
@@ -162,7 +162,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
     try {
       const response = await authenticatedRequest("POST", "/api/ml/reset");
 
-      const data = await response.json();
+      const data = response;
 
       if (data.success) {
         setTrainingStatus("✅ Models reset successfully");
@@ -201,7 +201,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
         "/api/ml/backup-and-reset"
       );
 
-      const data = await response.json();
+      const data = response;
 
       if (data.success) {
         setBackupLocation(data.backupLocation || "Backup completed");
@@ -242,7 +242,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
         }
       );
 
-      const data = await response.json();
+      const data = response;
       setPredictionValidation(data);
     } catch (error) {
       setPredictionValidation({
@@ -269,7 +269,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
         }
       );
 
-      const data = await response.json();
+      const data = response;
       setSuggestionValidation(data);
     } catch (error) {
       setSuggestionValidation({
@@ -310,7 +310,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
         }
       );
 
-      const data = await response.json();
+      const data = response;
       setPredictionResult(data);
 
       if (data.success) {
@@ -364,7 +364,7 @@ const EnhancedMLTrainingDashboard: React.FC = () => {
         }
       );
 
-      const data = await response.json();
+      const data = response;
       setSuggestionResult(data);
 
       if (data.success) {

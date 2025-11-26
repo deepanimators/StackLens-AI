@@ -109,7 +109,7 @@ export default function AdvancedTrainingPage() {
         "GET",
         "/api/ml/training-summary"
       );
-      const data = await response.json();
+      const data = response;
       return data.summary;
     },
   });
@@ -130,7 +130,7 @@ export default function AdvancedTrainingPage() {
         ? `/api/analysis/advanced-patterns/${selectedFileId}`
         : "/api/analysis/advanced-patterns";
       const response = await authenticatedRequest("GET", endpoint);
-      const data = await response.json();
+      const data = response;
       return data.analysis;
     },
     enabled: true,
@@ -144,7 +144,7 @@ export default function AdvancedTrainingPage() {
         "/api/ml/train-from-excel",
         {}
       );
-      return response.json();
+      return response;
     },
     onSuccess: (data) => {
       setIsTraining(false);

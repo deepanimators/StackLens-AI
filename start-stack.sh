@@ -61,6 +61,8 @@ echo "⏳ Waiting for Kafka to be ready..."
 until nc -z localhost 9094; do
   sleep 1
 done
+echo "⏳ Waiting for Kafka broker initialization (leadership election)..."
+sleep 10
 echo "✅ Kafka is ready!"
 
 # 2. Start Main API (apps/api) - Port 4000

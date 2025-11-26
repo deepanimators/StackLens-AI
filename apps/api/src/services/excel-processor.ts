@@ -32,7 +32,24 @@ export class ExcelTrainingDataProcessor {
     "attached_assets"
   );
 
-  constructor() { }
+  constructor() {
+    // Ensure the Excel directory exists
+    this.ensureDirectoryExists();
+  }
+
+  /**
+   * Ensure the Excel directory exists, create if it doesn't
+   */
+  private ensureDirectoryExists(): void {
+    try {
+      if (!fs.existsSync(this.EXCEL_DIRECTORY)) {
+        fs.mkdirSync(this.EXCEL_DIRECTORY, { recursive: true });
+        console.log(`📁 Created Excel training data directory: ${this.EXCEL_DIRECTORY}`);
+      }
+    } catch (error) {
+      console.error(`Failed to create Excel directory: ${error}`);
+    }
+  }
 
   /**
    * Process all Excel files in the attached_assets directory
@@ -41,26 +58,40 @@ export class ExcelTrainingDataProcessor {
     const allTrainingData: ExcelTrainingData[] = [];
 
     try {
+      // Check if directory exists
+      if (!fs.existsSync(this.EXCEL_DIRECTORY)) {
+        console.warn(`⚠️  Excel training data directory does not exist: ${this.EXCEL_DIRECTORY}`);
+        console.warn(`📝 Please place Excel training files in: ${this.EXCEL_DIRECTORY}`);
+        return [];
+      }
+
       const files = fs
         .readdirSync(this.EXCEL_DIRECTORY)
         .filter((file) => file.endsWith(".xlsx") && !file.startsWith("~$"));
 
-      console.log(`Found ${files.length} Excel files to process`);
+      if (files.length === 0) {
+        console.warn(`⚠️  No Excel files found in: ${this.EXCEL_DIRECTORY}`);
+        console.warn(`📝 Please add Excel training files (.xlsx) to this directory`);
+        return [];
+      }
+
+      console.log(`📊 Found ${files.length} Excel files to process`);
 
       for (const file of files) {
         try {
           const filePath = path.join(this.EXCEL_DIRECTORY, file);
           const fileData = await this.processExcelFile(filePath);
           allTrainingData.push(...fileData);
-          console.log(`Processed ${fileData.length} records from ${file}`);
+          console.log(`✅ Processed ${fileData.length} records from ${file}`);
         } catch (error) {
-          console.error(`Error processing file ${file}:`, error);
+          console.error(`❌ Error processing file ${file}:`, error);
         }
       }
 
+      console.log(`📊 Total processed records: ${allTrainingData.length}`);
       return allTrainingData;
     } catch (error) {
-      console.error("Error reading Excel directory:", error);
+      console.error("❌ Error reading Excel directory:", error);
       return [];
     }
   }

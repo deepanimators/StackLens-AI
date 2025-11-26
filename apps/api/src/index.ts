@@ -136,7 +136,10 @@ app.use((req: any, res: any, next: any) => {
     try {
       await seedSQLiteDatabase();
     } catch (error) {
-      // Ignore errors if data already exists (unique constraint violations)
+      // Only log seeding errors if they're not UNIQUE constraint violations
+      if (error instanceof Error && !error.message.includes('UNIQUE constraint')) {
+        console.error('❌ Error seeding SQLite database:', error);
+      }
       console.log("ℹ️ Database seeding skipped or partial (data may already exist)");
     }
 

@@ -53,3 +53,9 @@ temp/
 
 # Upload directories (test and production)
 test-uploads/
+
+# Excel training data (keep directory structure but ignore content)
+attached_assets/*.xlsx
+attached_assets/*.xls
+!attached_assets/README.md
+!attached_assets/.gitkeep

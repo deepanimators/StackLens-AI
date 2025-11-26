@@ -8,7 +8,7 @@ export const users = sqliteTable("users", {
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
-  role: text("role").notNull().default("user"), // user, admin, super_admin
+  role: text("role").notNull().default("user"),
   firstName: text("first_name"),
   lastName: text("last_name"),
   profileImageUrl: text("profile_image_url"),
@@ -21,19 +21,20 @@ export const users = sqliteTable("users", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
+  navigationPreferences: text("navigation_preferences").default('{}'),
+  apiSettings: text("api_settings").default('{}'),
 });
 
 export const logFiles = sqliteTable("log_files", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   filename: text("filename").notNull(),
   originalName: text("original_name").notNull(),
-  filePath: text("file_path").notNull(),
   fileType: text("file_type").notNull(),
   fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),
   uploadedBy: integer("uploaded_by").references(() => users.id),
-  storeNumber: text("store_number"), // NEW: Store identifier
-  kioskNumber: text("kiosk_number"), // NEW: Kiosk identifier
+  storeNumber: text("store_number"),
+  kioskNumber: text("kiosk_number"),
   uploadTimestamp: integer("upload_timestamp", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
@@ -55,8 +56,8 @@ export const logFiles = sqliteTable("log_files", {
 export const errorLogs = sqliteTable("error_logs", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   fileId: integer("file_id").references(() => logFiles.id),
-  storeNumber: text("store_number"), // Store identifier from log file
-  kioskNumber: text("kiosk_number"), // Kiosk identifier from log file
+  storeNumber: text("store_number"),
+  kioskNumber: text("kiosk_number"),
   lineNumber: integer("line_number").notNull(),
   timestamp: integer("timestamp", { mode: "timestamp" }),
   severity: text("severity").notNull(),
@@ -65,7 +66,6 @@ export const errorLogs = sqliteTable("error_logs", {
   fullText: text("full_text").notNull(),
   pattern: text("pattern"),
   resolved: integer("resolved", { mode: "boolean" }).default(false),
-  notes: text("notes"), // Notes/comments about the error
   aiSuggestion: text("ai_suggestion", { mode: "json" }),
   mlPrediction: text("ml_prediction", { mode: "json" }),
   mlConfidence: real("ml_confidence").default(0.0),
@@ -108,6 +108,8 @@ export const mlModels = sqliteTable("ml_models", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   version: text("version").notNull(),
+  description: text("description"),
+  modelType: text("model_type").notNull(),
   accuracy: real("accuracy"),
   precision: real("precision"),
   recall: real("recall"),
@@ -116,19 +118,22 @@ export const mlModels = sqliteTable("ml_models", {
   trainingLoss: real("training_loss"),
   validationLoss: real("validation_loss"),
   topFeatures: text("top_features", { mode: "json" }),
-  modelPath: text("model_path").notNull(),
-  isActive: integer("is_active", { mode: "boolean" }).default(false),
-  trainedAt: integer("trained_at", { mode: "timestamp" }).default(
-    sql`(unixepoch() * 1000)`
-  ),
-  trainingData: text("training_data", { mode: "json" }),
   trainingDataSize: integer("training_data_size"),
   validationDataSize: integer("validation_data_size"),
   testDataSize: integer("test_data_size"),
-  hyperparameters: text("hyperparameters", { mode: "json" }),
-  trainingMetrics: text("training_metrics", { mode: "json" }),
+  trainingTime: integer("training_time"),
+  trainedAt: integer("trained_at", { mode: "timestamp" }),
   createdBy: integer("created_by").references(() => users.id),
-  trainingTime: integer("training_time"), // in milliseconds
+  hyperparameters: text("hyperparameters"),
+  trainingMetrics: text("training_metrics"),
+  modelPath: text("model_path"),
+  isActive: integer("is_active", { mode: "boolean" }).default(false),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
 });
 
 export const errorPatterns = sqliteTable("error_patterns", {
@@ -192,12 +197,9 @@ export const roles = sqliteTable("roles", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull().unique(),
   description: text("description"),
-  permissions: text("permissions", { mode: "json" }).notNull(), // Array of permission strings
+  permissions: text("permissions", { mode: "json" }).notNull(),
   isActive: integer("is_active", { mode: "boolean" }).default(true),
   createdAt: integer("created_at", { mode: "timestamp" }).default(
-    sql`(unixepoch() * 1000)`
-  ),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
 });
@@ -210,13 +212,10 @@ export const userRoles = sqliteTable("user_roles", {
   roleId: integer("role_id")
     .references(() => roles.id)
     .notNull(),
-  assignedBy: integer("assigned_by")
-    .references(() => users.id)
-    .notNull(),
+  assignedBy: integer("assigned_by").references(() => users.id),
   assignedAt: integer("assigned_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
-  isActive: integer("is_active", { mode: "boolean" }).default(true),
 });
 
 // User Training System
@@ -225,14 +224,11 @@ export const trainingModules = sqliteTable("training_modules", {
   title: text("title").notNull(),
   description: text("description"),
   content: text("content").notNull(), // Training content/curriculum
-  difficulty: text("difficulty").notNull().default("beginner"), // beginner, intermediate, advanced
+  difficulty: text("difficulty_level").notNull().default("beginner"), // beginner, intermediate, advanced (maps to difficulty_level column)
   estimatedDuration: integer("estimated_duration"), // in minutes
-  prerequisites: text("prerequisites", { mode: "json" }), // Array of required module IDs
-  tags: text("tags", { mode: "json" }), // Array of tag strings
   isActive: integer("is_active", { mode: "boolean" }).default(true),
   createdBy: integer("created_by")
-    .references(() => users.id)
-    .notNull(),
+    .references(() => users.id),
   createdAt: integer("created_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
@@ -249,14 +245,13 @@ export const userTraining = sqliteTable("user_training", {
   moduleId: integer("module_id")
     .references(() => trainingModules.id)
     .notNull(),
-  status: text("status").notNull().default("not_started"), // not_started, in_progress, completed, failed
-  startedAt: integer("started_at", { mode: "timestamp" }),
+  startedAt: integer("started_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
   completedAt: integer("completed_at", { mode: "timestamp" }),
-  progress: real("progress").default(0), // 0-100%
-  score: real("score"), // Final score if completed
-  attempts: integer("attempts").default(0),
-  lastActivity: integer("last_activity", { mode: "timestamp" }),
-  notes: text("notes"),
+  score: integer("score"),
+  status: text("status").default("in_progress"),
+  timeSpent: integer("time_spent").default(0),
 });
 
 // AI Model Training and Management
@@ -277,36 +272,30 @@ export const modelTrainingSessions = sqliteTable("model_training_sessions", {
 
 export const modelDeployments = sqliteTable("model_deployments", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  modelId: integer("model_id")
-    .references(() => mlModels.id)
-    .notNull(),
-  version: text("version").notNull(),
-  deployedBy: integer("deployed_by")
-    .references(() => users.id)
-    .notNull(),
-  status: text("status").notNull().default("active"), // active, inactive, deprecated
-  endpoint: text("endpoint"),
-  configuration: text("configuration", { mode: "json" }),
-  healthStatus: text("health_status").default("healthy"), // healthy, warning, error
-  lastHealthCheck: integer("last_health_check", { mode: "timestamp" }),
+  modelId: integer("model_id").references(() => mlModels.id),
+  deploymentName: text("deployment_name").notNull(),
+  environment: text("environment").notNull(),
+  status: text("status").notNull(),
   deployedAt: integer("deployed_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
-  deactivatedAt: integer("deactivated_at", { mode: "timestamp" }),
+  deploymentConfig: text("deployment_config"),
+  healthCheckUrl: text("health_check_url"),
+  createdBy: integer("created_by").references(() => users.id),
 });
 
 // Audit Logs
 export const auditLogs = sqliteTable("audit_logs", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id").references(() => users.id),
-  action: text("action").notNull(), // create, update, delete, login, logout, etc.
-  entityType: text("entity_type").notNull(), // user, model, role, etc.
-  entityId: integer("entity_id"),
+  action: text("action").notNull(),
+  resourceType: text("resource_type").notNull(),
+  resourceId: integer("resource_id"),
   oldValues: text("old_values", { mode: "json" }),
   newValues: text("new_values", { mode: "json" }),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
-  timestamp: integer("timestamp", { mode: "timestamp" }).default(
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
     sql`(unixepoch() * 1000)`
   ),
 });
@@ -332,14 +321,12 @@ export const notifications = sqliteTable("notifications", {
 export const settings = sqliteTable("settings", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   key: text("key").notNull().unique(),
-  value: text("value", { mode: "json" }).notNull(),
-  category: text("category").notNull(), // ui, notifications, api, integration
+  value: text("value").notNull(),
+  category: text("category").notNull(),
   description: text("description"),
   isActive: integer("is_active", { mode: "boolean" }).default(true),
   updatedBy: integer("updated_by").references(() => users.id),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
-    sql`(unixepoch() * 1000)`
-  ),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
 // User-specific settings (preferences, theme, language, etc.)
@@ -419,18 +406,14 @@ export const aiTrainingData = sqliteTable("ai_training_data", {
   contextBefore: text("context_before"),
   contextAfter: text("context_after"),
   confidence: real("confidence").default(0.8),
-  source: text("source"), // Excel file source
+  source: text("source"),
   isValidated: integer("is_validated", { mode: "boolean" }).default(false),
   validatedBy: text("validated_by"),
-  validatedAt: integer("validated_at", { mode: "timestamp" }),
-  features: text("features"), // JSON
-  originalData: text("original_data"), // JSON
-  createdAt: integer("created_at", { mode: "timestamp" }).default(
-    sql`(unixepoch() * 1000)`
-  ),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
-    sql`(unixepoch() * 1000)`
-  ),
+  validatedAt: integer("validated_at"),
+  features: text("features"),
+  originalData: text("original_data"),
+  createdAt: integer("created_at").default(sql`strftime('%s', 'now')`),
+  updatedAt: integer("updated_at"),
 });
 
 // Insert schemas
@@ -470,7 +453,6 @@ export const insertErrorPatternSchema = createInsertSchema(errorPatterns).omit({
 export const insertRoleSchema = createInsertSchema(roles).omit({
   id: true,
   createdAt: true,
-  updatedAt: true,
 });
 
 export const insertUserRoleSchema = createInsertSchema(userRoles).omit({
@@ -506,7 +488,7 @@ export const insertModelDeploymentSchema = createInsertSchema(
 
 export const insertAuditLogSchema = createInsertSchema(auditLogs).omit({
   id: true,
-  timestamp: true,
+  createdAt: true,
 });
 
 export const insertNotificationSchema = createInsertSchema(notifications).omit({

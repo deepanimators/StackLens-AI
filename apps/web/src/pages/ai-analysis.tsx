@@ -273,8 +273,10 @@ export default function AIAnalysisPage() {
         throw new Error(errorMsg);
       }
       
-      if (!processResponse.processedRecords) {
-        throw new Error("No processed records returned from Excel training data");
+      if (!processResponse.processedRecords || processResponse.processedRecords === 0) {
+        const message = processResponse.message || 
+          "No Excel training data found. Please add .xlsx files to the 'attached_assets' directory in the project root.";
+        throw new Error(message);
       }
 
       const { processedRecords } = processResponse;
@@ -1321,36 +1323,28 @@ export default function AIAnalysisPage() {
                             errors: errorsForPrediction,
                           }
                         );
-                        if (response.ok) {
-                          const result = await response.json();
-                          console.log("Batch prediction result:", result);
+                        const result = response;
+                        console.log("Batch prediction result:", result);
 
-                          // Show success notification instead of reloading
-                          alert(
-                            `✅ ML Predictions Generated!\n\n` +
-                              `📊 Processed: ${
-                                result.predictions?.length || 0
-                              } errors\n` +
-                              `⚡ Processing Time: ${
-                                result.processingTime || "N/A"
-                              }ms\n` +
-                              `🎯 Model Accuracy: ${
-                                (result.modelMetrics?.accuracy * 100)?.toFixed(
-                                  1
-                                ) || "N/A"
-                              }%`
-                          );
+                        // Show success notification instead of reloading
+                        alert(
+                          `✅ ML Predictions Generated!\n\n` +
+                            `📊 Processed: ${
+                              result.predictions?.length || 0
+                            } errors\n` +
+                            `⚡ Processing Time: ${
+                              result.processingTime || "N/A"
+                            }ms\n` +
+                            `🎯 Model Accuracy: ${
+                              (result.modelMetrics?.accuracy * 100)?.toFixed(
+                                1
+                              ) || "N/A"
+                            }%`
+                        );
 
-                          // Refresh data without full page reload
-                          refetchErrors();
-                          refetchConsolidated();
-                        } else {
-                          console.error(
-                            "Batch prediction failed:",
-                            response.status,
-                            await response.text()
-                          );
-                        }
+                        // Refresh data without full page reload
+                        refetchErrors();
+                        refetchConsolidated();
                       } catch (error) {
                         console.error("Failed to generate predictions:", error);
                       }

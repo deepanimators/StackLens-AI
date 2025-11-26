@@ -418,8 +418,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.createAuditLog({
           userId: req.user.id,
           action: "create",
-          entityType: "user",
-          entityId: user.id,
+          resourceType: "user",
+          resourceId: user.id,
           newValues: userData,
           ipAddress: req.ip,
           userAgent: req.get("User-Agent"),
@@ -493,8 +493,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.createAuditLog({
           userId: req.user.id,
           action: "delete",
-          entityType: "user",
-          entityId: userId,
+          resourceType: "user",
+          resourceId: userId,
           oldValues: user,
           ipAddress: req.ip,
           userAgent: req.get("User-Agent"),
@@ -539,15 +539,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }).length;
 
         // Get training sessions count (simplified - can be enhanced)
-        const allTrainingSessions = await db.select().from(modelTrainingSessions);
+        const allTrainingSessions = await db.select({
+          id: modelTrainingSessions.id,
+          modelId: modelTrainingSessions.modelId,
+          sessionName: modelTrainingSessions.sessionName,
+          status: modelTrainingSessions.status,
+          startedAt: modelTrainingSessions.startedAt,
+          completedAt: modelTrainingSessions.completedAt,
+          initiatedBy: modelTrainingSessions.initiatedBy,
+        }).from(modelTrainingSessions);
         const trainingSessionsThisWeek = allTrainingSessions.filter((session: any) => {
-          const createdAt = new Date(session.createdAt || 0);
+          const createdAt = new Date(session.startedAt || 0);
           return createdAt > sevenDaysAgo;
         }).length;
 
         // Get model deployments this month
         const thirtyDaysAgoTime = thirtyDaysAgo.getTime();
-        const modelDeploymentsThisMonth = await db.select().from(modelDeployments);
+        const modelDeploymentsThisMonth = await db.select({
+          id: modelDeployments.id,
+          modelId: modelDeployments.modelId,
+          deploymentName: modelDeployments.deploymentName,
+          environment: modelDeployments.environment,
+          status: modelDeployments.status,
+          deployedAt: modelDeployments.deployedAt,
+        }).from(modelDeployments);
         const deploymentsThisMonth = modelDeploymentsThisMonth.filter((deployment: any) => {
           const createdAt = new Date(deployment.createdAt || 0).getTime();
           return createdAt > thirtyDaysAgoTime;
@@ -2902,7 +2917,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
           `Processed ${trainingData.length} records from Excel files`
         );
 
+        // If no records were processed, provide helpful message
+        if (trainingData.length === 0) {
+          return res.json({
+            success: true,
+            processedRecords: 0,
+            savedRecords: 0,
+            errorRecords: 0,
+            files: 0,
+            details: [],
+            message: "No Excel training files found in attached_assets directory. Please add .xlsx files with training data.",
+            metrics: {
+              totalRecords: 0,
+              averageConfidence: 0,
+              severityDistribution: {},
+              categories: [],
+            },
+          });
+        }
+
         // Save processed data to database
+        console.log(`Saving ${trainingData.length} training records to database...`);
         const saveResult = await processor.saveTrainingData(trainingData);
 
         // Get training metrics
@@ -6014,7 +6049,354 @@ Format as JSON with the following structure:
     }
   });
 
-  // Update error
+  // NOTE: Specific routes MUST come BEFORE parameterized routes to prevent Express from
+  // matching "types", "enhanced", "consolidated" as :id parameters
+
+  // Get all error types for filtering
+  app.get("/api/errors/types", requireAuth, async (req: any, res: any) => {
+    try {
+      // Get error types from all users (system-wide)
+      const allUserErrors = await storage.getAllErrors();
+      const errorTypesSet = new Set(
+        allUserErrors.map((error) => error.errorType).filter(Boolean)
+      );
+      const errorTypes = Array.from(errorTypesSet);
+      res.json(errorTypes.sort());
+    } catch (error) {
+      console.error("Error fetching error types:", error);
+      res.status(500).json({ error: "Failed to fetch error types" });
+    }
+  });
+
+  // Enhanced errors with ML predictions
+  app.get("/api/errors/enhanced", async (req: any, res: any) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 1000;
+      const offset = (page - 1) * limit;
+
+      console.log(
+        `🔍 [DEBUG] Enhanced errors requested - page: ${page}, limit: ${limit}`
+      );
+
+      // Get user from token
+      const token = req.headers.authorization?.replace("Bearer ", "");
+      if (!token) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+
+      const decoded = authService.validateToken(token);
+      if (!decoded) {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+
+      const user = await authService.getUserById(decoded.userId);
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+
+      const userId = user.id;
+      const allUserErrors = await storage.getErrorsByUser(userId);
+
+      console.log(
+        `🔍 [DEBUG] Found ${allUserErrors.length} total errors for user ${userId}`
+      );
+
+      // Separate errors with and without AI/ML data
+      const errorsWithAI = allUserErrors.filter(
+        (error) => error.aiSuggestion || error.mlPrediction
+      );
+      const errorsWithoutAI = allUserErrors.filter(
+        (error) => !error.aiSuggestion && !error.mlPrediction
+      );
+
+      console.log(
+        `🔍 [DEBUG] Errors with AI/ML: ${errorsWithAI.length}, without AI/ML: ${errorsWithoutAI.length}`
+      );
+
+      // Combine them, prioritizing errors with AI/ML data
+      const allPrioritizedErrors = [
+        ...errorsWithAI.sort(
+          (a, b) => (b as any).mlConfidence - (a as any).mlConfidence || 0
+        ),
+        ...errorsWithoutAI,
+      ];
+
+      // Apply pagination
+      const prioritizedErrors = allPrioritizedErrors.slice(
+        offset,
+        offset + limit
+      );
+      const total = allPrioritizedErrors.length;
+      const pages = Math.ceil(total / limit);
+
+      const enhancedErrors = prioritizedErrors.map((error) => {
+        // Parse mlPrediction if it's a JSON string
+        let parsedMLPrediction = null;
+        if (error.mlPrediction) {
+          try {
+            if (typeof error.mlPrediction === "string") {
+              parsedMLPrediction = JSON.parse(error.mlPrediction);
+            } else {
+              parsedMLPrediction = error.mlPrediction;
+            }
+          } catch (e) {
+            console.warn(
+              `Failed to parse mlPrediction for error ${error.id}:`,
+              e
+            );
+            parsedMLPrediction = null;
+          }
+        }
+
+        // Parse aiSuggestion if it's a JSON string
+        let parsedAISuggestion = null;
+        if (error.aiSuggestion) {
+          try {
+            if (typeof error.aiSuggestion === "string") {
+              parsedAISuggestion = JSON.parse(error.aiSuggestion);
+            } else {
+              parsedAISuggestion = error.aiSuggestion;
+            }
+          } catch (e) {
+            console.warn(
+              `Failed to parse aiSuggestion for error ${error.id}:`,
+              e
+            );
+            parsedAISuggestion = null;
+          }
+        }
+
+        return {
+          id: error.id,
+          message: error.message,
+          severity: error.severity,
+          errorType: error.errorType,
+          file_path: error.fullText ? error.fullText.split("\n")[0] : "Unknown",
+          lineNumber: error.lineNumber,
+          timestamp: error.timestamp,
+          fullText: error.fullText,
+          context: error.pattern || "",
+          resolved: error.resolved,
+          aiSuggestion: parsedAISuggestion,
+          mlPrediction: parsedMLPrediction,
+          ml_confidence:
+            parsedMLPrediction?.confidence || (error as any).mlConfidence || 0,
+          confidence_level:
+            (parsedMLPrediction?.confidence ||
+              (error as any).mlConfidence ||
+              0) > 0.8
+              ? "High"
+              : (parsedMLPrediction?.confidence ||
+                (error as any).mlConfidence ||
+                0) > 0.6
+                ? "Medium"
+                : "Low",
+        };
+      });
+
+      res.json({
+        data: enhancedErrors,
+        total: total,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages,
+          hasNext: page < pages,
+          hasPrev: page > 1,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching enhanced errors:", error);
+      res.status(500).json({ error: "Failed to fetch enhanced errors" });
+    }
+  });
+
+  // Consolidated error patterns
+  app.get("/api/errors/consolidated", async (req: any, res: any) => {
+    try {
+      // Get user from token
+      const token = req.headers.authorization?.replace("Bearer ", "");
+      if (!token) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+
+      const decoded = authService.validateToken(token);
+      if (!decoded) {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+
+      const user = await authService.getUserById(decoded.userId);
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+
+      const userId = user.id;
+      console.log(
+        `[DEBUG] Consolidated errors requested for user ID: ${userId}`
+      );
+
+      // Get pagination parameters
+      const page = parseInt(req.query.page) || 1;
+      const limit = Math.min(parseInt(req.query.limit) || 50, 1000);
+      const offset = (page - 1) * limit;
+
+      console.log(
+        `[DEBUG] Pagination: page=${page}, limit=${limit}, offset=${offset}`
+      );
+
+      // Get all user errors and group by message
+      const allUserErrors = await storage.getErrorsByUser(userId);
+
+      console.log(
+        `[DEBUG] Found ${allUserErrors.length} total errors for user`
+      );
+
+      // Group errors by message and severity
+      const groupedErrors = new Map();
+
+      allUserErrors.forEach((error) => {
+        const key = `${error.message}:${error.severity}`;
+        if (!groupedErrors.has(key)) {
+          groupedErrors.set(key, {
+            message: error.message,
+            severity: error.severity,
+            count: 0,
+            ml_confidences: [],
+            timestamps: [],
+            files: new Set(),
+          });
+        }
+
+        const group = groupedErrors.get(key);
+        group.count++;
+        group.ml_confidences.push((error as any).mlConfidence || 0);
+        group.timestamps.push(error.timestamp);
+        if (error.fullText) {
+          group.files.add(error.fullText.split("\n")[0]);
+        }
+      });
+
+      // Convert to array (show all patterns, not just duplicates)
+      const consolidatedArray = Array.from(groupedErrors.values());
+
+      console.log(
+        `[DEBUG] Found ${consolidatedArray.length} total consolidated patterns before pagination`
+      );
+      if (consolidatedArray.length > 0) {
+        console.log(
+          `[DEBUG] First pattern: "${consolidatedArray[0].message.substring(
+            0,
+            50
+          )}..." count: ${consolidatedArray[0].count}`
+        );
+      }
+
+      const consolidated = consolidatedArray.map((group) => {
+        // Properly handle timestamps
+        const validTimestamps = group.timestamps
+          .map((ts: any) => {
+            if (typeof ts === "string") {
+              const parsed = new Date(ts);
+              return isNaN(parsed.getTime()) ? null : parsed.getTime();
+            } else if (typeof ts === "number") {
+              return ts > 0 && ts < Date.now() * 2 ? ts : null;
+            } else if (ts instanceof Date) {
+              return ts.getTime();
+            }
+            return null;
+          })
+          .filter((ts: any) => ts !== null);
+
+        const latestTimestamp =
+          validTimestamps.length > 0
+            ? Math.max(...validTimestamps)
+            : Date.now();
+
+        // Generate AI suggestion using simple pattern matching
+        let aiSuggestion = null;
+        try {
+          aiSuggestion = generateBasicAISuggestion(
+            group.message,
+            group.severity
+          );
+        } catch (error) {
+          console.warn(
+            `Failed to generate AI suggestion for: ${group.message}`,
+            error
+          );
+        }
+
+        return {
+          id: `error_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+          message: group.message,
+          errorType: group.severity,
+          count: group.count,
+          severity: group.severity,
+          avg_confidence:
+            group.ml_confidences.reduce((a: any, b: any) => a + b, 0) /
+            group.ml_confidences.length,
+          latestOccurrence: latestTimestamp,
+          firstOccurrence:
+            validTimestamps.length > 0
+              ? Math.min(...validTimestamps)
+              : Date.now(),
+          affected_files: Array.from(group.files).join(", "),
+          hasAISuggestion: !!aiSuggestion,
+          hasMLPrediction: group.ml_confidences.some((c: any) => c > 0),
+          aiSuggestion: aiSuggestion,
+          examples: [
+            {
+              id: 1,
+              message: group.message,
+              severity: group.severity,
+            },
+          ],
+        };
+      });
+
+      const sortedConsolidated = consolidated.sort((a, b) => {
+        const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+        const aSeverityRank =
+          severityOrder[a.severity as keyof typeof severityOrder] ?? 4;
+        const bSeverityRank =
+          severityOrder[b.severity as keyof typeof severityOrder] ?? 4;
+
+        if (aSeverityRank !== bSeverityRank) {
+          return aSeverityRank - bSeverityRank;
+        }
+        return b.count - a.count;
+      });
+
+      // Apply pagination after sorting
+      const totalConsolidated = sortedConsolidated.length;
+      const paginatedConsolidated = sortedConsolidated.slice(
+        offset,
+        offset + limit
+      );
+      const totalPages = Math.ceil(totalConsolidated / limit);
+
+      console.log(
+        `[DEBUG] Pagination result: ${paginatedConsolidated.length} items (page ${page}/${totalPages})`
+      );
+
+      res.json({
+        data: paginatedConsolidated,
+        total: totalConsolidated,
+        totalErrors: allUserErrors.length,
+        page: page,
+        limit: limit,
+        totalPages: totalPages,
+        hasMore: page < totalPages,
+      });
+    } catch (error) {
+      console.error("Error fetching consolidated errors:", error);
+      res.status(500).json({ error: "Failed to fetch consolidated errors" });
+    }
+  });
+
+  // Update error (MUST come AFTER specific routes above)
   app.get("/api/errors/:id", requireAuth, async (req: any, res: any) => {
     try {
       const id = parseInt(req.params.id);
@@ -6227,7 +6609,22 @@ Format as JSON with the following structure:
       // Main query with join
       const errorsQuery = await db
         .select({
-          ...getTableColumns(errorLogs),
+          id: errorLogs.id,
+          fileId: errorLogs.fileId,
+          storeNumber: errorLogs.storeNumber,
+          kioskNumber: errorLogs.kioskNumber,
+          lineNumber: errorLogs.lineNumber,
+          timestamp: errorLogs.timestamp,
+          severity: errorLogs.severity,
+          errorType: errorLogs.errorType,
+          message: errorLogs.message,
+          fullText: errorLogs.fullText,
+          pattern: errorLogs.pattern,
+          resolved: errorLogs.resolved,
+          aiSuggestion: errorLogs.aiSuggestion,
+          mlPrediction: errorLogs.mlPrediction,
+          mlConfidence: errorLogs.mlConfidence,
+          createdAt: errorLogs.createdAt,
           filename: logFiles.originalName,
         })
         .from(errorLogs)
@@ -6443,168 +6840,6 @@ Format as JSON with the following structure:
     } catch (error) {
       console.error("Error fetching store statistics:", error);
       res.status(500).json({ error: "Failed to fetch store statistics" });
-    }
-  });
-
-
-  // Get all error types for filtering
-  app.get("/api/errors/types", requireAuth, async (req: any, res: any) => {
-    try {
-      // Get error types from all users (system-wide)
-      const allUserErrors = await storage.getAllErrors();
-      const errorTypesSet = new Set(
-        allUserErrors.map((error) => error.errorType).filter(Boolean)
-      );
-      const errorTypes = Array.from(errorTypesSet);
-      res.json(errorTypes.sort());
-    } catch (error) {
-      console.error("Error fetching error types:", error);
-      res.status(500).json({ error: "Failed to fetch error types" });
-    }
-  });
-
-  // Enhanced errors with ML predictions
-  app.get("/api/errors/enhanced", async (req: any, res: any) => {
-    try {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 1000; // Increased from 100 to 1000
-      const offset = (page - 1) * limit;
-
-      console.log(
-        `🔍 [DEBUG] Enhanced errors requested - page: ${page}, limit: ${limit}`
-      );
-
-      // Get user from token
-      const token = req.headers.authorization?.replace("Bearer ", "");
-      if (!token) {
-        return res.status(401).json({ error: "Authentication required" });
-      }
-
-      const decoded = authService.validateToken(token);
-      if (!decoded) {
-        return res.status(401).json({ error: "Invalid token" });
-      }
-
-      const user = await authService.getUserById(decoded.userId);
-      if (!user) {
-        return res.status(401).json({ error: "User not found" });
-      }
-
-      const userId = user.id;
-      const allUserErrors = await storage.getErrorsByUser(userId);
-
-      console.log(
-        `🔍 [DEBUG] Found ${allUserErrors.length} total errors for user ${userId}`
-      );
-
-      // Separate errors with and without AI/ML data
-      const errorsWithAI = allUserErrors.filter(
-        (error) => error.aiSuggestion || error.mlPrediction
-      );
-      const errorsWithoutAI = allUserErrors.filter(
-        (error) => !error.aiSuggestion && !error.mlPrediction
-      );
-
-      console.log(
-        `🔍 [DEBUG] Errors with AI/ML: ${errorsWithAI.length}, without AI/ML: ${errorsWithoutAI.length}`
-      );
-
-      // Combine them, prioritizing errors with AI/ML data
-      const allPrioritizedErrors = [
-        ...errorsWithAI.sort(
-          (a, b) => (b as any).mlConfidence - (a as any).mlConfidence || 0
-        ),
-        ...errorsWithoutAI,
-      ];
-
-      // Apply pagination
-      const prioritizedErrors = allPrioritizedErrors.slice(
-        offset,
-        offset + limit
-      );
-      const total = allPrioritizedErrors.length;
-      const pages = Math.ceil(total / limit);
-
-      const enhancedErrors = prioritizedErrors.map((error) => {
-        // Parse mlPrediction if it's a JSON string
-        let parsedMLPrediction = null;
-        if (error.mlPrediction) {
-          try {
-            if (typeof error.mlPrediction === "string") {
-              parsedMLPrediction = JSON.parse(error.mlPrediction);
-            } else {
-              parsedMLPrediction = error.mlPrediction;
-            }
-          } catch (e) {
-            console.warn(
-              `Failed to parse mlPrediction for error ${error.id}:`,
-              e
-            );
-            parsedMLPrediction = null;
-          }
-        }
-
-        // Parse aiSuggestion if it's a JSON string
-        let parsedAISuggestion = null;
-        if (error.aiSuggestion) {
-          try {
-            if (typeof error.aiSuggestion === "string") {
-              parsedAISuggestion = JSON.parse(error.aiSuggestion);
-            } else {
-              parsedAISuggestion = error.aiSuggestion;
-            }
-          } catch (e) {
-            console.warn(
-              `Failed to parse aiSuggestion for error ${error.id}:`,
-              e
-            );
-            parsedAISuggestion = null;
-          }
-        }
-
-        return {
-          id: error.id,
-          message: error.message,
-          severity: error.severity,
-          errorType: error.errorType,
-          file_path: error.fullText ? error.fullText.split("\n")[0] : "Unknown",
-          lineNumber: error.lineNumber, // Changed from line_number to lineNumber
-          timestamp: error.timestamp,
-          fullText: error.fullText, // Changed from stack_trace to fullText
-          context: error.pattern || "",
-          resolved: error.resolved,
-          aiSuggestion: parsedAISuggestion,
-          mlPrediction: parsedMLPrediction,
-          ml_confidence:
-            parsedMLPrediction?.confidence || (error as any).mlConfidence || 0,
-          confidence_level:
-            (parsedMLPrediction?.confidence ||
-              (error as any).mlConfidence ||
-              0) > 0.8
-              ? "High"
-              : (parsedMLPrediction?.confidence ||
-                (error as any).mlConfidence ||
-                0) > 0.6
-                ? "Medium"
-                : "Low",
-        };
-      });
-
-      res.json({
-        data: enhancedErrors,
-        total: total,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages,
-          hasNext: page < pages,
-          hasPrev: page > 1,
-        },
-      });
-    } catch (error) {
-      console.error("Error fetching enhanced errors:", error);
-      res.status(500).json({ error: "Failed to fetch enhanced errors" });
     }
   });
 
@@ -7892,7 +8127,24 @@ Format as JSON with the following structure:
       if (analysisId) {
         // Get errors for the specific analysis
         errors = await db
-          .select()
+          .select({
+            id: errorLogs.id,
+            fileId: errorLogs.fileId,
+            storeNumber: errorLogs.storeNumber,
+            kioskNumber: errorLogs.kioskNumber,
+            lineNumber: errorLogs.lineNumber,
+            timestamp: errorLogs.timestamp,
+            severity: errorLogs.severity,
+            errorType: errorLogs.errorType,
+            message: errorLogs.message,
+            fullText: errorLogs.fullText,
+            pattern: errorLogs.pattern,
+            resolved: errorLogs.resolved,
+            aiSuggestion: errorLogs.aiSuggestion,
+            mlPrediction: errorLogs.mlPrediction,
+            mlConfidence: errorLogs.mlConfidence,
+            createdAt: errorLogs.createdAt,
+          })
           .from(errorLogs)
           .where(
             sql`file_id IN (SELECT file_id FROM analysis_history WHERE user_id = ${req.user.id} AND id = ${analysisId})`

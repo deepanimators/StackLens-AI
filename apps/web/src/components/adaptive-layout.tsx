@@ -67,6 +67,13 @@ export default function AdaptiveLayout({
   ) {
     return (
       <div className={`min-h-screen bg-background`}>
+        {/* Skip to main content link for keyboard navigation */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md"
+        >
+          Skip to main content
+        </a>
         {(showTopNav || (!showTopNav && !showSideNav)) && (
           <TopNav
             className={
@@ -77,6 +84,7 @@ export default function AdaptiveLayout({
           />
         )}
         <main
+          id="main-content"
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ${
             topNavStyle === "fixed" ? "pt-16" : ""
           }`}
@@ -103,6 +111,13 @@ export default function AdaptiveLayout({
   // Default sidebar layout - when sidebar is enabled  
   return (
     <div className="flex h-screen bg-background">
+      {/* Skip to main content link for keyboard navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md"
+      >
+        Skip to main content
+      </a>
       {/* Overlay for mobile */}
       {isMobile && isSidebarOpen && (
         <div
@@ -134,7 +149,7 @@ export default function AdaptiveLayout({
             isSidebarOpen={isSidebarOpen}
           />
         )}
-        <main className="flex-1 overflow-auto p-6 space-y-6">{children}</main>
+        <main id="main-content" className="flex-1 overflow-auto p-6 space-y-6">{children}</main>
         <VersionFooter />
       </div>
     </div>

@@ -32,7 +32,6 @@ export const logFiles = sqliteTable("log_files", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   filename: text("filename").notNull(),
   originalName: text("original_name").notNull(),
-  filePath: text("file_path").notNull(),
   fileType: text("file_type").notNull(),
   fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),
@@ -70,7 +69,6 @@ export const errorLogs = sqliteTable("error_logs", {
   fullText: text("full_text").notNull(),
   pattern: text("pattern"),
   resolved: integer("resolved", { mode: "boolean" }).default(false),
-  notes: text("notes"),
   aiSuggestion: text("ai_suggestion", { mode: "json" }),
   mlPrediction: text("ml_prediction", { mode: "json" }),
   createdAt: integer("created_at", { mode: "timestamp" })
