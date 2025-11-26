@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test.describe('Integration Tests - Services', () => {
     test.describe('ML Service Integration', () => {
-        test('should train model with valid data', async ({ request }) => {
+        test('should train model with valid data', async ({ apiContext }) => {
             // Create sample training data
             const trainingData = {
                 features: [
@@ -12,7 +12,7 @@ test.describe('Integration Tests - Services', () => {
                 labels: ['critical', 'warning']
             };
 
-            const response = await request.post('http://localhost:4001/api/ml/train', {
+            const response = await apiContext.post('/api/ml/train', {
                 data: trainingData
             });
 
@@ -22,14 +22,14 @@ test.describe('Integration Tests - Services', () => {
             expect(result).toHaveProperty('accuracy');
         });
 
-        test('should make predictions with trained model', async ({ request }) => {
+        test('should make predictions with trained model', async ({ apiContext }) => {
             const predictionData = {
                 severity: 'high',
                 errorType: 'Runtime',
                 lineNumber: 150
             };
 
-            const response = await request.post('http://localhost:4001/api/ml/predict', {
+            const response = await apiContext.post('/api/ml/predict', {
                 data: predictionData
             });
 
@@ -39,13 +39,13 @@ test.describe('Integration Tests - Services', () => {
             expect(result).toHaveProperty('confidence');
         });
 
-        test('should handle invalid training data', async ({ request }) => {
+        test('should handle invalid training data', async ({ apiContext }) => {
             const invalidData = {
                 features: [],
                 labels: []
             };
 
-            const response = await request.post('http://localhost:4001/api/ml/train', {
+            const response = await apiContext.post('/api/ml/train', {
                 data: invalidData
             });
 
@@ -56,14 +56,14 @@ test.describe('Integration Tests - Services', () => {
     });
 
     test.describe('AI Service Integration', () => {
-        test('should analyze error with AI', async ({ request }) => {
+        test('should analyze error with AI', async ({ apiContext }) => {
             const errorData = {
                 message: 'Null pointer exception at line 42',
                 errorType: 'Runtime',
                 stackTrace: 'Error: Cannot read property of null\n  at main.js:42'
             };
 
-            const response = await request.post('http://localhost:4001/api/ai/analyze', {
+            const response = await apiContext.post('/api/ai/analyze', {
                 data: errorData
             });
 
@@ -74,13 +74,13 @@ test.describe('Integration Tests - Services', () => {
             expect(result.suggestions).toBeInstanceOf(Array);
         });
 
-        test('should generate error summary', async ({ request }) => {
+        test('should generate error summary', async ({ apiContext }) => {
             const errors = [
                 { message: 'Database timeout', count: 10 },
                 { message: 'Network error', count: 5 }
             ];
 
-            const response = await request.post('http://localhost:4001/api/ai/summarize', {
+            const response = await apiContext.post('/api/ai/summarize', {
                 data: { errors }
             });
 
@@ -90,13 +90,13 @@ test.describe('Integration Tests - Services', () => {
             expect(result.summary).toBeTruthy();
         });
 
-        test('should suggest fixes for error', async ({ request }) => {
+        test('should suggest fixes for error', async ({ apiContext }) => {
             const errorData = {
                 message: 'Memory leak detected',
                 errorType: 'Memory'
             };
 
-            const response = await request.post('http://localhost:4001/api/ai/suggest-fix', {
+            const response = await apiContext.post('/api/ai/suggest-fix', {
                 data: errorData
             });
 
@@ -108,7 +108,7 @@ test.describe('Integration Tests - Services', () => {
     });
 
     test.describe('Database Service Integration', () => {
-        test('should create and retrieve error', async ({ request }) => {
+        test('should create and retrieve error', async ({ apiContext }) => {
             // Create error
             const newError = {
                 message: 'Test error for integration',
@@ -118,7 +118,7 @@ test.describe('Integration Tests - Services', () => {
                 store: 'STORE-0001'
             };
 
-            const createResponse = await request.post('http://localhost:4001/api/errors', {
+            const createResponse = await apiContext.post('/api/errors', {
                 data: newError
             });
 
@@ -127,7 +127,7 @@ test.describe('Integration Tests - Services', () => {
             expect(created).toHaveProperty('id');
 
             // Retrieve error
-            const getResponse = await request.get(`http://localhost:4001/api/errors/${created.id}`);
+            const getResponse = await apiContext.get(`http://localhost:4001/api/errors/${created.id}`);
             expect(getResponse.ok()).toBeTruthy();
 
             const retrieved = await getResponse.json();
@@ -135,7 +135,7 @@ test.describe('Integration Tests - Services', () => {
             expect(retrieved.severity).toBe(newError.severity);
         });
 
-        test('should update error status', async ({ request }) => {
+        test('should update error status', async ({ apiContext }) => {
             // Create error
             const newError = {
                 message: 'Error to update',
@@ -143,50 +143,50 @@ test.describe('Integration Tests - Services', () => {
                 resolved: false
             };
 
-            const createResponse = await request.post('http://localhost:4001/api/errors', {
+            const createResponse = await apiContext.post('/api/errors', {
                 data: newError
             });
 
             const created = await createResponse.json();
 
             // Update error
-            const updateResponse = await request.patch(`http://localhost:4001/api/errors/${created.id}`, {
+            const updateResponse = await apiContext.patch(`http://localhost:4001/api/errors/${created.id}`, {
                 data: { resolved: true }
             });
 
             expect(updateResponse.ok()).toBeTruthy();
 
             // Verify update
-            const getResponse = await request.get(`http://localhost:4001/api/errors/${created.id}`);
+            const getResponse = await apiContext.get(`http://localhost:4001/api/errors/${created.id}`);
             const updated = await getResponse.json();
             expect(updated.resolved).toBe(true);
         });
 
-        test('should delete error', async ({ request }) => {
+        test('should delete error', async ({ apiContext }) => {
             // Create error
             const newError = {
                 message: 'Error to delete',
                 severity: 'low'
             };
 
-            const createResponse = await request.post('http://localhost:4001/api/errors', {
+            const createResponse = await apiContext.post('/api/errors', {
                 data: newError
             });
 
             const created = await createResponse.json();
 
             // Delete error
-            const deleteResponse = await request.delete(`http://localhost:4001/api/errors/${created.id}`);
+            const deleteResponse = await apiContext.delete(`http://localhost:4001/api/errors/${created.id}`);
             expect(deleteResponse.ok()).toBeTruthy();
 
             // Verify deletion
-            const getResponse = await request.get(`http://localhost:4001/api/errors/${created.id}`);
+            const getResponse = await apiContext.get(`http://localhost:4001/api/errors/${created.id}`);
             expect(getResponse.status()).toBe(404);
         });
 
-        test('should handle concurrent database operations', async ({ request }) => {
+        test('should handle concurrent database operations', async ({ apiContext }) => {
             const operations = Array.from({ length: 10 }, (_, i) =>
-                request.post('http://localhost:4001/api/errors', {
+                apiContext.post('/api/errors', {
                     data: {
                         message: `Concurrent error ${i}`,
                         severity: 'medium'
@@ -202,8 +202,8 @@ test.describe('Integration Tests - Services', () => {
     });
 
     test.describe('Auth Service Integration', () => {
-        test('should authenticate user and create session', async ({ request }) => {
-            const authResponse = await request.post('http://localhost:4001/api/auth/firebase', {
+        test('should authenticate user and create session', async ({ apiContext }) => {
+            const authResponse = await apiContext.post('/api/auth/firebase', {
                 data: {
                     idToken: 'test-firebase-token'
                 }
@@ -215,8 +215,8 @@ test.describe('Integration Tests - Services', () => {
             expect(auth).toHaveProperty('sessionId');
         });
 
-        test('should reject invalid authentication', async ({ request }) => {
-            const authResponse = await request.post('http://localhost:4001/api/auth/firebase', {
+        test('should reject invalid authentication', async ({ apiContext }) => {
+            const authResponse = await apiContext.post('/api/auth/firebase', {
                 data: {
                     idToken: 'invalid-token'
                 }
@@ -225,9 +225,9 @@ test.describe('Integration Tests - Services', () => {
             expect(authResponse.status()).toBe(401);
         });
 
-        test('should verify admin permissions', async ({ request }) => {
+        test('should verify admin permissions', async ({ apiContext }) => {
             // Authenticate as admin
-            const authResponse = await request.post('http://localhost:4001/api/auth/firebase', {
+            const authResponse = await apiContext.post('/api/auth/firebase', {
                 data: {
                     idToken: 'admin-token',
                     role: 'admin'
@@ -237,7 +237,7 @@ test.describe('Integration Tests - Services', () => {
             const auth = await authResponse.json();
 
             // Access admin endpoint
-            const adminResponse = await request.get('http://localhost:4001/api/admin/users', {
+            const adminResponse = await apiContext.get('/api/admin/users', {
                 headers: {
                     'Authorization': `Bearer ${auth.sessionId}`
                 }
@@ -248,13 +248,13 @@ test.describe('Integration Tests - Services', () => {
     });
 
     test.describe('File Upload Integration', () => {
-        test('should upload Excel file and process errors', async ({ request }) => {
+        test('should upload Excel file and process errors', async ({ apiContext }) => {
             const file = Buffer.from('dummy excel content');
 
             const formData = new FormData();
             formData.append('file', new Blob([file]), 'test.xlsx');
 
-            const uploadResponse = await request.post('http://localhost:4001/api/upload', {
+            const uploadResponse = await apiContext.post('/api/upload', {
                 multipart: {
                     file: {
                         name: 'test.xlsx',
@@ -270,7 +270,7 @@ test.describe('Integration Tests - Services', () => {
             expect(result).toHaveProperty('processedCount');
         });
 
-        test('should upload and analyze log file', async ({ request }) => {
+        test('should upload and analyze log file', async ({ apiContext }) => {
             const logContent = `
 [ERROR] 2025-10-06 10:30:00 - Database connection failed
 [WARN] 2025-10-06 10:31:00 - Slow query detected
@@ -279,7 +279,7 @@ test.describe('Integration Tests - Services', () => {
 
             const file = Buffer.from(logContent);
 
-            const uploadResponse = await request.post('http://localhost:4001/api/upload', {
+            const uploadResponse = await apiContext.post('/api/upload', {
                 multipart: {
                     file: {
                         name: 'test.log',
@@ -297,21 +297,21 @@ test.describe('Integration Tests - Services', () => {
 });
 
 test.describe('Integration Tests - Service Interactions', () => {
-    test('should chain AI analysis with ML prediction', async ({ request }) => {
+    test('should chain AI analysis with ML prediction', async ({ apiContext }) => {
         // Step 1: AI Analysis
         const errorData = {
             message: 'Out of memory error',
             errorType: 'Memory'
         };
 
-        const aiResponse = await request.post('http://localhost:4001/api/ai/analyze', {
+        const aiResponse = await apiContext.post('/api/ai/analyze', {
             data: errorData
         });
 
         const aiResult = await aiResponse.json();
 
         // Step 2: ML Prediction
-        const mlResponse = await request.post('http://localhost:4001/api/ml/predict', {
+        const mlResponse = await apiContext.post('/api/ml/predict', {
             data: {
                 ...errorData,
                 aiAnalysis: aiResult.analysis
@@ -323,12 +323,12 @@ test.describe('Integration Tests - Service Interactions', () => {
         expect(mlResult).toHaveProperty('prediction');
     });
 
-    test('should upload file and trigger AI analysis', async ({ request }) => {
+    test('should upload file and trigger AI analysis', async ({ apiContext }) => {
         const logContent = '[ERROR] Critical system failure';
         const file = Buffer.from(logContent);
 
         // Upload file
-        const uploadResponse = await request.post('http://localhost:4001/api/upload', {
+        const uploadResponse = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'error.log',
@@ -341,7 +341,7 @@ test.describe('Integration Tests - Service Interactions', () => {
         const uploadResult = await uploadResponse.json();
 
         // Trigger AI analysis on uploaded file
-        const analysisResponse = await request.post('http://localhost:4001/api/ai/analyze-file', {
+        const analysisResponse = await apiContext.post('/api/ai/analyze-file', {
             data: { fileId: uploadResult.fileId }
         });
 
@@ -350,7 +350,7 @@ test.describe('Integration Tests - Service Interactions', () => {
         expect(analysis).toHaveProperty('insights');
     });
 
-    test('should process error through complete pipeline', async ({ request }) => {
+    test('should process error through complete pipeline', async ({ apiContext }) => {
         // 1. Create error
         const errorData = {
             message: 'Pipeline test error',
@@ -358,26 +358,26 @@ test.describe('Integration Tests - Service Interactions', () => {
             errorType: 'Runtime'
         };
 
-        const createResponse = await request.post('http://localhost:4001/api/errors', {
+        const createResponse = await apiContext.post('/api/errors', {
             data: errorData
         });
 
         const error = await createResponse.json();
 
         // 2. AI Analysis
-        const aiResponse = await request.post(`http://localhost:4001/api/errors/${error.id}/analyze`, {});
+        const aiResponse = await apiContext.post(`http://localhost:4001/api/errors/${error.id}/analyze`, {});
         expect(aiResponse.ok()).toBeTruthy();
 
         // 3. ML Prediction
-        const mlResponse = await request.post(`http://localhost:4001/api/errors/${error.id}/predict`, {});
+        const mlResponse = await apiContext.post(`http://localhost:4001/api/errors/${error.id}/predict`, {});
         expect(mlResponse.ok()).toBeTruthy();
 
         // 4. Get suggestions
-        const suggestResponse = await request.get(`http://localhost:4001/api/errors/${error.id}/suggestions`);
+        const suggestResponse = await apiContext.get(`http://localhost:4001/api/errors/${error.id}/suggestions`);
         expect(suggestResponse.ok()).toBeTruthy();
 
         // 5. Resolve error
-        const resolveResponse = await request.patch(`http://localhost:4001/api/errors/${error.id}`, {
+        const resolveResponse = await apiContext.patch(`http://localhost:4001/api/errors/${error.id}`, {
             data: { resolved: true }
         });
 
@@ -386,7 +386,7 @@ test.describe('Integration Tests - Service Interactions', () => {
 });
 
 test.describe('Integration Tests - Data Consistency', () => {
-    test('should maintain consistency across store updates', async ({ request }) => {
+    test('should maintain consistency across store updates', async ({ apiContext }) => {
         // Create store
         const store = {
             storeNumber: 'STORE-9999',
@@ -394,7 +394,7 @@ test.describe('Integration Tests - Data Consistency', () => {
             location: 'Test Location'
         };
 
-        const createStoreResponse = await request.post('http://localhost:4001/api/stores', {
+        const createStoreResponse = await apiContext.post('/api/stores', {
             data: store
         });
 
@@ -408,17 +408,17 @@ test.describe('Integration Tests - Data Consistency', () => {
         }));
 
         for (const error of errors) {
-            await request.post('http://localhost:4001/api/errors', { data: error });
+            await apiContext.post('/api/errors', { data: error });
         }
 
         // Verify store error count
-        const storeResponse = await request.get(`http://localhost:4001/api/stores/${createdStore.storeNumber}`);
+        const storeResponse = await apiContext.get(`http://localhost:4001/api/stores/${createdStore.storeNumber}`);
         const storeData = await storeResponse.json();
 
         expect(storeData.errorCount).toBe(5);
     });
 
-    test('should handle transaction rollback on failure', async ({ request }) => {
+    test('should handle transaction rollback on failure', async ({ apiContext }) => {
         // Attempt to create multiple related records where one will fail
         const batchData = {
             errors: [
@@ -428,7 +428,7 @@ test.describe('Integration Tests - Data Consistency', () => {
             ]
         };
 
-        const response = await request.post('http://localhost:4001/api/errors/batch', {
+        const response = await apiContext.post('/api/errors/batch', {
             data: batchData
         });
 
@@ -436,7 +436,7 @@ test.describe('Integration Tests - Data Consistency', () => {
         expect(response.status()).toBe(400);
 
         // Verify no partial data was saved
-        const listResponse = await request.get('http://localhost:4001/api/errors?search=Valid error');
+        const listResponse = await apiContext.get('/api/errors?search=Valid error');
         const errors = await listResponse.json();
 
         const batchErrors = errors.filter((e: any) =>
@@ -448,17 +448,17 @@ test.describe('Integration Tests - Data Consistency', () => {
 });
 
 test.describe('Integration Tests - Caching and Performance', () => {
-    test('should cache frequent queries', async ({ request }) => {
+    test('should cache frequent queries', async ({ apiContext }) => {
         const query = 'severity=critical';
 
         // First request
         const start1 = Date.now();
-        await request.get(`http://localhost:4001/api/errors?${query}`);
+        await apiContext.get(`http://localhost:4001/api/errors?${query}`);
         const time1 = Date.now() - start1;
 
         // Second request (should be cached)
         const start2 = Date.now();
-        const response = await request.get(`http://localhost:4001/api/errors?${query}`);
+        const response = await apiContext.get(`http://localhost:4001/api/errors?${query}`);
         const time2 = Date.now() - start2;
 
         expect(response.ok()).toBeTruthy();
@@ -466,10 +466,10 @@ test.describe('Integration Tests - Caching and Performance', () => {
         expect(time2).toBeLessThanOrEqual(time1 + 100);
     });
 
-    test('should handle rate limiting gracefully', async ({ request }) => {
+    test('should handle rate limiting gracefully', async ({ apiContext }) => {
         // Make multiple rapid requests
         const requests = Array.from({ length: 100 }, () =>
-            request.get('http://localhost:4001/api/errors?page=1&limit=10')
+            apiContext.get('/api/errors?page=1&limit=10')
         );
 
         const responses = await Promise.all(requests);
@@ -478,9 +478,9 @@ test.describe('Integration Tests - Caching and Performance', () => {
         expect(allSuccessful).toBeTruthy();
     });
 
-    test('should implement query result pagination efficiently', async ({ request }) => {
-        const page1Response = await request.get('http://localhost:4001/api/errors?page=1&limit=10');
-        const page2Response = await request.get('http://localhost:4001/api/errors?page=2&limit=10');
+    test('should implement query result pagination efficiently', async ({ apiContext }) => {
+        const page1Response = await apiContext.get('/api/errors?page=1&limit=10');
+        const page2Response = await apiContext.get('/api/errors?page=2&limit=10');
 
         expect(page1Response.ok()).toBeTruthy();
         expect(page2Response.ok()).toBeTruthy();
@@ -496,14 +496,14 @@ test.describe('Integration Tests - Caching and Performance', () => {
 });
 
 test.describe('Integration Tests - Error Recovery', () => {
-    test('should recover from temporary database errors', async ({ request }) => {
+    test('should recover from temporary database errors', async ({ apiContext }) => {
         // Simulate retry logic
         let attempts = 0;
         const maxAttempts = 3;
 
         while (attempts < maxAttempts) {
             try {
-                const response = await request.get('http://localhost:4001/api/errors');
+                const response = await apiContext.get('/api/errors');
                 if (response.ok()) {
                     expect(response.ok()).toBeTruthy();
                     break;
@@ -518,12 +518,12 @@ test.describe('Integration Tests - Error Recovery', () => {
         }
     });
 
-    test('should handle circuit breaker pattern', async ({ request }) => {
+    test('should handle circuit breaker pattern', async ({ apiContext }) => {
         // Test circuit breaker for failing service
         const responses = [];
 
         for (let i = 0; i < 5; i++) {
-            const response = await request.get('http://localhost:4001/api/ml/predict', {
+            const response = await apiContext.get('/api/ml/predict', {
                 data: { invalid: 'data' }
             });
             responses.push(response);
@@ -533,9 +533,9 @@ test.describe('Integration Tests - Error Recovery', () => {
         expect(responses.length).toBe(5);
     });
 
-    test('should implement graceful degradation', async ({ request }) => {
+    test('should implement graceful degradation', async ({ apiContext }) => {
         // When AI service is down, should still return partial results
-        const response = await request.get('http://localhost:4001/api/errors');
+        const response = await apiContext.get('/api/errors');
 
         expect(response.ok()).toBeTruthy();
         const data = await response.json();
@@ -546,23 +546,23 @@ test.describe('Integration Tests - Error Recovery', () => {
 });
 
 test.describe('Integration Tests - Security', () => {
-    test('should validate authentication tokens', async ({ request }) => {
+    test('should validate authentication tokens', async ({ apiContext }) => {
         // Request without auth should fail
-        const response = await request.get('http://localhost:4001/api/admin/users');
+        const response = await apiContext.get('/api/admin/users');
         expect([401, 403]).toContain(response.status());
     });
 
-    test('should prevent SQL injection in queries', async ({ request }) => {
+    test('should prevent SQL injection in queries', async ({ apiContext }) => {
         const maliciousQuery = "'; DROP TABLE errors; --";
-        const response = await request.get(`http://localhost:4001/api/errors?search=${encodeURIComponent(maliciousQuery)}`);
+        const response = await apiContext.get(`http://localhost:4001/api/errors?search=${encodeURIComponent(maliciousQuery)}`);
 
         // Should handle safely without error
         expect([200, 400]).toContain(response.status());
     });
 
-    test('should sanitize user input', async ({ request }) => {
+    test('should sanitize user input', async ({ apiContext }) => {
         const xssPayload = '<script>alert("xss")</script>';
-        const response = await request.post('http://localhost:4001/api/errors', {
+        const response = await apiContext.post('/api/errors', {
             data: {
                 message: xssPayload,
                 severity: 'high',
@@ -577,8 +577,8 @@ test.describe('Integration Tests - Security', () => {
         }
     });
 
-    test('should enforce CORS policies', async ({ request }) => {
-        const response = await request.get('http://localhost:4001/api/errors', {
+    test('should enforce CORS policies', async ({ apiContext }) => {
+        const response = await apiContext.get('/api/errors', {
             headers: {
                 'Origin': 'http://malicious-site.com'
             }
@@ -591,20 +591,20 @@ test.describe('Integration Tests - Security', () => {
 });
 
 test.describe('Integration Tests - Data Validation', () => {
-    test('should validate required fields on creation', async ({ request }) => {
+    test('should validate required fields on creation', async ({ apiContext }) => {
         const invalidError = {
             // Missing required message field
             severity: 'high'
         };
 
-        const response = await request.post('http://localhost:4001/api/errors', {
+        const response = await apiContext.post('/api/errors', {
             data: invalidError
         });
 
         expect(response.status()).toBe(400);
     });
 
-    test('should validate data types', async ({ request }) => {
+    test('should validate data types', async ({ apiContext }) => {
         const invalidError = {
             message: 'Test',
             severity: 'high',
@@ -612,30 +612,30 @@ test.describe('Integration Tests - Data Validation', () => {
             errorType: 'Test'
         };
 
-        const response = await request.post('http://localhost:4001/api/errors', {
+        const response = await apiContext.post('/api/errors', {
             data: invalidError
         });
 
         expect([400, 422]).toContain(response.status());
     });
 
-    test('should validate enum values', async ({ request }) => {
+    test('should validate enum values', async ({ apiContext }) => {
         const invalidError = {
             message: 'Test',
             severity: 'invalid-severity', // Not in enum
             errorType: 'Test'
         };
 
-        const response = await request.post('http://localhost:4001/api/errors', {
+        const response = await apiContext.post('/api/errors', {
             data: invalidError
         });
 
         expect(response.status()).toBe(400);
     });
 
-    test('should enforce maximum string lengths', async ({ request }) => {
+    test('should enforce maximum string lengths', async ({ apiContext }) => {
         const veryLongMessage = 'A'.repeat(10000);
-        const response = await request.post('http://localhost:4001/api/errors', {
+        const response = await apiContext.post('/api/errors', {
             data: {
                 message: veryLongMessage,
                 severity: 'high',
@@ -649,7 +649,7 @@ test.describe('Integration Tests - Data Validation', () => {
 });
 
 test.describe('Integration Tests - Webhooks and Notifications', () => {
-    test('should trigger webhook on critical error', async ({ request }) => {
+    test('should trigger webhook on critical error', async ({ apiContext }) => {
         const criticalError = {
             message: 'Critical system failure',
             severity: 'critical',
@@ -657,7 +657,7 @@ test.describe('Integration Tests - Webhooks and Notifications', () => {
             store: 'STORE-0001'
         };
 
-        const response = await request.post('http://localhost:4001/api/errors', {
+        const response = await apiContext.post('/api/errors', {
             data: criticalError
         });
 
@@ -665,7 +665,7 @@ test.describe('Integration Tests - Webhooks and Notifications', () => {
         // Webhook should be triggered (check logs or webhook service)
     });
 
-    test('should send notifications for escalated errors', async ({ request }) => {
+    test('should send notifications for escalated errors', async ({ apiContext }) => {
         // Create error
         const error = {
             message: 'Error needing escalation',
@@ -673,14 +673,14 @@ test.describe('Integration Tests - Webhooks and Notifications', () => {
             errorType: 'Database'
         };
 
-        const createResponse = await request.post('http://localhost:4001/api/errors', {
+        const createResponse = await apiContext.post('/api/errors', {
             data: error
         });
 
         const created = await createResponse.json();
 
         // Escalate error
-        const escalateResponse = await request.post(`http://localhost:4001/api/errors/${created.id}/escalate`, {
+        const escalateResponse = await apiContext.post(`http://localhost:4001/api/errors/${created.id}/escalate`, {
             data: { to: 'admin', reason: 'Requires immediate attention' }
         });
 
@@ -690,7 +690,7 @@ test.describe('Integration Tests - Webhooks and Notifications', () => {
 });
 
 test.describe('Integration Tests - Batch Operations', () => {
-    test('should process batch updates efficiently', async ({ request }) => {
+    test('should process batch updates efficiently', async ({ apiContext }) => {
         // Create multiple errors
         const errors = Array.from({ length: 10 }, (_, i) => ({
             message: `Batch error ${i}`,
@@ -699,7 +699,7 @@ test.describe('Integration Tests - Batch Operations', () => {
         }));
 
         const createPromises = errors.map(e =>
-            request.post('http://localhost:4001/api/errors', { data: e })
+            apiContext.post('/api/errors', { data: e })
         );
 
         const responses = await Promise.all(createPromises);
@@ -708,7 +708,7 @@ test.describe('Integration Tests - Batch Operations', () => {
         expect(allCreated).toBeTruthy();
     });
 
-    test('should handle batch deletion atomically', async ({ request }) => {
+    test('should handle batch deletion atomically', async ({ apiContext }) => {
         // Create test errors
         const testErrors = [
             { message: 'Delete test 1', severity: 'low', errorType: 'Test' },
@@ -716,7 +716,7 @@ test.describe('Integration Tests - Batch Operations', () => {
         ];
 
         const createResponses = await Promise.all(
-            testErrors.map(e => request.post('http://localhost:4001/api/errors', { data: e }))
+            testErrors.map(e => apiContext.post('/api/errors', { data: e }))
         );
 
         const ids = await Promise.all(
@@ -724,7 +724,7 @@ test.describe('Integration Tests - Batch Operations', () => {
         );
 
         // Batch delete
-        const deleteResponse = await request.delete('http://localhost:4001/api/errors/batch', {
+        const deleteResponse = await apiContext.delete('/api/errors/batch', {
             data: { ids }
         });
 
@@ -733,9 +733,9 @@ test.describe('Integration Tests - Batch Operations', () => {
 });
 
 test.describe('Integration Tests - Real-time Updates', () => {
-    test('should support server-sent events for real-time updates', async ({ request }) => {
+    test('should support server-sent events for real-time updates', async ({ apiContext }) => {
         // Check if SSE endpoint exists
-        const response = await request.get('http://localhost:4001/api/monitoring/live');
+        const response = await apiContext.get('/api/monitoring/live');
 
         // SSE should return text/event-stream
         if (response.ok()) {
@@ -744,7 +744,7 @@ test.describe('Integration Tests - Real-time Updates', () => {
         }
     });
 
-    test('should broadcast changes to connected clients', async ({ request }) => {
+    test('should broadcast changes to connected clients', async ({ apiContext }) => {
         // Create error which should trigger broadcast
         const error = {
             message: 'Broadcast test error',
@@ -752,7 +752,7 @@ test.describe('Integration Tests - Real-time Updates', () => {
             errorType: 'System'
         };
 
-        const response = await request.post('http://localhost:4001/api/errors', {
+        const response = await apiContext.post('/api/errors', {
             data: error
         });
 
