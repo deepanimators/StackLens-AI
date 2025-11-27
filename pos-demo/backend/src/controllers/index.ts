@@ -3,6 +3,8 @@ import * as productService from '../services/productService';
 import * as orderService from '../services/orderService';
 import { logger } from '../utils/logger';
 import { AppError } from '../utils/AppError';
+import { getRandomError, getErrorById, POS_ERROR_SCENARIOS } from '../utils/pos-errors';
+import { v4 as uuidv4 } from 'uuid';
 
 // Helper function to send event to StackLens analytics
 async function sendToAnalytics(type: 'info' | 'error' | 'checkout' | 'log', message: string, metadata: any = {}) {
@@ -167,4 +169,127 @@ export const logCustom = (req: Request, res: Response, next: NextFunction) => {
         next(err);
     }
 };
+
+// 🎯 NEW: Trigger a specific error scenario
+export const simulateError = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { errorId } = req.params;
+        const scenario = getErrorById(errorId);
+
+        if (!scenario) {
+            return res.status(404).json({ error: 'Error scenario not found' });
+        }
+
+        const errorLog = {
+            timestamp: new Date().toISOString(),
+            level: 'error',
+            message: scenario.message,
+            errorCode: scenario.errorCode,
+            category: scenario.category,
+            severity: scenario.severity,
+            component: scenario.affectedComponents[0],
+            stackTrace: `Error: ${scenario.message}\n    at ${scenario.affectedComponents[0]} (src/components/${scenario.category}.ts:42:15)\n    at processTransaction (src/core/transaction.ts:128:10)`,
+            metadata: {
+                scenarioId: scenario.id,
+                symptoms: scenario.symptoms,
+                businessImpact: scenario.businessImpact,
+                user: 'cashier_01',
+                terminalId: 'TERM-001'
+            }
+        };
+
+        // Log to local logger
+        logger.error(scenario.message, errorLog);
+
+        // Send to Analytics API
+        await sendToAnalytics('error', scenario.message, errorLog);
+
+        res.json({
+            success: true,
+            message: `Simulated error: ${scenario.name}`,
+            scenario
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// 🎯 NEW: Trigger a random error
+export const simulateRandomError = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const scenario = getRandomError();
+
+        const errorLog = {
+            timestamp: new Date().toISOString(),
+            level: 'error',
+            message: scenario.message,
+            errorCode: scenario.errorCode,
+            category: scenario.category,
+            severity: scenario.severity,
+            component: scenario.affectedComponents[0],
+            stackTrace: `Error: ${scenario.message}\n    at ${scenario.affectedComponents[0]} (src/components/${scenario.category}.ts:42:15)\n    at processTransaction (src/core/transaction.ts:128:10)`,
+            metadata: {
+                scenarioId: scenario.id,
+                symptoms: scenario.symptoms,
+                businessImpact: scenario.businessImpact,
+                user: 'cashier_02',
+                terminalId: 'TERM-005'
+            }
+        };
+
+        // Log to local logger
+        logger.error(scenario.message, errorLog);
+
+        // Send to Analytics API
+        await sendToAnalytics('error', scenario.message, errorLog);
+
+        res.json({
+            success: true,
+            message: `Simulated random error: ${scenario.name}`,
+            scenario
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// 🎯 NEW: Trigger multiple errors (stress test)
+export const simulateBatchErrors = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { count = 5 } = req.body;
+        const results = [];
+
+        for (let i = 0; i < Math.min(count, 20); i++) {
+            const scenario = getRandomError();
+
+            const errorLog = {
+                timestamp: new Date().toISOString(),
+                level: 'error',
+                message: scenario.message,
+                errorCode: scenario.errorCode,
+                category: scenario.category,
+                severity: scenario.severity,
+                component: scenario.affectedComponents[0],
+                metadata: {
+                    scenarioId: scenario.id,
+                    batchId: uuidv4(),
+                    iteration: i
+                }
+            };
+
+            logger.error(scenario.message, errorLog);
+            await sendToAnalytics('error', scenario.message, errorLog);
+            results.push(scenario.id);
+        }
+
+        res.json({
+            success: true,
+            message: `Simulated ${results.length} errors`,
+            scenarios: results
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 

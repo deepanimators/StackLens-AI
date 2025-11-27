@@ -15,4 +15,10 @@ router.post('/error', controllers.logError);
 router.post('/checkout', controllers.logCheckout);
 router.post('/log', controllers.logCustom);
 
+// 🎯 NEW: Simulation endpoints
+router.post('/simulate-error/:errorId', controllers.simulateError);
+router.post('/simulate-random-error', controllers.simulateRandomError);
+router.post('/simulate-errors/batch', controllers.simulateBatchErrors);
+
+
 export default router;

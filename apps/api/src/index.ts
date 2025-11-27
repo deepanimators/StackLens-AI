@@ -56,8 +56,12 @@ app.use("/api/", apiLimiter);
 // This applies body parsing to ALL routes EXCEPT file upload routes
 // This prevents body-parser from interfering with multer
 app.use((req: any, res: any, next: any) => {
-  // Skip body parsing for file upload endpoints - multer will handle them
-  if (req.path === '/api/upload' || req.path.startsWith('/api/files')) {
+  // Skip body parsing for file upload endpoints and GET /api/files - multer will handle them
+  // BUT allow body parsing for POST /api/files/bulk-delete which needs JSON body
+  if (req.path === '/api/upload' ||
+    (req.path.startsWith('/api/files') &&
+      req.path !== '/api/files/bulk-delete' &&
+      req.method !== 'DELETE')) {
     console.log('Skipping body parsing for:', req.path);
     return next();
   }

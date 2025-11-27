@@ -399,8 +399,10 @@ export default function AnalysisHistoryPage() {
         );
 
         return {
-          id: file.id,
+          // Use analysis history ID if exists, otherwise use the file ID for pending files
+          id: matchingAnalysis?.id || file.id,
           fileId: file.id,
+          isPendingFile: !matchingAnalysis, // Flag to identify pending files without analysis records
           userId: 0,
           totalErrors: 0,
           criticalErrors: 0,
@@ -484,18 +486,104 @@ export default function AnalysisHistoryPage() {
       );
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/analysis/history"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/files"] });
-      toast({
-        title: "Success",
-        description: `${data.totalDeleted} analyses deleted successfully`,
-      });
-      setSelectedItems([]);
+      // Force immediate refetch of both queries
+      queryClient.invalidateQueries({ queryKey: ["/api/analysis/history"], refetchType: 'active' });
+      queryClient.invalidateQueries({ queryKey: ["/api/files"], refetchType: 'active' });
+      
+      // Also trigger a manual refetch to ensure immediate update
+      queryClient.refetchQueries({ queryKey: ["/api/analysis/history"] });
+      queryClient.refetchQueries({ queryKey: ["/api/files"] });
+      
+      // Check if any items were actually deleted
+      if (data.totalDeleted > 0 && data.totalFailed === 0) {
+        // All deletions succeeded
+        toast({
+          title: "Success",
+          description: `${data.totalDeleted} ${data.totalDeleted === 1 ? 'analysis' : 'analyses'} deleted successfully`,
+        });
+      } else if (data.totalDeleted > 0 && data.totalFailed > 0) {
+        // Partial success
+        toast({
+          title: "Partial Success",
+          description: `${data.totalDeleted} deleted, ${data.totalFailed} failed. Check permissions for failed items.`,
+          variant: "default",
+        });
+      } else if (data.totalDeleted === 0 && data.totalFailed > 0) {
+        // All deletions failed
+        toast({
+          title: "Delete Failed",
+          description: `Failed to delete ${data.totalFailed} ${data.totalFailed === 1 ? 'analysis' : 'analyses'}. You may not have permission to delete these items.`,
+          variant: "destructive",
+        });
+      } else {
+        // No items to delete (shouldn't happen)
+        toast({
+          title: "No Items Deleted",
+          description: "No analyses were selected or found.",
+          variant: "default",
+        });
+      }
+      
+      // Only clear selection if at least one item was deleted
+      if (data.totalDeleted > 0) {
+        setSelectedItems([]);
+      }
     },
     onError: (error) => {
       toast({
         title: "Error",
         description: error.message || "Failed to delete analyses",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const bulkDeleteFilesMutation = useMutation({
+    mutationFn: async (fileIds: number[]) => {
+      return await authenticatedRequest(
+        "POST",
+        "/api/files/bulk-delete",
+        { fileIds }
+      );
+    },
+    onSuccess: (data) => {
+      // Force immediate refetch of both queries
+      queryClient.invalidateQueries({ queryKey: ["/api/analysis/history"], refetchType: 'active' });
+      queryClient.invalidateQueries({ queryKey: ["/api/files"], refetchType: 'active' });
+      
+      // Also trigger a manual refetch to ensure immediate update
+      queryClient.refetchQueries({ queryKey: ["/api/analysis/history"] });
+      queryClient.refetchQueries({ queryKey: ["/api/files"] });
+      
+      // Check if any items were actually deleted
+      if (data.totalDeleted > 0 && data.totalFailed === 0) {
+        toast({
+          title: "Success",
+          description: `${data.totalDeleted} ${data.totalDeleted === 1 ? 'file' : 'files'} deleted successfully`,
+        });
+      } else if (data.totalDeleted > 0 && data.totalFailed > 0) {
+        toast({
+          title: "Partial Success",
+          description: `${data.totalDeleted} deleted, ${data.totalFailed} failed. Check permissions for failed items.`,
+          variant: "default",
+        });
+      } else if (data.totalDeleted === 0 && data.totalFailed > 0) {
+        toast({
+          title: "Delete Failed",
+          description: `Failed to delete ${data.totalFailed} ${data.totalFailed === 1 ? 'file' : 'files'}. You may not have permission to delete these items.`,
+          variant: "destructive",
+        });
+      }
+      
+      // Only clear selection if at least one item was deleted
+      if (data.totalDeleted > 0) {
+        setSelectedItems([]);
+      }
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete files",
         variant: "destructive",
       });
     },
@@ -541,8 +629,47 @@ export default function AnalysisHistoryPage() {
   };
 
   const handleBulkDelete = () => {
-    if (selectedItems.length > 0) {
-      bulkDeleteMutation.mutate(selectedItems);
+    if (selectedItems.length === 0) {
+      return;
+    }
+
+    // Separate items into analyses and pending files
+    const analysisIds: number[] = [];
+    const fileIds: number[] = [];
+    
+    selectedItems.forEach(id => {
+      // Check if this is a completed/failed analysis or a pending file
+      const item = combinedHistory.find(item => item.id === id);
+      if (item) {
+        if ((item as any).isPendingFile) {
+          // This is a pending file without analysis record - delete via files endpoint
+          fileIds.push(item.fileId);
+        } else {
+          // This is an analysis record - delete via analysis history endpoint
+          analysisIds.push(id);
+        }
+      }
+    });
+    
+    // Execute appropriate deletions
+    let deletionsInProgress = 0;
+    
+    if (analysisIds.length > 0) {
+      deletionsInProgress++;
+      bulkDeleteMutation.mutate(analysisIds);
+    }
+    
+    if (fileIds.length > 0) {
+      deletionsInProgress++;
+      bulkDeleteFilesMutation.mutate(fileIds);
+    }
+    
+    if (deletionsInProgress === 0) {
+      toast({
+        title: "No Valid Items",
+        description: "No deletable items were selected.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -553,7 +680,10 @@ export default function AnalysisHistoryPage() {
   };
 
   const selectAll = () => {
-    const allIds = combinedHistory.map((item) => item.id);
+    // Select all items with valid positive IDs (all statuses now supported)
+    const allIds = combinedHistory
+      .filter((item) => item.id > 0)
+      .map((item) => item.id);
     setSelectedItems(allIds);
   };
 

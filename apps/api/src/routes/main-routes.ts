@@ -3772,20 +3772,36 @@ Format as JSON with the following structure:
         )
         .slice(0, 5);
 
-      // Calculate ML accuracy from system-wide error records with actual ML confidence
-      const errorsWithConfidence = allErrors.filter(
-        (error) =>
-          (error as any).mlConfidence && (error as any).mlConfidence > 0
-      );
-      const avgConfidence =
-        errorsWithConfidence.length > 0
-          ? errorsWithConfidence.reduce(
-            (sum, error) => sum + ((error as any).mlConfidence || 0),
-            0
-          ) / errorsWithConfidence.length
-          : 0;
+      // Calculate ML accuracy from analysis_history model_accuracy field
+      // This represents the actual ML model's performance across all completed analyses
+      const allAnalysisHistory = await storage.getAllAnalysisHistory();
+      console.log(`🔍 [DEBUG] Total analysis history records: ${allAnalysisHistory.length}`);
 
-      const mlAccuracy = Math.round(avgConfidence * 100);
+      // Check first record to see field structure
+      if (allAnalysisHistory.length > 0) {
+        const sample = allAnalysisHistory[0];
+        console.log(`🔍 [DEBUG] Sample record fields:`, Object.keys(sample));
+        console.log(`🔍 [DEBUG] Sample modelAccuracy:`, sample.modelAccuracy);
+      }
+
+      const completedAnalyses = allAnalysisHistory.filter(
+        (analysis: any) => analysis.status === "completed" && analysis.modelAccuracy
+      );
+      console.log(`🔍 [DEBUG] Completed analyses with modelAccuracy: ${completedAnalyses.length}`);
+
+      let mlAccuracy = 0;
+      if (completedAnalyses.length > 0) {
+        // Normalize model accuracy values (some stored as decimals, some as percentages)
+        const normalizedAccuracies = completedAnalyses.map((analysis: any) => {
+          const accuracy = analysis.modelAccuracy;
+          // If accuracy is between 0 and 1, it's a decimal (multiply by 100)
+          // If accuracy is greater than 1, it's already a percentage
+          return accuracy < 1 ? accuracy * 100 : accuracy;
+        });
+
+        const avgAccuracy = normalizedAccuracies.reduce((sum: number, acc: number) => sum + acc, 0) / normalizedAccuracies.length;
+        mlAccuracy = Math.round(avgAccuracy * 10) / 10; // Round to 1 decimal place
+      }
 
       // Calculate monthly trends based on historical data
       const now = new Date();
@@ -5325,6 +5341,176 @@ Format as JSON with the following structure:
         message: "Failed to delete file due to internal error",
         error: error instanceof Error ? error.message : "Unknown error",
         fileId: parseInt(req.params.id),
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Bulk delete files endpoint
+  app.post("/api/files/bulk-delete", requireAuth, async (req: any, res: any) => {
+    try {
+      const { fileIds } = req.body;
+      console.log(`🗑️ Attempting to bulk delete files: ${fileIds}`);
+
+      // Validate input
+      if (!Array.isArray(fileIds) || fileIds.length === 0) {
+        console.log("❌ Invalid fileIds array provided");
+        return res.status(400).json({ message: "Invalid fileIds array" });
+      }
+
+      // Validate all IDs are numbers
+      const invalidIds = fileIds.filter(id => typeof id !== 'number' || isNaN(id) || id <= 0);
+      if (invalidIds.length > 0) {
+        console.log("❌ Invalid file IDs in array:", invalidIds);
+        return res.status(400).json({ message: "All fileIds must be valid positive numbers" });
+      }
+
+      let totalDeleted = 0;
+      let totalFailed = 0;
+      const failedIds: number[] = [];
+      const deletionDetails: any[] = [];
+
+      // Process each deletion
+      for (const fileId of fileIds) {
+        try {
+          // Get the file record first to check ownership
+          const file = await storage.getLogFile(fileId);
+
+          if (!file) {
+            console.log(`⚠️ File ${fileId} not found - skipping`);
+            totalFailed++;
+            failedIds.push(fileId);
+            deletionDetails.push({ fileId, status: 'not_found', message: 'File not found' });
+            continue;
+          }
+
+          // Check if user owns this file or is admin
+          if (file.uploadedBy !== req.user.id && req.user.role !== "admin" && req.user.role !== "super_admin") {
+            console.log(`🚫 Access denied for file ${fileId} - belongs to user ${file.uploadedBy}`);
+            totalFailed++;
+            failedIds.push(fileId);
+            deletionDetails.push({ fileId, status: 'access_denied', message: 'Permission denied', fileName: file.originalName });
+            continue;
+          }
+
+          // Perform cascade deletion
+          const deletionStats = {
+            errorEmbeddings: 0,
+            suggestionFeedback: 0,
+            errorLogs: 0,
+            analysisHistory: 0,
+            physicalFile: false,
+            logFile: false
+          };
+
+          try {
+            // Get all error IDs for this file
+            const fileErrorLogs = await db
+              .select({ id: errorLogs.id })
+              .from(errorLogs)
+              .where(eq(errorLogs.fileId, fileId));
+
+            const errorIds = fileErrorLogs.map(error => error.id);
+
+            // Delete error embeddings
+            if (errorIds.length > 0) {
+              for (const errorId of errorIds) {
+                const embeddingResult = await db
+                  .delete(errorEmbeddings)
+                  .where(eq(errorEmbeddings.errorId, errorId));
+                deletionStats.errorEmbeddings += embeddingResult.changes || 0;
+              }
+            }
+
+            // Delete suggestion feedback
+            if (errorIds.length > 0) {
+              for (const errorId of errorIds) {
+                const feedbackResult = await db
+                  .delete(suggestionFeedback)
+                  .where(eq(suggestionFeedback.errorId, errorId));
+                deletionStats.suggestionFeedback += feedbackResult.changes || 0;
+              }
+            }
+
+            // Delete error logs
+            const errorLogsResult = await db
+              .delete(errorLogs)
+              .where(eq(errorLogs.fileId, fileId));
+            deletionStats.errorLogs = errorLogsResult.changes || 0;
+
+            // Delete analysis history
+            const analysisResult = await db
+              .delete(analysisHistory)
+              .where(eq(analysisHistory.fileId, fileId));
+            deletionStats.analysisHistory = analysisResult.changes || 0;
+
+            // Delete the file record
+            const fileResult = await db
+              .delete(logFiles)
+              .where(eq(logFiles.id, fileId));
+            deletionStats.logFile = (fileResult.changes || 0) > 0;
+
+            // Delete physical file
+            try {
+              const filePath = path.join(UPLOAD_DIR, file.filename);
+              if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+                deletionStats.physicalFile = true;
+              }
+            } catch (fileError) {
+              console.warn(`⚠️ Failed to delete physical file for ${fileId}:`, fileError);
+            }
+
+            if (deletionStats.logFile) {
+              console.log(`✅ File ${fileId} deleted successfully`);
+              totalDeleted++;
+              deletionDetails.push({
+                fileId,
+                status: 'success',
+                fileName: file.originalName,
+                deletionStats
+              });
+            } else {
+              console.log(`❌ Failed to delete file ${fileId}`);
+              totalFailed++;
+              failedIds.push(fileId);
+              deletionDetails.push({ fileId, status: 'failed', message: 'Database deletion failed', fileName: file.originalName });
+            }
+          } catch (deleteError) {
+            console.error(`❌ Error during deletion of file ${fileId}:`, deleteError);
+            totalFailed++;
+            failedIds.push(fileId);
+            deletionDetails.push({
+              fileId,
+              status: 'error',
+              message: deleteError instanceof Error ? deleteError.message : 'Unknown error',
+              fileName: file.originalName
+            });
+          }
+        } catch (error) {
+          console.error(`❌ Error processing file ${fileId}:`, error);
+          totalFailed++;
+          failedIds.push(fileId);
+          deletionDetails.push({ fileId, status: 'error', message: 'Processing error' });
+        }
+      }
+
+      console.log(`✅ Bulk file deletion completed: ${totalDeleted} deleted, ${totalFailed} failed`);
+
+      res.json({
+        message: `Bulk delete completed: ${totalDeleted} files deleted, ${totalFailed} failed`,
+        totalDeleted,
+        totalFailed,
+        failedIds,
+        deletionDetails,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error("❌ Error in bulk file deletion:", error);
+      res.status(500).json({
+        message: "Failed to bulk delete files due to internal error",
+        error: error instanceof Error ? error.message : "Unknown error",
         timestamp: new Date().toISOString()
       });
     }

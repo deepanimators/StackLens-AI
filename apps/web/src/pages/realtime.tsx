@@ -33,7 +33,15 @@ import {
   Zap as AlertIcon,
   AlertCircle,
   CheckCircle,
+  Bug,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 ChartJS.register(
   CategoryScale,
@@ -75,6 +83,40 @@ export default function Realtime() {
   const [selectedWindow, setSelectedWindow] = useState<"1min" | "5min" | "1hour">("1min");
   const [selectedAlert, setSelectedAlert] = useState<AlertData | null>(null);
   const [showAlertModal, setShowAlertModal] = useState(false);
+  const [selectedScenario, setSelectedScenario] = useState<string>("");
+  const [isSimulating, setIsSimulating] = useState(false);
+
+  const SIMULATION_SCENARIOS = [
+    { id: 'PAY_006', name: 'Digital Wallet Handshake Fail' },
+    { id: 'NET_004', name: 'DNS Resolution Failure' },
+    { id: 'HW_005', name: 'Scale Calibration Error' },
+    { id: 'SEC_004', name: 'Session Token Expired' },
+    { id: 'INV_006', name: 'Bundle SKU Fail' },
+    { id: 'SYS_005', name: 'Peripheral Driver Crash' },
+    { id: 'PAY_001', name: 'Payment Timeout (Legacy)' },
+  ];
+
+  const handleSimulateError = async (scenarioId: string) => {
+    if (!scenarioId) return;
+    setIsSimulating(true);
+    try {
+      // Call the POS Demo App to simulate the error
+      // 🎯 UPDATED: Now pointing to the consolidated POS backend on port 3000
+      const response = await fetch(`http://localhost:3000/api/simulate-error/${scenarioId}`, {
+          method: 'POST',
+      });
+      
+      // Refresh data shortly after
+      setTimeout(() => {
+        refetchMetrics();
+        refetchAlerts();
+      }, 1000);
+    } catch (e) {
+      console.error("Simulation failed", e);
+    } finally {
+      setIsSimulating(false);
+    }
+  };
 
   // Fetch realtime metrics
   const { data: metricsData, refetch: refetchMetrics } = useQuery({
@@ -325,6 +367,56 @@ export default function Realtime() {
             </Button>
           </div>
         </div>
+
+        {/* Error Simulation Card */}
+        <Card className="border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 dark:from-purple-950/20 dark:to-indigo-950/20">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center space-x-2">
+              <Bug className="h-5 w-5 text-purple-600" />
+              <span>Error Simulation</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="w-full md:w-64">
+                <Select value={selectedScenario} onValueChange={setSelectedScenario}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Error Scenario" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SIMULATION_SCENARIOS.map((scenario) => (
+                      <SelectItem key={scenario.id} value={scenario.id}>
+                        {scenario.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button 
+                onClick={() => handleSimulateError(selectedScenario)}
+                disabled={!selectedScenario || isSimulating}
+                className="bg-purple-600 hover:bg-purple-700"
+              >
+                {isSimulating ? "Simulating..." : "Trigger Error"}
+              </Button>
+              
+              <div className="h-6 w-px bg-border hidden md:block" />
+              
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground">Quick Triggers:</span>
+                <Button variant="outline" size="sm" onClick={() => handleSimulateError('PAY_006')}>
+                  Wallet Fail
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleSimulateError('NET_004')}>
+                  DNS Fail
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleSimulateError('HW_005')}>
+                  Scale Error
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Health Status */}
         <Card className="border-l-4 border-l-blue-500">

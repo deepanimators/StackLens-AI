@@ -45,6 +45,42 @@ const alerts: Alert[] = [];
 const posEvents: POSEvent[] = [];
 let startTime = Date.now();
 
+// Periodic cleanup of old events (older than 10 minutes)
+setInterval(() => {
+    const tenMinutesAgo = Date.now() - 600000;
+    const recentEvents = posEvents.filter(e => {
+        const eventTime = new Date(e.timestamp).getTime();
+        return eventTime >= tenMinutesAgo;
+    });
+
+    // Clear and repopulate with recent events only
+    posEvents.length = 0;
+    posEvents.push(...recentEvents);
+
+    console.log(`🧹 Cleaned up old events. Current count: ${posEvents.length}`);
+    console.log(`🧹 Cleaned up old events. Current count: ${posEvents.length}`);
+}, 60000); // Run every minute
+
+// 🎯 FIX: Periodic metrics update to ensure "Last 1min" doesn't get stale
+setInterval(() => {
+    const lastMetric = metrics[metrics.length - 1];
+    const now = Date.now();
+
+    // If no metric exists or last metric is older than 5 seconds, generate a new one
+    if (!lastMetric || (now - new Date(lastMetric.timestamp).getTime() > 5000)) {
+        const newMetric = generateMetricsFromEvents('1min');
+        metrics.push(newMetric);
+
+        // Keep only last 500 metrics
+        if (metrics.length > 500) {
+            metrics.shift();
+        }
+
+        // Update alerts based on new metrics (e.g. resolve if error rate drops)
+        updateAlerts(newMetric);
+    }
+}, 5000); // Check every 5 seconds
+
 // Function to generate metrics from POS events
 function generateMetricsFromEvents(window: string = '1min'): Metric {
     const now = new Date();
@@ -82,9 +118,16 @@ function generateMetricsFromEvents(window: string = '1min'): Metric {
 
 // Function to update alerts based on metrics
 function updateAlerts(latestMetric: Metric) {
-    // Remove old alerts (older than 1 hour)
-    const oneHourAgo = Date.now() - 3600000;
-    alerts.length = alerts.filter(a => new Date(a.timestamp).getTime() > oneHourAgo).length;
+    // Remove old alerts (older than 5 minutes for active display)
+    const fiveMinutesAgo = Date.now() - 300000;
+    const recentAlerts = alerts.filter(a => {
+        const alertTime = new Date(a.timestamp).getTime();
+        return alertTime > fiveMinutesAgo || a.status === 'resolved';
+    });
+
+    // Clear and repopulate alerts array
+    alerts.length = 0;
+    alerts.push(...recentAlerts);
 
     // Check for high latency alert
     if (latestMetric.latency_p99 > 200) {
@@ -120,6 +163,41 @@ function updateAlerts(latestMetric: Metric) {
                 status: 'active'
             });
         }
+    } else {
+        // Resolve high error rate alert if error rate drops below threshold
+        const activeAlert = alerts.find(a => a.rule_name === 'High Error Rate' && a.status === 'active');
+        if (activeAlert) {
+            activeAlert.status = 'resolved';
+        }
+    }
+
+    // Create individual alerts for each error in the window
+    if (latestMetric.error_count > 0) {
+        // Get recent error events
+        const recentErrors = posEvents.filter(e => e.type === 'error');
+        const now = Date.now();
+
+        recentErrors.forEach((errorEvent, index) => {
+            const errorTime = new Date(errorEvent.timestamp).getTime();
+            if (now - errorTime < 60000) { // Last 1 minute
+                const errorId = `error-${errorTime}-${index}`;
+                const existingErrorAlert = alerts.find(a => a.id === errorId);
+
+                if (!existingErrorAlert) {
+                    alerts.push({
+                        id: errorId,
+                        rule_name: errorEvent.action || 'System Error',
+                        severity: 'warning',
+                        message: errorEvent.message || 'An error occurred',
+                        metric: 'individual_error',
+                        value: 1,
+                        threshold: 0,
+                        timestamp: errorEvent.timestamp,
+                        status: 'active'
+                    });
+                }
+            }
+        });
     }
 
     // Add info alert for successful checkouts
@@ -161,9 +239,22 @@ analyticsRouter.post('/events', (req, res) => {
         // Add event to collection
         posEvents.push(event);
 
-        // Keep only last 1000 events (5 minutes of data)
-        if (posEvents.length > 1000) {
-            posEvents.shift();
+        // Immediately remove events older than 1 hour (maximum window)
+        const oneHourAgo = Date.now() - 3600000;
+        const validEvents = posEvents.filter(e => {
+            const eventTime = new Date(e.timestamp).getTime();
+            return eventTime >= oneHourAgo;
+        });
+
+        // Only keep events from the last hour
+        if (validEvents.length < posEvents.length) {
+            posEvents.length = 0;
+            posEvents.push(...validEvents);
+        }
+
+        // Additional safety: keep only last 2000 events max
+        if (posEvents.length > 2000) {
+            posEvents.splice(0, posEvents.length - 2000);
         }
 
         // Generate new metrics from updated events
@@ -543,6 +634,7 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
         try {
             const apiKey = process.env.GEMINI_API_KEY;
             if (apiKey) {
+                console.log('🤖 Requesting AI analysis from Gemini...');
                 const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -563,8 +655,15 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
                     const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
                     if (jsonMatch) {
                         aiAnalysis = JSON.parse(jsonMatch[0]);
+                        console.log('✅ AI analysis received and parsed successfully');
+                    } else {
+                        console.warn('⚠️ AI response did not contain valid JSON');
                     }
+                } else {
+                    console.error(`❌ Gemini API failed with status ${response.status}: ${await response.text()}`);
                 }
+            } else {
+                console.warn('⚠️ No GEMINI_API_KEY found in environment variables');
             }
         } catch (aiError) {
             console.warn('AI analysis failed, returning basic analysis', aiError);
@@ -576,10 +675,10 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
             const highCount = alertsToAnalyze.filter((a: any) => a.severity === 'high').length;
 
             aiAnalysis = {
-                errorCategories: [...new Set(alertsToAnalyze.map((a: any) => a.rule_name))],
+                errorCategories: Array.from(new Set(alertsToAnalyze.map((a: any) => a.rule_name))),
                 severity: criticalCount > 0 ? 'critical' : highCount > 0 ? 'high' : 'medium',
                 pattern: `Multiple system alerts detected: ${criticalCount} critical, ${highCount} high severity issues`,
-                errorTypes: [...new Set(alertsToAnalyze.map((a: any) => a.metric))],
+                errorTypes: Array.from(new Set(alertsToAnalyze.map((a: any) => a.metric))),
                 rootCause: 'System experiencing elevated error conditions. Common causes: high traffic, resource constraints, configuration issues, or service degradation.',
                 suggestions: [
                     'Monitor real-time dashboards for anomaly patterns',
@@ -604,7 +703,7 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
                     'Set up comprehensive integration testing'
                 ],
                 estimatedImpact: `${alertsToAnalyze.length} active alert(s) potentially affecting ${criticalCount > 0 ? 'customer transactions and revenue' : 'system reliability'}`,
-                affectedComponents: [...new Set(alertsToAnalyze.map((a: any) => a.rule_name))],
+                affectedComponents: Array.from(new Set(alertsToAnalyze.map((a: any) => a.rule_name))),
                 relatedLogs: recentPosEvents.filter(e => e.type === 'error').slice(0, 5).map(e => `[${e.timestamp}] ${e.source}: ${e.message}`),
                 resolutionTimeEstimate: criticalCount > 0 ? '15-30 minutes (urgent)' : highCount > 0 ? '30-60 minutes' : '1-2 hours'
             };

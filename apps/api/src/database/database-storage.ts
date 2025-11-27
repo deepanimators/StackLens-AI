@@ -101,6 +101,7 @@ export interface IStorage {
 
   // Analysis history
   getAnalysisHistory(id: number): Promise<AnalysisHistory | undefined>;
+  getAllAnalysisHistory(): Promise<AnalysisHistory[]>;
   getAnalysisHistoryByUser(userId: number): Promise<AnalysisHistory[]>;
   getAnalysisHistoryByFileId(
     fileId: number
@@ -688,6 +689,15 @@ export class DatabaseStorage implements IStorage {
       .from(analysisHistory)
       .where(eq(analysisHistory.id, id));
     return result[0];
+  }
+
+  async getAllAnalysisHistory(): Promise<AnalysisHistory[]> {
+    const result = await db
+      .select()
+      .from(analysisHistory)
+      .orderBy(desc(analysisHistory.analysisTimestamp));
+
+    return result;
   }
 
   async getAnalysisHistoryByUser(userId: number): Promise<AnalysisHistory[]> {
