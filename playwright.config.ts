@@ -10,6 +10,11 @@ const __dirname = path.dirname(__filename);
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+// Set test environment variables
+process.env.NODE_ENV = 'test';
+process.env.PLAYWRIGHT_TEST = '1';
+process.env.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || './data/database/stacklens.test.db';
+
 /**
  * StackLens AI - Playwright Test Configuration
  * Comprehensive testing setup for E2E, Integration, and API tests
@@ -17,6 +22,10 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 export default defineConfig({
     testDir: './tests',
+
+    // Global setup and teardown
+    globalSetup: require.resolve('./tests/global-setup.ts'),
+    globalTeardown: require.resolve('./tests/global-teardown.ts'),
 
     // Maximum time one test can run
     timeout: 30 * 1000,
@@ -175,12 +184,17 @@ export default defineConfig({
     webServer: process.env.SKIP_SERVER ? undefined : [
         // Backend API server (using test:server to disable rate limiting)
         {
-            command: 'PORT=4001 pnpm run test:server',
+            command: `NODE_ENV=test PLAYWRIGHT_TEST=1 TEST_DATABASE_URL=${process.env.TEST_DATABASE_URL} PORT=4001 pnpm run test:server`,
             url: 'http://127.0.0.1:4001/health',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,
             stdout: 'pipe',
             stderr: 'pipe',
+            env: {
+                NODE_ENV: 'test',
+                PLAYWRIGHT_TEST: '1',
+                TEST_DATABASE_URL: process.env.TEST_DATABASE_URL,
+            }
         },
         // Frontend client server
         {

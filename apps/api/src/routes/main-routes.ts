@@ -5843,6 +5843,88 @@ Format as JSON with the following structure:
     }
   });
 
+  // Bulk delete analysis history endpoint
+  app.post("/api/analysis/history/bulk-delete", requireAuth, async (req: any, res: any) => {
+    try {
+      const { historyIds } = req.body;
+      console.log(`🗑️ Attempting to bulk delete analysis histories: ${historyIds}`);
+
+      // Validate input
+      if (!Array.isArray(historyIds) || historyIds.length === 0) {
+        console.log("❌ Invalid historyIds array provided");
+        return res.status(400).json({ message: "Invalid historyIds array" });
+      }
+
+      // Validate all IDs are numbers
+      const invalidIds = historyIds.filter(id => typeof id !== 'number' || isNaN(id) || id <= 0);
+      if (invalidIds.length > 0) {
+        console.log("❌ Invalid analysis IDs in array:", invalidIds);
+        return res.status(400).json({ message: "All historyIds must be valid positive numbers" });
+      }
+
+      let totalDeleted = 0;
+      let totalFailed = 0;
+      const failedIds: number[] = [];
+
+      // Process each deletion
+      for (const analysisId of historyIds) {
+        try {
+          // Get the analysis record first to check ownership
+          const analysis = await storage.getAnalysisHistory(analysisId);
+
+          if (!analysis) {
+            console.log(`⚠️ Analysis history ${analysisId} not found - skipping`);
+            totalFailed++;
+            failedIds.push(analysisId);
+            continue;
+          }
+
+          // Check if user owns this analysis
+          if (analysis.userId !== req.user.id) {
+            console.log(`🚫 Access denied for analysis ${analysisId} - belongs to user ${analysis.userId}`);
+            totalFailed++;
+            failedIds.push(analysisId);
+            continue;
+          }
+
+          // Delete the analysis history record
+          const success = await storage.deleteAnalysisHistory(analysisId);
+
+          if (success) {
+            console.log(`✅ Analysis history ${analysisId} deleted successfully`);
+            totalDeleted++;
+          } else {
+            console.log(`❌ Failed to delete analysis history ${analysisId}`);
+            totalFailed++;
+            failedIds.push(analysisId);
+          }
+        } catch (deleteError) {
+          console.error(`❌ Error deleting analysis ${analysisId}:`, deleteError);
+          totalFailed++;
+          failedIds.push(analysisId);
+        }
+      }
+
+      console.log(`✅ Bulk delete completed: ${totalDeleted} deleted, ${totalFailed} failed`);
+
+      res.json({
+        message: `Bulk delete completed: ${totalDeleted} analyses deleted, ${totalFailed} failed`,
+        totalDeleted,
+        totalFailed,
+        failedIds,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error("❌ Error in bulk delete operation:", error);
+      res.status(500).json({
+        message: "Failed to perform bulk delete due to internal error",
+        error: error instanceof Error ? error.message : "Unknown error",
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
   // Enhanced errors endpoint with ML predictions
   app.get("/api/errors/analysis", requireAuth, async (req: any, res: any) => {
     try {
