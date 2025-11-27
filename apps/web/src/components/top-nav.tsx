@@ -35,6 +35,7 @@ import {
   Menu,
   LayoutGrid,
   LayoutPanelLeft,
+  Activity,
 } from "lucide-react";
 import { useLayout } from "@/contexts/layout-context";
 import {
@@ -51,15 +52,18 @@ interface TopNavProps {
 // Primary navigation items (shown in top nav)
 const primaryNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Real-time", href: "/realtime", icon: Activity },
   { name: "Analysis History", href: "/analysis-history", icon: History },
-  { name: "AI Analysis", href: "/ai-analysis", icon: Brain },
 ];
 
 // Secondary navigation items (shown in hamburger menu)
 const secondaryNavigation = [
+  { name: "Store Kiosk", href: "/store-kiosk-management", icon: Shield },
   { name: "All Errors", href: "/all-errors", icon: List },
+  { name: "AI Analysis", href: "/ai-analysis", icon: Brain },
   { name: "Reports", href: "/reports", icon: FileText },
   { name: "Settings", href: "/settings", icon: Settings },
+  { name: "POS Scenarios", href: "/pos-scenarios", icon: FileText },
 ];
 
 export default function TopNav({ className }: TopNavProps) {
@@ -236,7 +240,7 @@ export default function TopNav({ className }: TopNavProps) {
             {/* Hamburger Menu for Secondary Navigation */}
             <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-2">
+                <Button variant="ghost" size="sm" className="p-2" aria-label="Open navigation menu">
                   <Menu className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
@@ -306,7 +310,7 @@ export default function TopNav({ className }: TopNavProps) {
             {/* Notifications */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="relative p-2">
+                <Button variant="ghost" size="sm" className="relative p-2" aria-label={`Notifications (${totalNotifications} unread)`}>
                   <Bell className="h-5 w-5" />
                   {totalNotifications > 0 && (
                     <Badge
@@ -409,6 +413,7 @@ export default function TopNav({ className }: TopNavProps) {
                     size="sm"
                     onClick={toggleLayoutType}
                     className="h-8 w-8 p-0"
+                    aria-label={`Switch to ${layoutType === "sidebar" ? "top navigation" : "sidebar"} layout`}
                   >
                     {layoutType === "sidebar" ? (
                       <LayoutGrid className="h-4 w-4" />
@@ -446,6 +451,7 @@ export default function TopNav({ className }: TopNavProps) {
                 <Button
                   variant="ghost"
                   className="relative h-8 w-8 rounded-full"
+                  aria-label={`User profile menu for ${user?.username || 'user'}`}
                 >
                   <div className="flex items-center justify-center w-full h-full bg-gradient-to-r from-primary to-secondary rounded-full text-white text-sm font-medium">
                     {user?.username
@@ -490,7 +496,7 @@ export default function TopNav({ className }: TopNavProps) {
             {/* Mobile Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
+                <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open mobile navigation menu">
                   <Menu className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>

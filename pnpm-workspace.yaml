@@ -1,0 +1,12 @@
+packages:
+  - demo-pos-app
+  - stacklens/**
+  - pos-demo/**
+  - packages/**
+ignoredBuiltDependencies:
+  - '@firebase/util'
+  - better-sqlite3
+  - esbuild
+  - unrs-resolver
+onlyBuiltDependencies:
+  - better-sqlite3

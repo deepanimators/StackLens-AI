@@ -1,0 +1,234 @@
+version: "3.8"
+
+services:
+  # Enrichment Service - Phase 3 Advanced Enrichment
+  enrichment-service:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/enrichment.Dockerfile
+    container_name: stacklens-enrichment-service
+    depends_on:
+      - kafka
+      - postgres
+      - enrichment-api # External user service mock
+    environment:
+      # Kafka Configuration
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_INPUT_TOPIC: stacklens-enriched
+      KAFKA_OUTPUT_TOPIC: stacklens-analytics
+      KAFKA_DLQ_TOPIC: analytics-dlq
+      KAFKA_CONSUMER_GROUP: enrichment-service-group
+      KAFKA_BATCH_SIZE: "50"
+      KAFKA_BATCH_TIMEOUT_SEC: "5"
+
+      # Database Configuration
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: stacklens
+      DB_USER: stacklens_user
+      DB_PASSWORD: stacklens_password
+      DB_POOL_MIN: "1"
+      DB_POOL_MAX: "5"
+
+      # Enrichment Service Configuration
+      GEO_IP_CACHE_SIZE: "10000"
+      GEO_IP_CACHE_TTL_HOURS: "1"
+      USER_CACHE_SIZE: "5000"
+      USER_CACHE_TTL_HOURS: "1"
+      BUSINESS_CACHE_SIZE: "5000"
+      BUSINESS_CACHE_TTL_MIN: "30"
+
+      # External Service URLs
+      USER_SERVICE_URL: http://enrichment-api:8002
+      USER_SERVICE_TIMEOUT_SEC: "5"
+      USER_SERVICE_RETRIES: "3"
+
+      # Logging Configuration
+      LOG_LEVEL: INFO
+      LOG_FORMAT: json
+
+      # Performance Configuration
+      MAX_THREADS: "4"
+      STATS_INTERVAL_SEC: "30"
+
+      # Monitoring
+      ENABLE_METRICS: "true"
+      METRICS_PORT: "8003"
+
+    ports:
+      - "8003:8003" # Metrics port
+
+    volumes:
+      - ./python-services/enrichment_service.py:/app/enrichment_service.py:ro
+      - ./python-services/enrichment_schema.sql:/app/enrichment_schema.sql:ro
+      - ./data/cache:/app/cache
+      - ./logs/enrichment:/app/logs
+
+    networks:
+      - stacklens-network
+
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+        reservations:
+          cpus: "1"
+          memory: 256M
+
+  # External User Service Mock for Enrichment
+  enrichment-api:
+    image: python:3.11-slim
+    container_name: stacklens-enrichment-api
+    working_dir: /app
+    command: python user_service_mock.py
+
+    environment:
+      SERVICE_PORT: "8002"
+      SERVICE_HOST: "0.0.0.0"
+      LOG_LEVEL: INFO
+
+    ports:
+      - "8002:8002"
+
+    volumes:
+      - ./python-services:/app:ro
+
+    networks:
+      - stacklens-network
+
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # PostgreSQL - Enrichment Cache Storage
+  postgres:
+    image: postgres:15-alpine
+    container_name: stacklens-postgres
+    environment:
+      POSTGRES_DB: stacklens
+      POSTGRES_USER: stacklens_user
+      POSTGRES_PASSWORD: stacklens_password
+      POSTGRES_INITDB_ARGS: "-c max_connections=200 -c shared_buffers=256MB"
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./python-services/enrichment_schema.sql:/docker-entrypoint-initdb.d/01_enrichment_schema.sql:ro
+
+    networks:
+      - stacklens-network
+
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stacklens_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 256M
+
+  # Kafka - Message Broker (from Phase 2)
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: stacklens-kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168 # 1 week
+      KAFKA_NUM_PARTITIONS: 3
+
+    ports:
+      - "9092:9092"
+
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+
+    networks:
+      - stacklens-network
+
+    restart: on-failure
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "kafka-broker-api-versions --bootstrap-server=localhost:9092",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Zookeeper - Kafka Coordinator
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: stacklens-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_INIT_LIMIT: 5
+
+    ports:
+      - "2181:2181"
+
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+
+    networks:
+      - stacklens-network
+
+    restart: on-failure
+
+  # Kafka UI - Monitoring
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: stacklens-kafka-ui
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: stacklens
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+
+    ports:
+      - "8080:8080"
+
+    networks:
+      - stacklens-network
+
+    restart: on-failure
+
+networks:
+  stacklens-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
+  kafka-data:
+    driver: local
+  zookeeper-data:
+    driver: local

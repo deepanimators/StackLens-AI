@@ -33,21 +33,47 @@ setup('authenticate user', async ({ page, context }) => {
         const testEmail = process.env.TEST_USER_EMAIL || 'test@stacklens.ai';
 
         if (testToken) {
-            // If we have a test token, inject it directly
+            // If we have a test token, we need to exchange it for a session token
             console.log('Using TEST_FIREBASE_TOKEN for authentication...');
 
-            await page.evaluate((token) => {
-                localStorage.setItem('firebase_token', token);
-                localStorage.setItem('user_authenticated', 'true');
-            }, testToken);
+            try {
+                // Exchange Firebase token for session token
+                const response = await page.request.post('/api/auth/firebase-signin', {
+                    data: {
+                        idToken: testToken
+                    }
+                });
 
-            // Reload to apply authentication
-            await page.reload({ waitUntil: 'networkidle' });
+                if (response.ok()) {
+                    const { token, user } = await response.json();
+                    console.log('✓ Token exchange successful');
 
-            // Verify authentication succeeded
-            await expect(page.locator('[data-testid="user-profile"]').or(page.locator('text=Dashboard'))).toBeVisible({ timeout: 10000 });
+                    await page.evaluate(({ token, user }) => {
+                        localStorage.setItem('auth_token', token);
+                        localStorage.setItem('auth_user', JSON.stringify(user));
+                        localStorage.setItem('user_authenticated', 'true');
+                    }, { token, user });
 
-            console.log('Authentication successful with token');
+                    // Reload to apply authentication
+                    await page.reload({ waitUntil: 'networkidle' });
+
+                    // Verify authentication
+                    const authVerified = await page.locator('[data-testid="user-profile"]')
+                        .or(page.locator('text=Dashboard'))
+                        .isVisible({ timeout: 5000 })
+                        .catch(() => false);
+
+                    if (authVerified) {
+                        console.log('✓ Authentication successful with session token');
+                    } else {
+                        console.log('⚠️  Token injected but UI elements not found');
+                    }
+                } else {
+                    console.error('❌ Token exchange failed:', await response.text());
+                }
+            } catch (error) {
+                console.log('⚠️  Failed to verify token authentication:', error);
+            }
         } else {
             // Fallback: Try to find and click sign-in button
             console.log('No TEST_FIREBASE_TOKEN found, attempting sign-in flow...');

@@ -41,35 +41,36 @@ export async function setupVite(app: Express, server: Server) {
   });
 
   app.use(vite.middlewares);
-  app.use("*", async (req, res, next) => {
-    const url = req.originalUrl;
 
-    // Skip API routes - let them be handled by the API router
-    if (url.startsWith("/api/")) {
-      return next();
-    }
+  // Only serve client HTML if the client directory exists
+  // In development with separate frontend server, this won't apply
+  const clientPath = path.resolve(import.meta.dirname, "..", "client", "index.html");
+  const hasClientDir = fs.existsSync(clientPath);
 
-    try {
-      const clientTemplate = path.resolve(
-        import.meta.dirname,
-        "..",
-        "client",
-        "index.html"
-      );
+  if (hasClientDir) {
+    app.use("*", async (req, res, next) => {
+      const url = req.originalUrl;
 
-      // always reload the index.html file from disk incase it changes
-      let template = await fs.promises.readFile(clientTemplate, "utf-8");
-      template = template.replace(
-        `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`
-      );
-      const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
-    } catch (e) {
-      vite.ssrFixStacktrace(e as Error);
-      next(e);
-    }
-  });
+      // Skip API routes - let them be handled by the API router
+      if (url.startsWith("/api/")) {
+        return next();
+      }
+
+      try {
+        // always reload the index.html file from disk incase it changes
+        let template = await fs.promises.readFile(clientPath, "utf-8");
+        template = template.replace(
+          `src="/src/main.tsx"`,
+          `src="/src/main.tsx?v=${nanoid()}"`
+        );
+        const page = await vite.transformIndexHtml(url, template);
+        res.status(200).set({ "Content-Type": "text/html" }).end(page);
+      } catch (e) {
+        vite.ssrFixStacktrace(e as Error);
+        next(e);
+      }
+    });
+  }
 }
 
 export function serveStatic(app: Express) {

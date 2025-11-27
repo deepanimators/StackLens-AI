@@ -80,7 +80,7 @@ export default function MLTrainingModal({
     queryKey: ["/api/ml/status"],
     queryFn: async () => {
       const response = await authenticatedRequest("GET", "/api/ml/status");
-      return response.json();
+      return response;
     },
     enabled: isOpen,
   });
@@ -94,7 +94,7 @@ export default function MLTrainingModal({
         "GET",
         `/api/ml/training-progress/${trainingStatus.sessionId}`
       );
-      return response.json();
+      return response;
     },
     enabled: !!trainingStatus.sessionId && trainingStatus.isTraining,
     refetchInterval: 1000, // Poll every second during training
@@ -137,15 +137,12 @@ export default function MLTrainingModal({
   const trainModelMutation = useMutation({
     mutationFn: async () => {
       const response = await authenticatedRequest("POST", "/api/ml/train", {
-        body: JSON.stringify({
-          modelName: `StackLens-Model-${
-            new Date().toISOString().split("T")[0]
-          }`,
-          description: "AI-powered error classification model for log analysis",
-        }),
-        headers: { "Content-Type": "application/json" },
+        modelName: `StackLens-Model-${
+          new Date().toISOString().split("T")[0]
+        }`,
+        description: "AI-powered error classification model for log analysis",
       });
-      return response.json();
+      return response;
     },
     onSuccess: (response: any) => {
       setTrainingStatus((prev) => ({

@@ -92,7 +92,7 @@ export function JiraIntegrationAdmin() {
     queryKey: ["jira-status"],
     queryFn: async () => {
       const response = await authenticatedRequest("GET", "/api/jira/status");
-      return response.json();
+      return response;
     },
     refetchInterval: 30000,
   });
@@ -102,7 +102,7 @@ export function JiraIntegrationAdmin() {
     queryKey: ["automation-status"],
     queryFn: async () => {
       const response = await authenticatedRequest("GET", "/api/automation/status");
-      return response.json();
+      return response;
     },
     refetchInterval: 30000,
   });
@@ -112,7 +112,7 @@ export function JiraIntegrationAdmin() {
     queryKey: ["watcher-status"],
     queryFn: async () => {
       const response = await authenticatedRequest("GET", "/api/watcher/status");
-      return response.json();
+      return response;
     },
     refetchInterval: 30000,
   });
@@ -123,7 +123,7 @@ export function JiraIntegrationAdmin() {
       const response = await authenticatedRequest("POST", "/api/watcher/start", {
         logFilePath: "data/pos-application.log",
       });
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       toast({
@@ -145,7 +145,7 @@ export function JiraIntegrationAdmin() {
   const stopWatcherMutation = useMutation({
     mutationFn: async () => {
       const response = await authenticatedRequest("POST", "/api/watcher/stop");
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       toast({
@@ -167,7 +167,7 @@ export function JiraIntegrationAdmin() {
   const toggleAutomationMutation = useMutation({
     mutationFn: async (enabled: boolean) => {
       const response = await authenticatedRequest("POST", "/api/automation/toggle", { enabled });
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       toast({

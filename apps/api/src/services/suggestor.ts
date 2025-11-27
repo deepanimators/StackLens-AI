@@ -1,7 +1,29 @@
 import { ErrorLog } from "@shared/schema";
 import { predictor } from "./predictor";
-// Removed aiService import to avoid circular dependency
-import errorMap from "./error-map.json";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+// Load error map using fs instead of import assertion for better compatibility
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+interface ErrorMapEntry {
+  pattern: string[];
+  severity: string;
+  root_cause: string;
+  resolution_steps: string[];
+  code_example?: string;
+  prevention_measures: string[];
+}
+
+interface ErrorMap {
+  [category: string]: {
+    [errorType: string]: ErrorMapEntry;
+  };
+}
+
+const errorMap: ErrorMap = JSON.parse(readFileSync(join(__dirname, "error-map.json"), "utf-8"));
 
 export interface SuggestionResult {
   source: 'ml_model' | 'static_map' | 'ai_service' | 'fallback';
@@ -27,7 +49,7 @@ export class Suggestor {
     try {
       // Try ML model first
       const mlResult = await this.tryMLPrediction(error);
-      if (mlResult && mlResult.confidence >= this.CONFIDENCE_THRESHOLDS.MEDIUM) {
+      if (mlResult && mlResult.confidence >= Suggestor.CONFIDENCE_THRESHOLDS.MEDIUM) {
         return mlResult;
       }
 
@@ -47,7 +69,7 @@ export class Suggestor {
       return this.getFallbackSuggestion(error);
     } catch (error) {
       console.error('Suggestion generation failed:', error);
-      return this.getFallbackSuggestion(error);
+      return this.getFallbackSuggestion(error as ErrorLog);
     }
   }
 
@@ -69,8 +91,8 @@ export class Suggestor {
   private async tryMLPrediction(error: ErrorLog): Promise<SuggestionResult | null> {
     try {
       const prediction = await predictor.predictSingle(error);
-      
-      if (prediction.confidence < this.CONFIDENCE_THRESHOLDS.MEDIUM) {
+
+      if (prediction.confidence < Suggestor.CONFIDENCE_THRESHOLDS.MEDIUM) {
         return null;
       }
 
@@ -93,7 +115,7 @@ export class Suggestor {
 
   private async tryStaticMap(error: ErrorLog): Promise<SuggestionResult | null> {
     const message = error.message.toLowerCase();
-    
+
     // Search through error map categories
     for (const [category, errorTypes] of Object.entries(errorMap)) {
       for (const [errorType, errorData] of Object.entries(errorTypes)) {
@@ -113,7 +135,7 @@ export class Suggestor {
         }
       }
     }
-    
+
     return null;
   }
 
@@ -125,7 +147,7 @@ export class Suggestor {
   }
 
   private matchesPattern(message: string, patterns: string[]): boolean {
-    return patterns.some(pattern => 
+    return patterns.some(pattern =>
       message.includes(pattern.toLowerCase())
     );
   }
@@ -205,28 +227,28 @@ export class Suggestor {
   }
 
   private extractPatternsFromMessage(message: string): string[] {
-    const patterns = [];
+    const patterns: string[] = [];
     const lowerMessage = message.toLowerCase();
-    
+
     // Common error patterns
     const commonPatterns = [
       'exception', 'error', 'failed', 'timeout', 'connection', 'memory',
       'null', 'undefined', 'permission', 'access', 'file', 'network',
       'database', 'syntax', 'type', 'reference', 'heap', 'stack'
     ];
-    
+
     commonPatterns.forEach(pattern => {
       if (lowerMessage.includes(pattern)) {
         patterns.push(pattern);
       }
     });
-    
+
     return patterns;
   }
 
   private getFallbackSuggestion(error: ErrorLog): SuggestionResult {
     const severity = error.severity || 'medium';
-    
+
     return {
       source: 'fallback',
       confidence: 0.3,

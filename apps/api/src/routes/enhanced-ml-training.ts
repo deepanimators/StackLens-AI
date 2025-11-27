@@ -10,6 +10,9 @@ import path from "path";
 import fs from "fs";
 import PredictionModelTrainingService from "../services/prediction-model-training";
 import SuggestionModelTrainingService from "../services/suggestion-model-training";
+import { db } from "../database/db.js";
+import { mlModels } from "@shared/sqlite-schema";
+import { eq, desc } from "drizzle-orm";
 
 const router = express.Router();
 
@@ -246,9 +249,8 @@ router.post("/api/ml/train-prediction", async (req, res) => {
     console.error("❌ Prediction Model training failed:", error);
     res.status(500).json({
       success: false,
-      message: `Training failed: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`,
+      message: `Training failed: ${error instanceof Error ? error.message : "Unknown error"
+        }`,
       modelType: "prediction",
     });
   }
@@ -305,9 +307,8 @@ router.post("/api/ml/train-suggestion", async (req, res) => {
     console.error("❌ Suggestion Model training failed:", error);
     res.status(500).json({
       success: false,
-      message: `Training failed: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`,
+      message: `Training failed: ${error instanceof Error ? error.message : "Unknown error"
+        }`,
       modelType: "suggestion",
     });
   }
@@ -318,14 +319,12 @@ router.post("/api/ml/train-suggestion", async (req, res) => {
  */
 router.get("/api/ml/status", async (req, res) => {
   try {
-    const db = require("../db");
-
-    // Get current models from database
-    const models = await db.all(`
-      SELECT * FROM ml_models 
-      WHERE is_active = 1 
-      ORDER BY created_at DESC
-    `);
+    // Get current active models from database using Drizzle ORM
+    const activeModels = await db
+      .select()
+      .from(mlModels)
+      .where(eq(mlModels.isActive, true))
+      .orderBy(desc(mlModels.trainedAt));
 
     // Get training statistics from services
     const predictionStats = predictionTrainer.getTrainingStats();
@@ -333,7 +332,7 @@ router.get("/api/ml/status", async (req, res) => {
 
     res.json({
       success: true,
-      models: models,
+      models: activeModels,
       trainingStats: {
         prediction: predictionStats,
         suggestion: suggestionStats,
@@ -353,9 +352,8 @@ router.get("/api/ml/status", async (req, res) => {
     console.error("❌ Failed to get ML status:", error);
     res.status(500).json({
       success: false,
-      message: `Failed to get status: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`,
+      message: `Failed to get status: ${error instanceof Error ? error.message : "Unknown error"
+        }`,
     });
   }
 });
@@ -438,9 +436,8 @@ router.post("/api/ml/validate-logs", async (req, res) => {
     console.error("❌ Log validation failed:", error);
     res.status(500).json({
       success: false,
-      message: `Validation failed: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`,
+      message: `Validation failed: ${error instanceof Error ? error.message : "Unknown error"
+        }`,
     });
   }
 });
@@ -518,9 +515,8 @@ router.post("/api/ml/validate-excel", async (req, res) => {
     console.error("❌ Excel validation failed:", error);
     res.status(500).json({
       success: false,
-      message: `Validation failed: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`,
+      message: `Validation failed: ${error instanceof Error ? error.message : "Unknown error"
+        }`,
     });
   }
 });

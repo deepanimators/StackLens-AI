@@ -5,7 +5,7 @@ import path from "path";
 export default defineConfig({
     plugins: [react()],
     test: {
-        globals: true,
+        globals: false, // Disabled to prevent conflict with Playwright expect
         environment: "node",
         coverage: {
             provider: "v8",
@@ -19,8 +19,8 @@ export default defineConfig({
                 "tests/**",
             ],
         },
-        include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
-        exclude: ["node_modules", "dist", "build"],
+        include: ["tests/phase*.test.ts", "apps/**/__tests__/**/*.test.ts", "stacklens/**/tests/**/*.test.ts", "pos-demo/**/tests/**/*.test.ts"],
+        exclude: ["node_modules", "dist", "build", "tests/api/**", "tests/e2e/**", "tests/ui/**", "tests/unit/**", "tests/integration/**", "tests/functional/**"],
     },
     resolve: {
         alias: {

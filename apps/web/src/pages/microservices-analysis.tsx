@@ -84,7 +84,7 @@ export default function MicroservicesAnalysisPage() {
         "GET",
         "/api/microservices/health"
       );
-      return response.json();
+      return response;
     },
     refetchInterval: 30000, // Refresh every 30 seconds
   });
@@ -94,7 +94,7 @@ export default function MicroservicesAnalysisPage() {
     queryKey: ["/api/files"],
     queryFn: async () => {
       const response = await authenticatedRequest("GET", "/api/files");
-      return response.json();
+      return response;
     },
   });
 
@@ -109,7 +109,7 @@ export default function MicroservicesAnalysisPage() {
           fileId,
         }
       );
-      return response.json();
+      return response;
     },
     onSuccess: (data) => {
       setAnalysisResults(data);
@@ -147,7 +147,7 @@ export default function MicroservicesAnalysisPage() {
           topK: 10,
         }
       );
-      return response.json();
+      return response;
     },
     onSuccess: (data) => {
       toast({
@@ -168,7 +168,7 @@ export default function MicroservicesAnalysisPage() {
           contamination: 0.1,
         }
       );
-      return response.json();
+      return response;
     },
   });
 
@@ -189,7 +189,7 @@ export default function MicroservicesAnalysisPage() {
           nClusters,
         }
       );
-      return response.json();
+      return response;
     },
   });
 
@@ -203,7 +203,7 @@ export default function MicroservicesAnalysisPage() {
           fileId,
         }
       );
-      return response.json();
+      return response;
     },
   });
 
@@ -219,7 +219,7 @@ export default function MicroservicesAnalysisPage() {
           minLength: 50,
         }
       );
-      return response.json();
+      return response;
     },
   });
 

@@ -5,7 +5,22 @@ dist/
 node_modules/
 
 
+
 # Database files
+*.db
+*.sqlite
+*.db-shm
+*.db-wal
+*.db-journal
+data/database/
+data/Database/
+data/Database/*.db
+data/database/*.db
+data/[Dd]atabase/*.db
+db/*.db
+db/**/*.db
+python-services/**/*.db
+
 
 # Logs
 *.log
@@ -35,3 +50,12 @@ test-results/
 tmp/
 temp/
 *.tmp
+
+# Upload directories (test and production)
+test-uploads/
+
+# Excel training data (keep directory structure but ignore content)
+attached_assets/*.xlsx
+attached_assets/*.xls
+!attached_assets/README.md
+!attached_assets/.gitkeep

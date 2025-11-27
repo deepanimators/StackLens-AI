@@ -197,6 +197,12 @@ class AuthManager {
 
       const data = await response.json();
       console.log("🔐 Current user fetched successfully:", data.user?.username || 'unknown');
+
+      if (!data.user) {
+        console.log("🔐 Auth response missing user object, returning null");
+        return null;
+      }
+
       this.user = data.user;
       this.saveToStorage();
 

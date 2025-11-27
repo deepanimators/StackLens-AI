@@ -1,0 +1,693 @@
+@workspace 
+/new 
+I am planning to upload the files in the upload folder in the workspace.
+These are the sample logs I got from the client there could be more similar kind of logs I could get from the client for analysis.
+
+Can you analyse each and every log txt file in the upload folder and need to analyse only the errors from the log file do not modify any stucture of the application only think and modify the AI model and request and response style I need all the data that the application right now provide as a response.
+
+This should also store uploaded files in the upload folder for future reference.
+
+Please provide me the AI error analysis and smart error identifier with suggestion to fix the issue or create a automation workflow to fix the issue by the application itself.
+
+Creating automation workflow is a furture plan first provide each and every idea you can contribute to enhance this application to meet the great of the time.
+
+Execute step by step fixing of the issues so it is more accurate.
+
+In the ML Predictions on the AI Analysis tab I could see only unknown as a text and confidence is N/A
+
+Can you help me with the best and great experienced application.
+
+I need this application to be one of its kind
+
+In analysis details popup.
+I need the the list of errors to be sorted by Critical High medium and low.
+once I click on the individual message in the Detected Errors section it should show the full error text of the line. right now it is hidden.
+I could see only first 10 errors are shown. can you make that as a pagination template so that I can navigate to those page 1 page 2 page3 to view all the error list.
+
+In AI Suggestion section dont show duplicate error suggestion consolidate the error by duplicates and show unique errors and it ai suggestions.
+
+In AI Analysis tab show only the consolidated errors avoid duplicate once and provide it suggestions.
+
+you also run the error analysis for the files in uploads folder and create errorPattern in the code and make this universal.
+
+Modify the changes in the existing code do not create a new codebase or workspace.
+
+in History tab and in Analysis History I need delete button to delete the uploaded data from the application
+
+you add gemini api for AI suggestion so this could help the application to work with AI model inbuild and api too.
+fix the issue
+
+you also run the error analysis for the files in uploads folder and create errorPattern in the code and make this universal.
+
+Modify the changes in the existing code do not create a new codebase or workspace.
+
+
+Workspace
+Collecting workspace information
+
+Let's fix the "Failed to load analysis details" error in the View Analysis popup. Here's the step-by-step solution:
+
+First, update the /api/analysis/<id> route in routes.py:
+Update the view analysis function in main.js:
+This implementation:
+
+Adds proper error handling
+Shows loading indicator
+Formats data correctly
+Adds pagination for errors
+Shows detailed file information
+Displays error summary
+Shows AI suggestions
+Handles empty states
+The view analysis popup should now work correctly and show all details.
+
+deepanimators
+@workspace
+I could not see any data in View Analysis Popup
+Detected Error section can you fix this I need pagination to be enabled if there are 10 + data errors
+
+In AI Suggestions I could see duplicate error entries can you consolidate and show only unique errors in that section.
+
+AI Suggestions section is removed in View Analysis Popup why? can you add it once again there with same functionlity
+If the pagination is more that 5 pages inherit the pages and show like below this is an example.
+Prev 1 2 3 ...........10 11 Next
+
+in detected errors section can you add the line numbers in the tabular column I nee line numbers and time stamp to be shown Increase the with of the popup to fit in these two values.
+
+Can you help me modify the code to upload more than one error logs?
+
+analyse the full code and provide the best results.
+
+in the detail analysis popup. Once click on action button I could see another popup but the text inside the popup in overlayed can you should that without overlay?
+I could see, once I click on the Train Model it is showing me a notification like Model training completed successfully! Accuracy: NaN%
+
+but I could see NAN% in it can you modify the script and show the accuracy in the model trained.
+
+This should be based on the Precision, recall, f1, confusion_matrix, cv_mean_score, cv_std_score, classes, top_features, class_metrics, model_saved, model_path, etc
+
+
+
+New Page: Consolidated Error List
+Route: /all_errors (Flask route and template)
+
+Table Columns:
+
+File Name
+Timestamp
+Severity
+Error Message
+Action (View/AI Suggestion)
+Filters:
+
+Severity dropdown/buttons
+Message search field
+Timestamp search (date range or text)
+Modal:
+
+On Action button click, show a modal with:
+Full error details
+AI suggestion to fix (from Gemini or local model)
+2. AI Suggestion Strategy
+Best Practice:
+
+Use Gemini (or any LLM) for initial suggestions, but store the AI suggestion and user feedback in your DB.
+Train a local model (e.g., using scikit-learn or a small transformer) on your error+suggestion pairs.
+On future errors, use the local model for instant suggestions; fallback to Gemini if confidence is low or no match.
+Why?
+
+This gives you fast, private, and improving suggestions over time.
+You can measure accuracy, F1, precision, and retrain as you collect more data.
+3. Implementation Steps
+Backend (Flask)
+Add a new route /all_errors that queries all errors from all analyses, joining with file name.
+Add an API endpoint /api/error_suggestion/<error_id> to return AI/local suggestion for a given error.
+Frontend (Jinja2 + JS)
+Create all_errors.html template with a table (like the analysis modal, but with file name).
+Add severity filter, message search, and timestamp search fields above the table.
+Add an Action button for each row to open a modal with the AI suggestion.
+Use AJAX to fetch the suggestion when the modal opens.
+AI Suggestion Logic
+On first request for a new error, call Gemini (if available), store the result.
+Train a local model (e.g., using error text, severity, etc. as features) to predict suggestions.
+Show model metrics (accuracy, F1, etc.) on an admin page.
+4. Next Steps
+I will:
+
+Scaffold the new Flask route and template for /all_errors.
+Add the table and filters in the template.
+Add the modal for AI suggestions.
+Add backend logic for fetching/serving suggestions and training the local model.
+
+Progress Modal:
+
+Add a <div id="progressLogArea"> to the modal for live logs.
+Add a <div id="uploadProgressBar"> for upload progress, file size, and speed.
+Upload Handler:
+
+Use XMLHttpRequest for file upload to get progress events.
+Update the progress bar, file size, and speed in real time.
+On upload success, start analysis polling as before.
+Analysis Polling:
+
+Append status/log messages to the log area as analysis progresses.
+On redirect, log a message; on error, show an error in the log area.
+The progress modal shows a live upload progress bar, file size, and network speed.
+A terminal-like log area displays upload and analysis progress, including backend status and errors.
+Redirects to the Dashboard are logged; if redirect fails, an error is shown in the log area and as an alert.
+
+Can you analyse the full chat conversation and the full code base and if you find any issue executing the code and can you also write me testcases using playwright for all the UI screens. Can you also make all the UI and functions working as expected. can you analyse step by step and fix all the issue in the application. Validate login, signup, firebase, jwt, admin pages like users, roles etc, validate all the error pages, reports, dashboard etc.
+
+each and every corner of the application analyse and provide me fixes if there is any issue
+
+Analyse the logs one by one and provide a detailed fix to the application to run seamlessly
+
+Analyse the full code base, understand the application first, and fix all the issues step by step at Once I don't want to iterate these issues
+
+initially understand what this application analyse the codebase first dont change the actual application fix just each and every issue and dont change the architecture of this application. fix this issue in step by step manner
+Log in is not working correctly
+can you also add Google signin options so user can use that.
+
+In All Errors page getting the issue
+[plugin:runtime-error-plugin] A <Select.Item /> must have a value prop that is not an empty string. This is because the Select value can be set to an empty string to clear the selection and show the placeholder.
+
+In Settings page Notification tab if I modify any thing it is not showing correctly. saved correctly.
+API & Integration tab also the same not saving.
+
+In Admin Dashboard Page The Users and other things are not update correctly as per the input in the DB
+In Training Management Tab also the Modification is not saving. AI Models Tab also not saving,
+
+In UI setting page I need save button to make change and that should work and these setting should be saved directly on the DB itself local DB
+
+In UI Setting I could not see Top Nav and Side nav configuration to modify the UI template Can you provide me the options to do so.
+
+
+I'll analyze our entire conversation to provide you with a comprehensive, clean prompt that captures all your requests. Let me review the chat history and create a detailed prompt. Based on my comprehensive analysis of our entire conversation, I'll provide you with a detailed, clean prompt that captures all the issues and requirements you've mentioned throughout our chat. Here's the consolidated prompt:
+
+---
+
+# **StackLens AI - Comprehensive Development & Debugging Prompt**
+
+## **Project Overview**
+StackLens AI is an enterprise-grade, AI-powered log analysis platform that combines modern web technologies with machine learning for intelligent error detection, pattern analysis, and automated resolution suggestions using Google Gemini AI.
+
+## **Critical Issues to Resolve**
+
+### **1. Database & Schema Issues**
+- **File Upload Constraint Failures**: Fix `NOT NULL constraint failed: log_files.size` errors
+- **Database Schema Mismatches**: Ensure consistency between actual database structure and code expectations
+- **Field Name Conflicts**: Resolve conflicts between `fileSize` vs `size` field naming
+- **Migration Issues**: Ensure proper database initialization and seeding
+
+### **2. ML Training System Issues**
+- **XLSX Import Errors**: Fix `XLSX.readFile is not a function` TypeScript import issues
+- **Training Summary 500 Errors**: Resolve API endpoint failures returning HTML instead of JSON
+- **Excel Data Processing**: Implement proper Excel file parsing for training data
+- **Pattern Analysis**: Fix empty Pattern Analysis and Trend Analysis tabs
+- **Training Status**: Resolve JSON parsing errors showing "Unexpected token '<'"
+
+### **3. File Upload & Analysis Issues**
+- **Upload Failures**: Fix "No files returned from upload" errors
+- **Analysis Stuck in Pending**: Resolve files getting stuck at 100% progress but remaining in "pending" status
+- **Background Processing**: Ensure proper file analysis completion and status updates
+- **Progress Tracking**: Fix progress indicator accuracy and final status reporting
+
+### **4. Settings & Configuration Issues**
+- **Settings API Mismatch**: Frontend requests `/api/settings` but routes are `/api/admin/ui-settings`
+- **JSON vs HTML Responses**: Ensure all API endpoints return proper JSON instead of HTML
+- **Authentication Issues**: Fix token validation and user session management
+- **Navigation Consistency**: Ensure proper routing and endpoint accessibility
+
+### **5. Admin Dashboard Issues**
+- **Zero Data Display**: Admin dashboard showing 0 for all statistics instead of real data
+- **Model Training Metrics**: Fix training results showing 0.0% accuracy despite successful training
+- **Analysis History**: Empty error patterns in analysis history popups
+- **User Management**: Ensure admin user operations work correctly
+
+## **Technical Requirements**
+
+### **Backend Architecture**
+- **Framework**: Express.js with TypeScript
+- **Database**: SQLite with Drizzle ORM and better-sqlite3
+- **AI Integration**: Google Gemini AI for error analysis and suggestions
+- **Authentication**: JWT-based with role-based access control (user, admin, super_admin)
+- **File Processing**: Multer for uploads with background analysis using custom job processor
+
+### **Frontend Architecture**
+- **Framework**: React 18 with TypeScript and Vite
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **State Management**: TanStack Query for server state
+- **Routing**: React Router with protected routes
+- **File Upload**: Drag-and-drop interface with progress tracking
+
+### **Database Schema Requirements**
+```sql
+-- Key tables that must work correctly
+CREATE TABLE log_files (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  filename TEXT NOT NULL,
+  original_name TEXT NOT NULL,
+  size INTEGER NOT NULL,  -- This field must match code expectations
+  mime_type TEXT NOT NULL,
+  uploaded_by INTEGER REFERENCES users(id),
+  status TEXT DEFAULT 'pending',
+  -- other fields...
+);
+
+CREATE TABLE model_training_sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_name TEXT NOT NULL,  -- This field was missing
+  training_data TEXT NOT NULL,
+  model_id INTEGER REFERENCES ml_models(id),
+  -- other fields...
+);
+```
+
+### **API Endpoints That Must Work**
+- `POST /api/files/upload` - File upload with proper constraint handling
+- `GET /api/ml/training-summary` - Training data summary (must return JSON)
+- `POST /api/ml/train-from-excel` - Excel-based model training
+- `GET /api/settings` - Unified settings endpoint for frontend
+- `GET /api/ml/pattern-insights` - Pattern analysis data
+- `GET /api/ml/trend-analysis` - Trend analysis data
+
+## **Specific Fixes Required**
+
+### **1. Excel Processing Fix**
+```typescript
+// Fix XLSX import and usage
+import * as XLSX from 'xlsx';
+
+async loadTrainingDataFromExcel(filePath: string) {
+  const workbook = XLSX.readFile(filePath); // This must work
+  // Proper Excel parsing implementation
+}
+```
+
+### **2. Database Field Consistency**
+```typescript
+// Ensure field names match database schema
+const logFile = await storage.createLogFile({
+  filename: file.filename,
+  originalName: file.originalname,
+  size: file.size, // Must match database column name
+  mimeType: file.mimetype,
+  uploadedBy: req.user.id,
+  status: 'pending',
+});
+```
+
+### **3. API Response Format Consistency**
+```typescript
+// All API endpoints must return JSON, never HTML
+app.get('/api/settings', requireAuth, (req, res) => {
+  res.json(settings); // Never return HTML accidentally
+});
+```
+
+### **4. Missing Method Implementation**
+```typescript
+// Implement missing methods in AdvancedTrainingSystem
+async getPatternInsights() {
+  // Return real pattern analysis data
+}
+
+async getTrendAnalysis() {
+  // Return real trend analysis data
+}
+```
+
+## **Testing Requirements**
+
+### **Manual Testing Checklist**
+1. **File Upload**: Upload various file types and verify successful processing
+2. **ML Training**: Train models using Excel data without errors
+3. **Admin Dashboard**: Verify all statistics show real data, not zeros
+4. **Settings Page**: Update settings without HTML response errors
+5. **Analysis History**: View analysis details with proper error patterns
+6. **Pattern/Trend Analysis**: Ensure tabs show real data, not empty states
+
+### **Automated Testing with Playwright**
+Create comprehensive E2E tests covering:
+- Authentication flows (login, signup, Firebase auth)
+- File upload and analysis workflows
+- Admin functionality (user management, role assignment)
+- ML training and results display
+- Settings management
+- Error handling and edge cases
+
+## **Success Criteria**
+
+### **Functional Requirements**
+- ✅ All file uploads complete successfully without constraint errors
+- ✅ ML training processes Excel files and shows real accuracy metrics
+- ✅ Admin dashboard displays actual data from database
+- ✅ Pattern and trend analysis tabs show meaningful insights
+- ✅ Settings page saves and loads correctly
+- ✅ Analysis history displays complete error patterns
+
+### **Technical Requirements**
+- ✅ All API endpoints return proper JSON responses
+- ✅ Database schema matches code expectations exactly
+- ✅ TypeScript compilation passes without errors
+- ✅ File processing completes and updates status correctly
+- ✅ Background job processor handles analysis tasks properly
+
+### **User Experience Requirements**
+- ✅ Upload progress accurately reflects actual processing status
+- ✅ Error messages are clear and actionable
+- ✅ Navigation works consistently across all pages
+- ✅ Real-time updates show in dashboards and analysis views
+- ✅ Authentication and authorization work seamlessly
+
+## **Implementation Priority**
+
+1. **CRITICAL**: Fix database constraint failures preventing file uploads
+2. **CRITICAL**: Resolve XLSX import issues blocking ML training
+3. **HIGH**: Fix API endpoints returning HTML instead of JSON
+4. **HIGH**: Implement missing pattern/trend analysis methods
+5. **MEDIUM**: Add comprehensive error handling and validation
+6. **LOW**: Optimize performance and add advanced features
+
+---
+
+This comprehensive prompt captures all the issues, requirements, and technical details from our entire conversation. It should serve as a complete specification for debugging and enhancing the StackLens AI application to work seamlessly across all functionality areas.
+
+
+
+
+
+
+
+I could see In Analysis history page the Processing time is not captured correctly
+File Name	Date	Total Errors	Critical	High	Medium	Low	Processing Time	Accuracy	Actions
+transactions.log_BKUS-10222_Par Brink.txt
+14/07/2025
+103	0	65	38	0	
+N/A
+0.0%
+
+Accuracy is not captured correctly
+Processing Time: N/A
+
+Model Accuracy: NaN%
+
+Avg. Accuracy is always zero
+
+0.0%
+In Error Details POpup I need Error Patterns - Pattern analysis to be available not comming soon
+Error Patterns
+Pattern analysis coming soon
+
+Advanced pattern recognition and trend analysis
+
+In Analysis history page, I could see the process is in progress for ever
+File Name	Date	Total Errors	Critical	High	Medium	Low	Processing Time	Accuracy	Actions
+transactions-PLK-14136_Micros.txt
+completed
+14/07/2025
+-	-	-	-	-	
+In Progress...
+Pending	
+Processing...
+
+can you analyse and fix this
+
+Training Controls
+Model Training
+
+Train the ML model on your error data
+
+
+Start Training
+Training Progress
+100%
+Current Step
+
+Training completed successfully
+
+Training Log
+[17:31:04] Starting model training...
+0.0%
+Accuracy
+
+0.0%
+F1 Score
+
+0.0%
+Precision
+
+0.0%
+Recall
+
+always it is like this there are some datas but still it is like this
+
+Found '/Users/deepak/Downloads/Projects/StackLenAI/.nvmrc' with version <20.19.0>
+Now using node v20.19.0 (npm v10.8.2)
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development ./node_modules/.bin/tsx server/index.ts
+
+Setting up SQLite database...
+✅ SQLite database initialized successfully
+[dotenv@17.2.0] injecting env (10) from .env (tip: ⚙️  enable debug logging with { debug: true })
+5:29:43 PM [express] serving on port 4000
+5:29:54 PM [express] GET /api/auth/me 304 in 29ms :: {"user":{"id":1,"username":"deepanimators","ema…
+5:29:54 PM [express] GET /api/admin/ui-settings 304 in 10ms :: {"theme":"light","navigationPreferenc…
+5:29:54 PM [express] GET /api/admin/api-settings 304 in 9ms :: {"geminiApiKey":"","webhookUrl":"","m…
+5:29:55 PM [express] GET /api/dashboard/stats 200 in 136ms :: {"totalFiles":1,"totalErrors":494,"cri…
+5:29:55 PM [express] GET /api/files 200 in 6ms :: [{"id":9,"filename":"9fe4bcb9555767c94efcfd4650915…
+5:29:55 PM [express] GET /api/errors 200 in 25ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":172…
+5:29:55 PM [express] GET /api/auth/me 200 in 15ms :: {"user":{"id":1,"username":"deepanimators","ema…
+5:29:55 PM [express] GET /api/admin/ui-settings 200 in 3ms :: {"theme":"light","navigationPreference…
+5:29:55 PM [express] GET /api/admin/api-settings 200 in 4ms :: {"geminiApiKey":"","webhookUrl":"","m…
+5:30:03 PM [express] GET /api/errors 200 in 826ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":17…
+5:30:03 PM [express] GET /api/files 200 in 16ms :: [{"id":9,"filename":"9fe4bcb9555767c94efcfd465091…
+5:30:06 PM [express] GET /api/analysis/history 200 in 117ms :: [{"id":4,"fileId":9,"userId":1,"filen…
+5:30:08 PM [express] GET /api/files 200 in 46ms :: [{"id":9,"filename":"9fe4bcb9555767c94efcfd465091…
+5:30:11 PM [express] GET /api/files 200 in 19ms :: [{"id":9,"filename":"9fe4bcb9555767c94efcfd465091…
+5:30:15 PM [express] GET /api/files 200 in 11ms :: [{"id":9,"filename":"9fe4bcb9555767c94efcfd465091…
+5:30:17 PM [express] GET /api/errors 200 in 229ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":17…
+5:30:17 PM [express] GET /api/ml/status 200 in 90ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+5:30:19 PM [express] GET /api/dashboard/stats 200 in 168ms :: {"totalFiles":1,"totalErrors":494,"cri…
+5:30:35 PM [express] GET /api/auth/me 200 in 58ms :: {"user":{"id":1,"username":"deepanimators","ema…
+5:30:35 PM [express] GET /api/admin/ui-settings 200 in 7ms :: {"theme":"light","navigationPreference…
+5:30:35 PM [express] GET /api/admin/api-settings 200 in 8ms :: {"geminiApiKey":"","webhookUrl":"","m…
+5:30:36 PM [express] GET /api/errors 200 in 107ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":17…
+5:30:36 PM [express] GET /api/ml/status 200 in 81ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+Model training failed: SqliteError: table model_training_sessions has no column named session_name
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/session.ts:135:15)
+    at QueryPromise._prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:379:78)
+    at QueryPromise.all (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:396:15)
+    at QueryPromise.execute (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:408:40)
+    at QueryPromise.then (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'SQLITE_ERROR'
+}
+5:30:39 PM [express] POST /api/ml/train 200 in 90ms :: {"message":"Training failed: table model_trai…
+5:30:40 PM [express] GET /api/ml/status 200 in 172ms :: {"trained":true,"accuracy":0,"precision":0,"…
+Model training failed: SqliteError: table model_training_sessions has no column named session_name
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/session.ts:135:15)
+    at QueryPromise._prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:379:78)
+    at QueryPromise.all (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:396:15)
+    at QueryPromise.execute (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:408:40)
+    at QueryPromise.then (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'SQLITE_ERROR'
+}
+5:31:04 PM [express] POST /api/ml/train 200 in 65ms :: {"message":"Training failed: table model_trai…
+5:31:04 PM [express] GET /api/ml/status 200 in 53ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+5:31:18 PM [vite] hmr update /src/pages/analysis-history.tsx, /src/index.css?v=7Z9AcIlNbUqOfKlS3us-t
+5:31:38 PM [express] GET /api/ml/status 200 in 69ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+Model training failed: SqliteError: table model_training_sessions has no column named session_name
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/session.ts:135:15)
+    at QueryPromise._prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:379:78)
+    at QueryPromise.all (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:396:15)
+    at QueryPromise.execute (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:408:40)
+    at QueryPromise.then (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'SQLITE_ERROR'
+}
+5:31:43 PM [express] POST /api/ml/train 200 in 71ms :: {"message":"Training failed: table model_trai…
+5:31:43 PM [express] GET /api/ml/status 304 in 36ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+
+I could see only zeros in all the Admin Dashboard pages can you update the value from the DB or actuals
+I could see two close icons in the Analysis Details popup can you also fix this
+
+In Error Details POpup I need Error Patterns - Pattern analysis to be available not comming soon
+Error Patterns
+Pattern analysis coming soon
+
+Advanced pattern recognition and trend analysis
+
+In Analysis history page, I could see the process is in progress for ever
+File Name Date Total Errors Critical High Medium Low Processing Time Accuracy Actions
+transactions-PLK-14136_Micros.txt
+completed
+14/07/2025
+
+In Progress...
+Pending
+Processing...
+
+can you analyse and fix this
+
+
+Setting up SQLite database...
+✅ SQLite database initialized successfully
+[dotenv@17.2.0] injecting env (10) from .env (tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] })
+5:39:28 PM [express] serving on port 4000
+5:39:36 PM [express] GET /api/auth/me 304 in 54ms :: {"user":{"id":1,"username":"deepanimators","ema…
+5:39:36 PM [express] GET /api/admin/ui-settings 304 in 7ms :: {"theme":"light","navigationPreference…
+5:39:36 PM [express] GET /api/admin/api-settings 304 in 4ms :: {"geminiApiKey":"","webhookUrl":"","m…
+5:39:36 PM [express] GET /api/errors 304 in 290ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":17…
+5:39:36 PM [express] GET /api/files 304 in 6ms :: [{"id":9,"filename":"9fe4bcb9555767c94efcfd4650915…
+5:39:36 PM [express] GET /api/auth/me 200 in 6ms :: {"user":{"id":1,"username":"deepanimators","emai…
+5:39:36 PM [express] GET /api/admin/ui-settings 200 in 7ms :: {"theme":"light","navigationPreference…
+5:39:36 PM [express] GET /api/admin/api-settings 200 in 9ms :: {"geminiApiKey":"","webhookUrl":"","m…
+5:39:37 PM [express] GET /api/ml/status 200 in 32ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+5:39:37 PM [express] GET /api/errors 200 in 198ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":17…
+5:39:48 PM [express] GET /api/errors 200 in 83ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":172…
+5:39:56 PM [express] GET /api/errors 304 in 80ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":172…
+5:40:08 PM [express] GET /api/errors 200 in 91ms :: {"errors":[{"id":887,"fileId":9,"lineNumber":172…
+5:40:08 PM [express] GET /api/ml/status 304 in 38ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+Model training failed: SqliteError: table model_training_sessions has no column named session_name
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/session.ts:135:15)
+    at QueryPromise._prepare (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:379:78)
+    at QueryPromise.all (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:396:15)
+    at QueryPromise.execute (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/sqlite-core/query-builders/insert.ts:408:40)
+    at QueryPromise.then (/Users/deepak/Downloads/Projects/StackLenAI/node_modules/src/query-promise.ts:31:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'SQLITE_ERROR'
+}
+5:40:12 PM [express] POST /api/ml/train 200 in 53ms :: {"message":"Training failed: table model_trai…
+5:40:12 PM [express] GET /api/ml/status 304 in 20ms :: {"trained":true,"accuracy":0,"precision":0,"r…
+
+curl -s http://localhost:4000/api/auth/me
+{"message":"Authentication required"}% 
+
+
+tail -f /tmp/server.log 2>/dev/null || echo "No log file found"
+
+Active Model
+Name
+
+StackLens-Model-2025-07-14
+
+Version
+
+1.0.0
+
+Accuracy
+
+94.0%
+
+Trained
+
+01/01/1970
+
+the date is 1970 why can you fix this
+
+I see AI Confidence Score
+500% confident can you fix these
+
+Training Controls
+Model Training
+
+Train the ML model on your error data
+
+
+Start Training
+Training Progress
+100%
+Current Step
+
+Training completed successfully
+
+Training Log
+[18:36:22] Preprocessing data...
+[18:36:23] Training RandomForest model...
+[18:36:24] Training RandomForest model...
+[18:36:25] Performing cross-validation...
+[18:36:26] Performing cross-validation...
+[18:36:27] Performing cross-validation...
+[18:36:28] Evaluating model performance...
+[18:36:29] Evaluating model performance...
+[18:36:30] Finalizing model...
+[18:36:31] Finalizing model...
+0.0%
+Accuracy
+
+0.0%
+F1 Score
+
+0.0%
+Precision
+
+0.0%
+Recall
+
+
+
+
+
+Performance Metrics
+0.0%
+Accuracy
+
+0.0%
+Precision
+
+0.0%
+Recall
+
+0.0%
+F1 Score
+
+Cross-Validation Results
+0.0%
+Mean Score
+
+±0.0%
+Std Deviation
+
+Top Features
+No features data available
+Class Performance
+No class metrics available
+
+Current Model Status
+Trained
+Status
+
+94.0%
+Accuracy
+
+494
+Training Samples
+
+Active Model Details
+Model Name
+
+StackLens-Model-2025-07-14
+
+Version
+
+1.0.0
+
+Accuracy
+
+94.0%
+
+Trained At
+
+01/01/1970
+same issue it is not fixed
+

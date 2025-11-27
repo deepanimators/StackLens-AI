@@ -55,6 +55,7 @@ import {
   Navigation,
   Save,
   Key,
+  ShoppingCart,
 } from "lucide-react";
 
 interface User {
@@ -194,7 +195,7 @@ export default function AdminDashboard() {
         "GET",
         "/api/admin/ui-settings"
       );
-      return response.json();
+      return response;
     },
   });
 
@@ -206,7 +207,7 @@ export default function AdminDashboard() {
         "GET",
         "/api/admin/api-settings"
       );
-      return response.json();
+      return response;
     },
   });
 
@@ -289,7 +290,7 @@ export default function AdminDashboard() {
         "/api/admin/users",
         userData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
@@ -337,7 +338,7 @@ export default function AdminDashboard() {
         "/api/admin/models/train", // Fixed: use correct endpoint
         modelData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/models"] });
@@ -364,7 +365,7 @@ export default function AdminDashboard() {
         `/api/admin/users/${userData.id}`,
         userData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
@@ -392,7 +393,7 @@ export default function AdminDashboard() {
         "/api/admin/roles",
         roleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/roles"] });
@@ -419,7 +420,7 @@ export default function AdminDashboard() {
         `/api/admin/roles/${roleData.id}`,
         roleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/roles"] });
@@ -447,7 +448,7 @@ export default function AdminDashboard() {
         "/api/admin/training-modules",
         moduleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -476,7 +477,7 @@ export default function AdminDashboard() {
         `/api/admin/training-modules/${moduleData.id}`,
         moduleData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -506,7 +507,7 @@ export default function AdminDashboard() {
         `/api/admin/models/${modelData.id}`,
         modelData
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/models"] });
@@ -533,7 +534,7 @@ export default function AdminDashboard() {
         "DELETE",
         `/api/admin/models/${modelId}`
       );
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/models"] });
@@ -869,6 +870,10 @@ export default function AdminDashboard() {
           <TabsTrigger value="ui-settings">UI Settings</TabsTrigger>
           <TabsTrigger value="api-integration">API & Integration</TabsTrigger>
           <TabsTrigger value="jira-integration">Jira Integration</TabsTrigger>
+          <TabsTrigger value="pos-integration" className="gap-2">
+            <ShoppingCart className="h-4 w-4" />
+            POS Integration
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -2048,12 +2053,272 @@ export default function AdminDashboard() {
                 </form>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <ShoppingCart className="h-5 w-5" />
+                  <span>POS Application Integration</span>
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Connect and configure Point of Sale applications for realtime monitoring
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Active POS Connections */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-sm">Active POS Connections</h3>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 dark:bg-blue-950/20">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                          <span className="font-medium">POS Demo - Production Ready</span>
+                          <Badge className="ml-2">Active</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Connected POS instance: http://localhost:5174
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          API Endpoint: http://localhost:3000
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Status: Realtime data sync enabled • Last sync: 2 minutes ago
+                        </p>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        Disconnect
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Add New Connection */}
+                <div className="space-y-4 border-t pt-6">
+                  <h3 className="font-semibold text-sm">Add New POS Connection</h3>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="posName">POS Application Name</Label>
+                      <Input
+                        id="posName"
+                        placeholder="e.g., Store A, Main Counter, Online Shop"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Friendly name for this POS instance
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="posEndpoint">API Endpoint URL</Label>
+                      <Input
+                        id="posEndpoint"
+                        type="url"
+                        placeholder="https://your-pos-api.com/api"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Base URL for the POS API (must support OpenTelemetry)
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="posApiKey">API Key</Label>
+                      <div className="flex space-x-2">
+                        <Input
+                          id="posApiKey"
+                          type="password"
+                          placeholder="Enter POS API key"
+                        />
+                        <Button variant="outline" size="sm">
+                          Reveal
+                        </Button>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Authentication key for POS API access
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="syncInterval">Data Sync Interval</Label>
+                      <Select defaultValue="realtime">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="realtime">Realtime (Live)</SelectItem>
+                          <SelectItem value="30s">Every 30 seconds</SelectItem>
+                          <SelectItem value="1m">Every 1 minute</SelectItem>
+                          <SelectItem value="5m">Every 5 minutes</SelectItem>
+                          <SelectItem value="10m">Every 10 minutes</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        How frequently to sync data from this POS instance
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <label className="text-sm font-medium">
+                          Enable Error Tracking
+                        </label>
+                        <p className="text-xs text-muted-foreground">
+                          Capture and log errors from transactions
+                        </p>
+                      </div>
+                      <Switch defaultChecked={true} />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <label className="text-sm font-medium">
+                          Enable Performance Monitoring
+                        </label>
+                        <p className="text-xs text-muted-foreground">
+                          Track transaction latency and throughput
+                        </p>
+                      </div>
+                      <Switch defaultChecked={true} />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <label className="text-sm font-medium">
+                          Enable Custom Events
+                        </label>
+                        <p className="text-xs text-muted-foreground">
+                          Capture custom business events
+                        </p>
+                      </div>
+                      <Switch defaultChecked={true} />
+                    </div>
+
+                    <Button className="w-full">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Connect POS Application
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Data Flow Diagram */}
+                <div className="border-t pt-6 space-y-4">
+                  <h3 className="font-semibold text-sm">Data Flow</h3>
+                  <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-xs">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <ShoppingCart className="h-4 w-4" />
+                        POS Application
+                      </div>
+                      <div className="flex items-center gap-2 ml-4 text-muted-foreground">
+                        ↓ OpenTelemetry Integration
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Activity className="h-4 w-4" />
+                        Kafka Message Queue
+                      </div>
+                      <div className="flex items-center gap-2 ml-4 text-muted-foreground">
+                        ↓ Event Processing
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4" />
+                        StackLens Analytics
+                      </div>
+                      <div className="flex items-center gap-2 ml-4 text-muted-foreground">
+                        ↓ Real-time Dashboard
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Brain className="h-4 w-4" />
+                        AI Analysis & Alerts
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Integration Guide */}
+                <div className="border-t pt-6 space-y-4">
+                  <h3 className="font-semibold text-sm">Integration Guide</h3>
+                  <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 rounded-lg p-4">
+                    <h4 className="font-medium text-sm mb-3 flex items-center gap-2">
+                      <BookOpen className="h-4 w-4" />
+                      How to Connect Your POS System
+                    </h4>
+                    <ol className="space-y-2 text-sm list-decimal list-inside text-muted-foreground">
+                      <li>Ensure your POS system has OpenTelemetry SDK integrated</li>
+                      <li>Configure the POS to export metrics to Kafka broker</li>
+                      <li>Fill in the connection details above</li>
+                      <li>Click "Connect POS Application"</li>
+                      <li>View realtime data in the Analytics dashboard</li>
+                    </ol>
+                    <Button variant="link" className="mt-4 h-auto p-0">
+                      <BookOpen className="h-4 w-4 mr-1" />
+                      View Full Integration Documentation →
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
 
         {/* Jira Integration Tab */}
         <TabsContent value="jira-integration" className="space-y-6">
           <JiraIntegrationAdmin />
+        </TabsContent>
+
+        <TabsContent value="pos-integration" className="space-y-6">
+          <div className="grid gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ShoppingCart className="h-5 w-5 text-primary" />
+                  POS Application Integration
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/50">
+                  <div className="space-y-1">
+                    <h3 className="font-medium">Connection Status</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Status of the connection to the POS Demo Backend
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      Connected
+                    </Badge>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label>POS Backend URL</Label>
+                    <div className="flex gap-2">
+                      <Input defaultValue="http://localhost:3000" readOnly />
+                      <Button variant="outline" size="icon">
+                        <CheckCircle className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Environment</Label>
+                    <Input defaultValue="Development / Local" readOnly />
+                  </div>
+                </div>
+
+                <div className="space-y-4 pt-4 border-t">
+                  <h3 className="font-medium">Integration Actions</h3>
+                  <div className="flex gap-4">
+                    <Button variant="outline" onClick={() => window.open('http://localhost:5174', '_blank')}>
+                      Open POS Terminal
+                    </Button>
+                    <Button variant="outline" onClick={() => window.open('http://localhost:3000/api/health', '_blank')}>
+                      Check Health API
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
 

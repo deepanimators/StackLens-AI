@@ -1,0 +1,41 @@
+# Phase 5: ML & Anomaly Detection Requirements
+# Production Python packages for anomaly detection and predictive analytics
+
+# Core dependencies
+python-dateutil==2.8.2
+pytz==2024.1
+
+# ML/AI Libraries
+scikit-learn==1.4.2
+numpy==1.24.4
+pandas==2.1.4
+scipy==1.11.4
+
+# Time-series forecasting
+statsmodels==0.14.0
+
+# Streaming & message queues
+kafka-python==2.0.2
+
+# Database
+psycopg2-binary==2.9.9
+
+# JSON and serialization
+simplejson==3.19.1
+
+# Logging and monitoring
+python-json-logger==2.0.7
+
+# Testing (optional, for CI/CD)
+pytest==7.4.3
+pytest-cov==4.1.0
+mock==5.1.0
+
+# Development (optional)
+black==23.12.1
+pylint==3.0.3
+flake8==6.1.0
+
+# Optional: Prophet for advanced forecasting (uncomment to use)
+# pystan==2.19.1.1
+# fbprophet==0.7.10

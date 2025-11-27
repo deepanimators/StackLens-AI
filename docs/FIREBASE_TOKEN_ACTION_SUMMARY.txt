@@ -1,0 +1,152 @@
+================================================================================
+FIREBASE TOKEN ISSUE - ACTION SUMMARY
+================================================================================
+
+PROBLEM:
+  Tests failing with "TEST_FIREBASE_TOKEN not found" or "401 Unauthorized"
+
+ROOT CAUSES IDENTIFIED:
+  1. ❌ Environment variables not loaded from .env → ✅ FIXED
+  2. ⚠️  Firebase token expired → NEEDS RENEWAL
+
+================================================================================
+FIXES APPLIED
+================================================================================
+
+✅ FIX 1: Updated playwright.config.ts
+   - Added: import dotenv from 'dotenv'
+   - Added: dotenv.config() to load .env file
+   - Result: All 14 environment variables now available in tests
+
+   Verification:
+   $ npm run test | grep "injecting env"
+   [dotenv@17.2.3] injecting env (14) from .env ✓
+
+✅ FIX 2: Created Helper Scripts
+   - generate-firebase-token.sh (automated token generation)
+   - FIREBASE_TOKEN_COMPLETE_GUIDE.md (detailed documentation)
+
+================================================================================
+NEXT STEPS - REQUIRED
+================================================================================
+
+⏳ STEP 1: Generate New Firebase Token
+   
+   Option A (EASIEST): Using Firebase Console
+   ─────────────────────────────────────────
+   1. Open: https://console.firebase.google.com/
+   2. Project: error-analysis-f46c6
+   3. Go to: Authentication → Users
+   4. Click: Create user
+   5. Email: test@stacklens.ai
+   6. Password: Create secure password
+   7. Click user → Copy ID token
+   8. Token is valid for 1 hour
+
+   Option B: Using script
+   ─────────────────────
+   $ bash generate-firebase-token.sh
+   (May prompt for credentials)
+
+⏳ STEP 2: Update .env File
+   
+   Replace this line in .env:
+   TEST_FIREBASE_TOKEN=eyJhbGc... (OLD EXPIRED TOKEN)
+   
+   With new token from Step 1:
+   TEST_FIREBASE_TOKEN=<NEW_TOKEN_HERE>
+   
+   Example:
+   $ sed -i '' 's/TEST_FIREBASE_TOKEN=.*/TEST_FIREBASE_TOKEN=<YOUR_NEW_TOKEN>/' .env
+
+⏳ STEP 3: Verify Tests Work
+   
+   $ npm run test
+   
+   Expected output:
+   ✓ Using TEST_FIREBASE_TOKEN for authentication...
+   ✓ Authentication successful with token
+   ✓ API tests running...
+
+================================================================================
+TOKEN INFORMATION
+================================================================================
+
+Current Token Status: EXPIRED ❌
+  - Issued: Nov 18, 2025 ~12:30 UTC
+  - Expires: Nov 18, 2025 ~13:30 UTC
+  - Duration: 1 hour (Firebase standard)
+
+How to Check Token Expiration:
+  node -e "const jwt = require('jsonwebtoken'); 
+           const token = 'YOUR_TOKEN'; 
+           console.log(jwt.decode(token))"
+
+Refresh Required: EVERY HOUR
+  - If tests fail with 401, token has expired
+  - Generate new token from Firebase Console
+  - Update .env and restart tests
+
+================================================================================
+DOCUMENTATION CREATED
+================================================================================
+
+1. FIREBASE_TOKEN_COMPLETE_GUIDE.md
+   - Full troubleshooting guide
+   - Multiple token generation methods
+   - Best practices for token management
+   - CI/CD automation suggestions
+
+2. FIREBASE_TOKEN_FIX_GUIDE.md
+   - Quick reference guide
+   - Step-by-step fix instructions
+   - Verification checklist
+
+3. generate-firebase-token.sh
+   - Automated token generation script
+   - Auto-updates .env file
+   - Error handling included
+
+================================================================================
+QUICK REFERENCE
+================================================================================
+
+Environment Loading Status:
+  ✅ Fixed: playwright.config.ts now loads .env
+  ✅ Verified: [dotenv@17.2.3] injecting env (14) from .env
+
+Token Requirement:
+  ⚠️  Action Needed: Generate new Firebase token
+  ⚠️  Action Needed: Update .env with new token
+
+Test Command:
+  npm run test
+
+Expected Result After Token Update:
+  - ✓ Authentication successful with token
+  - ✓ 416 tests running (not skipped)
+  - ✓ No 401 Unauthorized errors
+
+================================================================================
+TIME ESTIMATE
+================================================================================
+
+Generating new token: 2-5 minutes
+Updating .env file: < 1 minute
+Total: ~5-10 minutes
+
+Then tests should run with proper authentication!
+
+================================================================================
+SUPPORT FILES
+================================================================================
+
+For detailed help, see:
+  - FIREBASE_TOKEN_COMPLETE_GUIDE.md (comprehensive guide)
+  - FIREBASE_TOKEN_FIX_GUIDE.md (quick reference)
+  - generate-firebase-token.sh (automated helper)
+
+Command to view:
+  cat FIREBASE_TOKEN_COMPLETE_GUIDE.md
+
+================================================================================

@@ -1,0 +1,58 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+        cors:
+          allowed_origins:
+            - "http://*"
+            - "https://*"
+
+processors:
+  batch:
+  
+  attributes/env:
+    actions:
+      - key: env
+        value: "dev"
+        action: insert
+
+  # Redaction processor (example)
+  # redaction:
+  #   allow_all_keys: false
+  #   allowed_keys:
+  #     - description
+  #   blocked_values:
+  #     - "4[0-9]{12}(?:[0-9]{3})?" # Credit card regex
+
+exporters:
+  logging:
+    loglevel: debug
+
+  kafka:
+    brokers:
+      - kafka:29092
+    topic: otel-logs
+    protocol_version: 2.0.0
+
+  elasticsearch:
+    endpoints: ["http://elasticsearch:9200"]
+    index: "stacklens-logs-debug"
+
+  # HTTP exporter to send logs to StackLens analytics endpoint
+  otlphttp/stacklens:
+    endpoint: http://host.docker.internal:4000/api/analytics/events
+    compression: none
+    headers:
+      Content-Type: application/json
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [attributes/env, batch]
+      exporters: [logging, kafka, elasticsearch, otlphttp/stacklens]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging] # Add kafka/jaeger later

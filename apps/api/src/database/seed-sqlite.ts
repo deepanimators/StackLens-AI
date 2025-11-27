@@ -6,6 +6,14 @@ export async function seedSQLiteDatabase() {
   try {
     console.log('🌱 Seeding SQLite database...');
 
+    // Check if database is already seeded by looking for the admin user
+    const existingAdmin = await storage.getUserByEmail('deepanimators@gmail.com');
+
+    if (existingAdmin) {
+      console.log('ℹ️ Database already seeded. Skipping seed process.');
+      return;
+    }
+
     // Create super admin user with proper schema fields
     const hashedPassword = await bcrypt.hash('PapuAchu@27', 10);
 

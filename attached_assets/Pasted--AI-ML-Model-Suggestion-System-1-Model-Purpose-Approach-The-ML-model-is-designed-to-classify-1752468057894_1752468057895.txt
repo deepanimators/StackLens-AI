@@ -1,0 +1,76 @@
+
+
+AI/ML Model & Suggestion System
+1. Model Purpose & Approach
+* The ML model is designed to classify and suggest resolutions for log errors.
+* It uses supervised learning (e.g., RandomForest, XGBoost via scikit-learn).
+* The model is trained on features extracted from historical log errors and their resolutions.
+2. Feature Engineering
+* Features are extracted from log lines, including:
+    * Error message text (tokenized, vectorized)
+    * Severity (critical, high, medium, low)
+    * Error type/category (e.g., mapping, performance, security)
+    * Timestamp, line number, file type
+    * Contextual patterns (e.g., presence of keywords like “Exception”, “timeout”)
+* Feature extraction is handled in feature_engineer.py and related files.
+3. Model Training
+* Training is triggered via the /api/train_model endpoint (see routes.py).
+* The training pipeline:
+    1. Loads historical error data from the database.
+    2. Extracts features and labels (suggested resolutions).
+    3. Trains a classifier (RandomForest/XGBoost).
+    4. Evaluates metrics: accuracy, precision, recall, F1, cross-validation.
+    5. Saves the trained model as a .pkl file in models_storage.
+    6. Returns metrics and model info to the frontend for display.
+Example (from routes.py):
+ @app.route('/api/train_model', methods=['POST'])
+def train_model():
+    trainer = ModelTrainer()
+    result = trainer.train_from_database()
+    # Returns metrics, model path, etc.  4. Model Inference (Prediction)
+* When a new log is uploaded:
+    1. Errors are parsed and features are extracted.
+    2. The trained model predicts the most likely error type and suggested resolution.
+    3. If the model’s confidence is low or no match is found, the system falls back to a static error map or calls Gemini (LLM) for a suggestion.
+    4. The result is shown in the UI and stored for future learning.
+Relevant files:
+* predictor.py: Loads model, runs predictions.
+* suggestor.py: Handles suggestion logic, fallback to Gemini.
+5. Static Error Map & AI Fallback
+* error_map.json contains mappings of known errors to suggested fixes.
+* If the ML model cannot confidently suggest a fix, the system:
+    * Looks up the error in the static map.
+    * If still no match, calls Gemini (or another LLM) for a suggestion (stubbed, can be extended).
+6. Continuous Learning
+* The system is designed to improve over time:
+    * New errors and user feedback are stored in the database.
+    * The model can be retrained periodically or on-demand with new data.
+    * This enables the model to adapt to new error patterns and resolutions.
+7. Model Metrics & Monitoring
+* After training, metrics such as accuracy, precision, recall, F1, and confusion matrix are returned and can be displayed in the UI.
+* Top features and class metrics are also reported for transparency.
+Example metrics response:
+{
+  "accuracy": 0.92,
+  "precision": 0.90,
+  "recall": 0.88,
+  "f1": 0.89,
+  "cv_score": "0.91 (±0.02)",
+  "top_features": [["keyword_timeout", 0.15], ...]
+}  8. Extensibility
+* The ML pipeline is modular: you can swap in new models, add more features, or integrate with external LLMs.
+* The fallback to Gemini/OpenAI ensures suggestions are always available, even for novel errors.
+
+Key Files for AI/ML:
+* model_trainer.py – Model training logic
+* predictor.py – Model inference
+* feature_engineer.py – Feature extraction
+* suggestor.py – Suggestion logic (local + Gemini)
+* error_map.json – Static error-to-fix mapping
+* models_storage – Trained model files
+
+Suggestions for Improvement:
+* Add more advanced NLP features (embeddings, transformers) for better semantic matching.
+* Implement active learning: prompt users for feedback on suggestions and use it to retrain.
+* Integrate a vector database (e.g., Pinecone, Redis) for fast semantic search.
+* Add automated retraining pipelines (e.g., via Celery or GitHub Actions).

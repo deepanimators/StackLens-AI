@@ -1,0 +1,1 @@
+kafka-python==2.0.2\npsycopg2-binary==2.9.9\nnumpy==1.24.3\npandas==2.0.3\nscipy==1.11.2\npydantic==2.5.0\npyyaml==6.0.1\npython-dotenv==1.0.0\nflask==3.0.0\nflask-cors==4.0.0\n

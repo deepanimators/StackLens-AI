@@ -1,10 +1,23 @@
+import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import multer from "multer";
+import { z } from "zod";
 import { registerRoutes } from "./routes/main-routes.js";
-import { setupVite, serveStatic, log } from "./vite";
+import enhancedMlRoutes from "./routes/enhanced-ml-training.js";
+import { setupVite, serveStatic, log } from "./vite.js";
+
+// CRITICAL: Import sqlite-db to initialize database tables on startup
+import "./database/sqlite-db.js";
+import { seedSQLiteDatabase } from "./database/seed-sqlite.js";
 
 const app = express();
+
+// Health check endpoint for Playwright
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 
 // CORS configuration for development
 app.use(cors({
@@ -14,22 +27,52 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Configure multer for file uploads (used only for fallback, main routes handle uploads)
+const memoryUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
-// Rate limiting for API routes
+// CRITICAL: Only register body parsers for routes that are NOT file uploads
+// This prevents express.json() from trying to parse multipart form data
+// Routes with multer will handle their own body parsing
+
+// Don't register global body parsers - they interfere with multipart handling
+// Instead, parsers will be applied selectively by routes that need them
+
+// Rate limiting for API routes (disabled in test environment)
 const apiLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 100, // 100 requests per minute per IP
+  windowMs: process.env.NODE_ENV === 'test' ? 1000 : 60 * 1000, // 1s for tests, 1m for prod
+  limit: (req: any) => {
+    if (process.env.NODE_ENV === 'test' && req.headers['x-test-force-ratelimit']) return 100;
+    return process.env.NODE_ENV === 'test' ? 10000 : 100;
+  },
   message: { message: "Too many requests, please try again later." },
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
+  skip: (req) => process.env.NODE_ENV === 'test' && !req.headers['x-test-force-ratelimit'], // Skip rate limiting in test mode unless forced
 });
 
 // Apply rate limiter to all API routes
 app.use("/api/", apiLimiter);
 
-app.use((req, res, next) => {
+// CRITICAL: Conditional body parsing middleware
+// This applies body parsing to ALL routes EXCEPT file upload routes
+// This prevents body-parser from interfering with multer
+app.use((req: any, res: any, next: any) => {
+  // Skip body parsing for file upload endpoints and GET /api/files - multer will handle them
+  // BUT allow body parsing for POST /api/files/bulk-delete which needs JSON body
+  if (req.path === '/api/upload' ||
+    (req.path.startsWith('/api/files') &&
+      req.path !== '/api/files/bulk-delete' &&
+      req.method !== 'DELETE')) {
+    console.log('Skipping body parsing for:', req.path);
+    return next();
+  }
+
+  // For all other routes, apply body parsers
+  express.json({ limit: '50mb' })(req, res, (err: any) => {
+    if (err) return next(err);
+    express.urlencoded({ extended: false, limit: '50mb' })(req, res, next);
+  });
+}); app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
   let capturedJsonResponse: Record<string, any> | undefined = undefined;
@@ -62,10 +105,20 @@ app.use((req, res, next) => {
 (async () => {
   try {
     console.log("🔄 Starting server initialization...");
+    console.log("✅ Database tables initialized");
     const server = await registerRoutes(app);
+    app.use(enhancedMlRoutes);
     console.log("✅ Routes registered successfully");
 
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      // Handle Zod validation errors
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({
+          message: "Validation failed",
+          errors: err.errors,
+        });
+      }
+
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
 
@@ -82,6 +135,17 @@ app.use((req, res, next) => {
       console.log("✅ Vite setup complete");
     } else {
       serveStatic(app);
+    }
+
+    // Seed database if needed
+    try {
+      await seedSQLiteDatabase();
+    } catch (error) {
+      // Only log seeding errors if they're not UNIQUE constraint violations
+      if (error instanceof Error && !error.message.includes('UNIQUE constraint')) {
+        console.error('❌ Error seeding SQLite database:', error);
+      }
+      console.log("ℹ️ Database seeding skipped or partial (data may already exist)");
     }
 
     // ALWAYS serve the app on port 4000

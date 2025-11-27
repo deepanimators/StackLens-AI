@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  pos-backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - OTEL_COLLECTOR_URL=http://otel-collector:4318/v1/traces
+      - DB_PATH=/data/pos.db
+    volumes:
+      - ../logs:/app/logs
+      - ./data:/data
+    depends_on:
+      - otel-collector
+
+  pos-frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_OTEL_COLLECTOR_URL=http://localhost:4318/v1/traces
+    depends_on:
+      - pos-backend
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+      - "8888:8888" # Prometheus metrics
+      - "13133:13133" # Health check
+
+  # Optional: Jaeger for trace visualization
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "14250:14250"

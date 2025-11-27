@@ -61,7 +61,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
       formData.append('files', uploadFile.file);
 
       const response = await authenticatedRequest('POST', '/api/files/upload', formData);
-      return response.json();
+      return response;
     },
     onSuccess: async (data, uploadFile) => {
       const fileId = data.files[0].id;
@@ -76,7 +76,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
       // Start analysis
       try {
         const analysisResponse = await authenticatedRequest('POST', `/api/files/${fileId}/analyze`);
-        const analysisData = await analysisResponse.json();
+        const analysisData = analysisResponse;
         
         setFiles(prev => prev.map(f => 
           f.id === uploadFile.id 

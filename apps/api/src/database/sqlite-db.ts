@@ -30,29 +30,50 @@ try {
     CREATE TABLE IF NOT EXISTS log_files (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       filename TEXT NOT NULL,
-      file_path TEXT NOT NULL,
+      original_name TEXT NOT NULL,
       file_size INTEGER NOT NULL,
+      mime_type TEXT NOT NULL,
       file_type TEXT NOT NULL,
+      store_number TEXT,
+      kiosk_number TEXT,
       uploaded_by INTEGER NOT NULL,
       uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      upload_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      analysis_timestamp DATETIME,
       processed_at DATETIME,
       error_count INTEGER DEFAULT 0,
+      total_errors INTEGER DEFAULT 0,
+      critical_errors INTEGER DEFAULT 0,
+      high_errors INTEGER DEFAULT 0,
+      medium_errors INTEGER DEFAULT 0,
+      low_errors INTEGER DEFAULT 0,
       status TEXT DEFAULT 'pending',
+      errors_detected TEXT,
+      anomalies TEXT,
+      predictions TEXT,
+      suggestions TEXT,
+      error_message TEXT,
+      analysis_result TEXT,
       FOREIGN KEY (uploaded_by) REFERENCES users(id)
     );
 
     CREATE TABLE IF NOT EXISTS error_logs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      file_id INTEGER NOT NULL,
+      file_id INTEGER,
+      store_number TEXT,
+      kiosk_number TEXT,
       line_number INTEGER NOT NULL,
-      log_level TEXT NOT NULL,
-      message TEXT NOT NULL,
       timestamp DATETIME,
       severity TEXT NOT NULL,
-      category TEXT,
-      context TEXT,
-      suggested_fix TEXT,
-      ai_confidence REAL,
+      error_type TEXT NOT NULL,
+      message TEXT NOT NULL,
+      full_text TEXT NOT NULL,
+      pattern TEXT,
+      resolved BOOLEAN DEFAULT 0,
+      notes TEXT,
+      ai_suggestion TEXT,
+      ml_prediction TEXT,
+      ml_confidence REAL DEFAULT 0.0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (file_id) REFERENCES log_files(id)
     );
@@ -226,8 +247,54 @@ try {
       timezone TEXT DEFAULT 'UTC',
       notification_preferences TEXT DEFAULT '{"email": true, "push": true, "sms": false}',
       display_preferences TEXT DEFAULT '{"itemsPerPage": 10, "defaultView": "grid"}',
+      navigation_preferences TEXT DEFAULT '{"topNav": {"logo": true, "search": true, "notifications": true, "userMenu": true}, "sideNav": {"collapsed": false, "showLabels": true, "groupItems": true}}',
+      api_settings TEXT DEFAULT '{"geminiApiKey": "", "webhookUrl": "", "maxFileSize": "10", "autoAnalysis": true}',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS stores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      store_number TEXT UNIQUE NOT NULL,
+      name TEXT NOT NULL,
+      location TEXT,
+      address TEXT,
+      city TEXT,
+      state TEXT,
+      zip_code TEXT,
+      country TEXT DEFAULT 'USA',
+      phone_number TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS kiosks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      kiosk_number TEXT UNIQUE NOT NULL,
+      store_id INTEGER NOT NULL,
+      name TEXT NOT NULL,
+      location TEXT,
+      device_type TEXT,
+      ip_address TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      last_check_in DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (store_id) REFERENCES stores(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS settings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      key TEXT UNIQUE NOT NULL,
+      value TEXT NOT NULL,
+      category TEXT NOT NULL,
+      description TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      updated_by INTEGER,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (updated_by) REFERENCES users(id)
     );
   `);
 

@@ -64,6 +64,7 @@ export const errorLogs = sqliteTable("error_logs", {
   fullText: text("full_text").notNull(),
   pattern: text("pattern"),
   resolved: integer("resolved", { mode: "boolean" }).default(false),
+  notes: text("notes"),
   aiSuggestion: text("ai_suggestion", { mode: "json" }),
   mlPrediction: text("ml_prediction", { mode: "json" }),
   mlConfidence: real("ml_confidence").default(0.0),

@@ -7,6 +7,7 @@ import {
   Menu,
   LayoutGrid,
   LayoutPanelLeft,
+  Activity,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
@@ -72,7 +73,7 @@ export default function Header({
 
           {/* Title Section */}
           <div>
-            <h2 className="text-2xl font-bold">{title}</h2>
+            <h1 className="text-2xl font-bold">{title}</h1>
             {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
           </div>
         </div>
@@ -122,6 +123,22 @@ export default function Header({
             <Bell className="h-4 w-4" />
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full"></div>
           </Button>
+
+          {/* Real-time Button */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={() => setLocation("/realtime")}
+                className="flex items-center space-x-2 bg-green-600 hover:bg-green-700"
+              >
+                <Activity className="h-4 w-4" />
+                <span>Real-time</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Live monitoring and analytics</p>
+            </TooltipContent>
+          </Tooltip>
 
           {/* Upload Button */}
           <Button

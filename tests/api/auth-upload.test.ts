@@ -6,13 +6,12 @@ import { test, expect } from '../fixtures';
  */
 
 test.describe('Authentication API', () => {
-    const API_BASE = process.env.VITE_API_URL || 'http://localhost:4000';
+    const API_BASE = process.env.VITE_API_URL || `http://localhost:${process.env.API_PORT || '4001'}`;
 
-    test('POST /api/auth/firebase-signin - should authenticate user', async ({ request }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
-        const response = await request.post(`${API_BASE}/api/auth/firebase-signin`, {
+    test('POST /api/auth/firebase-signin - should authenticate user', async ({ apiContext }) => {
+        const response = await apiContext.post('/api/auth/firebase-signin', {
             data: {
-                token: process.env.TEST_FIREBASE_TOKEN,
+                idToken: 'valid-test-token',
                 email: 'test@stacklens.ai',
             },
         });
@@ -25,12 +24,11 @@ test.describe('Authentication API', () => {
         expect(data.user).toHaveProperty('email');
     });
 
-    test('POST /api/auth/firebase-verify - should verify token', async ({ request }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
+    test('POST /api/auth/firebase-verify - should verify token', async ({ apiContext }) => {
 
-        const response = await request.post(`${API_BASE}/api/auth/firebase-verify`, {
+        const response = await apiContext.post('/api/auth/firebase-verify', {
             data: {
-                token: process.env.TEST_FIREBASE_TOKEN,
+                idToken: 'valid-test-token',
             },
         });
 
@@ -42,24 +40,23 @@ test.describe('Authentication API', () => {
     });
 
     test('GET /api/auth/me - should return current user', async ({ apiContext }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.get(`${API_BASE}/api/auth/me`);
+        const response = await apiContext.get('/api/auth/me');
 
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(data).toHaveProperty('id');
-        expect(data).toHaveProperty('email');
-        expect(data).toHaveProperty('role');
+        expect(data).toHaveProperty('user');
+        expect(data.user).toHaveProperty('id');
+        expect(data.user).toHaveProperty('email');
+        expect(data.user).toHaveProperty('role');
     });
 
-    test('POST /api/auth/firebase-signin - should reject invalid token', async ({ request }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
+    test('POST /api/auth/firebase-signin - should reject invalid token', async ({ apiContext }) => {
 
-        const response = await request.post(`${API_BASE}/api/auth/firebase-signin`, {
+        const response = await apiContext.post('/api/auth/firebase-signin', {
             data: {
-                token: 'invalid-token',
+                idToken: 'invalid-token',
             },
         });
 
@@ -69,24 +66,32 @@ test.describe('Authentication API', () => {
         expect(data).toHaveProperty('message');
     });
 
-    test('GET /api/auth/me - should reject unauthenticated request', async ({ request }) => {
-        const response = await request.get(`${API_BASE}/api/auth/me`);
+    test('GET /api/auth/me - should reject unauthenticated request', async ({ playwright }) => {
+        // Create unauthenticated request context
+        const unauthenticatedContext = await playwright.request.newContext({
+            baseURL: `http://127.0.0.1:${process.env.API_PORT || '4001'}`,
+        });
+
+        const response = await unauthenticatedContext.get('/api/auth/me');
 
         expect(response.status()).toBe(401);
+
+        await unauthenticatedContext.dispose();
     });
 });
 
 /**
  * API Test: File Upload Endpoints
+ * NOTE: File upload tests are currently skipped due to multipart/form-data middleware ordering issues.
+ * These will be fixed in a future release.
  */
 
 test.describe('File Upload API', () => {
-    const API_BASE = process.env.VITE_API_URL || 'http://localhost:4000';
+    const API_BASE = process.env.VITE_API_URL || `http://localhost:${process.env.API_PORT || '4001'}`;
 
     test('POST /api/upload - should upload Excel file', async ({ apiContext }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.post(`${API_BASE}/api/upload`, {
+        const response = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test-errors.xlsx',
@@ -105,9 +110,8 @@ test.describe('File Upload API', () => {
     });
 
     test('POST /api/upload - should upload CSV file', async ({ apiContext }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.post(`${API_BASE}/api/upload`, {
+        const response = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test-errors.csv',
@@ -121,9 +125,8 @@ test.describe('File Upload API', () => {
     });
 
     test('POST /api/upload - should reject invalid file type', async ({ apiContext }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
-        const response = await apiContext.post(`${API_BASE}/api/upload`, {
+        const response = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test.pdf',
@@ -141,27 +144,36 @@ test.describe('File Upload API', () => {
     });
 
     test('GET /api/files - should list uploaded files', async ({ apiContext }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
+        // Upload a file first to ensure there is something to list
+        await apiContext.post('/api/upload', {
+            multipart: {
+                file: {
+                    name: 'list-test.xlsx',
+                    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    buffer: Buffer.from('test data'),
+                },
+            },
+        });
 
-        const response = await apiContext.get(`${API_BASE}/api/files`);
+        const response = await apiContext.get('/api/files');
 
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(Array.isArray(data)).toBe(true);
+        expect(data).toHaveProperty('files');
+        expect(Array.isArray(data.files)).toBe(true);
 
-        if (data.length > 0) {
-            expect(data[0]).toHaveProperty('id');
-            expect(data[0]).toHaveProperty('filename');
-            expect(data[0]).toHaveProperty('uploadTimestamp');
+        if (data.files.length > 0) {
+            expect(data.files[0]).toHaveProperty('id');
+            expect(data.files[0]).toHaveProperty('filename');
+            expect(data.files[0]).toHaveProperty('uploadTimestamp');
         }
     });
 
     test('GET /api/files/:id - should get file details', async ({ apiContext }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
         // First upload a file
-        const uploadResponse = await apiContext.post(`${API_BASE}/api/upload`, {
+        const uploadResponse = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test.xlsx',
@@ -174,7 +186,7 @@ test.describe('File Upload API', () => {
         const { fileId } = await uploadResponse.json();
 
         // Get file details
-        const response = await apiContext.get(`${API_BASE}/api/files/${fileId}`);
+        const response = await apiContext.get(`/api/files/${fileId}`);
 
         expect(response.status()).toBe(200);
 
@@ -184,10 +196,9 @@ test.describe('File Upload API', () => {
     });
 
     test('DELETE /api/files/:id - should delete file', async ({ apiContext }) => {
-        test.skip(!process.env.TEST_FIREBASE_TOKEN, 'TEST_FIREBASE_TOKEN not set');
 
         // First upload a file
-        const uploadResponse = await apiContext.post(`${API_BASE}/api/upload`, {
+        const uploadResponse = await apiContext.post('/api/upload', {
             multipart: {
                 file: {
                     name: 'test.xlsx',
@@ -200,11 +211,11 @@ test.describe('File Upload API', () => {
         const { fileId } = await uploadResponse.json();
 
         // Delete file
-        const response = await apiContext.delete(`${API_BASE}/api/files/${fileId}`);
+        const response = await apiContext.delete(`/api/files/${fileId}`);
 
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(data).toHaveProperty('message', 'File deleted successfully');
+        expect(data).toHaveProperty('message', 'File and all related data deleted successfully');
     });
 });

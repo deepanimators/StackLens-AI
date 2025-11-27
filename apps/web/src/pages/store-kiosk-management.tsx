@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -31,6 +32,7 @@ import { Badge } from "@/components/ui/badge";
 import { Store, MapPin, Plus, Edit, Trash2, Monitor } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { authenticatedRequest } from "@/lib/auth";
+import AdaptiveLayout from "@/components/adaptive-layout";
 
 interface StoreData {
   id: number;
@@ -68,6 +70,10 @@ export default function StoreKioskManagement() {
   const [stores, setStores] = useState<StoreData[]>([]);
   const [kiosks, setKiosks] = useState<KioskData[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Multi-select state
+  const [selectedStores, setSelectedStores] = useState<number[]>([]);
+  const [selectedKiosks, setSelectedKiosks] = useState<number[]>([]);
   
   const [storeDialogOpen, setStoreDialogOpen] = useState(false);
   const [kioskDialogOpen, setKioskDialogOpen] = useState(false);
@@ -282,23 +288,98 @@ export default function StoreKioskManagement() {
     }
   };
 
+  // Multi-select handlers
+  const toggleStoreSelection = (id: number) => {
+    setSelectedStores(prev => 
+      prev.includes(id) ? prev.filter(storeId => storeId !== id) : [...prev, id]
+    );
+  };
+
+  const toggleAllStores = () => {
+    if (selectedStores.length === stores.length) {
+      setSelectedStores([]);
+    } else {
+      setSelectedStores(stores.map(s => s.id));
+    }
+  };
+
+  const toggleKioskSelection = (id: number) => {
+    setSelectedKiosks(prev => 
+      prev.includes(id) ? prev.filter(kioskId => kioskId !== id) : [...prev, id]
+    );
+  };
+
+  const toggleAllKiosks = () => {
+    if (selectedKiosks.length === kiosks.length) {
+      setSelectedKiosks([]);
+    } else {
+      setSelectedKiosks(kiosks.map(k => k.id));
+    }
+  };
+
+  const handleBulkDeleteStores = async () => {
+    if (selectedStores.length === 0) return;
+    
+    if (!confirm(`Are you sure you want to delete ${selectedStores.length} store(s)?`)) return;
+    
+    try {
+      await Promise.all(
+        selectedStores.map(id => authenticatedRequest("DELETE", `/api/stores/${id}`))
+      );
+      toast({
+        title: "Success",
+        description: `${selectedStores.length} store(s) deleted successfully`,
+      });
+      setSelectedStores([]);
+      fetchStores();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete some stores",
+      });
+    }
+  };
+
+  const handleBulkDeleteKiosks = async () => {
+    if (selectedKiosks.length === 0) return;
+    
+    if (!confirm(`Are you sure you want to delete ${selectedKiosks.length} kiosk(s)?`)) return;
+    
+    try {
+      await Promise.all(
+        selectedKiosks.map(id => authenticatedRequest("DELETE", `/api/kiosks/${id}`))
+      );
+      toast({
+        title: "Success",
+        description: `${selectedKiosks.length} kiosk(s) deleted successfully`,
+      });
+      setSelectedKiosks([]);
+      fetchKiosks();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete some kiosks",
+      });
+    }
+  };
+
   const getStoreName = (storeId: number) => {
     return stores.find((s) => s.id === storeId)?.name || "Unknown";
   };
 
   if (loading) {
-    return <div className="p-8">Loading...</div>;
+    return (
+      <AdaptiveLayout title="Store & Kiosk Management">
+        <div className="p-8">Loading...</div>
+      </AdaptiveLayout>
+    );
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Store & Kiosk Management</h1>
-        <p className="text-muted-foreground">
-          Manage stores and kiosks for error log tracking
-        </p>
-      </div>
-
+    <AdaptiveLayout title="Store & Kiosk Management" subtitle="Manage stores and kiosks for error log tracking">
+      <div className="container mx-auto p-6 space-y-6">
       <Tabs defaultValue="stores" className="w-full">
         <TabsList>
           <TabsTrigger value="stores">
@@ -319,10 +400,21 @@ export default function StoreKioskManagement() {
                   <CardTitle>Stores</CardTitle>
                   <CardDescription>Manage store locations</CardDescription>
                 </div>
-                <Button onClick={handleCreateStore}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Store
-                </Button>
+                <div className="flex gap-2">
+                  {selectedStores.length > 0 && (
+                    <Button
+                      variant="destructive"
+                      onClick={handleBulkDeleteStores}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Selected ({selectedStores.length})
+                    </Button>
+                  )}
+                  <Button onClick={handleCreateStore}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Store
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
@@ -336,6 +428,12 @@ export default function StoreKioskManagement() {
                 <Table>
                   <TableHeader>
                     <TableRow>
+                      <TableHead className="w-12">
+                        <Checkbox
+                          checked={selectedStores.length === stores.length && stores.length > 0}
+                          onCheckedChange={toggleAllStores}
+                        />
+                      </TableHead>
                       <TableHead>Store Number</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Location</TableHead>
@@ -348,6 +446,12 @@ export default function StoreKioskManagement() {
                   <TableBody>
                     {stores.map((store) => (
                       <TableRow key={store.id}>
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedStores.includes(store.id)}
+                            onCheckedChange={() => toggleStoreSelection(store.id)}
+                          />
+                        </TableCell>
                         <TableCell className="font-medium">{store.storeNumber}</TableCell>
                         <TableCell>{store.name}</TableCell>
                         <TableCell>{store.location || "-"}</TableCell>
@@ -395,10 +499,21 @@ export default function StoreKioskManagement() {
                   <CardTitle>Kiosks</CardTitle>
                   <CardDescription>Manage kiosks within stores</CardDescription>
                 </div>
-                <Button onClick={handleCreateKiosk} disabled={stores.length === 0}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Kiosk
-                </Button>
+                <div className="flex gap-2">
+                  {selectedKiosks.length > 0 && (
+                    <Button
+                      variant="destructive"
+                      onClick={handleBulkDeleteKiosks}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Selected ({selectedKiosks.length})
+                    </Button>
+                  )}
+                  <Button onClick={handleCreateKiosk} disabled={stores.length === 0}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Kiosk
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
@@ -416,6 +531,12 @@ export default function StoreKioskManagement() {
                 <Table>
                   <TableHeader>
                     <TableRow>
+                      <TableHead className="w-12">
+                        <Checkbox
+                          checked={selectedKiosks.length === kiosks.length && kiosks.length > 0}
+                          onCheckedChange={toggleAllKiosks}
+                        />
+                      </TableHead>
                       <TableHead>Kiosk Number</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Store</TableHead>
@@ -429,6 +550,12 @@ export default function StoreKioskManagement() {
                   <TableBody>
                     {kiosks.map((kiosk) => (
                       <TableRow key={kiosk.id}>
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedKiosks.includes(kiosk.id)}
+                            onCheckedChange={() => toggleKioskSelection(kiosk.id)}
+                          />
+                        </TableCell>
                         <TableCell className="font-medium">{kiosk.kioskNumber}</TableCell>
                         <TableCell>{kiosk.name}</TableCell>
                         <TableCell>{getStoreName(kiosk.storeId)}</TableCell>
@@ -742,6 +869,7 @@ export default function StoreKioskManagement() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </AdaptiveLayout>
   );
 }

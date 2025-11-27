@@ -117,7 +117,8 @@ class BackgroundJobProcessor {
       );
 
       // Read file content with size validation and streaming for large files
-      const filePath = path.join("uploads", logFile.filename);
+      const UPLOAD_DIR = process.env.NODE_ENV === 'test' ? 'test-uploads/' : 'uploads/';
+      const filePath = path.join(UPLOAD_DIR, logFile.filename);
       if (!fs.existsSync(filePath)) {
         throw new Error("File not found on disk");
       }

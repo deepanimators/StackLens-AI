@@ -1,4 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables from .env file
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+// Set test environment variables
+process.env.NODE_ENV = 'test';
+process.env.PLAYWRIGHT_TEST = '1';
+process.env.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || './data/database/stacklens.test.db';
 
 /**
  * StackLens AI - Playwright Test Configuration
@@ -7,6 +22,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
     testDir: './tests',
+
+    // Global setup and teardown
+    globalSetup: require.resolve('./tests/global-setup.ts'),
+    globalTeardown: require.resolve('./tests/global-teardown.ts'),
 
     // Maximum time one test can run
     timeout: 30 * 1000,
@@ -55,7 +74,7 @@ export default defineConfig({
             name: 'api-tests',
             testMatch: /tests\/api\/.*\.test\.ts/,
             use: {
-                baseURL: 'http://localhost:4000',
+                baseURL: 'http://127.0.0.1:4001',
                 storageState: 'tests/.auth/user.json',
             },
             dependencies: ['setup'],
@@ -160,21 +179,26 @@ export default defineConfig({
     ],
 
     // Web server configuration - auto-start servers for local development
-    // Backend API server runs on port 5000, Frontend client on port 5173
+    // Backend API server runs on port 4001, Frontend client on port 5173
     // In CI, SKIP_SERVER env var is checked - servers are started manually in workflow
     webServer: process.env.SKIP_SERVER ? undefined : [
-        // Backend API server
+        // Backend API server (using test:server to disable rate limiting)
         {
-            command: 'PORT=5000 npm run dev:server',
-            url: 'http://localhost:5000/health',
+            command: `NODE_ENV=test PLAYWRIGHT_TEST=1 TEST_DATABASE_URL=${process.env.TEST_DATABASE_URL} PORT=4001 pnpm run test:server`,
+            url: 'http://127.0.0.1:4001/health',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,
-            stdout: 'ignore',
+            stdout: 'pipe',
             stderr: 'pipe',
+            env: {
+                NODE_ENV: 'test',
+                PLAYWRIGHT_TEST: '1',
+                TEST_DATABASE_URL: process.env.TEST_DATABASE_URL,
+            }
         },
         // Frontend client server
         {
-            command: 'npm run dev:client',
+            command: 'VITE_API_URL=http://localhost:4001 pnpm run dev:client',
             url: 'http://localhost:5173',
             reuseExistingServer: !process.env.CI,
             timeout: 120 * 1000,
