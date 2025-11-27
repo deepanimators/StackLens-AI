@@ -34,6 +34,8 @@ import {
   AlertCircle,
   CheckCircle,
   Bug,
+  Workflow,
+  ExternalLink,
 } from "lucide-react";
 import {
   Select,
@@ -126,8 +128,14 @@ export default function Realtime() {
   const { data: metricsData, refetch: refetchMetrics } = useQuery({
     queryKey: ["realtime-metrics", selectedWindow],
     queryFn: async () => {
+      // Calculate limit based on window (assuming 5s interval)
+      // 1min = 12 points -> fetch 20 for safety
+      // 5min = 60 points -> fetch 60
+      // 1hour = 720 points -> fetch 720
+      const limit = selectedWindow === '1min' ? 20 : selectedWindow === '5min' ? 60 : 720;
+      
       const response = await fetch(
-        `/api/analytics/metrics?window=${selectedWindow}&limit=20`
+        `/api/analytics/metrics?window=${selectedWindow}&limit=${limit}`
       );
       if (!response.ok) throw new Error("Failed to fetch metrics");
       return response.json();
@@ -183,6 +191,7 @@ export default function Realtime() {
     },
     enabled: Boolean(alertsData?.data?.alerts?.length),
     refetchInterval: isAutoRefresh ? 15000 : false, // Refresh AI analysis every 15 seconds
+    placeholderData: (previousData: any) => previousData, // Prevent blinking by keeping previous data while fetching
   });
 
   // Prepare chart data
@@ -464,11 +473,17 @@ export default function Realtime() {
         {aiAnalysisData?.data?.hasErrors && aiAnalysisData?.data?.analysis && (
           <Card className="border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-50/50 to-orange-50/50 dark:from-amber-950/20 dark:to-orange-950/20">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center space-x-2">
-                  <Lightbulb className="h-5 w-5 text-amber-600" />
-                  <span>AI Error Analysis</span>
-                </CardTitle>
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center space-x-4">
+                  <CardTitle className="flex items-center space-x-2">
+                    <Lightbulb className="h-5 w-5 text-amber-600" />
+                    <span>AI Error Analysis</span>
+                  </CardTitle>
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1 bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800">
+                    <Workflow className="h-3 w-3" />
+                    AI Automation Workflow
+                  </Button>
+                </div>
                 <Badge 
                   className={`${
                     aiAnalysisData.data.analysis.severity === "critical" 
@@ -572,6 +587,30 @@ export default function Realtime() {
                   ))}
                 </ul>
               </div>
+
+              {/* Jira Integration */}
+              {aiAnalysisData.data.analysis.jiraTicket && (
+                <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-100 dark:border-blue-900">
+                  <h4 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2 flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/atlassian_jira_logo_icon_170511.png" alt="Jira" className="w-4 h-4" />
+                      Jira Ticket Created
+                    </span>
+                    <a 
+                      href={aiAnalysisData.data.analysis.jiraLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-xs flex items-center gap-1 hover:underline"
+                    >
+                      {aiAnalysisData.data.analysis.jiraTicket}
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </h4>
+                  <p className="text-sm text-blue-700 dark:text-blue-400">
+                    A Jira ticket has been automatically created for this issue. Status: <strong>{aiAnalysisData.data.analysis.jiraStatus}</strong>
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}

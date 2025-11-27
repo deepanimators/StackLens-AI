@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import { jiraService } from '../services/jiraService';
 
 const analyticsRouter = Router();
 
@@ -294,7 +296,7 @@ analyticsRouter.get('/metrics', (req, res) => {
     try {
         const { window = '1min', limit = 20 } = req.query;
 
-        const limitNum = Math.min(parseInt(limit as string) || 20, 100);
+        const limitNum = Math.min(parseInt(limit as string) || 20, 1000);
         const recentMetrics = metrics.slice(-limitNum);
 
         res.json({
@@ -649,16 +651,35 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
                 });
 
                 if (response.ok) {
-                    const result = await response.json();
-                    const analysisText = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
-
-                    // Parse JSON from response
-                    const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) {
-                        aiAnalysis = JSON.parse(jsonMatch[0]);
+                    const data = await response.json();
+                    if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                        const rawText = data.candidates[0].content.parts[0].text;
+                        // Clean up markdown code blocks if present
+                        const jsonStr = rawText.replace(/```json\n?|\n?```/g, '').trim();
+                        aiAnalysis = JSON.parse(jsonStr);
                         console.log('✅ AI analysis received and parsed successfully');
+
+                        // 🎯 NEW: Create Jira ticket for Critical/High alerts
+                        const criticalOrHighAlerts = alertsToAnalyze.filter((a: any) =>
+                            a.severity.toLowerCase() === 'critical' || a.severity.toLowerCase() === 'high'
+                        );
+
+                        if (criticalOrHighAlerts.length > 0) {
+                            console.log(`Found ${criticalOrHighAlerts.length} critical/high alerts. Triggering Jira ticket creation...`);
+
+                            // Create one ticket for the primary issue (usually the first one or the most critical)
+                            const primaryAlert = criticalOrHighAlerts.find((a: any) => a.severity.toLowerCase() === 'critical') || criticalOrHighAlerts[0];
+
+                            const ticketKey = await jiraService.createTicket(primaryAlert, rawText);
+
+                            if (ticketKey) {
+                                aiAnalysis.jiraTicket = ticketKey;
+                                aiAnalysis.jiraStatus = 'Created';
+                                aiAnalysis.jiraLink = `https://${process.env.JIRA_DOMAIN}/browse/${ticketKey}`;
+                            }
+                        }
                     } else {
-                        console.warn('⚠️ AI response did not contain valid JSON');
+                        console.warn('⚠️ AI response did not contain valid JSON or candidates');
                     }
                 } else {
                     console.error(`❌ Gemini API failed with status ${response.status}: ${await response.text()}`);
