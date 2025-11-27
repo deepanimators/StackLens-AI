@@ -90,6 +90,8 @@ function generateMetricsFromEvents(window: string = '1min'): Metric {
         return eventTime >= Date.now() - windowMs;
     });
 
+    console.log(`📊 Generating metrics for window ${window}. Events: ${recentEvents.length}, Total Events: ${posEvents.length}`);
+
     const errorEvents = recentEvents.filter(e => e.type === 'error');
     const checkoutEvents = recentEvents.filter(e => e.type === 'checkout');
 
@@ -128,6 +130,8 @@ function updateAlerts(latestMetric: Metric) {
     // Clear and repopulate alerts array
     alerts.length = 0;
     alerts.push(...recentAlerts);
+
+    console.log(`🔔 Updating alerts. Current active: ${alerts.length}. Latest Metric Error Rate: ${latestMetric.error_rate}`);
 
     // Check for high latency alert
     if (latestMetric.latency_p99 > 200) {
@@ -573,10 +577,7 @@ analyticsRouter.post('/ai-analysis', async (req, res) => {
 
         // Get recent POS events for additional context
         const recentPosEvents = posEvents.slice(-20).map(e => ({
-            type: e.type,
-            message: e.message,
-            timestamp: e.timestamp,
-            source: e.source
+            ...e // Include all event properties (errorCode, category, stackTrace, etc.)
         }));
 
         // Build comprehensive analysis prompt with all available context

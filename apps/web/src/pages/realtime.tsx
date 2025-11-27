@@ -85,16 +85,20 @@ export default function Realtime() {
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [selectedScenario, setSelectedScenario] = useState<string>("");
   const [isSimulating, setIsSimulating] = useState(false);
+  const [scenarios, setScenarios] = useState<{id: string, name: string}[]>([]);
 
-  const SIMULATION_SCENARIOS = [
-    { id: 'PAY_006', name: 'Digital Wallet Handshake Fail' },
-    { id: 'NET_004', name: 'DNS Resolution Failure' },
-    { id: 'HW_005', name: 'Scale Calibration Error' },
-    { id: 'SEC_004', name: 'Session Token Expired' },
-    { id: 'INV_006', name: 'Bundle SKU Fail' },
-    { id: 'SYS_005', name: 'Peripheral Driver Crash' },
-    { id: 'PAY_001', name: 'Payment Timeout (Legacy)' },
-  ];
+  // Fetch scenarios on mount
+  useEffect(() => {
+    fetch('http://localhost:3000/api/scenarios')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setScenarios(data.scenarios);
+        }
+      })
+      .catch(err => console.error("Failed to fetch scenarios", err));
+  }, []);
+
 
   const handleSimulateError = async (scenarioId: string) => {
     if (!scenarioId) return;
@@ -384,7 +388,7 @@ export default function Realtime() {
                     <SelectValue placeholder="Select Error Scenario" />
                   </SelectTrigger>
                   <SelectContent>
-                    {SIMULATION_SCENARIOS.map((scenario) => (
+                    {scenarios.map((scenario) => (
                       <SelectItem key={scenario.id} value={scenario.id}>
                         {scenario.name}
                       </SelectItem>

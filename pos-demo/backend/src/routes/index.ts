@@ -19,6 +19,7 @@ router.post('/log', controllers.logCustom);
 router.post('/simulate-error/:errorId', controllers.simulateError);
 router.post('/simulate-random-error', controllers.simulateRandomError);
 router.post('/simulate-errors/batch', controllers.simulateBatchErrors);
+router.get('/scenarios', controllers.getScenarios);
 
 
 export default router;

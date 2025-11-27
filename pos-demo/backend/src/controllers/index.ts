@@ -292,4 +292,22 @@ export const simulateBatchErrors = async (req: Request, res: Response, next: Nex
     }
 };
 
+// 🎯 NEW: Get all error scenarios
+export const getScenarios = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.json({
+            success: true,
+            count: POS_ERROR_SCENARIOS.length,
+            scenarios: POS_ERROR_SCENARIOS.map(s => ({
+                id: s.id,
+                name: s.name,
+                category: s.category,
+                severity: s.severity
+            }))
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 
