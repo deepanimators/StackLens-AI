@@ -1,0 +1,36 @@
+# Snyk Policy File
+# For more information, see https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/the-.snyk-file
+version: v1.25.0
+
+# Global settings
+language-settings:
+  python:
+    # Python requirements file location
+    python-version: '3.11'
+    
+# Ignore specific vulnerabilities (add with caution and justification)
+ignore: {}
+  # Example of how to ignore a vulnerability:
+  # SNYK-JS-EXAMPLE-123456:
+  #   - '*':
+  #       reason: 'No fix available, risk accepted'
+  #       expires: 2025-12-31T00:00:00.000Z
+  #       created: 2024-01-01T00:00:00.000Z
+
+# Patch specific vulnerabilities (managed by Snyk)
+patch: {}
+
+# Exclude paths from scanning (test files, build output, etc.)
+exclude:
+  global:
+    - node_modules/**
+    - dist/**
+    - coverage/**
+    - test-results/**
+    - playwright-report/**
+    - '*.log'
+    - '*.db'
+    - '*.sqlite'
+    - python-services/venv/**
+    - python-services/__pycache__/**
+    - .git/**
