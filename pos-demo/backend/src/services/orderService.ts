@@ -63,10 +63,10 @@ export const createOrder = async (productId: string, qty: number, userId: string
     const totalAmount = product.price * qty;
 
     const db = await getDb();
-    await db.run(
-        'INSERT INTO orders (id, product_id, user_id, qty, total_amount, status) VALUES (?, ?, ?, ?, ?, ?)',
-        orderId, productId, userId, qty, totalAmount, 'completed'
+    const stmt = db.prepare(
+        'INSERT INTO orders (id, product_id, user_id, qty, total_amount, status) VALUES (?, ?, ?, ?, ?, ?)'
     );
+    stmt.run(orderId, productId, userId, qty, totalAmount, 'completed');
 
     logger.info('Order created successfully', {
         action: 'create_order',

@@ -11,24 +11,22 @@ export interface Product {
 
 export const listProducts = async (): Promise<Product[]> => {
     const db = await getDb();
-    return db.all<Product[]>('SELECT * FROM products');
+    const stmt = db.prepare('SELECT * FROM products');
+    return stmt.all() as Product[];
 };
 
 export const getProduct = async (id: string): Promise<Product | undefined> => {
     const db = await getDb();
-    return db.get<Product>('SELECT * FROM products WHERE id = ?', id);
+    const stmt = db.prepare('SELECT * FROM products WHERE id = ?');
+    return stmt.get(id) as Product | undefined;
 };
 
 export const seedProduct = async (product: Product): Promise<void> => {
     const db = await getDb();
-    await db.run(
-        'INSERT OR REPLACE INTO products (id, name, sku, price, stock) VALUES (?, ?, ?, ?, ?)',
-        product.id,
-        product.name,
-        product.sku,
-        product.price,
-        product.stock
+    const stmt = db.prepare(
+        'INSERT OR REPLACE INTO products (id, name, sku, price, stock) VALUES (?, ?, ?, ?, ?)'
     );
+    stmt.run(product.id, product.name, product.sku, product.price, product.stock);
 };
 
 export const updateStock = async (id: string, qty: number): Promise<void> => {
@@ -41,5 +39,6 @@ export const updateStock = async (id: string, qty: number): Promise<void> => {
         throw new AppError('Insufficient stock', 'INVENTORY_UNAVAILABLE', 400, 'Restock product', { stock_level: product.stock });
     }
 
-    await db.run('UPDATE products SET stock = ? WHERE id = ?', newStock, id);
+    const stmt = db.prepare('UPDATE products SET stock = ? WHERE id = ?');
+    stmt.run(newStock, id);
 };

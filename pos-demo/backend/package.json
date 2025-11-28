@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/helmet": "^0.0.48",
@@ -39,10 +40,10 @@
     "@opentelemetry/sdk-node": "^0.52.0",
     "@opentelemetry/semantic-conventions": "^1.25.0",
     "@types/uuid": "^10.0.0",
+    "better-sqlite3": "^11.0.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "helmet": "^8.1.0",
-    "sqlite": "^5.1.1",
     "uuid": "^11.1.0",
     "winston": "^3.18.3",
     "winston-transport": "^4.9.0"

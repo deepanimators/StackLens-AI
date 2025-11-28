@@ -1,18 +1,15 @@
-import sqlite3 from 'sqlite3';
-import { open, Database } from 'sqlite';
+import Database from 'better-sqlite3';
 import { logger } from '../utils/logger';
 
-let db: Database;
+let db: Database.Database | null = null;
 
-export const getDb = async () => {
-    if (!db) {
-        logger.info('Initializing database...');
-        db = await open({
-            filename: process.env.DB_PATH || ':memory:',
-            driver: sqlite3.Database
-        });
+export const getDb = async (): Promise<Database.Database> => {
+  if (!db) {
+    logger.info('Initializing database...');
+    const dbPath = process.env.DB_PATH || ':memory:';
+    db = new Database(dbPath);
 
-        await db.exec(`
+    db.exec(`
       CREATE TABLE IF NOT EXISTS products (
         id TEXT PRIMARY KEY,
         name TEXT,
@@ -36,7 +33,7 @@ export const getDb = async () => {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `);
-        logger.info('Database initialized');
-    }
-    return db;
+    logger.info('Database initialized');
+  }
+  return db;
 };
