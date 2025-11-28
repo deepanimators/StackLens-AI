@@ -297,9 +297,27 @@ if ($DevMode) {
 } else {
     $apiCmd = "pnpm run start"
 }
-# Create batch file for proper log redirection
+
+# Create batch file with environment variables for proper env loading
+# The batch file needs to set env vars before running node
+# Also set DOTENV_CONFIG_PATH to use .env.windows instead of .env
 $apiBatch = "$logsDir\start-api.bat"
-"@echo off`r`ncd /d `"$ROOT_DIR`"`r`n$apiCmd > `"$logsDir\server.log`" 2>&1" | Out-File -FilePath $apiBatch -Encoding ASCII
+$batchContent = @"
+@echo off
+cd /d "$ROOT_DIR"
+set DOTENV_CONFIG_PATH=$ROOT_DIR\.env.windows
+set NODE_ENV=production
+set DATABASE_URL=$($env:DATABASE_URL)
+set SERVER_IP=$ServerIP
+set BIND_HOST=0.0.0.0
+set PORT=4000
+set KAFKA_BROKERS=$($env:KAFKA_BROKERS)
+set GEMINI_API_KEY=$($env:GEMINI_API_KEY)
+set OTEL_EXPORTER_OTLP_ENDPOINT=$($env:OTEL_EXPORTER_OTLP_ENDPOINT)
+$apiCmd > "$logsDir\server.log" 2>&1
+"@
+$batchContent | Out-File -FilePath $apiBatch -Encoding ASCII
+
 $apiProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$apiBatch`"" -PassThru -WindowStyle Hidden
 if ($apiProcess) {
     $global:ProcessIds += $apiProcess.Id
