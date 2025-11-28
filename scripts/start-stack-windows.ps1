@@ -331,8 +331,26 @@ if ($DevMode) {
 $envWindowsFile = "$ROOT_DIR\.env.windows"
 $envFile = "$ROOT_DIR\.env"
 if (Test-Path $envWindowsFile) {
+    # Remove existing .env first to ensure clean copy
+    if (Test-Path $envFile) {
+        Remove-Item -Path $envFile -Force
+    }
     Copy-Item -Path $envWindowsFile -Destination $envFile -Force
-    Write-Info "  Copied .env.windows to .env for production config"
+    
+    # Verify the copy worked
+    $lineCount = (Get-Content $envFile | Measure-Object -Line).Lines
+    if ($lineCount -gt 10) {
+        Write-Success "  Copied .env.windows to .env ($lineCount lines)"
+    } else {
+        Write-Err "  ERROR: .env file has only $lineCount lines - copy may have failed!"
+        Write-Info "  Trying alternative copy method..."
+        Get-Content $envWindowsFile | Set-Content $envFile -Encoding UTF8
+        $lineCount = (Get-Content $envFile | Measure-Object -Line).Lines
+        Write-Info "  After retry: $lineCount lines"
+    }
+} else {
+    Write-Err "  ERROR: .env.windows not found at $envWindowsFile"
+}
 }
 
 # Create batch file with environment variables for proper env loading
