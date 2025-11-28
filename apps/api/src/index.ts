@@ -32,6 +32,13 @@ const corsOrigins = [
   "http://13.235.73.106:5173",
   "http://13.235.73.106:3000",
   "http://13.235.73.106:4000",
+  // EC2 hostname (AWS auto-generated DNS name)
+  "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:5173",
+  "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:3000",
+  "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:4000",
+
+  "https://stacklens.ai",
+  "https://www.stacklens.ai",
 ];
 
 app.use(cors({
