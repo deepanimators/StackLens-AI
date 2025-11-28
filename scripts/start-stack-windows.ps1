@@ -140,6 +140,28 @@ Write-Host ""
 Set-Location $ROOT_DIR
 
 # ============================================
+# STEP 0: Stop Any Running Services First
+# ============================================
+Write-Info "=== Step 0: Stopping any running services ==="
+
+# Kill processes on ports that might lock files
+$portsToKill = @(4000, 5173, 5174, 3000, 3001)
+foreach ($port in $portsToKill) {
+    $connections = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
+    foreach ($conn in $connections) {
+        try {
+            Write-Warn "  Stopping process on port $port (PID: $($conn.OwningProcess))"
+            Stop-Process -Id $conn.OwningProcess -Force -ErrorAction SilentlyContinue
+        } catch {}
+    }
+}
+
+# Wait for processes to fully terminate
+Start-Sleep -Seconds 2
+Write-Success "  Existing processes stopped."
+Write-Host ""
+
+# ============================================
 # STEP 1: Install Dependencies
 # ============================================
 if (-not $SkipInstall) {
@@ -152,36 +174,47 @@ if (-not $SkipInstall) {
         npm install -g pnpm
     }
     
-    # Root dependencies - use --ignore-scripts=false to build native modules
+    # Root dependencies
     Write-Info "Installing root dependencies..."
-    # First install, then rebuild native modules
-    pnpm install
+    pnpm install --ignore-scripts
     
-    # CRITICAL: Install node-gyp and prebuild-install if not present
-    Write-Info "Checking native module build tools..."
-    $nodeGyp = Get-Command node-gyp -ErrorAction SilentlyContinue
-    if (-not $nodeGyp) {
-        Write-Info "Installing node-gyp and prebuild-install..."
-        npm install -g node-gyp prebuild-install
-    }
+    # Check if native modules are already built
+    $sqlitePrebuilt = Test-Path "$ROOT_DIR\node_modules\better-sqlite3\prebuilds\win32-x64\node.napi.node"
+    $sqliteBuilt = Test-Path "$ROOT_DIR\node_modules\better-sqlite3\build\Release\better_sqlite3.node"
     
-    # Approve and rebuild native modules (better-sqlite3, bcrypt, sqlite3)
-    # pnpm 10+ requires explicit approval for build scripts
-    Write-Info "Rebuilding native modules..."
-    
-    # Try to rebuild - if it fails, the app might still work with JS fallbacks
-    try {
-        pnpm rebuild better-sqlite3 2>$null
-        Write-Success "better-sqlite3 rebuilt!"
-    } catch {
-        Write-Warn "better-sqlite3 rebuild failed - checking if prebuilt exists..."
-    }
-    
-    try {
-        pnpm rebuild bcrypt 2>$null
-        Write-Success "bcrypt rebuilt!"
-    } catch {
-        Write-Warn "bcrypt rebuild failed - will use bcryptjs fallback"
+    if ($sqlitePrebuilt -or $sqliteBuilt) {
+        Write-Success "  better-sqlite3 already has binaries - skipping rebuild"
+    } else {
+        # Only try to rebuild if no binaries exist
+        Write-Info "  Native modules need building..."
+        
+        # Install node-gyp if needed
+        $nodeGyp = Get-Command node-gyp -ErrorAction SilentlyContinue
+        if (-not $nodeGyp) {
+            Write-Info "  Installing node-gyp..."
+            npm install -g node-gyp prebuild-install
+        }
+        
+        # Try to download prebuilt binaries first (faster)
+        Write-Info "  Attempting to download prebuilt binaries..."
+        Set-Location "$ROOT_DIR\node_modules\better-sqlite3"
+        $prebuildResult = & npx prebuild-install 2>&1
+        if ($LASTEXITCODE -eq 0) {
+            Write-Success "  Downloaded prebuilt better-sqlite3!"
+        } else {
+            Write-Warn "  Prebuilt download failed, trying to compile..."
+            try {
+                & node-gyp rebuild --release 2>$null
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Success "  Compiled better-sqlite3!"
+                } else {
+                    Write-Warn "  Compile failed - app may not work correctly"
+                }
+            } catch {
+                Write-Warn "  Compile failed - app may not work correctly"
+            }
+        }
+        Set-Location $ROOT_DIR
     }
     
     # POS Demo Backend
