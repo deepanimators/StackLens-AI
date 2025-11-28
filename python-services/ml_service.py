@@ -475,28 +475,44 @@ class MLOrchestrator:
             raise
 
     def _init_kafka(self):
-        """Initialize Kafka consumer and producer"""
-        try:
-            # Consumer
-            self.kafka_consumer = KafkaConsumer(
-                self.kafka_input_topic,
-                bootstrap_servers=self.kafka_brokers,
-                group_id=self.kafka_consumer_group,
-                auto_offset_reset='latest',
-                value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-                max_poll_records=100
-            )
+        """Initialize Kafka consumer and producer with retry and graceful fallback"""
+        max_retries = 3
+        retry_delay = 5
+        
+        for attempt in range(max_retries):
+            try:
+                # Consumer with timeout
+                self.kafka_consumer = KafkaConsumer(
+                    self.kafka_input_topic,
+                    bootstrap_servers=self.kafka_brokers,
+                    group_id=self.kafka_consumer_group,
+                    auto_offset_reset='latest',
+                    value_deserializer=lambda m: json.loads(m.decode('utf-8')),
+                    max_poll_records=100,
+                    request_timeout_ms=10000,
+                    session_timeout_ms=10000
+                )
 
-            # Producer
-            self.kafka_producer = KafkaProducer(
-                bootstrap_servers=self.kafka_brokers,
-                value_serializer=lambda v: json.dumps(v).encode('utf-8')
-            )
+                # Producer
+                self.kafka_producer = KafkaProducer(
+                    bootstrap_servers=self.kafka_brokers,
+                    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+                    request_timeout_ms=10000
+                )
 
-            logger.info("Kafka initialized (consumer + producer)")
-        except Exception as e:
-            logger.error(f"Kafka init failed: {e}")
-            raise
+                logger.info("Kafka initialized (consumer + producer)")
+                return
+            except Exception as e:
+                logger.warning(f"Kafka init attempt {attempt + 1}/{max_retries} failed: {e}")
+                if attempt < max_retries - 1:
+                    logger.info(f"Retrying in {retry_delay} seconds...")
+                    import time
+                    time.sleep(retry_delay)
+                else:
+                    logger.warning("Kafka unavailable - ML service will run without Kafka integration")
+                    self.kafka_consumer = None
+                    self.kafka_producer = None
+                    return
 
     def _init_models(self):
         """Initialize ML models for all services"""

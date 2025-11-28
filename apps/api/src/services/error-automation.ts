@@ -266,6 +266,7 @@ export class ErrorAutomationService extends EventEmitter {
      * Normalize severity to standard levels
      */
     private normalizeSeverity(severity: string): string {
+        if (!severity) return "LOW";
         const normalizedSeverity = severity.toUpperCase();
 
         if (["CRITICAL", "FATAL", "EMERGENCY"].includes(normalizedSeverity)) {
