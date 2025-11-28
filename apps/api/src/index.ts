@@ -39,6 +39,10 @@ const corsOrigins = [
 
   "https://stacklens.ai",
   "https://www.stacklens.ai",
+  "http://stacklens.ai:4000",
+  "http://www.stacklens.ai:4000",
+  "http://api.stacklens.ai",
+  "http://pos.stacklens.ai",
 ];
 
 app.use(cors({
