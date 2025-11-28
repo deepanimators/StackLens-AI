@@ -116,46 +116,49 @@ if ($serverIp -eq "0.0.0.0" -or [string]::IsNullOrWhiteSpace($serverIp)) {
 Write-Host "Creating Kafka configuration for $serverIp..." -ForegroundColor Yellow
 $javaLogPath = $kafkaDataDir -replace '\\', '/'
 
-$kafkaConfig = @"
-process.roles=broker,controller
-node.id=1
-controller.quorum.voters=1@localhost:9093
-listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-advertised.listeners=PLAINTEXT://${serverIp}:9092
-controller.listener.names=CONTROLLER
-inter.broker.listener.name=PLAINTEXT
-log.dirs=$javaLogPath
-num.partitions=3
-default.replication.factor=1
-offsets.topic.replication.factor=1
-transaction.state.log.replication.factor=1
-transaction.state.log.min.isr=1
-num.network.threads=3
-num.io.threads=8
-socket.send.buffer.bytes=102400
-socket.receive.buffer.bytes=102400
-socket.request.max.bytes=104857600
-log.retention.hours=168
-log.segment.bytes=1073741824
-log.retention.check.interval.ms=300000
-auto.create.topics.enable=true
-"@
+# Build config line by line to avoid encoding issues
+$configLines = @(
+    "process.roles=broker,controller",
+    "node.id=1",
+    "controller.quorum.voters=1@localhost:9093",
+    "listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093",
+    "advertised.listeners=PLAINTEXT://$($serverIp):9092",
+    "controller.listener.names=CONTROLLER",
+    "inter.broker.listener.name=PLAINTEXT",
+    "log.dirs=$javaLogPath",
+    "num.partitions=3",
+    "default.replication.factor=1",
+    "offsets.topic.replication.factor=1",
+    "transaction.state.log.replication.factor=1",
+    "transaction.state.log.min.isr=1",
+    "num.network.threads=3",
+    "num.io.threads=8",
+    "socket.send.buffer.bytes=102400",
+    "socket.receive.buffer.bytes=102400",
+    "socket.request.max.bytes=104857600",
+    "log.retention.hours=168",
+    "log.segment.bytes=1073741824",
+    "log.retention.check.interval.ms=300000",
+    "auto.create.topics.enable=true"
+)
+$kafkaConfig = $configLines -join "`n"
 
-$kafkaConfig | Out-File -FilePath $configFile -Encoding ASCII -Force
+# Write with explicit ASCII encoding (no BOM)
+[System.IO.File]::WriteAllText($configFile, $kafkaConfig, [System.Text.Encoding]::ASCII)
 
 # Copy config to ALL possible Kafka config locations to ensure it's found
 $kafkaConfigDir = "$KAFKA_DIR\config"
 if (Test-Path $kafkaConfigDir) {
     # Main config directory
-    $kafkaConfig | Out-File -FilePath "$kafkaConfigDir\kraft-server.properties" -Encoding ASCII -Force
-    $kafkaConfig | Out-File -FilePath "$kafkaConfigDir\server.properties" -Encoding ASCII -Force
+    [System.IO.File]::WriteAllText("$kafkaConfigDir\kraft-server.properties", $kafkaConfig, [System.Text.Encoding]::ASCII)
+    [System.IO.File]::WriteAllText("$kafkaConfigDir\server.properties", $kafkaConfig, [System.Text.Encoding]::ASCII)
     
     # KRaft-specific config directory
     $kraftConfigDir = "$kafkaConfigDir\kraft"
     if (Test-Path $kraftConfigDir) {
-        $kafkaConfig | Out-File -FilePath "$kraftConfigDir\server.properties" -Encoding ASCII -Force
-        $kafkaConfig | Out-File -FilePath "$kraftConfigDir\broker.properties" -Encoding ASCII -Force
-        $kafkaConfig | Out-File -FilePath "$kraftConfigDir\controller.properties" -Encoding ASCII -Force
+        [System.IO.File]::WriteAllText("$kraftConfigDir\server.properties", $kafkaConfig, [System.Text.Encoding]::ASCII)
+        [System.IO.File]::WriteAllText("$kraftConfigDir\broker.properties", $kafkaConfig, [System.Text.Encoding]::ASCII)
+        [System.IO.File]::WriteAllText("$kraftConfigDir\controller.properties", $kafkaConfig, [System.Text.Encoding]::ASCII)
         Write-Host "  Config copied to Kafka kraft directory" -ForegroundColor Gray
     }
     Write-Host "  Config copied to Kafka config directory" -ForegroundColor Gray
