@@ -448,10 +448,13 @@ $kafka = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction Silentl
 $otelGrpc = Get-NetTCPConnection -LocalPort 4317 -State Listen -ErrorAction SilentlyContinue
 $otelHttp = Get-NetTCPConnection -LocalPort 4318 -State Listen -ErrorAction SilentlyContinue
 
+# Show the actual address used (localhost for local connections)
+$kafkaAddr = if ($advertiseAddress) { $advertiseAddress } else { "localhost" }
+
 if ($kafka) {
-    Write-Host "  [RUNNING] Kafka        - ${serverIp}:9092" -ForegroundColor Green
+    Write-Host "  [RUNNING] Kafka        - ${kafkaAddr}:9092 (bind: 0.0.0.0)" -ForegroundColor Green
 } else {
-    Write-Host "  [STOPPED] Kafka        - ${serverIp}:9092" -ForegroundColor Red
+    Write-Host "  [STOPPED] Kafka        - ${kafkaAddr}:9092" -ForegroundColor Red
 }
 
 if ($otelGrpc) {

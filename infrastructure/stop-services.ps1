@@ -12,7 +12,10 @@ $kafkaSvc = Get-Service -Name "StackLensKafka" -ErrorAction SilentlyContinue
 if ($kafkaSvc -and $kafkaSvc.Status -eq "Running") {
     Write-Host "Stopping StackLensKafka Windows Service..." -ForegroundColor Yellow
     Stop-Service -Name "StackLensKafka" -Force -ErrorAction SilentlyContinue
-    Write-Host "  Service stopped" -ForegroundColor Green
+    Start-Sleep -Seconds 2
+    Write-Host "  Kafka Windows Service stopped" -ForegroundColor Green
+} elseif ($kafkaSvc) {
+    Write-Host "StackLensKafka service exists but not running" -ForegroundColor Gray
 }
 
 # Stop OTEL Windows Service first
@@ -28,9 +31,9 @@ $kafka = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction Silentl
 if ($kafka) {
     Write-Host "Stopping Kafka process (PID: $($kafka.OwningProcess))..." -ForegroundColor Yellow
     Stop-Process -Id $kafka.OwningProcess -Force -ErrorAction SilentlyContinue
-    Write-Host "  Kafka stopped" -ForegroundColor Green
+    Write-Host "  Kafka process stopped" -ForegroundColor Green
 } else {
-    Write-Host "Kafka is not running on port 9092" -ForegroundColor Gray
+    Write-Host "[OK] Kafka port 9092 is now free" -ForegroundColor Green
 }
 
 # Stop Kafka Controller
