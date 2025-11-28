@@ -367,6 +367,38 @@ bin\windows\kafka-server-start.bat $shortConfigFile
 }
 
 # ============================================
+# CREATE KAFKA TOPICS (if Kafka is running)
+# ============================================
+$kafkaRunning = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
+if ($kafkaRunning -and (Test-Path "$KAFKA_DIR\bin\windows\kafka-topics.bat")) {
+    Write-Host "Creating Kafka topics..." -ForegroundColor Yellow
+    
+    Push-Location $KAFKA_DIR
+    
+    # List of required topics
+    $topics = @("error-logs", "analytics-events", "pos-transactions", "stacklens-errors")
+    
+    foreach ($topic in $topics) {
+        try {
+            # Check if topic exists
+            $existingTopics = & cmd /c "bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --list 2>&1"
+            if ($existingTopics -notcontains $topic) {
+                Write-Host "  Creating topic: $topic" -ForegroundColor Gray
+                & cmd /c "bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --create --topic $topic --partitions 3 --replication-factor 1 2>&1" | Out-Null
+            }
+        } catch {
+            Write-Host "  [WARN] Could not create topic $topic" -ForegroundColor Yellow
+        }
+    }
+    
+    # List all topics
+    $allTopics = & cmd /c "bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --list 2>&1"
+    Write-Host "  Kafka topics: $($allTopics -join ', ')" -ForegroundColor Gray
+    
+    Pop-Location
+}
+
+# ============================================
 # START OTEL COLLECTOR
 # ============================================
 $otelRunning = Get-NetTCPConnection -LocalPort 4317 -State Listen -ErrorAction SilentlyContinue

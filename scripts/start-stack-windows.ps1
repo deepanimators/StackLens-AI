@@ -223,10 +223,20 @@ if (-not $SkipInstall) {
 if (-not $SkipBuild -and -not $DevMode) {
     Write-Info "=== Step 2: Building Projects ==="
     
-    # Build main project
+    # Build main project (use Windows-specific build command)
     Write-Info "Building main StackLens project..."
     Set-Location $ROOT_DIR
-    pnpm run build
+    
+    # Build client first
+    pnpm run build:client
+    
+    # Build server with Windows-compatible copy command
+    Write-Info "Building server and copying assets..."
+    pnpm exec esbuild apps/api/src/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+    
+    # Copy error-map.json to dist (Windows command)
+    Copy-Item -Path "apps\api\src\services\error-map.json" -Destination "dist\" -Force
+    Write-Success "  Copied error-map.json to dist/"
     
     # Build stacklens backend
     Write-Info "Building stacklens/backend..."
