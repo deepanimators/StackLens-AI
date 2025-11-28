@@ -143,6 +143,15 @@ auto.create.topics.enable=true
 
 $kafkaConfig | Out-File -FilePath $configFile -Encoding ASCII -Force
 
+# ALSO copy to Kafka's config directory to ensure it's found
+$kafkaConfigDir = "$KAFKA_DIR\config"
+if (Test-Path $kafkaConfigDir) {
+    $kafkaConfig | Out-File -FilePath "$kafkaConfigDir\kraft-server.properties" -Encoding ASCII -Force
+    # Also overwrite the default server.properties in case Kafka falls back to it
+    $kafkaConfig | Out-File -FilePath "$kafkaConfigDir\server.properties" -Encoding ASCII -Force
+    Write-Host "  Config also copied to Kafka directory" -ForegroundColor Gray
+}
+
 # Debug: verify the config was written correctly
 $writtenConfig = Get-Content $configFile | Select-String "advertised.listeners"
 Write-Host "  Config written: $writtenConfig" -ForegroundColor Gray
@@ -187,10 +196,19 @@ if (-not (Test-Path "$kafkaDataDir\meta.properties")) {
     
     Write-Host "  Cluster ID: $clusterId" -ForegroundColor Cyan
     
-    # Format storage - use the FULL path to avoid any ambiguity
+    # Format storage - use the config file we copied to Kafka's config directory
+    # This avoids path resolution issues
+    $kafkaInternalConfig = "$KAFKA_DIR\config\kraft-server.properties"
     Write-Host "  Running kafka-storage format..." -ForegroundColor Gray
+    Write-Host "    Using config: $kafkaInternalConfig" -ForegroundColor Gray
+    
+    # Verify the config file has correct advertised.listeners
+    $checkConfig = Get-Content $kafkaInternalConfig | Select-String "advertised.listeners"
+    Write-Host "    Config check: $checkConfig" -ForegroundColor Gray
+    
     try {
-        $formatOutput = & cmd /c "bin\windows\kafka-storage.bat format -t $clusterId -c `"$configFile`" 2>&1"
+        # Use config\kraft-server.properties (relative to Kafka dir)
+        $formatOutput = & cmd /c "bin\windows\kafka-storage.bat format -t $clusterId -c config\kraft-server.properties 2>&1"
         Write-Host "    Format output: $formatOutput" -ForegroundColor Gray
         
         if (Test-Path "$kafkaDataDir\meta.properties") {
