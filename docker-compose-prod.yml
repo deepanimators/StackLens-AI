@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  api:
+    image: docker.io/yourorg/api:TAG
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    ports:
+      - "4000:4000"
+    networks:
+      - backend
+  web:
+    image: docker.io/yourorg/web:TAG
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    ports:
+      - "5173:5173"
+    networks:
+      - frontend
+  # ... legacy_backend, pos_backend, pos_frontend similar ...
+networks:
+  frontend:
+  backend:
