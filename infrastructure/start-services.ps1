@@ -223,19 +223,28 @@ if ($kafkaRunning) {
             }
             Start-Sleep -Seconds 2
             
-            # Direct start using relative paths from Kafka directory
-            Push-Location $KAFKA_DIR
+            # Use 8.3 short paths to avoid "input line too long" error
+            # Get short path names for the long paths
+            $fso = New-Object -ComObject Scripting.FileSystemObject
+            $shortKafkaDir = $fso.GetFolder($KAFKA_DIR).ShortPath
+            $shortConfigFile = $fso.GetFile($configFile).ShortPath
+            $shortLogsDir = $fso.GetFolder($LOGS_DIR).ShortPath
             
-            # Create a start batch file for cleaner execution
-            $startBatch = @"
+            Write-Host "  Using short paths:" -ForegroundColor Gray
+            Write-Host "    Kafka: $shortKafkaDir" -ForegroundColor Gray
+            Write-Host "    Config: $shortConfigFile" -ForegroundColor Gray
+            
+            # Create a minimal batch file using short paths
+            $batchContent = @"
 @echo off
-cd /d "$KAFKA_DIR"
-bin\windows\kafka-server-start.bat "$configFile"
+cd /d $shortKafkaDir
+bin\windows\kafka-server-start.bat $shortConfigFile
 "@
-            $startBatch | Out-File -FilePath "$LOGS_DIR\run-kafka.bat" -Encoding ASCII
+            $batchFile = "$shortLogsDir\run-kafka.bat"
+            $batchContent | Out-File -FilePath $batchFile -Encoding ASCII
             
-            $proc = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$LOGS_DIR\run-kafka.bat`"", ">", "`"$LOGS_DIR\kafka.log`"", "2>&1" -PassThru -WindowStyle Hidden
-            Pop-Location
+            # Start Kafka using the batch file
+            $proc = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "$batchFile", ">", "$shortLogsDir\kafka.log", "2>&1" -PassThru -WindowStyle Hidden -WorkingDirectory $shortKafkaDir
             
             Write-Host "  Kafka process started (PID: $($proc.Id))" -ForegroundColor Green
         }

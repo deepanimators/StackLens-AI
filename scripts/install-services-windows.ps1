@@ -391,6 +391,15 @@ function Create-WindowsServices {
         Remove-Item $nssmZip
     }
     
+    # Get 8.3 short paths to avoid "input line too long" error with NSSM
+    $fso = New-Object -ComObject Scripting.FileSystemObject
+    $shortInstallDir = $fso.GetFolder($INSTALL_DIR).ShortPath
+    $shortKafkaDir = $fso.GetFolder("$INSTALL_DIR\kafka").ShortPath
+    $shortOtelDir = $fso.GetFolder("$INSTALL_DIR\otel-collector").ShortPath
+    
+    Write-Host "  Using short paths for services:" -ForegroundColor Gray
+    Write-Host "    Install: $shortInstallDir" -ForegroundColor Gray
+    
     # Create Kafka Service (check if exists first)
     Write-Host "Creating Kafka Windows Service..." -ForegroundColor Yellow
     $kafkaSvc = Get-Service -Name "StackLensKafka" -ErrorAction SilentlyContinue
@@ -401,13 +410,18 @@ function Create-WindowsServices {
         # Remove and recreate to update path
         & $nssmPath remove StackLensKafka confirm 2>$null
     }
-    & $nssmPath install StackLensKafka "$INSTALL_DIR\kafka\bin\windows\kafka-server-start.bat" "$INSTALL_DIR\config\kraft-server.properties" 2>$null
-    & $nssmPath set StackLensKafka AppDirectory "$INSTALL_DIR\kafka"
+    
+    # Use short paths for Kafka service
+    $kafkaBat = "$shortKafkaDir\bin\windows\kafka-server-start.bat"
+    $kafkaConfig = "$shortInstallDir\config\kraft-server.properties"
+    
+    & $nssmPath install StackLensKafka "$kafkaBat" "$kafkaConfig" 2>$null
+    & $nssmPath set StackLensKafka AppDirectory "$shortKafkaDir"
     & $nssmPath set StackLensKafka DisplayName "StackLens Kafka"
     & $nssmPath set StackLensKafka Description "Apache Kafka for StackLens"
     & $nssmPath set StackLensKafka Start SERVICE_AUTO_START
-    & $nssmPath set StackLensKafka AppStdout "$INSTALL_DIR\logs\kafka-stdout.log"
-    & $nssmPath set StackLensKafka AppStderr "$INSTALL_DIR\logs\kafka-stderr.log"
+    & $nssmPath set StackLensKafka AppStdout "$shortInstallDir\logs\kafka-stdout.log"
+    & $nssmPath set StackLensKafka AppStderr "$shortInstallDir\logs\kafka-stderr.log"
     Write-Host "  Kafka service configured!" -ForegroundColor Green
     
     # Create OTEL Service (check if exists first)
@@ -418,13 +432,18 @@ function Create-WindowsServices {
         Stop-Service -Name "StackLensOtel" -Force -ErrorAction SilentlyContinue
         & $nssmPath remove StackLensOtel confirm 2>$null
     }
-    & $nssmPath install StackLensOtel "$INSTALL_DIR\otel-collector\otelcol-contrib.exe" "--config=$INSTALL_DIR\config\otel-collector-config.yaml" 2>$null
-    & $nssmPath set StackLensOtel AppDirectory "$INSTALL_DIR\otel-collector"
+    
+    # Use short paths for OTEL service
+    $otelExe = "$shortOtelDir\otelcol-contrib.exe"
+    $otelConfig = "$shortInstallDir\config\otel-collector-config.yaml"
+    
+    & $nssmPath install StackLensOtel "$otelExe" "--config=$otelConfig" 2>$null
+    & $nssmPath set StackLensOtel AppDirectory "$shortOtelDir"
     & $nssmPath set StackLensOtel DisplayName "StackLens OpenTelemetry Collector"
     & $nssmPath set StackLensOtel Description "OpenTelemetry Collector for StackLens"
     & $nssmPath set StackLensOtel Start SERVICE_AUTO_START
-    & $nssmPath set StackLensOtel AppStdout "$INSTALL_DIR\logs\otel-stdout.log"
-    & $nssmPath set StackLensOtel AppStderr "$INSTALL_DIR\logs\otel-stderr.log"
+    & $nssmPath set StackLensOtel AppStdout "$shortInstallDir\logs\otel-stdout.log"
+    & $nssmPath set StackLensOtel AppStderr "$shortInstallDir\logs\otel-stderr.log"
     Write-Host "  OTEL service configured!" -ForegroundColor Green
     
     Write-Host "Windows Services created!" -ForegroundColor Green
