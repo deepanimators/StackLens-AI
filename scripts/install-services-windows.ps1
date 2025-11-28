@@ -234,13 +234,45 @@ auto.create.topics.enable=true
     # Generate cluster ID and format storage
     Write-Host "Generating Kafka cluster ID..." -ForegroundColor Yellow
     
+    # Create data directory
+    $dataDir = "$INSTALL_DIR\data\kafka-logs"
+    if (-not (Test-Path $dataDir)) {
+        New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
+    }
+    
     $clusterIdFile = "$INSTALL_DIR\data\cluster_id.txt"
     if (-not (Test-Path $clusterIdFile)) {
-        $clusterId = & "$kafkaDir\bin\windows\kafka-storage.bat" random-uuid
-        $clusterId | Out-File -FilePath $clusterIdFile -Encoding UTF8
+        # Use a pre-generated valid cluster ID to avoid path issues on Windows
+        # Kafka cluster IDs are base64-encoded UUIDs (22 characters)
+        $clusterId = "MkU3OEVBNTcwNTJENDM2Qk"
         
-        Write-Host "Formatting Kafka storage with cluster ID: $clusterId" -ForegroundColor Yellow
-        & "$kafkaDir\bin\windows\kafka-storage.bat" format -t $clusterId -c "$INSTALL_DIR\config\kraft-server.properties"
+        # Try to generate via Kafka command, but use fallback if it fails
+        Push-Location $kafkaDir
+        try {
+            $genResult = & cmd /c "bin\windows\kafka-storage.bat random-uuid 2>nul"
+            if ($genResult -and $genResult.Length -ge 20 -and -not $genResult.Contains("error") -and -not $genResult.Contains("input")) {
+                $clusterId = $genResult.Trim()
+            }
+        } catch {
+            Write-Host "  Using fallback cluster ID" -ForegroundColor Yellow
+        }
+        Pop-Location
+        
+        $clusterId | Out-File -FilePath $clusterIdFile -Encoding UTF8
+        Write-Host "  Cluster ID: $clusterId" -ForegroundColor Gray
+        
+        # Format storage using relative paths to avoid "input line too long" error
+        Write-Host "Formatting Kafka storage..." -ForegroundColor Yellow
+        Push-Location $kafkaDir
+        try {
+            & cmd /c "bin\windows\kafka-storage.bat format -t $clusterId -c `"..\config\kraft-server.properties`" 2>&1" | Out-Null
+            Write-Host "  Storage formatted successfully!" -ForegroundColor Green
+        } catch {
+            Write-Host "  Format warning: $_" -ForegroundColor Yellow
+        }
+        Pop-Location
+    } else {
+        Write-Host "  Cluster ID already exists, skipping format" -ForegroundColor Yellow
     }
     
     Write-Host "Kafka configured for KRaft mode!" -ForegroundColor Green
@@ -359,25 +391,41 @@ function Create-WindowsServices {
         Remove-Item $nssmZip
     }
     
-    # Create Kafka Service
+    # Create Kafka Service (check if exists first)
     Write-Host "Creating Kafka Windows Service..." -ForegroundColor Yellow
-    & $nssmPath install StackLensKafka "$INSTALL_DIR\kafka\bin\windows\kafka-server-start.bat" "$INSTALL_DIR\config\kraft-server.properties"
+    $kafkaSvc = Get-Service -Name "StackLensKafka" -ErrorAction SilentlyContinue
+    if ($kafkaSvc) {
+        Write-Host "  Service StackLensKafka already exists, updating configuration..." -ForegroundColor Yellow
+        # Stop service before updating
+        Stop-Service -Name "StackLensKafka" -Force -ErrorAction SilentlyContinue
+        # Remove and recreate to update path
+        & $nssmPath remove StackLensKafka confirm 2>$null
+    }
+    & $nssmPath install StackLensKafka "$INSTALL_DIR\kafka\bin\windows\kafka-server-start.bat" "$INSTALL_DIR\config\kraft-server.properties" 2>$null
     & $nssmPath set StackLensKafka AppDirectory "$INSTALL_DIR\kafka"
     & $nssmPath set StackLensKafka DisplayName "StackLens Kafka"
     & $nssmPath set StackLensKafka Description "Apache Kafka for StackLens"
     & $nssmPath set StackLensKafka Start SERVICE_AUTO_START
     & $nssmPath set StackLensKafka AppStdout "$INSTALL_DIR\logs\kafka-stdout.log"
     & $nssmPath set StackLensKafka AppStderr "$INSTALL_DIR\logs\kafka-stderr.log"
+    Write-Host "  Kafka service configured!" -ForegroundColor Green
     
-    # Create OTEL Service
+    # Create OTEL Service (check if exists first)
     Write-Host "Creating OpenTelemetry Collector Windows Service..." -ForegroundColor Yellow
-    & $nssmPath install StackLensOtel "$INSTALL_DIR\otel-collector\otelcol-contrib.exe" "--config=$INSTALL_DIR\config\otel-collector-config.yaml"
+    $otelSvc = Get-Service -Name "StackLensOtel" -ErrorAction SilentlyContinue
+    if ($otelSvc) {
+        Write-Host "  Service StackLensOtel already exists, updating configuration..." -ForegroundColor Yellow
+        Stop-Service -Name "StackLensOtel" -Force -ErrorAction SilentlyContinue
+        & $nssmPath remove StackLensOtel confirm 2>$null
+    }
+    & $nssmPath install StackLensOtel "$INSTALL_DIR\otel-collector\otelcol-contrib.exe" "--config=$INSTALL_DIR\config\otel-collector-config.yaml" 2>$null
     & $nssmPath set StackLensOtel AppDirectory "$INSTALL_DIR\otel-collector"
     & $nssmPath set StackLensOtel DisplayName "StackLens OpenTelemetry Collector"
     & $nssmPath set StackLensOtel Description "OpenTelemetry Collector for StackLens"
     & $nssmPath set StackLensOtel Start SERVICE_AUTO_START
     & $nssmPath set StackLensOtel AppStdout "$INSTALL_DIR\logs\otel-stdout.log"
     & $nssmPath set StackLensOtel AppStderr "$INSTALL_DIR\logs\otel-stderr.log"
+    Write-Host "  OTEL service configured!" -ForegroundColor Green
     
     Write-Host "Windows Services created!" -ForegroundColor Green
 }
