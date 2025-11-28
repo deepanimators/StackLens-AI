@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Home, ShoppingCart, AlertTriangle, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 import ProductsPage from './pages/products';

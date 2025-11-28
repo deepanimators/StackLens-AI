@@ -36,11 +36,12 @@ setInterval(flushLogs, FLUSH_INTERVAL);
 
 export const logger = {
     log: (entry: LogEntry) => {
+        const envMode = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.MODE : 'production';
         const logObject = {
             timestamp: new Date().toISOString(),
             request_id: SESSION_ID, // Use session ID as request ID for frontend logs context
             service: 'pos-frontend',
-            env: import.meta.env.MODE,
+            env: envMode,
             app_version: '0.1.0',
             ...entry
         };

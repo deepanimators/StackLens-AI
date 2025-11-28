@@ -4,17 +4,27 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { Resource } from '@opentelemetry/resources';
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
+
+// Get OTEL URL from environment or use default
+const getOtelUrl = (): string => {
+    if (typeof import.meta !== 'undefined' && import.meta.env) {
+        return import.meta.env.VITE_OTEL_COLLECTOR_URL || 'http://localhost:4318/v1/traces';
+    }
+    return 'http://localhost:4318/v1/traces';
+};
 
 const exporter = new OTLPTraceExporter({
-    url: import.meta.env.VITE_OTEL_COLLECTOR_URL || 'http://localhost:4318/v1/traces',
+    url: getOtelUrl(),
+});
+
+const resource = new Resource({
+    [ATTR_SERVICE_NAME]: 'pos-frontend',
+    [ATTR_SERVICE_VERSION]: '0.1.0',
 });
 
 const provider = new WebTracerProvider({
-    resource: new Resource({
-        [SemanticResourceAttributes.SERVICE_NAME]: 'pos-frontend',
-        [SemanticResourceAttributes.SERVICE_VERSION]: '0.1.0',
-    }),
+    resource: resource,
 });
 
 provider.addSpanProcessor(new BatchSpanProcessor(exporter));
