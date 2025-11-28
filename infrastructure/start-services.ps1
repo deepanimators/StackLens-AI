@@ -117,14 +117,18 @@ Write-Host "Creating Kafka configuration for $serverIp..." -ForegroundColor Yell
 $javaLogPath = $kafkaDataDir -replace '\\', '/'
 
 # Build config line by line to avoid encoding issues
+# IMPORTANT: For KRaft mode, we must bind PLAINTEXT listener to the actual IP, not 0.0.0.0
+# because Kafka validates that advertised.listeners doesn't contain 0.0.0.0
+# CONTROLLER uses localhost since it's internal only
 $configLines = @(
     "process.roles=broker,controller",
     "node.id=1",
     "controller.quorum.voters=1@localhost:9093",
-    "listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093",
+    "listeners=PLAINTEXT://$($serverIp):9092,CONTROLLER://localhost:9093",
     "advertised.listeners=PLAINTEXT://$($serverIp):9092",
     "controller.listener.names=CONTROLLER",
     "inter.broker.listener.name=PLAINTEXT",
+    "listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT",
     "log.dirs=$javaLogPath",
     "num.partitions=3",
     "default.replication.factor=1",
