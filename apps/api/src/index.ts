@@ -19,9 +19,23 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-// CORS configuration for development
+// CORS configuration - supports both localhost and public IP
+const serverIp = process.env.SERVER_IP || 'localhost';
+const corsOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://localhost:4000",
+  `http://${serverIp}:5173`,
+  `http://${serverIp}:3000`,
+  `http://${serverIp}:4000`,
+  // EC2 public IP for Windows deployment
+  "http://13.235.73.106:5173",
+  "http://13.235.73.106:3000",
+  "http://13.235.73.106:4000",
+];
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:3000"],
+  origin: corsOrigins,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -150,9 +164,11 @@ app.use((req: any, res: any, next: any) => {
 
     // ALWAYS serve the app on port 4000
     // this serves both the API and the client.
+    // Bind to 0.0.0.0 to allow external access (public IP)
     const port = Number(process.env.PORT || 4000);
-    server.listen(port, () => {
-      log(`serving on port ${port}`);
+    const host = process.env.BIND_HOST || '0.0.0.0';
+    server.listen(port, host, () => {
+      log(`serving on ${host}:${port}`);
     });
   } catch (error) {
     console.error("❌ Fatal server startup error:", error);

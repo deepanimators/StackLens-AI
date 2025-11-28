@@ -10,11 +10,11 @@ export default defineConfig({
         },
     },
     server: {
-        port: 5174,
-        host: "localhost",
+        port: Number(process.env.VITE_POS_PORT || 5174),
+        host: process.env.VITE_HOST || "0.0.0.0",
         proxy: {
             "/api": {
-                target: "http://localhost:3000",
+                target: process.env.POS_API_URL || "http://localhost:3000",
                 changeOrigin: true,
                 secure: false,
             },

@@ -253,10 +253,15 @@ if (-not $SkipInfra) {
 # ============================================
 Write-Info "=== Step 4: Starting Services ==="
 
-# Load environment variables from .env if it exists
-if (Test-Path "$ROOT_DIR\.env") {
-    Write-Info "Loading environment variables from .env..."
-    Get-Content "$ROOT_DIR\.env" | ForEach-Object {
+# Load environment variables from .env.windows first, then .env as fallback
+$envFile = "$ROOT_DIR\.env.windows"
+if (-not (Test-Path $envFile)) {
+    $envFile = "$ROOT_DIR\.env"
+}
+
+if (Test-Path $envFile) {
+    Write-Info "Loading environment variables from $envFile..."
+    Get-Content $envFile | ForEach-Object {
         if ($_ -match "^\s*([^#][^=]+)=(.*)$") {
             $name = $matches[1].Trim()
             $value = $matches[2].Trim()
@@ -265,9 +270,16 @@ if (Test-Path "$ROOT_DIR\.env") {
     }
 }
 
-# Set Kafka broker for services
-$env:KAFKA_BROKERS = "localhost:9092"
-$env:ANALYTICS_URL = "http://localhost:4000/api/analytics/events"
+# Get SERVER_IP from env or default to localhost
+$ServerIP = $env:SERVER_IP
+if (-not $ServerIP) { $ServerIP = "localhost" }
+Write-Info "Server IP: $ServerIP"
+
+# Set Kafka broker for services (use env var or default)
+if (-not $env:KAFKA_BROKERS) {
+    $env:KAFKA_BROKERS = "${ServerIP}:9092"
+}
+$env:ANALYTICS_URL = "http://${ServerIP}:4000/api/analytics/events"
 
 # Create log files directory
 $logsDir = "$ROOT_DIR\logs"
@@ -304,7 +316,7 @@ Stop-ProcessOnPort -Port 5173
 
 Set-Location $ROOT_DIR
 $frontendBatch = "$logsDir\start-frontend.bat"
-"@echo off`r`ncd /d `"$ROOT_DIR`"`r`npnpm run dev:client > `"$logsDir\client.log`" 2>&1" | Out-File -FilePath $frontendBatch -Encoding ASCII
+"@echo off`r`ncd /d `"$ROOT_DIR`"`r`nset VITE_HOST=0.0.0.0`r`npnpm run dev:client > `"$logsDir\client.log`" 2>&1" | Out-File -FilePath $frontendBatch -Encoding ASCII
 $frontendProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$frontendBatch`"" -PassThru -WindowStyle Hidden
 if ($frontendProcess) {
     $global:ProcessIds += $frontendProcess.Id
@@ -358,7 +370,7 @@ Stop-ProcessOnPort -Port 5174
 $posFrontendDir = "$ROOT_DIR\pos-demo\frontend"
 if (Test-Path "$posFrontendDir\package.json") {
     $posFrontendBatch = "$logsDir\start-pos-frontend.bat"
-    "@echo off`r`ncd /d `"$posFrontendDir`"`r`npnpm run dev -- --port 5174 > `"$logsDir\pos_frontend.log`" 2>&1" | Out-File -FilePath $posFrontendBatch -Encoding ASCII
+    "@echo off`r`ncd /d `"$posFrontendDir`"`r`nset VITE_HOST=0.0.0.0`r`npnpm run dev -- --host 0.0.0.0 --port 5174 > `"$logsDir\pos_frontend.log`" 2>&1" | Out-File -FilePath $posFrontendBatch -Encoding ASCII
     $posFrontendProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$posFrontendBatch`"" -PassThru -WindowStyle Hidden
     if ($posFrontendProcess) {
         $global:ProcessIds += $posFrontendProcess.Id
@@ -381,16 +393,16 @@ Write-Host "  All Services Started!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "Service Endpoints:" -ForegroundColor Cyan
-Write-Host "  StackLens UI:   http://localhost:5173" -ForegroundColor White
-Write-Host "  StackLens API:  http://localhost:4000" -ForegroundColor White
-Write-Host "  POS Demo Shop:  http://localhost:5174" -ForegroundColor White
-Write-Host "  POS Demo API:   http://localhost:3000" -ForegroundColor White
-Write-Host "  Legacy Backend: http://localhost:3001" -ForegroundColor White
+Write-Host "  StackLens UI:   http://${ServerIP}:5173" -ForegroundColor White
+Write-Host "  StackLens API:  http://${ServerIP}:4000" -ForegroundColor White
+Write-Host "  POS Demo Shop:  http://${ServerIP}:5174" -ForegroundColor White
+Write-Host "  POS Demo API:   http://${ServerIP}:3000" -ForegroundColor White
+Write-Host "  Legacy Backend: http://${ServerIP}:3001" -ForegroundColor White
 Write-Host ""
 Write-Host "Infrastructure:" -ForegroundColor Cyan
-Write-Host "  Kafka:          localhost:9092" -ForegroundColor White
-Write-Host "  OTEL gRPC:      localhost:4317" -ForegroundColor White
-Write-Host "  OTEL HTTP:      localhost:4318" -ForegroundColor White
+Write-Host "  Kafka:          ${ServerIP}:9092" -ForegroundColor White
+Write-Host "  OTEL gRPC:      ${ServerIP}:4317" -ForegroundColor White
+Write-Host "  OTEL HTTP:      ${ServerIP}:4318" -ForegroundColor White
 Write-Host ""
 Write-Host "Logs Directory: $logsDir" -ForegroundColor Yellow
 Write-Host ""

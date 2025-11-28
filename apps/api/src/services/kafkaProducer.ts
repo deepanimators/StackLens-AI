@@ -1,8 +1,8 @@
 import { Kafka } from 'kafkajs';
 
 const kafka = new Kafka({
-    clientId: 'stacklens-api',
-    brokers: (process.env.KAFKA_BROKERS || 'localhost:9094').split(','),
+    clientId: process.env.KAFKA_CLIENT_ID || 'stacklens-api',
+    brokers: (process.env.KAFKA_BROKERS || 'localhost:9092').split(','),
     connectionTimeout: 10000,
     requestTimeout: 30000,
     retry: {
