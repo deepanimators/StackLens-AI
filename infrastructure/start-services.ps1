@@ -117,14 +117,15 @@ Write-Host "Creating Kafka configuration for $serverIp..." -ForegroundColor Yell
 $javaLogPath = $kafkaDataDir -replace '\\', '/'
 
 # Build config line by line to avoid encoding issues
-# IMPORTANT: For KRaft mode, we must bind PLAINTEXT listener to the actual IP, not 0.0.0.0
-# because Kafka validates that advertised.listeners doesn't contain 0.0.0.0
-# CONTROLLER uses localhost since it's internal only
+# IMPORTANT: On AWS EC2, the public IP is NATed - we must bind to 0.0.0.0 or private IP
+# but advertise the public IP. CONTROLLER listener must NOT be in advertised.listeners.
+# The key insight: advertised.listeners only needs entries for listener NAMES that clients use.
+# CONTROLLER is internal-only, so it's not in advertised.listeners - this is correct!
 $configLines = @(
     "process.roles=broker,controller",
     "node.id=1",
     "controller.quorum.voters=1@localhost:9093",
-    "listeners=PLAINTEXT://$($serverIp):9092,CONTROLLER://localhost:9093",
+    "listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://localhost:9093",
     "advertised.listeners=PLAINTEXT://$($serverIp):9092",
     "controller.listener.names=CONTROLLER",
     "inter.broker.listener.name=PLAINTEXT",
@@ -179,8 +180,19 @@ Write-Host "Checking Kafka storage..." -ForegroundColor Yellow
 Write-Host "  Data directory: $kafkaDataDir" -ForegroundColor Gray
 Write-Host "  Config file: $configFile" -ForegroundColor Gray
 
-if (-not (Test-Path "$kafkaDataDir\meta.properties")) {
-    Write-Host "  Storage not formatted, formatting now..." -ForegroundColor Yellow
+# Force reformat if meta.properties exists but Kafka won't start
+# This handles cases where config changed after initial format
+$forceReformat = $false
+if (Test-Path "$kafkaDataDir\meta.properties") {
+    # Check if there's a marker indicating successful start
+    if (-not (Test-Path "$kafkaDataDir\.kafka-started")) {
+        Write-Host "  [INFO] Previous start may have failed, will reformat" -ForegroundColor Yellow
+        $forceReformat = $true
+    }
+}
+
+if ($forceReformat -or -not (Test-Path "$kafkaDataDir\meta.properties")) {
+    Write-Host "  Storage not formatted (or needs reformat), formatting now..." -ForegroundColor Yellow
     
     # Clean any old/corrupt data
     if (Test-Path $kafkaDataDir) {
@@ -327,6 +339,10 @@ bin\windows\kafka-server-start.bat $shortConfigFile
         
         # Final check
         $kafkaRunning = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
+        if ($kafkaRunning) {
+            # Create marker file indicating successful start
+            "started" | Out-File -FilePath "$kafkaDataDir\.kafka-started" -Encoding ASCII
+        }
         if (-not $kafkaRunning) {
             Write-Host ""
             Write-Host "  [WARN] Kafka may not have started correctly." -ForegroundColor Yellow
