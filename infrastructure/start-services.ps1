@@ -143,13 +143,22 @@ auto.create.topics.enable=true
 
 $kafkaConfig | Out-File -FilePath $configFile -Encoding ASCII -Force
 
-# ALSO copy to Kafka's config directory to ensure it's found
+# Copy config to ALL possible Kafka config locations to ensure it's found
 $kafkaConfigDir = "$KAFKA_DIR\config"
 if (Test-Path $kafkaConfigDir) {
+    # Main config directory
     $kafkaConfig | Out-File -FilePath "$kafkaConfigDir\kraft-server.properties" -Encoding ASCII -Force
-    # Also overwrite the default server.properties in case Kafka falls back to it
     $kafkaConfig | Out-File -FilePath "$kafkaConfigDir\server.properties" -Encoding ASCII -Force
-    Write-Host "  Config also copied to Kafka directory" -ForegroundColor Gray
+    
+    # KRaft-specific config directory
+    $kraftConfigDir = "$kafkaConfigDir\kraft"
+    if (Test-Path $kraftConfigDir) {
+        $kafkaConfig | Out-File -FilePath "$kraftConfigDir\server.properties" -Encoding ASCII -Force
+        $kafkaConfig | Out-File -FilePath "$kraftConfigDir\broker.properties" -Encoding ASCII -Force
+        $kafkaConfig | Out-File -FilePath "$kraftConfigDir\controller.properties" -Encoding ASCII -Force
+        Write-Host "  Config copied to Kafka kraft directory" -ForegroundColor Gray
+    }
+    Write-Host "  Config copied to Kafka config directory" -ForegroundColor Gray
 }
 
 # Debug: verify the config was written correctly
