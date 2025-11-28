@@ -10161,7 +10161,7 @@ Format as JSON with the following structure:
     // Demo POS logs to: <project-root>/data/pos-application.log
     const logPathsToWatch = [
       path.resolve("./data"),  // ✅ CORRECT: Demo POS logs here
-      path.resolve("./logs"),  // Fallback for other log sources
+      //path.resolve("./logs"),  // Fallback for other log sources
     ].filter((p) => {
       // Create directory if it doesn't exist
       if (!fs.existsSync(p)) {
