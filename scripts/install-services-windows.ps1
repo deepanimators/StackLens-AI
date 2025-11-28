@@ -24,6 +24,19 @@ $JAVA_VERSION = "21"
 $KAFKA_URL = "https://archive.apache.org/dist/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz"
 $OTEL_URL = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v$OTEL_VERSION/otelcol-contrib_${OTEL_VERSION}_windows_amd64.tar.gz"
 
+# Load SERVER_IP from environment file
+$envFile = "$PROJECT_DIR\.env.windows"
+if (-not (Test-Path $envFile)) { $envFile = "$PROJECT_DIR\.env" }
+$SERVER_IP = "localhost"
+if (Test-Path $envFile) {
+    Get-Content $envFile | ForEach-Object {
+        if ($_ -match "^\s*SERVER_IP\s*=\s*(.+)$") {
+            $SERVER_IP = $matches[1].Trim()
+        }
+    }
+}
+Write-Host "Server IP: $SERVER_IP" -ForegroundColor Yellow
+
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  StackLens Infrastructure Installer" -ForegroundColor Cyan
@@ -206,7 +219,7 @@ controller.quorum.voters=1@localhost:9093
 
 # Listeners
 listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-advertised.listeners=PLAINTEXT://localhost:9092
+advertised.listeners=PLAINTEXT://${SERVER_IP}:9092
 controller.listener.names=CONTROLLER
 inter.broker.listener.name=PLAINTEXT
 
@@ -236,49 +249,18 @@ auto.create.topics.enable=true
     
     $kraftConfig | Out-File -FilePath "$INSTALL_DIR\config\kraft-server.properties" -Encoding UTF8
     
-    # Generate cluster ID and format storage
-    Write-Host "Generating Kafka cluster ID..." -ForegroundColor Yellow
+    # Create data directory (formatting will be done by start-services.ps1)
+    Write-Host "Creating Kafka data directory..." -ForegroundColor Yellow
     
-    # Create data directory
     $dataDir = "$INSTALL_DIR\data\kafka-logs"
     if (-not (Test-Path $dataDir)) {
         New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
     }
     
-    $clusterIdFile = "$INSTALL_DIR\data\cluster_id.txt"
-    if (-not (Test-Path $clusterIdFile)) {
-        # Use a pre-generated valid cluster ID to avoid path issues on Windows
-        # Kafka cluster IDs are base64-encoded UUIDs (22 characters)
-        $clusterId = "MkU3OEVBNTcwNTJENDM2Qk"
-        
-        # Try to generate via Kafka command, but use fallback if it fails
-        Push-Location $kafkaDir
-        try {
-            $genResult = & cmd /c "bin\windows\kafka-storage.bat random-uuid 2>nul"
-            if ($genResult -and $genResult.Length -ge 20 -and -not $genResult.Contains("error") -and -not $genResult.Contains("input")) {
-                $clusterId = $genResult.Trim()
-            }
-        } catch {
-            Write-Host "  Using fallback cluster ID" -ForegroundColor Yellow
-        }
-        Pop-Location
-        
-        $clusterId | Out-File -FilePath $clusterIdFile -Encoding UTF8
-        Write-Host "  Cluster ID: $clusterId" -ForegroundColor Gray
-        
-        # Format storage using relative paths to avoid "input line too long" error
-        Write-Host "Formatting Kafka storage..." -ForegroundColor Yellow
-        Push-Location $kafkaDir
-        try {
-            & cmd /c "bin\windows\kafka-storage.bat format -t $clusterId -c `"..\config\kraft-server.properties`" 2>&1" | Out-Null
-            Write-Host "  Storage formatted successfully!" -ForegroundColor Green
-        } catch {
-            Write-Host "  Format warning: $_" -ForegroundColor Yellow
-        }
-        Pop-Location
-    } else {
-        Write-Host "  Cluster ID already exists, skipping format" -ForegroundColor Yellow
-    }
+    # NOTE: Storage formatting is handled by start-services.ps1
+    # This avoids issues with path lengths and ensures config is correct at runtime
+    Write-Host "  Data directory created: $dataDir" -ForegroundColor Gray
+    Write-Host "  Storage will be formatted on first start" -ForegroundColor Gray
     
     Write-Host "Kafka configured for KRaft mode!" -ForegroundColor Green
 }
