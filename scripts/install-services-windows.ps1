@@ -13,13 +13,13 @@ $ErrorActionPreference = "Stop"
 
 # Configuration
 $INSTALL_DIR = "C:\Users\Administrator\Downloads\stacklens-ai\infrastructure"
-$KAFKA_VERSION = "3.7.0"
+$KAFKA_VERSION = "3.9.0"
 $SCALA_VERSION = "2.13"
 $OTEL_VERSION = "0.91.0"
 $JAVA_VERSION = "21"
 
-# URLs
-$KAFKA_URL = "https://downloads.apache.org/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz"
+# URLs - Using Apache archive for reliability
+$KAFKA_URL = "https://archive.apache.org/dist/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz"
 $OTEL_URL = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v$OTEL_VERSION/otelcol-contrib_${OTEL_VERSION}_windows_amd64.tar.gz"
 
 Write-Host ""
@@ -74,14 +74,26 @@ function Install-Java {
     } catch {
         Write-Host "winget failed. Trying Chocolatey..." -ForegroundColor Yellow
         
-        # Try Chocolatey
+        # Try Chocolatey with correct package name
         try {
-            choco install openjdk$JAVA_VERSION -y
+            choco install temurin21 -y
             Write-Host "Java installed via Chocolatey!" -ForegroundColor Green
         } catch {
-            Write-Host "ERROR: Could not install Java automatically." -ForegroundColor Red
-            Write-Host "Please install Java manually from: https://adoptium.net/" -ForegroundColor Yellow
-            exit 1
+            # Try alternative package names
+            try {
+                choco install temurin -y
+                Write-Host "Java (Temurin) installed via Chocolatey!" -ForegroundColor Green
+            } catch {
+                try {
+                    choco install adoptopenjdk21 -y
+                    Write-Host "Java (AdoptOpenJDK) installed via Chocolatey!" -ForegroundColor Green
+                } catch {
+                    Write-Host "ERROR: Could not install Java automatically." -ForegroundColor Red
+                    Write-Host "Please install Java manually from: https://adoptium.net/" -ForegroundColor Yellow
+                    Write-Host "Or run: choco install temurin21" -ForegroundColor Yellow
+                    exit 1
+                }
+            }
         }
     }
     
@@ -110,16 +122,35 @@ function Install-Kafka {
         return
     }
     
-    # Download Kafka
+    # Download Kafka with multiple mirror options
     Write-Host "Downloading Kafka from Apache mirrors..." -ForegroundColor Yellow
-    try {
-        # Try primary mirror
-        Invoke-WebRequest -Uri $KAFKA_URL -OutFile $kafkaArchive -UseBasicParsing
-    } catch {
-        # Try backup mirror
-        $backupUrl = "https://archive.apache.org/dist/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz"
-        Write-Host "Primary mirror failed, trying archive..." -ForegroundColor Yellow
-        Invoke-WebRequest -Uri $backupUrl -OutFile $kafkaArchive -UseBasicParsing
+    
+    $downloadUrls = @(
+        "https://archive.apache.org/dist/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz",
+        "https://downloads.apache.org/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz",
+        "https://dlcdn.apache.org/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz"
+    )
+    
+    $downloadSuccess = $false
+    foreach ($url in $downloadUrls) {
+        try {
+            Write-Host "  Trying: $url" -ForegroundColor Gray
+            # Use more reliable download with progress
+            $ProgressPreference = 'SilentlyContinue'
+            Invoke-WebRequest -Uri $url -OutFile $kafkaArchive -UseBasicParsing -TimeoutSec 300
+            $downloadSuccess = $true
+            Write-Host "  Download successful!" -ForegroundColor Green
+            break
+        } catch {
+            Write-Host "  Failed: $($_.Exception.Message)" -ForegroundColor Yellow
+        }
+    }
+    
+    if (-not $downloadSuccess) {
+        Write-Host "ERROR: Could not download Kafka from any mirror." -ForegroundColor Red
+        Write-Host "Please download manually from: https://kafka.apache.org/downloads" -ForegroundColor Yellow
+        Write-Host "Extract to: $kafkaDir" -ForegroundColor Yellow
+        exit 1
     }
     
     Write-Host "Extracting Kafka..." -ForegroundColor Yellow
@@ -127,8 +158,31 @@ function Install-Kafka {
     # Extract using tar (available in Windows 10+)
     Push-Location $INSTALL_DIR
     tar -xzf kafka.tgz
-    Rename-Item "kafka_$SCALA_VERSION-$KAFKA_VERSION" "kafka"
-    Remove-Item $kafkaArchive
+    
+    # Handle rename - check if target already exists
+    $extractedFolder = "kafka_$SCALA_VERSION-$KAFKA_VERSION"
+    if (Test-Path $kafkaDir) {
+        Write-Host "  Kafka folder already exists, skipping rename..." -ForegroundColor Yellow
+        # Clean up extracted folder if it exists
+        if (Test-Path $extractedFolder) {
+            Remove-Item $extractedFolder -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    } elseif (Test-Path $extractedFolder) {
+        try {
+            Rename-Item $extractedFolder "kafka" -ErrorAction Stop
+        } catch {
+            Write-Host "  Rename failed, trying robocopy..." -ForegroundColor Yellow
+            robocopy $extractedFolder "kafka" /E /MOVE /NFL /NDL /NJH /NJS | Out-Null
+            if (Test-Path $extractedFolder) {
+                Remove-Item $extractedFolder -Recurse -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+    
+    # Clean up archive
+    if (Test-Path $kafkaArchive) {
+        Remove-Item $kafkaArchive -ErrorAction SilentlyContinue
+    }
     Pop-Location
     
     Write-Host "Kafka installed at: $kafkaDir" -ForegroundColor Green

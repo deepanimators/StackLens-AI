@@ -59,3 +59,12 @@ attached_assets/*.xlsx
 attached_assets/*.xls
 !attached_assets/README.md
 !attached_assets/.gitkeep
+
+# Infrastructure files (Kafka, OTEL, NSSM - installed locally)
+infrastructure/kafka_2.13-3.9.0/
+infrastructure/kafka.tgz
+infrastructure/otel-collector/
+infrastructure/nssm/
+infrastructure/kafka/
+infrastructure/data/
+infrastructure/logs/
