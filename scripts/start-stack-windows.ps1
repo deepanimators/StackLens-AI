@@ -152,9 +152,25 @@ if (-not $SkipInstall) {
         npm install -g pnpm
     }
     
-    # Root dependencies
+    # Root dependencies - use --ignore-scripts=false to build native modules
     Write-Info "Installing root dependencies..."
+    # First install, then rebuild native modules
     pnpm install
+    
+    # CRITICAL: Approve and rebuild native modules (better-sqlite3, bcrypt, sqlite3)
+    # pnpm 10+ requires explicit approval for build scripts
+    Write-Info "Approving and rebuilding native modules..."
+    # Create .pnpm-approve-builds file to approve all builds
+    $approveFile = "$ROOT_DIR\.pnpm-approve-builds"
+    if (-not (Test-Path $approveFile)) {
+        "bcrypt`nbetter-sqlite3`nsqlite3`nbufferutil`nes5-ext`nprotobufjs" | Out-File -FilePath $approveFile -Encoding ASCII
+    }
+    
+    # Run pnpm approve-builds non-interactively by setting env var
+    $env:PNPM_APPROVE_BUILDS = "true"
+    pnpm rebuild 2>$null
+    
+    Write-Success "Native modules rebuilt!"
     
     # POS Demo Backend
     Write-Info "Installing pos-demo/backend dependencies..."
