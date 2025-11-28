@@ -3,7 +3,10 @@
 
 $ErrorActionPreference = "Continue"
 
-# Find paths
+# Service installation directory (SHORT path)
+$SVC_DIR = "C:\stacklens-svc"
+
+# Find project root for env files
 $SCRIPT_DIR = $PSScriptRoot
 if (-not $SCRIPT_DIR) { $SCRIPT_DIR = (Get-Location).Path }
 
@@ -13,8 +16,11 @@ if (Test-Path "$SCRIPT_DIR\..\package.json") {
     $ROOT_DIR = "C:\Users\Administrator\Downloads\stacklens-ai"
 }
 
-$INFRA_DIR = "$ROOT_DIR\infrastructure"
-$LOGS_DIR = "$INFRA_DIR\logs"
+# Use short path if installed, fallback to infrastructure
+$LOGS_DIR = "$SVC_DIR\logs"
+if (-not (Test-Path $LOGS_DIR)) {
+    $LOGS_DIR = "$ROOT_DIR\infrastructure\logs"
+}
 
 # Load env for server IP
 $envFile = "$ROOT_DIR\.env.windows"
@@ -121,7 +127,8 @@ if (Test-Path $LOGS_DIR) {
 
 Write-Host ""
 Write-Host "Directories:" -ForegroundColor Cyan
-Write-Host "  Infrastructure: $INFRA_DIR" -ForegroundColor Gray
+Write-Host "  Services:      $SVC_DIR" -ForegroundColor Gray
+Write-Host "  Project:       $ROOT_DIR" -ForegroundColor Gray
 Write-Host "  Logs:          $LOGS_DIR" -ForegroundColor Gray
 
 Write-Host ""

@@ -12,7 +12,9 @@ param(
 $ErrorActionPreference = "Stop"
 
 # Configuration
-$INSTALL_DIR = "C:\Users\Administrator\Downloads\stacklens-ai\infrastructure"
+# Use SHORT path to avoid Windows "input line too long" error in Kafka batch scripts
+$INSTALL_DIR = "C:\stacklens-svc"
+$PROJECT_DIR = "C:\Users\Administrator\Downloads\stacklens-ai"
 $KAFKA_VERSION = "3.9.0"
 $SCALA_VERSION = "2.13"
 $OTEL_VERSION = "0.91.0"
@@ -27,6 +29,9 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  StackLens Infrastructure Installer" -ForegroundColor Cyan
 Write-Host "  Windows EC2 (No Docker)" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Services will be installed to: $INSTALL_DIR" -ForegroundColor Yellow
+Write-Host "(Short path avoids Windows command line length limits)" -ForegroundColor Gray
 Write-Host ""
 
 # Check if running as Administrator

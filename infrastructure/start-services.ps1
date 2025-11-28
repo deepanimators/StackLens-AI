@@ -4,7 +4,11 @@
 
 $ErrorActionPreference = "Continue"
 
-# Find project root
+# Service installation directory (SHORT path to avoid Windows command line limits)
+# Kafka's batch scripts build classpath internally and can exceed 8192 char limit
+$SVC_DIR = "C:\stacklens-svc"
+
+# Find project root for config files
 $SCRIPT_DIR = $PSScriptRoot
 if (-not $SCRIPT_DIR) { $SCRIPT_DIR = (Get-Location).Path }
 
@@ -16,12 +20,25 @@ if (Test-Path "$SCRIPT_DIR\..\package.json") {
     $ROOT_DIR = "C:\Users\Administrator\Downloads\stacklens-ai"
 }
 
-$INFRA_DIR = "$ROOT_DIR\infrastructure"
-$KAFKA_DIR = "$INFRA_DIR\kafka"
-$OTEL_DIR = "$INFRA_DIR\otel-collector"
-$LOGS_DIR = "$INFRA_DIR\logs"
-$CONFIG_DIR = "$INFRA_DIR\config"
-$DATA_DIR = "$INFRA_DIR\data"
+# Services are in the SHORT path directory
+$KAFKA_DIR = "$SVC_DIR\kafka"
+$OTEL_DIR = "$SVC_DIR\otel-collector"
+$LOGS_DIR = "$SVC_DIR\logs"
+$CONFIG_DIR = "$SVC_DIR\config"
+$DATA_DIR = "$SVC_DIR\data"
+
+# Fallback to local infrastructure if services not installed to C:\stacklens-svc yet
+if (-not (Test-Path $KAFKA_DIR)) {
+    $INFRA_DIR = "$ROOT_DIR\infrastructure"
+    if (Test-Path "$INFRA_DIR\kafka") {
+        $KAFKA_DIR = "$INFRA_DIR\kafka"
+        $OTEL_DIR = "$INFRA_DIR\otel-collector"
+        $LOGS_DIR = "$INFRA_DIR\logs"
+        $CONFIG_DIR = "$INFRA_DIR\config"
+        $DATA_DIR = "$INFRA_DIR\data"
+        Write-Host "[WARN] Using legacy path - run installer to use short path" -ForegroundColor Yellow
+    }
+}
 
 # Load environment variables
 $envFile = "$ROOT_DIR\.env.windows"
