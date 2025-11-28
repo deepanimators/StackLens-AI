@@ -37,6 +37,16 @@ export default defineConfig(async () => {
     server: {
       host: process.env.VITE_HOST || '0.0.0.0',
       port: Number(process.env.VITE_PORT || 5173),
+      // Allow EC2 hostnames and common development hosts
+      allowedHosts: [
+        'localhost',
+        '127.0.0.1',
+        '.amazonaws.com',  // Allow all AWS EC2 hostnames
+        '.compute.amazonaws.com',
+        'ec2-13-235-73-106.ap-south-1.compute.amazonaws.com',
+        'stacklens.ai',
+        '13.235.73.106'
+      ],
       fs: {
         strict: true,
         deny: ["**/.*"]
