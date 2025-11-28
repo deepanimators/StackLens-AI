@@ -117,16 +117,19 @@ Write-Host "Creating Kafka configuration for $serverIp..." -ForegroundColor Yell
 $javaLogPath = $kafkaDataDir -replace '\\', '/'
 
 # Build config line by line to avoid encoding issues
-# IMPORTANT: On AWS EC2, the public IP is NATed - we must bind to 0.0.0.0 or private IP
-# but advertise the public IP. CONTROLLER listener must NOT be in advertised.listeners.
-# The key insight: advertised.listeners only needs entries for listener NAMES that clients use.
-# CONTROLLER is internal-only, so it's not in advertised.listeners - this is correct!
+# IMPORTANT: On AWS EC2, the public IP is NATed - we must bind to 0.0.0.0 for all interfaces.
+# For advertised.listeners:
+#   - Use localhost if API runs on same machine (no firewall issues)
+#   - Use public IP only if external clients need access AND port 9092 is open in security group
+# Default to localhost for simplicity since StackLens API runs on same EC2
+$advertiseAddress = "localhost"
+
 $configLines = @(
     "process.roles=broker,controller",
     "node.id=1",
     "controller.quorum.voters=1@localhost:9093",
     "listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://localhost:9093",
-    "advertised.listeners=PLAINTEXT://$($serverIp):9092",
+    "advertised.listeners=PLAINTEXT://$($advertiseAddress):9092",
     "controller.listener.names=CONTROLLER",
     "inter.broker.listener.name=PLAINTEXT",
     "listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT",
