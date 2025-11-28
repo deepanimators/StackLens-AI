@@ -106,11 +106,17 @@ Write-Host ""
 $configFile = "$CONFIG_DIR\kraft-server.properties"
 $kafkaDataDir = "$DATA_DIR\kafka-logs"
 
+# Ensure serverIp is not 0.0.0.0 (Kafka doesn't allow this in advertised.listeners)
+if ($serverIp -eq "0.0.0.0" -or [string]::IsNullOrWhiteSpace($serverIp)) {
+    $serverIp = "localhost"
+    Write-Host "[WARN] SERVER_IP was 0.0.0.0 or empty, using localhost" -ForegroundColor Yellow
+}
+
 # Always recreate config with correct server IP
 Write-Host "Creating Kafka configuration for $serverIp..." -ForegroundColor Yellow
 $javaLogPath = $kafkaDataDir -replace '\\', '/'
 
-@"
+$kafkaConfig = @"
 process.roles=broker,controller
 node.id=1
 controller.quorum.voters=1@localhost:9093
@@ -133,7 +139,13 @@ log.retention.hours=168
 log.segment.bytes=1073741824
 log.retention.check.interval.ms=300000
 auto.create.topics.enable=true
-"@ | Out-File -FilePath $configFile -Encoding ASCII -Force
+"@
+
+$kafkaConfig | Out-File -FilePath $configFile -Encoding ASCII -Force
+
+# Debug: verify the config was written correctly
+$writtenConfig = Get-Content $configFile | Select-String "advertised.listeners"
+Write-Host "  Config written: $writtenConfig" -ForegroundColor Gray
 
 # ============================================
 # FORMAT KAFKA STORAGE (if needed)
