@@ -10159,11 +10159,9 @@ Format as JSON with the following structure:
 
     // 🔥 FIX #2: Watch correct directory where Demo POS app logs
     // Demo POS logs to: <project-root>/data/pos-application.log
-    // NOTE: Do NOT watch ./logs - that's where the server outputs its own logs
-    //       Watching it causes an infinite feedback loop!
     const logPathsToWatch = [
       path.resolve("./data"),  // ✅ CORRECT: Demo POS logs here
-      // Do NOT add ./logs - it contains server.log which causes feedback loops
+      path.resolve("./logs"),  // Fallback for other log sources
     ].filter((p) => {
       // Create directory if it doesn't exist
       if (!fs.existsSync(p)) {

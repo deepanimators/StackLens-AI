@@ -118,18 +118,9 @@ export class LogWatcherService extends EventEmitter {
             }
 
             // Set up file watcher with debouncing
-            // IMPORTANT: Ignore server's own log files to prevent feedback loops
             this.watcher = chokidar.watch(actualFilePaths, {
                 persistent: true,
                 awaitWriteFinish: { stabilityThreshold: 100, pollInterval: 100 },
-                ignored: [
-                    '**/server.log',      // Main server log (would cause feedback loop)
-                    '**/client.log',      // Frontend logs
-                    '**/legacy_backend.log',
-                    '**/pos_backend.log',
-                    '**/pos_frontend.log',
-                    '**/*.log.old',       // Old rotated logs
-                ],
             });
 
             this.watcher
