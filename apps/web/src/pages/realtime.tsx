@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { config } from "@/lib/config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -90,8 +91,13 @@ export default function Realtime() {
   const [scenarios, setScenarios] = useState<{id: string, name: string}[]>([]);
 
   // Fetch scenarios on mount
+  // POS Demo Backend runs on port 3000 - use dynamic URL based on current hostname
+  const posBackendUrl = typeof window !== 'undefined' 
+    ? `${window.location.protocol}//${window.location.hostname}:3000`
+    : 'http://localhost:3000';
+
   useEffect(() => {
-    fetch('http://localhost:3000/api/scenarios')
+    fetch(`${posBackendUrl}/api/scenarios`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -99,7 +105,7 @@ export default function Realtime() {
         }
       })
       .catch(err => console.error("Failed to fetch scenarios", err));
-  }, []);
+  }, [posBackendUrl]);
 
 
   const handleSimulateError = async (scenarioId: string) => {
@@ -107,8 +113,8 @@ export default function Realtime() {
     setIsSimulating(true);
     try {
       // Call the POS Demo App to simulate the error
-      // 🎯 UPDATED: Now pointing to the consolidated POS backend on port 3000
-      const response = await fetch(`http://localhost:3000/api/simulate-error/${scenarioId}`, {
+      // 🎯 UPDATED: Using dynamic URL based on current hostname
+      const response = await fetch(`${posBackendUrl}/api/simulate-error/${scenarioId}`, {
           method: 'POST',
       });
       
