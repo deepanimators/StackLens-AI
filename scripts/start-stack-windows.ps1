@@ -351,7 +351,6 @@ if (Test-Path $envWindowsFile) {
 } else {
     Write-Err "  ERROR: .env.windows not found at $envWindowsFile"
 }
-}
 
 # Create batch file with environment variables for proper env loading
 $apiBatch = "$logsDir\start-api.bat"
