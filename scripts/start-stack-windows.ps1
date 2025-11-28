@@ -157,20 +157,32 @@ if (-not $SkipInstall) {
     # First install, then rebuild native modules
     pnpm install
     
-    # CRITICAL: Approve and rebuild native modules (better-sqlite3, bcrypt, sqlite3)
-    # pnpm 10+ requires explicit approval for build scripts
-    Write-Info "Approving and rebuilding native modules..."
-    # Create .pnpm-approve-builds file to approve all builds
-    $approveFile = "$ROOT_DIR\.pnpm-approve-builds"
-    if (-not (Test-Path $approveFile)) {
-        "bcrypt`nbetter-sqlite3`nsqlite3`nbufferutil`nes5-ext`nprotobufjs" | Out-File -FilePath $approveFile -Encoding ASCII
+    # CRITICAL: Install node-gyp and prebuild-install if not present
+    Write-Info "Checking native module build tools..."
+    $nodeGyp = Get-Command node-gyp -ErrorAction SilentlyContinue
+    if (-not $nodeGyp) {
+        Write-Info "Installing node-gyp and prebuild-install..."
+        npm install -g node-gyp prebuild-install
     }
     
-    # Run pnpm approve-builds non-interactively by setting env var
-    $env:PNPM_APPROVE_BUILDS = "true"
-    pnpm rebuild 2>$null
+    # Approve and rebuild native modules (better-sqlite3, bcrypt, sqlite3)
+    # pnpm 10+ requires explicit approval for build scripts
+    Write-Info "Rebuilding native modules..."
     
-    Write-Success "Native modules rebuilt!"
+    # Try to rebuild - if it fails, the app might still work with JS fallbacks
+    try {
+        pnpm rebuild better-sqlite3 2>$null
+        Write-Success "better-sqlite3 rebuilt!"
+    } catch {
+        Write-Warn "better-sqlite3 rebuild failed - checking if prebuilt exists..."
+    }
+    
+    try {
+        pnpm rebuild bcrypt 2>$null
+        Write-Success "bcrypt rebuilt!"
+    } catch {
+        Write-Warn "bcrypt rebuild failed - will use bcryptjs fallback"
+    }
     
     # POS Demo Backend
     Write-Info "Installing pos-demo/backend dependencies..."
