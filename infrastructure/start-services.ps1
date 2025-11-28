@@ -36,12 +36,46 @@ if (Test-Path $envFile) {
 
 $serverIp = if ($env:SERVER_IP) { $env:SERVER_IP } else { "localhost" }
 
+# Check and set JAVA_HOME if needed
+if (-not $env:JAVA_HOME) {
+    # Try to find Java installation
+    $javaPath = Get-Command java -ErrorAction SilentlyContinue
+    if ($javaPath) {
+        $javaHome = (Split-Path (Split-Path $javaPath.Source))
+        if (Test-Path "$javaHome\bin\java.exe") {
+            $env:JAVA_HOME = $javaHome
+            Write-Host "JAVA_HOME set to: $javaHome" -ForegroundColor Gray
+        }
+    }
+    
+    # Try common Windows paths
+    $commonPaths = @(
+        "C:\Program Files\Eclipse Adoptium\jdk-21.0.9.10-hotspot",
+        "C:\Program Files\Java\jdk-21",
+        "C:\Program Files\Microsoft\jdk-21*",
+        "C:\Program Files\Eclipse Adoptium\jdk-21*"
+    )
+    foreach ($path in $commonPaths) {
+        $resolved = Resolve-Path $path -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($resolved -and (Test-Path "$($resolved.Path)\bin\java.exe")) {
+            $env:JAVA_HOME = $resolved.Path
+            Write-Host "JAVA_HOME set to: $($resolved.Path)" -ForegroundColor Gray
+            break
+        }
+    }
+}
+
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  StackLens Infrastructure Services" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Server IP: $serverIp" -ForegroundColor Yellow
+if ($env:JAVA_HOME) {
+    Write-Host "JAVA_HOME: $env:JAVA_HOME" -ForegroundColor Yellow
+} else {
+    Write-Host "JAVA_HOME: NOT SET (may cause issues)" -ForegroundColor Red
+}
 Write-Host ""
 
 # Create directories
@@ -87,12 +121,22 @@ auto.create.topics.enable=true
 # ============================================
 # FORMAT KAFKA STORAGE (if needed)
 # ============================================
+Write-Host "Checking Kafka storage..." -ForegroundColor Yellow
+Write-Host "  Data directory: $kafkaDataDir" -ForegroundColor Gray
+Write-Host "  Config file: $configFile" -ForegroundColor Gray
+
 if (-not (Test-Path "$kafkaDataDir\meta.properties")) {
-    Write-Host "Formatting Kafka storage..." -ForegroundColor Yellow
+    Write-Host "  Storage not formatted, formatting now..." -ForegroundColor Yellow
     
-    # Clean any old data
+    # Clean any old/corrupt data
     if (Test-Path $kafkaDataDir) {
+        Write-Host "  Cleaning old data..." -ForegroundColor Gray
         Remove-Item "$kafkaDataDir\*" -Recurse -Force -ErrorAction SilentlyContinue
+    }
+    
+    # Ensure data directory exists
+    if (-not (Test-Path $kafkaDataDir)) {
+        New-Item -ItemType Directory -Force -Path $kafkaDataDir | Out-Null
     }
     
     Push-Location $KAFKA_DIR
@@ -101,24 +145,37 @@ if (-not (Test-Path "$kafkaDataDir\meta.properties")) {
     $clusterId = "MkU3OEVBNTcwNTJENDM2Qk"
     
     # Try to generate via Kafka, but don't fail if it doesn't work
+    Write-Host "  Generating cluster ID..." -ForegroundColor Gray
     try {
-        $genResult = & cmd /c "bin\windows\kafka-storage.bat random-uuid 2>nul"
-        if ($genResult -and $genResult.Length -eq 22 -and -not $genResult.Contains("error")) {
-            $clusterId = $genResult.Trim()
+        $genResult = & cmd /c "bin\windows\kafka-storage.bat random-uuid 2>&1"
+        Write-Host "    Raw output: $genResult" -ForegroundColor Gray
+        if ($genResult -and $genResult.Length -ge 20 -and $genResult -notmatch "error|input line") {
+            $clusterId = ($genResult -split "`n")[0].Trim()
         }
-    } catch { }
-    
-    Write-Host "  Cluster ID: $clusterId" -ForegroundColor Gray
-    
-    # Format with relative path to config
-    try {
-        & cmd /c "bin\windows\kafka-storage.bat format -t $clusterId -c `"..\config\kraft-server.properties`" 2>&1" | Out-Null
-        Write-Host "  Storage formatted!" -ForegroundColor Green
     } catch {
-        Write-Host "  Format warning (may be OK): $_" -ForegroundColor Yellow
+        Write-Host "    Using fallback cluster ID" -ForegroundColor Yellow
+    }
+    
+    Write-Host "  Cluster ID: $clusterId" -ForegroundColor Cyan
+    
+    # Format storage - use the FULL path to avoid any ambiguity
+    Write-Host "  Running kafka-storage format..." -ForegroundColor Gray
+    try {
+        $formatOutput = & cmd /c "bin\windows\kafka-storage.bat format -t $clusterId -c `"$configFile`" 2>&1"
+        Write-Host "    Format output: $formatOutput" -ForegroundColor Gray
+        
+        if (Test-Path "$kafkaDataDir\meta.properties") {
+            Write-Host "  [OK] Storage formatted successfully!" -ForegroundColor Green
+        } else {
+            Write-Host "  [WARN] Format may have failed - meta.properties not found" -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "  [ERROR] Format failed: $_" -ForegroundColor Red
     }
     
     Pop-Location
+} else {
+    Write-Host "  [OK] Storage already formatted" -ForegroundColor Green
 }
 
 # ============================================
@@ -131,48 +188,89 @@ if ($kafkaRunning) {
 } else {
     Write-Host "Starting Kafka..." -ForegroundColor Yellow
     
-    # Try Windows Service first (NSSM)
-    $kafkaSvc = Get-Service -Name "StackLensKafka" -ErrorAction SilentlyContinue
-    if ($kafkaSvc) {
-        Write-Host "  Using Windows Service..." -ForegroundColor Gray
-        Start-Service -Name "StackLensKafka" -ErrorAction SilentlyContinue
-        Start-Sleep -Seconds 5
-    }
-    
-    # Check if service started it
-    $kafkaRunning = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
-    
-    if (-not $kafkaRunning) {
-        Write-Host "  Service didn't start, trying direct launch..." -ForegroundColor Yellow
-        
-        # Direct start using relative paths
-        Push-Location $KAFKA_DIR
-        $proc = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "bin\windows\kafka-server-start.bat", "..\config\kraft-server.properties", ">", "..\logs\kafka.log", "2>&1" -PassThru -WindowStyle Hidden
-        Pop-Location
-        
-        Write-Host "  Kafka process started (PID: $($proc.Id))" -ForegroundColor Green
-    }
-    
-    # Wait for Kafka
-    Write-Host "  Waiting for Kafka to be ready..." -ForegroundColor Gray
-    for ($i = 0; $i -lt 30; $i++) {
-        $ready = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
-        if ($ready) {
-            Write-Host "  [OK] Kafka is ready!" -ForegroundColor Green
-            break
+    # Check if Kafka directory exists
+    if (-not (Test-Path "$KAFKA_DIR\bin\windows\kafka-server-start.bat")) {
+        Write-Host "  [ERROR] Kafka not installed at $KAFKA_DIR" -ForegroundColor Red
+        Write-Host "  Run: .\scripts\install-services-windows.ps1" -ForegroundColor Yellow
+    } else {
+        # Try Windows Service first (NSSM)
+        $kafkaSvc = Get-Service -Name "StackLensKafka" -ErrorAction SilentlyContinue
+        if ($kafkaSvc -and $kafkaSvc.Status -ne "Running") {
+            Write-Host "  Using Windows Service..." -ForegroundColor Gray
+            try {
+                Start-Service -Name "StackLensKafka" -ErrorAction Stop
+                Start-Sleep -Seconds 5
+            } catch {
+                Write-Host "  Service failed to start: $_" -ForegroundColor Yellow
+            }
         }
-        Start-Sleep -Seconds 2
-        Write-Host "." -NoNewline
-    }
-    Write-Host ""
-    
-    # Final check
-    $kafkaRunning = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
-    if (-not $kafkaRunning) {
-        Write-Host "  [WARN] Kafka may not have started. Check: $LOGS_DIR\kafka.log" -ForegroundColor Yellow
-        if (Test-Path "$LOGS_DIR\kafka.log") {
-            Write-Host "  Last log lines:" -ForegroundColor Gray
-            Get-Content "$LOGS_DIR\kafka.log" -Tail 5 | ForEach-Object { Write-Host "    $_" }
+        
+        # Check if service started it
+        $kafkaRunning = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
+        
+        if (-not $kafkaRunning) {
+            Write-Host "  Windows Service didn't start Kafka, trying direct launch..." -ForegroundColor Yellow
+            
+            # Kill any hung Kafka processes
+            Get-Process -Name "java" -ErrorAction SilentlyContinue | ForEach-Object {
+                try {
+                    $cmdLine = (Get-CimInstance Win32_Process -Filter "ProcessId = $($_.Id)" -ErrorAction SilentlyContinue).CommandLine
+                    if ($cmdLine -match "kafka") {
+                        Write-Host "  Killing hung Kafka process (PID: $($_.Id))..." -ForegroundColor Yellow
+                        Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
+                    }
+                } catch {}
+            }
+            Start-Sleep -Seconds 2
+            
+            # Direct start using relative paths from Kafka directory
+            Push-Location $KAFKA_DIR
+            
+            # Create a start batch file for cleaner execution
+            $startBatch = @"
+@echo off
+cd /d "$KAFKA_DIR"
+bin\windows\kafka-server-start.bat "$configFile"
+"@
+            $startBatch | Out-File -FilePath "$LOGS_DIR\run-kafka.bat" -Encoding ASCII
+            
+            $proc = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$LOGS_DIR\run-kafka.bat`"", ">", "`"$LOGS_DIR\kafka.log`"", "2>&1" -PassThru -WindowStyle Hidden
+            Pop-Location
+            
+            Write-Host "  Kafka process started (PID: $($proc.Id))" -ForegroundColor Green
+        }
+        
+        # Wait for Kafka
+        Write-Host "  Waiting for Kafka to be ready" -ForegroundColor Gray -NoNewline
+        for ($i = 0; $i -lt 30; $i++) {
+            $ready = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
+            if ($ready) {
+                Write-Host ""
+                Write-Host "  [OK] Kafka is ready!" -ForegroundColor Green
+                break
+            }
+            Start-Sleep -Seconds 2
+            Write-Host "." -NoNewline
+        }
+        
+        # Final check
+        $kafkaRunning = Get-NetTCPConnection -LocalPort 9092 -State Listen -ErrorAction SilentlyContinue
+        if (-not $kafkaRunning) {
+            Write-Host ""
+            Write-Host "  [WARN] Kafka may not have started correctly." -ForegroundColor Yellow
+            Write-Host "  Check log: $LOGS_DIR\kafka.log" -ForegroundColor Yellow
+            
+            # Show last few lines of log if exists
+            if (Test-Path "$LOGS_DIR\kafka.log") {
+                Write-Host "  Last log entries:" -ForegroundColor Gray
+                Get-Content "$LOGS_DIR\kafka.log" -Tail 10 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "    $_" }
+            }
+            
+            # Check for NSSM service logs
+            if (Test-Path "$LOGS_DIR\kafka-stderr.log") {
+                Write-Host "  Service error log:" -ForegroundColor Gray
+                Get-Content "$LOGS_DIR\kafka-stderr.log" -Tail 5 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "    $_" }
+            }
         }
     }
 }
