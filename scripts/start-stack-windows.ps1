@@ -1,6 +1,6 @@
 # start-stack-windows.ps1
 # Comprehensive StackLens startup script for Windows
-# Run as Administrator in PowerShell
+# Run from the project root directory: cd C:\Users\Administrator\Downloads\stacklens-ai
 
 param(
     [switch]$SkipInstall,
@@ -11,11 +11,47 @@ param(
 
 $ErrorActionPreference = "Continue"
 
-# Configuration
-$ROOT_DIR = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-if (-not $ROOT_DIR -or $ROOT_DIR -eq "") {
+# ============================================
+# DETECT ROOT DIRECTORY - FIXED
+# ============================================
+$SCRIPT_DIR = $PSScriptRoot
+$ROOT_DIR = $null
+
+# Method 1: Script is in scripts folder
+if ($SCRIPT_DIR -and (Test-Path "$SCRIPT_DIR\..\package.json")) {
+    $ROOT_DIR = (Resolve-Path "$SCRIPT_DIR\..").Path
+}
+# Method 2: Running from project root
+elseif (Test-Path ".\package.json") {
     $ROOT_DIR = (Get-Location).Path
 }
+# Method 3: Search for stacklens-ai in current path
+else {
+    $currentPath = (Get-Location).Path
+    if ($currentPath -match "stacklens-ai") {
+        # Extract path up to and including stacklens-ai
+        if ($currentPath -match "^(.+stacklens-ai)") {
+            $testPath = $matches[1]
+            if (Test-Path "$testPath\package.json") {
+                $ROOT_DIR = $testPath
+            }
+        }
+    }
+}
+
+if (-not $ROOT_DIR) {
+    Write-Host ""
+    Write-Host "ERROR: Could not find project root directory." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Please run this script from the stacklens-ai project folder:" -ForegroundColor Yellow
+    Write-Host "  cd C:\Users\Administrator\Downloads\stacklens-ai" -ForegroundColor White
+    Write-Host "  .\scripts\start-stack-windows.ps1" -ForegroundColor White
+    Write-Host ""
+    exit 1
+}
+
+# Ensure we're in the right directory
+Set-Location $ROOT_DIR
 
 # Colors for output
 function Write-Info { param($msg) Write-Host $msg -ForegroundColor Cyan }
@@ -245,69 +281,93 @@ Stop-ProcessOnPort -Port 4000
 
 Set-Location $ROOT_DIR
 if ($DevMode) {
-    $apiProcess = Start-Process -FilePath "pnpm" -ArgumentList "run", "dev:server" -PassThru -RedirectStandardOutput "$logsDir\server.log" -RedirectStandardError "$logsDir\server-error.log" -WindowStyle Hidden
+    $apiCmd = "pnpm run dev:server"
 } else {
-    $apiProcess = Start-Process -FilePath "pnpm" -ArgumentList "run", "start" -PassThru -RedirectStandardOutput "$logsDir\server.log" -RedirectStandardError "$logsDir\server-error.log" -WindowStyle Hidden
+    $apiCmd = "pnpm run start"
 }
-$global:ProcessIds += $apiProcess.Id
-Write-Success "  API process started (PID: $($apiProcess.Id))"
+# Create batch file for proper log redirection
+$apiBatch = "$logsDir\start-api.bat"
+"@echo off`r`ncd /d `"$ROOT_DIR`"`r`n$apiCmd > `"$logsDir\server.log`" 2>&1" | Out-File -FilePath $apiBatch -Encoding ASCII
+$apiProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$apiBatch`"" -PassThru -WindowStyle Hidden
+if ($apiProcess) {
+    $global:ProcessIds += $apiProcess.Id
+    Write-Success "  API process started (PID: $($apiProcess.Id))"
+}
 
 # Wait for API to be ready
-Wait-ForPort -Port 4000 -ServiceName "StackLens API" -Timeout 30
+Start-Sleep -Seconds 3
+Wait-ForPort -Port 4000 -ServiceName "StackLens API" -Timeout 60
 
 # ----- 4.2: Start StackLens Frontend (Port 5173) -----
 Write-Info "Starting StackLens Frontend (Port 5173)..."
 Stop-ProcessOnPort -Port 5173
 
 Set-Location $ROOT_DIR
-$frontendProcess = Start-Process -FilePath "pnpm" -ArgumentList "run", "dev:client" -PassThru -RedirectStandardOutput "$logsDir\client.log" -RedirectStandardError "$logsDir\client-error.log" -WindowStyle Hidden
-$global:ProcessIds += $frontendProcess.Id
-Write-Success "  Frontend process started (PID: $($frontendProcess.Id))"
+$frontendBatch = "$logsDir\start-frontend.bat"
+"@echo off`r`ncd /d `"$ROOT_DIR`"`r`npnpm run dev:client > `"$logsDir\client.log`" 2>&1" | Out-File -FilePath $frontendBatch -Encoding ASCII
+$frontendProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$frontendBatch`"" -PassThru -WindowStyle Hidden
+if ($frontendProcess) {
+    $global:ProcessIds += $frontendProcess.Id
+    Write-Success "  Frontend process started (PID: $($frontendProcess.Id))"
+}
 
 # Wait for Frontend
+Start-Sleep -Seconds 3
 Wait-ForPort -Port 5173 -ServiceName "StackLens Frontend" -Timeout 30
 
 # ----- 4.3: Start Legacy Backend (Port 3001) -----
 Write-Info "Starting Legacy Backend (Port 3001)..."
 Stop-ProcessOnPort -Port 3001
 
-$env:PORT = "3001"
-Set-Location "$ROOT_DIR\stacklens\backend"
-if (Test-Path "package.json") {
-    $legacyProcess = Start-Process -FilePath "pnpm" -ArgumentList "run", "start" -PassThru -RedirectStandardOutput "$logsDir\legacy_backend.log" -RedirectStandardError "$logsDir\legacy_backend-error.log" -WindowStyle Hidden
-    $global:ProcessIds += $legacyProcess.Id
-    Write-Success "  Legacy Backend process started (PID: $($legacyProcess.Id))"
+$legacyDir = "$ROOT_DIR\stacklens\backend"
+if (Test-Path "$legacyDir\package.json") {
+    $legacyBatch = "$logsDir\start-legacy.bat"
+    "@echo off`r`ncd /d `"$legacyDir`"`r`nset PORT=3001`r`npnpm run start > `"$logsDir\legacy_backend.log`" 2>&1" | Out-File -FilePath $legacyBatch -Encoding ASCII
+    $legacyProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$legacyBatch`"" -PassThru -WindowStyle Hidden
+    if ($legacyProcess) {
+        $global:ProcessIds += $legacyProcess.Id
+        Write-Success "  Legacy Backend process started (PID: $($legacyProcess.Id))"
+    }
 } else {
-    Write-Warn "  Skipping Legacy Backend (no package.json found)"
+    Write-Warn "  Skipping Legacy Backend (directory not found: $legacyDir)"
 }
 
 # ----- 4.4: Start POS Demo Backend (Port 3000) -----
 Write-Info "Starting POS Demo Backend (Port 3000)..."
 Stop-ProcessOnPort -Port 3000
 
-$env:PORT = "3000"
-Set-Location "$ROOT_DIR\pos-demo\backend"
-if (Test-Path "package.json") {
-    $posBackendProcess = Start-Process -FilePath "pnpm" -ArgumentList "run", "start" -PassThru -RedirectStandardOutput "$logsDir\pos_backend.log" -RedirectStandardError "$logsDir\pos_backend-error.log" -WindowStyle Hidden
-    $global:ProcessIds += $posBackendProcess.Id
-    Write-Success "  POS Backend process started (PID: $($posBackendProcess.Id))"
+$posBackendDir = "$ROOT_DIR\pos-demo\backend"
+if (Test-Path "$posBackendDir\package.json") {
+    $posBackendBatch = "$logsDir\start-pos-backend.bat"
+    "@echo off`r`ncd /d `"$posBackendDir`"`r`nset PORT=3000`r`npnpm run start > `"$logsDir\pos_backend.log`" 2>&1" | Out-File -FilePath $posBackendBatch -Encoding ASCII
+    $posBackendProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$posBackendBatch`"" -PassThru -WindowStyle Hidden
+    if ($posBackendProcess) {
+        $global:ProcessIds += $posBackendProcess.Id
+        Write-Success "  POS Backend process started (PID: $($posBackendProcess.Id))"
+    }
+    Start-Sleep -Seconds 2
     Wait-ForPort -Port 3000 -ServiceName "POS Demo Backend" -Timeout 30
 } else {
-    Write-Warn "  Skipping POS Demo Backend (no package.json found)"
+    Write-Warn "  Skipping POS Demo Backend (directory not found: $posBackendDir)"
 }
 
 # ----- 4.5: Start POS Demo Frontend (Port 5174) -----
 Write-Info "Starting POS Demo Frontend (Port 5174)..."
 Stop-ProcessOnPort -Port 5174
 
-Set-Location "$ROOT_DIR\pos-demo\frontend"
-if (Test-Path "package.json") {
-    $posFrontendProcess = Start-Process -FilePath "pnpm" -ArgumentList "run", "dev", "--", "--port", "5174" -PassThru -RedirectStandardOutput "$logsDir\pos_frontend.log" -RedirectStandardError "$logsDir\pos_frontend-error.log" -WindowStyle Hidden
-    $global:ProcessIds += $posFrontendProcess.Id
-    Write-Success "  POS Frontend process started (PID: $($posFrontendProcess.Id))"
+$posFrontendDir = "$ROOT_DIR\pos-demo\frontend"
+if (Test-Path "$posFrontendDir\package.json") {
+    $posFrontendBatch = "$logsDir\start-pos-frontend.bat"
+    "@echo off`r`ncd /d `"$posFrontendDir`"`r`npnpm run dev -- --port 5174 > `"$logsDir\pos_frontend.log`" 2>&1" | Out-File -FilePath $posFrontendBatch -Encoding ASCII
+    $posFrontendProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$posFrontendBatch`"" -PassThru -WindowStyle Hidden
+    if ($posFrontendProcess) {
+        $global:ProcessIds += $posFrontendProcess.Id
+        Write-Success "  POS Frontend process started (PID: $($posFrontendProcess.Id))"
+    }
+    Start-Sleep -Seconds 2
     Wait-ForPort -Port 5174 -ServiceName "POS Demo Frontend" -Timeout 30
 } else {
-    Write-Warn "  Skipping POS Demo Frontend (no package.json found)"
+    Write-Warn "  Skipping POS Demo Frontend (directory not found: $posFrontendDir)"
 }
 
 Set-Location $ROOT_DIR
