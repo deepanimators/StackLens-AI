@@ -499,101 +499,12 @@ Create-WindowsServices
 # Configure Firewall
 Configure-Firewall
 
-# ============================================
-# Create Start/Stop Scripts
-# ============================================
-Write-Host ""
-Write-Host "=== Creating Management Scripts ===" -ForegroundColor Green
-
-# Start script
-$startScript = @"
-# start-services.ps1
-# Starts all StackLens infrastructure services
-
-Write-Host "Starting StackLens Infrastructure Services..." -ForegroundColor Cyan
-
-# Start Kafka
-Write-Host "Starting Kafka..." -ForegroundColor Yellow
-Start-Service StackLensKafka -ErrorAction SilentlyContinue
-if (`$?) { Write-Host "  Kafka started!" -ForegroundColor Green }
-
-# Start OTEL
-Write-Host "Starting OpenTelemetry Collector..." -ForegroundColor Yellow
-Start-Service StackLensOtel -ErrorAction SilentlyContinue
-if (`$?) { Write-Host "  OTEL Collector started!" -ForegroundColor Green }
+# NOTE: Management scripts (start-services.ps1, stop-services.ps1, status-services.ps1)
+# are already included in the git repository with full functionality.
+# We skip creating them here to avoid overwriting the improved versions.
 
 Write-Host ""
-Write-Host "All services started!" -ForegroundColor Green
-Write-Host ""
-Write-Host "Endpoints:" -ForegroundColor Cyan
-Write-Host "  Kafka:       localhost:9092"
-Write-Host "  OTEL gRPC:   localhost:4317"
-Write-Host "  OTEL HTTP:   localhost:4318"
-Write-Host "  OTEL Health: localhost:13133"
-"@
-
-$startScript | Out-File -FilePath "$INSTALL_DIR\start-services.ps1" -Encoding UTF8
-
-# Stop script
-$stopScript = @"
-# stop-services.ps1
-# Stops all StackLens infrastructure services
-
-Write-Host "Stopping StackLens Infrastructure Services..." -ForegroundColor Cyan
-
-Stop-Service StackLensKafka -ErrorAction SilentlyContinue
-Write-Host "  Kafka stopped" -ForegroundColor Yellow
-
-Stop-Service StackLensOtel -ErrorAction SilentlyContinue
-Write-Host "  OTEL Collector stopped" -ForegroundColor Yellow
-
-Write-Host "All services stopped!" -ForegroundColor Green
-"@
-
-$stopScript | Out-File -FilePath "$INSTALL_DIR\stop-services.ps1" -Encoding UTF8
-
-# Status script
-$statusScript = @"
-# status-services.ps1
-# Shows status of StackLens infrastructure services
-
-Write-Host ""
-Write-Host "StackLens Infrastructure Status" -ForegroundColor Cyan
-Write-Host "================================" -ForegroundColor Cyan
-Write-Host ""
-
-`$services = @("StackLensKafka", "StackLensOtel")
-
-foreach (`$svc in `$services) {
-    `$service = Get-Service -Name `$svc -ErrorAction SilentlyContinue
-    if (`$service) {
-        if (`$service.Status -eq "Running") {
-            Write-Host "  [`$svc]: Running" -ForegroundColor Green
-        } else {
-            Write-Host "  [`$svc]: `$(`$service.Status)" -ForegroundColor Red
-        }
-    } else {
-        Write-Host "  [`$svc]: Not Installed" -ForegroundColor Yellow
-    }
-}
-
-Write-Host ""
-Write-Host "Port Status:" -ForegroundColor Cyan
-
-`$ports = @(9092, 4317, 4318, 13133)
-foreach (`$port in `$ports) {
-    `$conn = Get-NetTCPConnection -LocalPort `$port -ErrorAction SilentlyContinue
-    if (`$conn) {
-        Write-Host "  Port `$port: LISTENING" -ForegroundColor Green
-    } else {
-        Write-Host "  Port `$port: NOT LISTENING" -ForegroundColor Red
-    }
-}
-"@
-
-$statusScript | Out-File -FilePath "$INSTALL_DIR\status-services.ps1" -Encoding UTF8
-
-Write-Host "Management scripts created in $INSTALL_DIR" -ForegroundColor Green
+Write-Host "Management scripts available in $INSTALL_DIR" -ForegroundColor Green
 
 # ============================================
 # SUMMARY
