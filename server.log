@@ -159,3 +159,185 @@ Created Jira ticket: SCRUM-16
 🧹 Cleaned up old events. Current count: 6
 📊 Generating metrics for window 1min. Events: 0, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:44:31 AM [express] GET /api/auth/me 304 in 927ms :: {"user":{"id":1,"username":"deepanimators","em…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:44:31 AM [express] GET /api/analysis/history 200 in 622ms :: {"history":[{"id":109,"fileId":118,"f…
+10:44:31 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+10:44:31 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+10:44:31 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+10:44:37 AM [express] GET /api/analytics/health-status 200 in 5ms :: {"success":true,"data":{"status"…
+10:44:37 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:44:41 AM [express] GET /api/analysis/history 200 in 42ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:44:42 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+10:44:42 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:44:42 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+🧹 Cleaned up old events. Current count: 6
+🧹 Cleaned up old events. Current count: 6
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:44:46 AM [express] GET /api/analysis/history 200 in 18ms :: {"history":[{"id":109,"fileId":118,"fi…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:44:47 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:44:47 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:44:52 AM [express] GET /api/analysis/history 200 in 80ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:44:52 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:44:52 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:44:52 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:44:57 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:44:57 AM [express] GET /api/analytics/metrics 200 in 3ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:02 AM [express] GET /api/analysis/history 200 in 36ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:45:02 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+10:45:02 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:45:02 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:45:07 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:45:07 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:12 AM [express] GET /api/analysis/history 200 in 25ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:45:12 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+10:45:12 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:45:12 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:16 AM [express] GET /api/analysis/history 200 in 19ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:45:17 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:45:17 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:22 AM [express] GET /api/analysis/history 200 in 7ms :: {"history":[{"id":109,"fileId":118,"fil…
+10:45:22 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+10:45:22 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:45:22 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:45:27 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:45:27 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:32 AM [express] GET /api/analysis/history 200 in 22ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:45:32 AM [express] GET /api/analytics/alerts 200 in 4ms :: {"success":true,"data":{"alerts":[],"to…
+10:45:32 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:45:32 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:45:37 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:45:37 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:42 AM [express] GET /api/analysis/history 200 in 19ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:45:42 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+10:45:42 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:45:42 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+🧹 Cleaned up old events. Current count: 6
+🧹 Cleaned up old events. Current count: 6
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:46 AM [express] GET /api/analysis/history 200 in 6ms :: {"history":[{"id":109,"fileId":118,"fil…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:45:47 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:45:47 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:45:52 AM [express] GET /api/analysis/history 200 in 24ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:45:52 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+10:45:52 AM [express] GET /api/analytics/health-status 200 in 11ms :: {"success":true,"data":{"status…
+10:45:52 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:45:57 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+10:45:57 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:02 AM [express] GET /api/analysis/history 200 in 12ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:46:02 AM [express] GET /api/analytics/alerts 200 in 3ms :: {"success":true,"data":{"alerts":[],"to…
+10:46:02 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:46:02 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:46:07 AM [express] GET /api/analytics/health-status 200 in 13ms :: {"success":true,"data":{"status…
+10:46:07 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:12 AM [express] GET /api/analysis/history 200 in 22ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:46:12 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+10:46:12 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+10:46:12 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:17 AM [express] GET /api/analysis/history 200 in 44ms :: {"history":[{"id":109,"fileId":118,"fi…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:46:17 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:46:18 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:22 AM [express] GET /api/analysis/history 200 in 17ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:46:22 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+10:46:22 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:46:23 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:46:27 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:46:28 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:32 AM [express] GET /api/analysis/history 200 in 16ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:46:32 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+10:46:32 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+10:46:33 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:46:38 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:46:38 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+10:46:42 AM [express] GET /api/analytics/alerts 200 in 4ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:42 AM [express] GET /api/analysis/history 200 in 20ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:46:43 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:46:43 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+🧹 Cleaned up old events. Current count: 6
+🧹 Cleaned up old events. Current count: 6
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:47 AM [express] GET /api/analysis/history 200 in 9ms :: {"history":[{"id":109,"fileId":118,"fil…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:46:48 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:46:48 AM [express] GET /api/analytics/metrics 200 in 8ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:46:52 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:46:53 AM [express] GET /api/analysis/history 200 in 183ms :: {"history":[{"id":109,"fileId":118,"f…
+10:46:53 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:46:53 AM [express] GET /api/analytics/metrics 200 in 4ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:46:58 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+10:46:58 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…

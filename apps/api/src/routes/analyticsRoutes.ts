@@ -659,16 +659,18 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
                         aiAnalysis = JSON.parse(jsonStr);
                         console.log('✅ AI analysis received and parsed successfully');
 
-                        // 🎯 NEW: Create Jira ticket for Critical/High alerts
-                        const criticalOrHighAlerts = alertsToAnalyze.filter((a: any) =>
-                            a.severity.toLowerCase() === 'critical' || a.severity.toLowerCase() === 'high'
+                        // 🎯 Create Jira ticket ONLY for Critical severity alerts (actual errors, not warnings)
+                        // Critical = High error rate, actual system errors
+                        // Warning = Individual errors, latency issues (no ticket needed)
+                        const criticalAlerts = alertsToAnalyze.filter((a: any) =>
+                            a.severity.toLowerCase() === 'critical'
                         );
 
-                        if (criticalOrHighAlerts.length > 0) {
-                            console.log(`Found ${criticalOrHighAlerts.length} critical/high alerts. Triggering Jira ticket creation...`);
+                        if (criticalAlerts.length > 0) {
+                            console.log(`Found ${criticalAlerts.length} critical alerts (errors). Triggering Jira ticket creation...`);
 
-                            // Create one ticket for the primary issue (usually the first one or the most critical)
-                            const primaryAlert = criticalOrHighAlerts.find((a: any) => a.severity.toLowerCase() === 'critical') || criticalOrHighAlerts[0];
+                            // Create one ticket for the primary critical issue
+                            const primaryAlert = criticalAlerts[0];
 
                             const ticketKey = await jiraService.createTicket(primaryAlert, rawText);
 

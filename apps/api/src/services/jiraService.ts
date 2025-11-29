@@ -279,6 +279,111 @@ export class JiraService {
     }
 
     /**
+     * Sanitize a string to be used as a Jira label
+     * Labels cannot contain spaces and should be lowercase
+     */
+    private sanitizeLabel(value: string): string {
+        return value
+            .replace(/\s+/g, '-')      // Replace spaces with hyphens
+            .replace(/[^a-zA-Z0-9\-_]/g, '') // Remove special characters
+            .toLowerCase()
+            .substring(0, 50);          // Limit length
+    }
+
+    /**
+     * Map severity to Jira priority
+     * Jira priorities: Highest, High, Medium, Low, Lowest
+     */
+    private mapSeverityToPriority(severity: string, aiSeverity?: string): string {
+        // Use AI-determined severity if available, otherwise use alert severity
+        const effectiveSeverity = (aiSeverity || severity || 'medium').toLowerCase();
+
+        switch (effectiveSeverity) {
+            case 'critical':
+                return 'Highest';
+            case 'high':
+                return 'High';
+            case 'medium':
+            case 'warning':
+                return 'Medium';
+            case 'low':
+                return 'Low';
+            case 'info':
+            case 'informational':
+                return 'Lowest';
+            default:
+                return 'Medium';
+        }
+    }
+
+    /**
+     * Build labels from error categories, error types, and other metadata
+     */
+    private buildLabels(alert: any, aiAnalysisData: any): string[] {
+        const labels: string[] = ['ai-generated', 'stacklens'];
+        const addedLabels = new Set<string>(['ai-generated', 'stacklens']);
+
+        // Add severity as label
+        const severity = (aiAnalysisData.severity || alert.severity || '').toLowerCase();
+        if (severity && !addedLabels.has(severity)) {
+            labels.push(severity);
+            addedLabels.add(severity);
+        }
+
+        // Add alert category/rule_name
+        const categoryValue = alert.category || alert.rule_name || '';
+        if (categoryValue && categoryValue !== 'System Alert') {
+            const sanitizedCategory = this.sanitizeLabel(categoryValue);
+            if (sanitizedCategory && !addedLabels.has(sanitizedCategory)) {
+                labels.push(sanitizedCategory);
+                addedLabels.add(sanitizedCategory);
+            }
+        }
+
+        // Add Error Categories from AI analysis
+        if (aiAnalysisData.errorCategories && Array.isArray(aiAnalysisData.errorCategories)) {
+            for (const cat of aiAnalysisData.errorCategories) {
+                if (typeof cat === 'string') {
+                    const sanitizedCat = this.sanitizeLabel(cat);
+                    if (sanitizedCat && !addedLabels.has(sanitizedCat)) {
+                        labels.push(sanitizedCat);
+                        addedLabels.add(sanitizedCat);
+                    }
+                }
+            }
+        }
+
+        // Add Error Types from AI analysis
+        if (aiAnalysisData.errorTypes && Array.isArray(aiAnalysisData.errorTypes)) {
+            for (const errType of aiAnalysisData.errorTypes) {
+                if (typeof errType === 'string') {
+                    const sanitizedType = this.sanitizeLabel(errType);
+                    if (sanitizedType && !addedLabels.has(sanitizedType)) {
+                        labels.push(sanitizedType);
+                        addedLabels.add(sanitizedType);
+                    }
+                }
+            }
+        }
+
+        // Add Affected Components as labels
+        if (aiAnalysisData.affectedComponents && Array.isArray(aiAnalysisData.affectedComponents)) {
+            for (const comp of aiAnalysisData.affectedComponents) {
+                if (typeof comp === 'string') {
+                    const sanitizedComp = this.sanitizeLabel(comp);
+                    if (sanitizedComp && !addedLabels.has(sanitizedComp)) {
+                        labels.push(sanitizedComp);
+                        addedLabels.add(sanitizedComp);
+                    }
+                }
+            }
+        }
+
+        // Limit to 15 labels max (Jira recommendation)
+        return labels.slice(0, 15);
+    }
+
+    /**
      * Create a new Jira ticket
      */
     async createTicket(alert: any, aiAnalysisRaw: string): Promise<string | null> {
@@ -311,25 +416,27 @@ export class JiraService {
 
             if (existingTicket) {
                 console.log(`Existing ticket found: ${existingTicket.key}. Escalating priority.`);
-                await this.updateTicketPriority(existingTicket.key, 'High');
+                // Escalate priority based on AI analysis severity
+                const escalatedPriority = this.mapSeverityToPriority(alert.severity, aiAnalysisData.severity);
+                await this.updateTicketPriority(existingTicket.key, escalatedPriority);
                 await this.addComment(existingTicket.key, `Alert re-occurred.\n\nUpdated AI Analysis:\n${JSON.stringify(aiAnalysisData, null, 2)}`);
                 return existingTicket.key;
             }
 
-            // Create new ticket with rich description
-            // Build labels array, filtering out any undefined/null values
-            const labels = ["ai-generated", "stacklens"];
-            if (categoryValue && typeof categoryValue === 'string' && categoryValue !== 'System Alert') {
-                // Sanitize category for Jira label (no spaces, lowercase)
-                const sanitizedCategory = categoryValue.replace(/\s+/g, '-').toLowerCase();
-                labels.push(sanitizedCategory);
-            }
+            // Build labels from error categories, types, and components
+            const labels = this.buildLabels(alert, aiAnalysisData);
 
             // Build rich description from AI analysis
             const description = this.buildRichDescription(alert, aiAnalysisData);
 
-            // Build summary with proper category
-            const ticketSummary = `[${severityValue}] ${categoryValue}: ${messageValue}`;
+            // Map priority from both alert severity and AI analysis severity
+            const priority = this.mapSeverityToPriority(alert.severity, aiAnalysisData.severity);
+
+            // Build summary with proper category - include first error type if available
+            const primaryErrorType = aiAnalysisData.errorTypes?.[0] || '';
+            const ticketSummary = primaryErrorType
+                ? `[${severityValue}] ${categoryValue}: ${primaryErrorType}`
+                : `[${severityValue}] ${categoryValue}: ${messageValue}`;
 
             const bodyData = {
                 fields: {
@@ -342,11 +449,13 @@ export class JiraService {
                         name: "Task"
                     },
                     priority: {
-                        name: alert.severity === 'critical' ? 'Highest' : 'High'
+                        name: priority
                     },
                     labels: labels
                 }
             };
+
+            console.log(`Creating Jira ticket with priority: ${priority}, labels: ${labels.join(', ')}`);
 
             const response = await axios.post(`${this.baseUrl}/issue`, bodyData, {
                 headers: {
