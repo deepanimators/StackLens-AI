@@ -39,6 +39,7 @@ export default defineConfig(async () => {
       port: Number(process.env.VITE_PORT || 5173),
       // Allow EC2 hostnames and common development hosts
       allowedHosts: [
+        'all',
         'localhost',
         '127.0.0.1',
         '.amazonaws.com',  // Allow all AWS EC2 hostnames

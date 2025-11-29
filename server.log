@@ -341,3 +341,18 @@ Created Jira ticket: SCRUM-16
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
 10:46:58 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
 10:46:58 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+10:47:02 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:47:03 AM [express] GET /api/analysis/history 200 in 14ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:47:03 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:47:03 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:47:08 AM [express] GET /api/analytics/health-status 200 in 5ms :: {"success":true,"data":{"status"…
+10:47:08 AM [express] GET /api/analytics/metrics 200 in 7ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+10:47:12 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:47:13 AM [express] GET /api/analysis/history 200 in 82ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:47:13 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…

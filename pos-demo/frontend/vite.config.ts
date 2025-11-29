@@ -14,6 +14,7 @@ export default defineConfig({
         host: process.env.VITE_HOST || "0.0.0.0",
         // Allow access from EC2 IP and hostname
         allowedHosts: [
+            'all',
             "localhost",
             "127.0.0.1",
             "13.235.73.106",
