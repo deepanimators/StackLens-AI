@@ -30,12 +30,25 @@ export class JiraIntegrationService {
     private userEmail: string;
 
     constructor() {
-        this.host = process.env.JIRA_HOST || "";
+        // Support both JIRA_HOST and JIRA_DOMAIN for backwards compatibility
+        this.host = process.env.JIRA_HOST || (process.env.JIRA_DOMAIN ? `https://${process.env.JIRA_DOMAIN}` : "");
         this.projectKey = process.env.JIRA_PROJECT_KEY || "";
-        this.userEmail = process.env.JIRA_USER_EMAIL || "";
+        // Support both JIRA_USER_EMAIL and JIRA_EMAIL for backwards compatibility
+        this.userEmail = process.env.JIRA_USER_EMAIL || process.env.JIRA_EMAIL || "";
         const apiToken = process.env.JIRA_API_TOKEN || "";
 
         this.configured = !!(this.host && this.projectKey && this.userEmail && apiToken);
+
+        // Debug log for Jira configuration
+        console.log(`[JiraIntegrationService] Configuration check:
+          - JIRA_HOST: ${process.env.JIRA_HOST ? 'set' : 'not set'}
+          - JIRA_DOMAIN: ${process.env.JIRA_DOMAIN ? 'set' : 'not set'}
+          - JIRA_PROJECT_KEY: ${process.env.JIRA_PROJECT_KEY ? 'set' : 'not set'}
+          - JIRA_EMAIL: ${process.env.JIRA_EMAIL ? 'set' : 'not set'}
+          - JIRA_USER_EMAIL: ${process.env.JIRA_USER_EMAIL ? 'set' : 'not set'}
+          - JIRA_API_TOKEN: ${process.env.JIRA_API_TOKEN ? 'set (hidden)' : 'not set'}
+          - Resolved host: ${this.host || 'empty'}
+          - Configured: ${this.configured}`);
 
         // Initialize axios client with Basic Auth
         this.client = axios.create({
@@ -264,7 +277,7 @@ export class JiraIntegrationService {
             project: this.configured ? this.projectKey : undefined,
             message: this.configured
                 ? "Jira integration is configured and ready"
-                : "Jira integration not configured. Set JIRA_HOST, JIRA_PROJECT_KEY, JIRA_USER_EMAIL, and JIRA_API_TOKEN environment variables.",
+                : "Jira integration not configured. Set JIRA_DOMAIN, JIRA_PROJECT_KEY, JIRA_EMAIL, and JIRA_API_TOKEN environment variables (or JIRA_HOST/JIRA_USER_EMAIL).",
         };
     }
 }

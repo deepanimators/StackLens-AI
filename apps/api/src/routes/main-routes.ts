@@ -10005,12 +10005,14 @@ Format as JSON with the following structure:
       );
 
       if (result.success && result.ticketKey) {
+        // Support both JIRA_HOST and JIRA_DOMAIN for backwards compatibility
+        const jiraHost = process.env.JIRA_HOST || (process.env.JIRA_DOMAIN ? `https://${process.env.JIRA_DOMAIN}` : '');
         res.json({
           success: true,
           ticketKey: result.ticketKey,
           action: result.action,
           message: result.message,
-          ticketUrl: `${process.env.JIRA_HOST}/browse/${result.ticketKey}`,
+          ticketUrl: `${jiraHost}/browse/${result.ticketKey}`,
         });
       } else {
         res.json({

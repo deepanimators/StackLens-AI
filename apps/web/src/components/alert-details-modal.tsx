@@ -157,7 +157,7 @@ export default function AlertDetailsModal({
   if (!alert) return null;
 
   const shouldShowJiraOption = 
-    jiraStatus?.configured && 
+    jiraStatus?.data?.configured && 
     (alert.severity === "critical" || alert.severity === "warning");
 
   return (
@@ -482,7 +482,7 @@ export default function AlertDetailsModal({
               ) : (
                 <Card>
                   <CardContent className="py-8 text-center space-y-4">
-                    {!jiraStatus?.configured ? (
+                    {!jiraStatus?.data?.configured ? (
                       <>
                         <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-orange-500" />
                         <p className="text-muted-foreground">

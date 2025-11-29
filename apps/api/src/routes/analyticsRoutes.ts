@@ -637,8 +637,8 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
         try {
             const apiKey = process.env.GEMINI_API_KEY;
             if (apiKey) {
-                console.log('🤖 Requesting AI analysis from Gemini...');
-                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey, {
+                console.log('🤖 Requesting AI analysis from Gemini 2.0 Flash...');
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

@@ -139,6 +139,8 @@ export $(cat .env | grep -v '^#' | xargs)
 # Override for local native
 export DB_HOST=localhost
 export KAFKA_BROKERS=localhost:9092
+# Bind to all interfaces for external access
+export HOST=0.0.0.0
 
 npm run dev:server > "$ROOT_DIR/logs/server.log" 2>&1 &
 API_PID=$!
@@ -146,7 +148,9 @@ API_PID=$!
 # 5. Start Frontend (apps/web) - Port 5173
 echo "🎨 Starting StackLens Frontend (Port 5173)..."
 lsof -ti :5173 | xargs kill -9 2>/dev/null
-npm run dev:client > "$ROOT_DIR/logs/client.log" 2>&1 &
+# Bind to all interfaces for external access
+export VITE_HOST=0.0.0.0
+npm run dev:client -- --host 0.0.0.0 > "$ROOT_DIR/logs/client.log" 2>&1 &
 FRONTEND_PID=$!
 
 # 6. Start POS Demo Backend - Port 3000
@@ -155,8 +159,10 @@ cd "$ROOT_DIR/pos-demo/backend"
 lsof -ti :3000 | xargs kill -9 2>/dev/null
 export KAFKA_BROKERS=localhost:9092
 export ANALYTICS_URL=http://localhost:4000/api/analytics/events
+# Bind to all interfaces for external access
+export HOST=0.0.0.0
 npm install > /dev/null 2>&1
-PORT=3000 npm start > "$ROOT_DIR/logs/pos_backend.log" 2>&1 &
+PORT=3000 HOST=0.0.0.0 npm start > "$ROOT_DIR/logs/pos_backend.log" 2>&1 &
 POS_BACKEND_PID=$!
 
 # 7. Start POS Demo Frontend - Port 5174
@@ -164,7 +170,9 @@ echo "🛍️ Starting POS Demo Frontend (Port 5174)..."
 cd "$ROOT_DIR/pos-demo/frontend"
 lsof -ti :5174 | xargs kill -9 2>/dev/null
 npm install > /dev/null 2>&1
-npm run dev -- --port 5174 > "$ROOT_DIR/logs/pos_frontend.log" 2>&1 &
+# Bind to all interfaces for external access
+export VITE_HOST=0.0.0.0
+npm run dev -- --host 0.0.0.0 --port 5174 > "$ROOT_DIR/logs/pos_frontend.log" 2>&1 &
 POS_FRONTEND_PID=$!
 
 cd "$ROOT_DIR"
@@ -172,10 +180,13 @@ cd "$ROOT_DIR"
 echo ""
 echo "✅ All services started!"
 echo "------------------------------------------------"
-echo "👉 StackLens UI:  http://localhost:5173"
-echo "👉 StackLens API: http://localhost:4000"
-echo "👉 POS Demo Shop: http://localhost:5174"
-echo "👉 POS Demo API:  http://localhost:3000"
+echo "👉 StackLens UI:  http://localhost:5173 (external: http://<your-ip>:5173)"
+echo "👉 StackLens API: http://localhost:4000 (external: http://<your-ip>:4000)"
+echo "👉 POS Demo Shop: http://localhost:5174 (external: http://<your-ip>:5174)"
+echo "👉 POS Demo API:  http://localhost:3000 (external: http://<your-ip>:3000)"
+echo "------------------------------------------------"
+echo "All services bound to 0.0.0.0 for external access."
+echo "Ensure firewall/security groups allow ports: 3000, 4000, 5173, 5174"
 echo "------------------------------------------------"
 echo "Press Ctrl+C to stop everything."
 

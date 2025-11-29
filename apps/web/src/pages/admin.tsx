@@ -870,10 +870,7 @@ export default function AdminDashboard() {
           <TabsTrigger value="ui-settings">UI Settings</TabsTrigger>
           <TabsTrigger value="api-integration">API & Integration</TabsTrigger>
           <TabsTrigger value="jira-integration">Jira Integration</TabsTrigger>
-          <TabsTrigger value="pos-integration" className="gap-2">
-            <ShoppingCart className="h-4 w-4" />
-            POS Integration
-          </TabsTrigger>
+          <TabsTrigger value="pos-integration">POS Integration</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -2077,10 +2074,10 @@ export default function AdminDashboard() {
                           <Badge className="ml-2">Active</Badge>
                         </div>
                         <p className="text-sm text-muted-foreground">
-                          Connected POS instance: http://localhost:5174
+                          Connected POS instance: {typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:5174` : 'http://localhost:5174'}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          API Endpoint: http://localhost:3000
+                          API Endpoint: {typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:3000` : 'http://localhost:3000'}
                         </p>
                         <p className="text-sm text-muted-foreground mt-2">
                           Status: Realtime data sync enabled • Last sync: 2 minutes ago
@@ -2293,7 +2290,7 @@ export default function AdminDashboard() {
                   <div className="space-y-2">
                     <Label>POS Backend URL</Label>
                     <div className="flex gap-2">
-                      <Input defaultValue="http://localhost:3000" readOnly />
+                      <Input defaultValue={typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:3000` : 'http://localhost:3000'} readOnly />
                       <Button variant="outline" size="icon">
                         <CheckCircle className="h-4 w-4" />
                       </Button>
@@ -2308,10 +2305,10 @@ export default function AdminDashboard() {
                 <div className="space-y-4 pt-4 border-t">
                   <h3 className="font-medium">Integration Actions</h3>
                   <div className="flex gap-4">
-                    <Button variant="outline" onClick={() => window.open('http://localhost:5174', '_blank')}>
+                    <Button variant="outline" onClick={() => window.open(`${window.location.protocol}//${window.location.hostname}:5174`, '_blank')}>
                       Open POS Terminal
                     </Button>
-                    <Button variant="outline" onClick={() => window.open('http://localhost:3000/api/health', '_blank')}>
+                    <Button variant="outline" onClick={() => window.open(`${window.location.protocol}//${window.location.hostname}:3000/api/health`, '_blank')}>
                       Check Health API
                     </Button>
                   </div>

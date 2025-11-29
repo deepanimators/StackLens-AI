@@ -400,6 +400,7 @@ $apiBatch = "$logsDir\start-api.bat"
 $batchContent = @"
 @echo off
 cd /d "$ROOT_DIR"
+set HOST=0.0.0.0
 $apiCmd > "$logsDir\server.log" 2>&1
 "@
 $batchContent | Out-File -FilePath $apiBatch -Encoding ASCII
@@ -438,7 +439,7 @@ Stop-ProcessOnPort -Port 3001
 $legacyDir = "$ROOT_DIR\stacklens\backend"
 if (Test-Path "$legacyDir\package.json") {
     $legacyBatch = "$logsDir\start-legacy.bat"
-    "@echo off`r`ncd /d `"$legacyDir`"`r`nset PORT=3001`r`npnpm run start > `"$logsDir\legacy_backend.log`" 2>&1" | Out-File -FilePath $legacyBatch -Encoding ASCII
+    "@echo off`r`ncd /d `"$legacyDir`"`r`nset PORT=3001`r`nset HOST=0.0.0.0`r`npnpm run start > `"$logsDir\legacy_backend.log`" 2>&1" | Out-File -FilePath $legacyBatch -Encoding ASCII
     $legacyProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$legacyBatch`"" -PassThru -WindowStyle Hidden
     if ($legacyProcess) {
         $global:ProcessIds += $legacyProcess.Id
@@ -455,7 +456,7 @@ Stop-ProcessOnPort -Port 3000
 $posBackendDir = "$ROOT_DIR\pos-demo\backend"
 if (Test-Path "$posBackendDir\package.json") {
     $posBackendBatch = "$logsDir\start-pos-backend.bat"
-    "@echo off`r`ncd /d `"$posBackendDir`"`r`nset PORT=3000`r`npnpm run start > `"$logsDir\pos_backend.log`" 2>&1" | Out-File -FilePath $posBackendBatch -Encoding ASCII
+    "@echo off`r`ncd /d `"$posBackendDir`"`r`nset PORT=3000`r`nset HOST=0.0.0.0`r`npnpm run start > `"$logsDir\pos_backend.log`" 2>&1" | Out-File -FilePath $posBackendBatch -Encoding ASCII
     $posBackendProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "`"$posBackendBatch`"" -PassThru -WindowStyle Hidden
     if ($posBackendProcess) {
         $global:ProcessIds += $posBackendProcess.Id

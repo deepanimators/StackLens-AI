@@ -290,7 +290,7 @@ export function JiraIntegrationAdmin() {
                     <AlertTitle>Not Configured</AlertTitle>
                     <AlertDescription>
                       {jiraStatus?.data?.message ||
-                        "Jira configuration is incomplete. Set environment variables: JIRA_HOST, JIRA_PROJECT_KEY, JIRA_USER_EMAIL, JIRA_API_TOKEN"}
+                        "Jira configuration is incomplete. Set environment variables: JIRA_DOMAIN, JIRA_PROJECT_KEY, JIRA_EMAIL, JIRA_API_TOKEN"}
                     </AlertDescription>
                   </Alert>
                 )}
@@ -423,15 +423,15 @@ export function JiraIntegrationAdmin() {
                   The following environment variables must be set on the server:
                   <ul className="mt-2 ml-4 list-disc space-y-1 text-sm">
                     <li>
-                      <code className="bg-gray-100 px-2 py-1">JIRA_HOST</code> - Your Jira
-                      Cloud URL
+                      <code className="bg-gray-100 px-2 py-1">JIRA_DOMAIN</code> - Your Jira
+                      Cloud domain (e.g., yourcompany.atlassian.net)
                     </li>
                     <li>
                       <code className="bg-gray-100 px-2 py-1">JIRA_PROJECT_KEY</code> - Your
                       project key (e.g., STACK)
                     </li>
                     <li>
-                      <code className="bg-gray-100 px-2 py-1">JIRA_USER_EMAIL</code> - Your
+                      <code className="bg-gray-100 px-2 py-1">JIRA_EMAIL</code> - Your
                       Jira user email
                     </li>
                     <li>

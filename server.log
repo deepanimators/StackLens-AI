@@ -2,19 +2,28 @@
 > stacklens-ai-platform@1.0.0 dev:server
 > cross-env NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts
 
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
 🤖 AI Service initialized with 1 providers: gemini
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
-[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[JiraIntegrationService] Configuration check:
+          - JIRA_HOST: not set
+          - JIRA_DOMAIN: set
+          - JIRA_PROJECT_KEY: set
+          - JIRA_EMAIL: set
+          - JIRA_USER_EMAIL: not set
+          - JIRA_API_TOKEN: set (hidden)
+          - Resolved host: https://stacklens.atlassian.net
+          - Configured: true
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
 🚀 RAG: Vector database initialized
-{"level":"WARN","timestamp":"2025-11-27T06:28:20.524Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+{"level":"WARN","timestamp":"2025-11-29T05:11:44.961Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
 Setting up SQLite database...
 ✅ SQLite database initialized successfully
 🔄 Starting server initialization...
 ✅ Database tables initialized
 Starting LogWatcher service for real-time monitoring...
-📍 Watching directories: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/data, /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/logs
-[LogWatcherService] Started watching 2 file(s)
+📍 Watching directories: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/data
+[LogWatcherService] Started watching 1 file(s)
 ✅ LogWatcher service started successfully
 ✅ Routes registered successfully
 🔄 Setting up Vite...
@@ -22,7 +31,7 @@ Starting LogWatcher service for real-time monitoring...
 ✅ RAG: Knowledge base populated with 50 patterns
 🔄 Indexing existing errors for RAG system...
 ⚠️ Vector DB not initialized, storing patterns locally
-✅ Successfully indexed 807 errors for RAG
+✅ Successfully indexed 808 errors for RAG
 ✅ Enhanced RAG Suggestor initialized
 🎯 Enhanced RAG system ready with vector database
 📊 Generating metrics for window 1min. Events: 0, Total Events: 0
@@ -34,28 +43,14 @@ Re-optimizing dependencies because vite config has changed
 ✅ Vite setup complete
 🌱 Seeding SQLite database...
 ℹ️ Database already seeded. Skipping seed process.
-11:58:47 AM [express] serving on port 4000
-📊 Generating metrics for window 1min. Events: 0, Total Events: 0
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Generating metrics for window 1min. Events: 0, Total Events: 0
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Generating metrics for window 1min. Events: 0, Total Events: 0
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Generating metrics for window 1min. Events: 0, Total Events: 0
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-🧹 Cleaned up old events. Current count: 0
-🧹 Cleaned up old events. Current count: 0
-📊 Generating metrics for window 1min. Events: 0, Total Events: 0
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:59:23 AM [express] GET /api/auth/me 200 in 16ms :: {"user":{"id":1,"username":"deepanimators","ema…
-11:59:23 AM [express] GET /api/admin/ui-settings 200 in 4ms :: {"theme":"light","sidebarCollapsed":fa…
-11:59:23 AM [express] GET /api/admin/api-settings 200 in 5ms :: {"geminiApiKey":"","webhookUrl":"","m…
+10:42:38 AM [express] serving on 0.0.0.0:4000
+10:42:41 AM [express] GET /api/auth/me 304 in 31ms :: {"user":{"id":1,"username":"deepanimators","ema…
+10:42:41 AM [express] GET /api/admin/ui-settings 304 in 6ms :: {"theme":"light","sidebarCollapsed":fa…
+10:42:41 AM [express] GET /api/admin/api-settings 304 in 26ms :: {"geminiApiKey":"","webhookUrl":"","…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-11:59:24 AM [express] GET /api/analysis/history 200 in 84ms :: {"history":[{"id":108,"fileId":117,"fi…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-11:59:24 AM [express] GET /api/analysis/history 200 in 45ms :: {"history":[{"id":108,"fileId":117,"fi…
-🔍 [DEBUG] Dashboard - Resolution Rate: 156 resolved out of 152719 total = 0.1%
-🔍 [DEBUG] Total analysis history records: 93
+10:42:41 AM [express] GET /api/analysis/history 200 in 116ms :: {"history":[{"id":109,"fileId":118,"f…
+🔍 [DEBUG] Dashboard - Resolution Rate: 130 resolved out of 152473 total = 0.1%
+🔍 [DEBUG] Total analysis history records: 95
 🔍 [DEBUG] Sample record fields: [
   'id',              'fileId',
   'userId',          'filename',
@@ -72,171 +67,95 @@ Re-optimizing dependencies because vite config has changed
   'currentStep'
 ]
 🔍 [DEBUG] Sample modelAccuracy: 0
-🔍 [DEBUG] Completed analyses with modelAccuracy: 92
-11:59:29 AM [express] GET /api/dashboard/stats 200 in 5567ms :: {"totalFiles":96,"totalErrors":152719…
+🔍 [DEBUG] Completed analyses with modelAccuracy: 94
+10:42:46 AM [express] GET /api/dashboard/stats 304 in 5400ms :: {"totalFiles":97,"totalErrors":152473…
+Skipping body parsing for: /api/files
+10:42:46 AM [express] GET /api/files 200 in 10ms :: {"files":[{"id":118,"filename":"files-17629355510…
 📊 Generating metrics for window 1min. Events: 0, Total Events: 0
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-Skipping body parsing for: /api/files
-11:59:29 AM [express] GET /api/files 200 in 12ms :: {"files":[{"id":117,"filename":"files-17597387954…
-11:59:29 AM [express] GET /api/version 200 in 8ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
-11:59:31 AM [express] GET /api/errors 200 in 1438ms :: {"errors":[{"id":155382,"fileId":117,"storeNum…
-11:59:32 AM [express] GET /api/version 200 in 311ms :: {"version":"0.9.5","releaseDate":"2025-11-19",…
-11:59:32 AM [express] GET /api/analytics/health-status 200 in 21ms :: {"success":true,"data":{"status…
-11:59:32 AM [express] GET /api/analytics/metrics 200 in 173ms :: {"success":true,"data":{"window":"1m…
-11:59:32 AM [express] GET /api/analytics/alerts 200 in 4ms :: {"success":true,"data":{"alerts":[],"to…
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+10:42:46 AM [express] GET /api/analysis/history 200 in 13ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:42:47 AM [express] GET /api/errors 304 in 424ms :: {"errors":[{"id":155437,"fileId":118,"storeNumb…
+10:42:47 AM [express] GET /api/version 304 in 3ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
+10:42:47 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[],"to…
+10:42:47 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+10:42:47 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
 📊 Generating metrics for window 1min. Events: 1, Total Events: 1
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:59:32 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+10:42:47 AM [express] POST /api/analytics/events 201 in 5ms :: {"success":true,"message":"Event recor…
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:59:32 AM [express] POST /api/analytics/events 201 in 4ms :: {"success":true,"message":"Event recor…
-11:59:37 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-11:59:37 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+10:42:47 AM [express] POST /api/analytics/events 201 in 3ms :: {"success":true,"message":"Event recor…
+10:42:47 AM [express] GET /api/version 304 in 2ms :: {"version":"0.9.5","releaseDate":"2025-11-19","c…
 📊 Generating metrics for window 1min. Events: 3, Total Events: 3
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:59:38 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+10:42:49 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
 📊 Generating metrics for window 1min. Events: 4, Total Events: 4
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 25
-11:59:38 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+10:42:49 AM [express] POST /api/analytics/events 201 in 5ms :: {"success":true,"message":"Event recor…
 📊 Generating metrics for window 1min. Events: 5, Total Events: 5
 🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 40
-11:59:38 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+10:42:49 AM [express] POST /api/analytics/events 201 in 6ms :: {"success":true,"message":"Event recor…
 📊 Generating metrics for window 1min. Events: 6, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
-11:59:38 AM [express] POST /api/analytics/events 201 in 7ms :: {"success":true,"message":"Event recor…
-11:59:39 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-11:59:39 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
-🤖 Requesting AI analysis from Gemini...
-❌ Gemini API failed with status 404: {
-  "error": {
-    "code": 404,
-    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
-    "status": "NOT_FOUND"
-  }
-}
-
-11:59:39 AM [express] POST /api/analytics/ai-analysis 200 in 196ms :: {"success":true,"data":{"hasErr…
-11:59:41 AM [express] GET /api/jira/status 200 in 2ms :: {"success":true,"data":{"configured":false,"…
+10:42:49 AM [express] POST /api/analytics/events 201 in 4ms :: {"success":true,"message":"Event recor…
+10:42:50 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+10:42:50 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from Gemini 2.0 Flash...
+10:42:52 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+10:42:53 AM [express] GET /api/jira/status 304 in 3ms :: {"success":true,"data":{"configured":true,"h…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-11:59:41 AM [express] GET /api/analysis/history 200 in 12ms :: {"history":[{"id":108,"fileId":117,"fi…
-11:59:42 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
-11:59:44 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+10:42:53 AM [express] GET /api/analysis/history 200 in 18ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:42:55 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
 📊 Generating metrics for window 1min. Events: 6, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+✅ AI analysis received and parsed successfully
+Found 1 critical/high alerts. Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+10:42:57 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+Created Jira ticket: SCRUM-14
+10:42:58 AM [express] POST /api/analytics/ai-analysis 200 in 8301ms :: {"success":true,"data":{"hasEr…
+10:43:00 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from Gemini 2.0 Flash...
+10:43:00 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
 📊 Generating metrics for window 1min. Events: 6, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
-11:59:58 AM [express] GET /api/auth/me 200 in 27ms :: {"user":{"id":1,"username":"deepanimators","ema…
-11:59:59 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-11:59:59 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
-🤖 Requesting AI analysis from Gemini...
-❌ Gemini API failed with status 404: {
-  "error": {
-    "code": 404,
-    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
-    "status": "NOT_FOUND"
-  }
-}
-
-11:59:59 AM [express] POST /api/analytics/ai-analysis 200 in 140ms :: {"success":true,"data":{"hasErr…
+10:43:02 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:01 PM [express] GET /api/analysis/history 200 in 104ms :: {"history":[{"id":108,"fileId":117,"f…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:01 PM [express] GET /api/analysis/history 200 in 19ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:00:02 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:43:03 AM [express] GET /api/analysis/history 200 in 22ms :: {"history":[{"id":109,"fileId":118,"fi…
+10:43:05 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
 📊 Generating metrics for window 1min. Events: 6, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
-12:00:04 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
-12:00:07 PM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
-12:00:09 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
-12:00:09 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
-🤖 Requesting AI analysis from Gemini...
-❌ Gemini API failed with status 404: {
-  "error": {
-    "code": 404,
-    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
-    "status": "NOT_FOUND"
-  }
-}
-
-12:00:10 PM [express] POST /api/analytics/ai-analysis 200 in 281ms :: {"success":true,"data":{"hasErr…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:11 PM [express] GET /api/analysis/history 200 in 22ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:00:12 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+10:43:07 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+✅ AI analysis received and parsed successfully
+Found 1 critical/high alerts. Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Created Jira ticket: SCRUM-15
+10:43:09 AM [express] POST /api/analytics/ai-analysis 200 in 8659ms :: {"success":true,"data":{"hasEr…
+10:43:10 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from Gemini 2.0 Flash...
+10:43:10 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
 📊 Generating metrics for window 1min. Events: 6, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
-12:00:14 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
-12:00:17 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+10:43:12 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+✅ AI analysis received and parsed successfully
+Found 1 critical/high alerts. Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Created Jira ticket: SCRUM-16
+10:43:18 AM [express] POST /api/analytics/ai-analysis 200 in 7978ms :: {"success":true,"data":{"hasEr…
 📊 Generating metrics for window 1min. Events: 6, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
-12:00:19 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:00:19 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
-🤖 Requesting AI analysis from Gemini...
-❌ Gemini API failed with status 404: {
-  "error": {
-    "code": 404,
-    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
-    "status": "NOT_FOUND"
-  }
-}
-
-12:00:19 PM [express] POST /api/analytics/ai-analysis 200 in 112ms :: {"success":true,"data":{"hasErr…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+📊 Generating metrics for window 1min. Events: 6, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+📊 Generating metrics for window 1min. Events: 6, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+📊 Generating metrics for window 1min. Events: 6, Total Events: 6
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
 🧹 Cleaned up old events. Current count: 6
 🧹 Cleaned up old events. Current count: 6
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:21 PM [express] GET /api/analysis/history 200 in 11ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:00:22 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-📊 Generating metrics for window 1min. Events: 6, Total Events: 6
-🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
-12:00:24 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:00:27 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-12:00:29 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:00:29 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
-🤖 Requesting AI analysis from Gemini...
-❌ Gemini API failed with status 404: {
-  "error": {
-    "code": 404,
-    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
-    "status": "NOT_FOUND"
-  }
-}
-
-12:00:29 PM [express] POST /api/analytics/ai-analysis 200 in 114ms :: {"success":true,"data":{"hasErr…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:31 PM [express] GET /api/analysis/history 200 in 12ms :: {"history":[{"id":108,"fileId":117,"fi…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:31 PM [express] GET /api/analysis/history 200 in 7ms :: {"history":[{"id":108,"fileId":117,"fil…
-12:00:32 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-📊 Generating metrics for window 1min. Events: 4, Total Events: 6
-🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 50
-12:00:34 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:00:37 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
 📊 Generating metrics for window 1min. Events: 0, Total Events: 6
 🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
-12:00:39 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:00:39 PM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:41 PM [express] GET /api/analysis/history 200 in 32ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:00:42 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
-📊 Generating metrics for window 1min. Events: 0, Total Events: 6
-🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
-12:00:44 PM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
-12:00:47 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-12:00:49 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:00:49 PM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[],"to…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:00:51 PM [express] GET /api/analysis/history 200 in 12ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:00:52 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-📊 Generating metrics for window 1min. Events: 0, Total Events: 6
-🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
-12:00:54 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
-12:00:57 PM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
-12:00:59 PM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
-12:00:59 PM [express] GET /api/analytics/alerts 200 in 8ms :: {"success":true,"data":{"alerts":[],"to…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:01:01 PM [express] GET /api/analysis/history 200 in 24ms :: {"history":[{"id":108,"fileId":117,"fi…
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-12:01:01 PM [express] GET /api/analysis/history 200 in 19ms :: {"history":[{"id":108,"fileId":117,"fi…
-12:01:02 PM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
-📊 Generating metrics for window 1min. Events: 0, Total Events: 6
-🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
-12:01:04 PM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…

@@ -420,7 +420,8 @@ start_application() {
     log_info "Logs: $LOG_FILE"
     
     # Start application in background
-    NODE_ENV=production PORT=$APP_PORT nohup node dist/index.js > "$LOG_FILE" 2>&1 &
+    # Bind to all interfaces (0.0.0.0) for external access
+    NODE_ENV=production PORT=$APP_PORT HOST=0.0.0.0 nohup node dist/index.js > "$LOG_FILE" 2>&1 &
     APP_PID=$!
     
     # Save PID
