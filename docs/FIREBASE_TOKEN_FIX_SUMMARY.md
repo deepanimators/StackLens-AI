@@ -68,7 +68,7 @@ This means 14 environment variables are now loaded, including `TEST_FIREBASE_TOK
 - Open Firebase Console: https://console.firebase.google.com/
 - Project: `error-analysis-f46c6`
 - Go to: Authentication → Users
-- Create or select test user: `test@stacklens.ai`
+- Create or select test user: `test@stacklens.app`
 - Copy the ID token (valid for 1 hour)
 
 **Step 2: Update .env File**
@@ -120,7 +120,7 @@ dotenv.config({ path: './.env' });
 {
   "iat": 1760073039,      // Issued at
   "exp": 1760076639,      // Expires at (1 hour later)
-  "email": "test@stacklens.ai"
+  "email": "test@stacklens.app"
 }
 
 // Token Lifetime: 1 HOUR

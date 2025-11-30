@@ -45,7 +45,7 @@ export default defineConfig(async () => {
         '.amazonaws.com',  // Allow all AWS EC2 hostnames
         '.compute.amazonaws.com',
         'ec2-13-235-73-106.ap-south-1.compute.amazonaws.com',
-        'stacklens.ai',
+        'stacklens.app',
         '13.235.73.106'
       ],
       fs: {

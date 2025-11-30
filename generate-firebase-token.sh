@@ -6,7 +6,7 @@
 set -e
 
 PROJECT_ID="error-analysis-f46c6"
-TEST_EMAIL="test@stacklens.ai"
+TEST_EMAIL="test@stacklens.app"
 TEST_PASSWORD="Test@123456"  # Change this to a secure password
 API_KEY="AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU"
 

@@ -61,7 +61,7 @@
    │ 1. Go to: https://console.firebase.google.com/             │
    │ 2. Project: error-analysis-f46c6                            │
    │ 3. Authentication → Users → Create User                     │
-   │ 4. Email: test@stacklens.ai                                 │
+   │ 4. Email: test@stacklens.app                                 │
    │ 5. Copy ID Token (valid for 1 hour)                         │
    │ 6. Update .env: TEST_FIREBASE_TOKEN=<new_token>             │
    └─────────────────────────────────────────────────────────────┘

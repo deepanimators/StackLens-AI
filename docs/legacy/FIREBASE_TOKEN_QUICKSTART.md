@@ -9,7 +9,7 @@ Run the bash script:
 ```
 
 **Choose Option 2** to create a new test user:
-- Email: `test@stacklens.ai`
+- Email: `test@stacklens.app`
 - Password: `Test@12345`
 
 The script will:
@@ -24,7 +24,7 @@ The script will:
 curl -s -X POST \
   "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU" \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@stacklens.ai","password":"Test@12345","returnSecureToken":true}' \
+  -d '{"email":"test@stacklens.app","password":"Test@12345","returnSecureToken":true}' \
   | grep -o '"idToken":"[^"]*"' | cut -d'"' -f4
 ```
 
@@ -54,7 +54,7 @@ Firebase tokens expire after 1 hour. Just run the script again:
 # Sign in with existing user
 ./scripts/generate-token.sh
 # Choose option 1
-# Email: test@stacklens.ai
+# Email: test@stacklens.app
 # Password: Test@12345
 ```
 

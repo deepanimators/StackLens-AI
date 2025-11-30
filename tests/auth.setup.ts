@@ -30,7 +30,7 @@ setup('authenticate user', async ({ page, context }) => {
 
         // For development/testing: Use environment variable or mock authentication
         const testToken = process.env.TEST_FIREBASE_TOKEN;
-        const testEmail = process.env.TEST_USER_EMAIL || 'test@stacklens.ai';
+        const testEmail = process.env.TEST_USER_EMAIL || 'test@stacklens.app';
 
         if (testToken) {
             // If we have a test token, we need to exchange it for a session token

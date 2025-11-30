@@ -31,7 +31,7 @@ export async function verifyFirebaseToken(idToken: string): Promise<FirebaseUser
   if (process.env.NODE_ENV?.trim() === 'test' && idToken.trim() === 'valid-test-token') {
     return {
       uid: 'test-user-id',
-      email: 'test@stacklens.ai',
+      email: 'test@stacklens.app',
       displayName: 'Test User',
       photoURL: 'https://example.com/photo.jpg'
     };
@@ -96,7 +96,7 @@ export async function syncFirebaseUser(firebaseUser: FirebaseUser): Promise<any>
         firstName: firebaseUser.displayName?.split(' ')[0] || '',
         lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || '',
         profileImageUrl: firebaseUser.photoURL,
-        role: (firebaseUser.email === 'test@stacklens.ai' || firebaseUser.email === 'test@example.com') ? 'admin' : 'user',
+        role: (firebaseUser.email === 'test@stacklens.app' || firebaseUser.email === 'test@example.com') ? 'admin' : 'user',
         isActive: true,
         lastLogin: new Date()
       });
@@ -107,7 +107,7 @@ export async function syncFirebaseUser(firebaseUser: FirebaseUser): Promise<any>
         lastLogin: new Date()
       };
 
-      if (firebaseUser.email === 'test@stacklens.ai' || firebaseUser.email === 'test@example.com') {
+      if (firebaseUser.email === 'test@stacklens.app' || firebaseUser.email === 'test@example.com') {
         updates.role = 'admin';
         console.log(`👑 Granting admin role to ${firebaseUser.email}`);
       }

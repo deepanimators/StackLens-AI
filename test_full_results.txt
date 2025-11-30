@@ -50,10 +50,10 @@ Using TEST_FIREBASE_TOKEN for authentication...
 [2m[WebServer] [22m[DEBUG] verifyFirebaseToken called with token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6Im1vY2sta2V5LWlkIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXJyb3ItYW5hbHlzaXMtZjQ2YzYiLCJhdWQiOiJlcnJvci1hbmFseXNpcy1mNDZjNiIsImF1dGhfdGltZSI6MTc2Mzc0ODA0MSwidXNlcl9pZCI6InRlc3QtdXNlci0wMDEiLCJzdWIiOiJ0ZXN0LXVzZXItMDAxIiwiaWF0IjoxNzYzNzQ4MDQxLCJleHAiOjE3NjQzNTI4NDEsImVtYWlsIjoidGVzdEBzdGFja2xlbnMuYWkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBzdGFja2xlbnMuYWkiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zVrPuGwTDrdpm9uPxx7HyDV1Zwex6AuWdc3HhojgdlQ'
 [2m[WebServer] [22m[DEBUG] NODE_ENV: 'test'
 [2m[WebServer] [22m⚠️ Token verification failed - likely expired. Attempting to decode without verification for development mode...
-[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.app
 [2m[WebServer] [22m8:54:08 AM [express] POST /api/auth/firebase-signin 200 in 303ms :: {"user":{"id":1,"username":"Test…
 ✓ Token exchange successful
-[2m[WebServer] [22m8:54:09 AM [express] GET /api/auth/me 200 in 1ms :: {"id":1,"email":"test@stacklens.ai","username":"…
+[2m[WebServer] [22m8:54:09 AM [express] GET /api/auth/me 200 in 1ms :: {"id":1,"email":"test@stacklens.app","username":"…
 [2m[WebServer] [22m8:54:10 AM [express] GET /api/admin/ui-settings 200 in 14ms :: {"theme":"light","sidebarCollapsed":f…
 [2m[WebServer] [22m8:54:10 AM [express] GET /api/admin/api-settings 200 in 8ms :: {"geminiApiKey":"AIzaSyAOu2YCkjimtYsv…
 ✓ Authentication successful with session token
@@ -65,14 +65,14 @@ Using TEST_FIREBASE_TOKEN for authentication...
 [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
 [2m[WebServer] [22m[DEBUG] verifyFirebaseToken called with token: 'valid-test-token'
 [2m[WebServer] [22m[DEBUG] NODE_ENV: 'test'
-[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.app
 [2m[WebServer] [22m8:54:14 AM [express] POST /api/auth/firebase-verify 200 in 15ms :: {"valid":true,"user":{"id":1,"use…
 [2m[WebServer] [22m[DEBUG] verifyFirebaseToken called with token: 'valid-test-token'
 [2m[WebServer] [22m[DEBUG] NODE_ENV: 'test'
-[2m[WebServer] [22m👑 Granting admin role to test@stacklens.ai
+[2m[WebServer] [22m👑 Granting admin role to test@stacklens.app
 [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
 [2m[WebServer] [22m8:54:14 AM [express] POST /api/auth/firebase-signin 200 in 4ms :: {"user":{"id":1,"username":"Test U…
-[2m[WebServer] [22m8:54:14 AM [express] GET /api/auth/me 200 in 1ms :: {"id":1,"email":"test@stacklens.ai","username":"…
+[2m[WebServer] [22m8:54:14 AM [express] GET /api/auth/me 200 in 1ms :: {"id":1,"email":"test@stacklens.app","username":"…
   ✓    5 [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token (303ms)
   ✓    4 [api-tests] › tests/api/auth-upload.test.ts:42:5 › Authentication API › GET /api/auth/me - should return current user (360ms)
   ✓    3 [api-tests] › tests/api/auth-upload.test.ts:11:5 › Authentication API › POST /api/auth/firebase-signin - should authenticate user (325ms)
@@ -91,7 +91,7 @@ Using TEST_FIREBASE_TOKEN for authentication...
 [2m[WebServer] [22m}
 [2m[WebServer] [22mreq.user: {
 [2m[WebServer] [22m  id: [33m1[39m,
-[2m[WebServer] [22m  email: [32m'test@stacklens.ai'[39m,
+[2m[WebServer] [22m  email: [32m'test@stacklens.app'[39m,
 [2m[WebServer] [22m  username: [32m'testuser'[39m,
 [2m[WebServer] [22m  role: [32m'admin'[39m
 [2m[WebServer] [22m}

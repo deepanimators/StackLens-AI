@@ -65,7 +65,7 @@ The Firebase token in `.env` has **EXPIRED**:
 {
   "iat": 1760073039,      // Issued Nov 18, 2025 ~12:30 UTC
   "exp": 1760076639,      // Expired Nov 18, 2025 ~13:30 UTC
-  "email": "test@stacklens.ai"
+  "email": "test@stacklens.app"
 }
 ```
 
@@ -98,7 +98,7 @@ node decode-token.js
    - Click "Authentication" in left menu
    - Click "Users" tab
    - Click "Create user" button
-   - Email: `test@stacklens.ai`
+   - Email: `test@stacklens.app`
    - Password: Use a secure password (e.g., `Test@Secure123!`)
 
 3. **Get ID Token**
@@ -122,10 +122,10 @@ npm install -g firebase-tools
 firebase login
 
 # Get ID token for test user
-firebase auth:get-user test@stacklens.ai --project error-analysis-f46c6
+firebase auth:get-user test@stacklens.app --project error-analysis-f46c6
 
 # Create test user if doesn't exist
-firebase auth:create test@stacklens.ai:TestPassword123 --project error-analysis-f46c6
+firebase auth:create test@stacklens.app:TestPassword123 --project error-analysis-f46c6
 ```
 
 ### Option 3: Using REST API Script
@@ -151,7 +151,7 @@ cat > get-firebase-token.mjs << 'EOF'
 import axios from 'axios';
 
 const API_KEY = 'AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU';
-const EMAIL = 'test@stacklens.ai';
+const EMAIL = 'test@stacklens.app';
 const PASSWORD = 'your-password-here'; // Use correct password
 
 async function getToken() {

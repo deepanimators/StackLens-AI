@@ -31,11 +31,11 @@ function generateMockFirebaseToken() {
     sub: 'test-user-001',
     iat: now,
     exp: now + (7 * 24 * 60 * 60), // Valid for 7 days
-    email: 'test@stacklens.ai',
+    email: 'test@stacklens.app',
     email_verified: false,
     firebase: {
       identities: {
-        email: ['test@stacklens.ai']
+        email: ['test@stacklens.app']
       },
       sign_in_provider: 'password'
     }

@@ -282,7 +282,7 @@ Once deployed, your team can access the application at:
 ### 🌐 **http://13.235.73.106:4000**
 
 ### Default Admin Credentials
-- **Email**: admin@stacklens.ai
+- **Email**: admin@stacklens.app
 - **Password**: admin123
 
 > ⚠️ **IMPORTANT**: Change the default admin password immediately after first login!

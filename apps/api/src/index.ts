@@ -37,12 +37,12 @@ const corsOrigins = [
   "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:3000",
   "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:4000",
 
-  "https://stacklens.ai",
-  "https://www.stacklens.ai",
-  "http://stacklens.ai:4000",
-  "http://www.stacklens.ai:4000",
-  "http://api.stacklens.ai",
-  "http://pos.stacklens.ai",
+  "https://stacklens.app",
+  "https://www.stacklens.app",
+  "http://stacklens.app:4000",
+  "http://www.stacklens.app:4000",
+  "http://api.stacklens.app",
+  "http://pos.stacklens.app",
 ];
 
 app.use(cors({

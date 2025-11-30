@@ -38,7 +38,7 @@ NEXT STEPS - REQUIRED
    2. Project: error-analysis-f46c6
    3. Go to: Authentication → Users
    4. Click: Create user
-   5. Email: test@stacklens.ai
+   5. Email: test@stacklens.app
    6. Password: Create secure password
    7. Click user → Copy ID token
    8. Token is valid for 1 hour

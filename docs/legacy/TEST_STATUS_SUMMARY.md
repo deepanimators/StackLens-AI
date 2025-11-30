@@ -9,7 +9,7 @@
   - `scripts/generate_firebase_token.py` - Python version
   
 - **Token successfully generated and added to .env**:
-  - User: `test@stacklens.ai`
+  - User: `test@stacklens.app`
   - Password: `Test@12345`
   - Token: Added to `.env` as `TEST_FIREBASE_TOKEN`
 
@@ -152,7 +152,7 @@ Get all tests passing:
 ## 🔑 Test Credentials
 
 Saved for future use:
-- **Email**: `test@stacklens.ai`
+- **Email**: `test@stacklens.app`
 - **Password**: `Test@12345`
 - **Firebase UID**: `MaYolmLYWsVz2XPdSllkQA24gLy1`
 

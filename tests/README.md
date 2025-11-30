@@ -91,7 +91,7 @@ npm install --save-dev \
 Create `tests/.env.test`:
 
 ```env
-TEST_USER_EMAIL=test@stacklens.ai
+TEST_USER_EMAIL=test@stacklens.app
 TEST_USER_PASSWORD=Test@12345
 TEST_FIREBASE_TOKEN=your-test-token
 VITE_API_URL=http://localhost:4000

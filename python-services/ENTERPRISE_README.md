@@ -475,7 +475,7 @@ python3 enterprise_error_intelligence.py
 
 ### Enterprise Support
 
-- **Email**: enterprise@stacklens.ai
+- **Email**: enterprise@stacklens.app
 - **Slack**: [StackLens Enterprise Workspace](https://stacklens-enterprise.slack.com)
 - **Professional Services**: Custom integration and training available
 
@@ -503,6 +503,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **🚀 Ready to transform your error detection capabilities?**
 
-[Get Started](#quick-start) | [View Documentation](docs/) | [Enterprise Support](mailto:enterprise@stacklens.ai)
+[Get Started](#quick-start) | [View Documentation](docs/) | [Enterprise Support](mailto:enterprise@stacklens.app)
 
 </div>

@@ -82,7 +82,7 @@ async function generateToken() {
   
   // Get ID token
   const idToken = await admin.auth().createUserWithPasswordAsync({
-    email: 'test@stacklens.ai',
+    email: 'test@stacklens.app',
     password: 'Test@123456'
   });
   console.log('ID Token:', idToken);
@@ -108,7 +108,7 @@ firebase login
 firebase auth:export users.json --project error-analysis-f46c6
 
 # Create test user if needed
-firebase auth:create test@stacklens.ai:Test@123456 --project error-analysis-f46c6
+firebase auth:create test@stacklens.app:Test@123456 --project error-analysis-f46c6
 ```
 
 ### Step 3: Update .env File
@@ -171,10 +171,10 @@ Payload:
   "sub": "MaYolmLYWsVz2XPdSllkQA24gLy1",
   "iat": 1760073039,
   "exp": 1760076639,  ← Expiration (1 hour validity)
-  "email": "test@stacklens.ai",
+  "email": "test@stacklens.app",
   "email_verified": false,
   "firebase": {
-    "identities": { "email": ["test@stacklens.ai"] },
+    "identities": { "email": ["test@stacklens.app"] },
     "sign_in_provider": "password"
   }
 }

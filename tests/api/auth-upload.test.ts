@@ -12,7 +12,7 @@ test.describe('Authentication API', () => {
         const response = await apiContext.post('/api/auth/firebase-signin', {
             data: {
                 idToken: 'valid-test-token',
-                email: 'test@stacklens.ai',
+                email: 'test@stacklens.app',
             },
         });
 

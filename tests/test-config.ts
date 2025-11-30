@@ -14,7 +14,7 @@ export const TEST_CONFIG = {
 
     // Test user credentials
     testUser: {
-        email: process.env.TEST_USER_EMAIL || 'test@stacklens.ai',
+        email: process.env.TEST_USER_EMAIL || 'test@stacklens.app',
         password: process.env.TEST_USER_PASSWORD || 'Test@12345',
     },
 

@@ -354,7 +354,7 @@ Auth response: {
   user: {
     id: [33m15[39m,
     username: [32m'test'[39m,
-    email: [32m'test@stacklens.ai'[39m,
+    email: [32m'test@stacklens.app'[39m,
     role: [32m'admin'[39m,
     firstName: [32m''[39m,
     lastName: [32m''[39m,
@@ -2654,7 +2654,7 @@ Auth response: {
          |                          ^
       13 |             data: {
       14 |                 idToken: process.env.TEST_FIREBASE_TOKEN,
-      15 |                 email: 'test@stacklens.ai',
+      15 |                 email: 'test@stacklens.app',
         at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:12:26
 
   2) [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token 
@@ -3165,7 +3165,7 @@ Auth response: {
     Expected path: [32m"sessionToken"[39m
     Received path: [31m[][39m
 
-    Received value: [31m{"email": "test@stacklens.ai", "provider": "firebase", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTc0OTMsImV4cCI6MTc2NDE4Mzg5M30.HVLuv1XqY56dZbwadfn-hcyEm-uTnuZnWS_pUygA0M4", "user": {"createdAt": "+057744-07-02T17:10:00.000Z", "department": null, "email": "test@stacklens.ai", "firstName": "", "id": 15, "isActive": true, "lastLogin": "2025-11-25T19:04:53.000Z", "lastName": "", "profileImageUrl": "https://example.com/photo.jpg", "role": "admin", "updatedAt": "+057744-07-02T17:10:00.000Z", "username": "test"}, "userId": 15}[39m
+    Received value: [31m{"email": "test@stacklens.app", "provider": "firebase", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3NjQwOTc0OTMsImV4cCI6MTc2NDE4Mzg5M30.HVLuv1XqY56dZbwadfn-hcyEm-uTnuZnWS_pUygA0M4", "user": {"createdAt": "+057744-07-02T17:10:00.000Z", "department": null, "email": "test@stacklens.app", "firstName": "", "id": 15, "isActive": true, "lastLogin": "2025-11-25T19:04:53.000Z", "lastName": "", "profileImageUrl": "https://example.com/photo.jpg", "role": "admin", "updatedAt": "+057744-07-02T17:10:00.000Z", "username": "test"}, "userId": 15}[39m
 
       794 |             expect(auth).toHaveProperty('userId');
       795 |             expect(auth).toHaveProperty('email');

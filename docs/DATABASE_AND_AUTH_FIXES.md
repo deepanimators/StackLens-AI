@@ -173,7 +173,7 @@ To make auth verification work fully:
 1. Go to: https://console.firebase.google.com/
 2. Project: error-analysis-f46c6
 3. Authentication → Users → Create new user
-4. Email: test@stacklens.ai
+4. Email: test@stacklens.app
 5. Copy ID token
 6. Update .env: TEST_FIREBASE_TOKEN=<new_token>
 7. Run: npm run test

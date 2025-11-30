@@ -43,7 +43,7 @@ UPDATE error_logs SET full_text = message WHERE full_text IS NULL;
 const requireAuth = async (req: any, res: any, next: any) => {
   if (process.env.NODE_ENV === 'test') {
     if (!req.user) {
-      req.user = { id: 1, email: 'test@stacklens.ai', username: 'testuser', role: 'admin' };
+      req.user = { id: 1, email: 'test@stacklens.app', username: 'testuser', role: 'admin' };
     }
     return next();  // Always bypassed auth in test mode
   }
@@ -59,7 +59,7 @@ const requireAuth = async (req: any, res: any, next: any) => {
   // Only bypass auth in test mode when a token IS present
   if (process.env.NODE_ENV === 'test' && token) {
     if (!req.user) {
-      req.user = { id: 1, email: 'test@stacklens.ai', username: 'testuser', role: 'admin' };
+      req.user = { id: 1, email: 'test@stacklens.app', username: 'testuser', role: 'admin' };
     }
     return next();
   }

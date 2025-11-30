@@ -12,7 +12,7 @@ echo "This script will create a test user and generate a Firebase token."
 echo ""
 
 # Default test credentials
-DEFAULT_EMAIL="test@stacklens.ai"
+DEFAULT_EMAIL="test@stacklens.app"
 DEFAULT_PASSWORD="Test@12345"
 
 read -p "Email [$DEFAULT_EMAIL]: " email

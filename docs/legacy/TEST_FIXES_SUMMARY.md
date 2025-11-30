@@ -78,7 +78,7 @@ export const TEST_CONFIG = {
         token: process.env.TEST_FIREBASE_TOKEN,
     },
     testUser: {
-        email: process.env.TEST_USER_EMAIL || 'test@stacklens.ai',
+        email: process.env.TEST_USER_EMAIL || 'test@stacklens.app',
         password: process.env.TEST_USER_PASSWORD || 'Test@12345',
     },
     api: {

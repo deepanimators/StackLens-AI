@@ -151,7 +151,7 @@ export const test = base.extend<StackLensFixtures>({
     // Test user fixture
     testUser: async ({ }, use) => {
         await use({
-            email: process.env.TEST_USER_EMAIL || 'test@stacklens.ai',
+            email: process.env.TEST_USER_EMAIL || 'test@stacklens.app',
             password: process.env.TEST_USER_PASSWORD || 'Test@12345',
         });
     },

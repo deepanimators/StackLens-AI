@@ -5,7 +5,7 @@
 ### What's Working
 
 1. ✅ **Firebase Token Generated and Stored**
-   - User created: `test@stacklens.ai`
+   - User created: `test@stacklens.app`
    - Token stored in `.env` file
    - Script available: `./scripts/quick-token.sh`
 
@@ -54,7 +54,7 @@ python scripts/generate_firebase_token.py
 TOKEN=$(curl -s -X POST \
   "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU" \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@stacklens.ai","password":"Test@12345","returnSecureToken":true}' \
+  -d '{"email":"test@stacklens.app","password":"Test@12345","returnSecureToken":true}' \
   | jq -r '.idToken')
 echo "TEST_FIREBASE_TOKEN=$TOKEN" >> .env
 ```
@@ -200,7 +200,7 @@ test('should do something', async ({ apiContext }) => {
 ## 🔐 Test Credentials
 
 For future reference:
-- **Email**: `test@stacklens.ai`
+- **Email**: `test@stacklens.app`
 - **Password**: `Test@12345`
 - **Firebase UID**: `MaYolmLYWsVz2XPdSllkQA24gLy1`
 

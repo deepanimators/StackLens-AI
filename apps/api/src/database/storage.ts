@@ -126,7 +126,7 @@ export class MemStorage implements IStorage {
     const adminUser: User = {
       id: this.currentId++,
       username: "admin",
-      email: "admin@stacklens.ai",
+      email: "admin@stacklens.app",
       password: "admin123", // In production, this should be hashed
       role: "admin",
       createdAt: new Date(),

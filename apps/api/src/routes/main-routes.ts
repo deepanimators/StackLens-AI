@@ -119,7 +119,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!req.user) {
         req.user = {
           id: 1,
-          email: 'test@stacklens.ai',
+          email: 'test@stacklens.app',
           username: 'testuser',
           role: 'admin',
         };

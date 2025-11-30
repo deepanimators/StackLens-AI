@@ -52,7 +52,7 @@ curl -X POST \
   "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "test@stacklens.ai",
+    "email": "test@stacklens.app",
     "password": "Test@12345",
     "returnSecureToken": true
   }'
@@ -63,7 +63,7 @@ curl -X POST \
 curl -X POST \
   "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU" \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@stacklens.ai","password":"Test@12345","returnSecureToken":true}' \
+  -d '{"email":"test@stacklens.app","password":"Test@12345","returnSecureToken":true}' \
   | jq -r '.idToken'
 ```
 
@@ -108,7 +108,7 @@ pip install requests
 python scripts/generate_firebase_token.py
 
 # 3. Choose option 2 (Create new test user)
-# Enter: test@stacklens.ai
+# Enter: test@stacklens.app
 # Password: Test@12345
 
 # 4. Script will show the token and offer to update .env automatically
@@ -122,7 +122,7 @@ python scripts/generate_firebase_token.py
 TOKEN=$(curl -s -X POST \
   "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU" \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@stacklens.ai","password":"Test@12345","returnSecureToken":true}' \
+  -d '{"email":"test@stacklens.app","password":"Test@12345","returnSecureToken":true}' \
   | jq -r '.idToken')
 
 echo "TEST_FIREBASE_TOKEN=$TOKEN"
@@ -204,7 +204,7 @@ python scripts/generate_firebase_token.py
 curl -s -X POST \
   "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCNq08Tzd1y8R8QbfGJ_7KmwMY3HEe3bUU" \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@stacklens.ai","password":"Test@12345","returnSecureToken":true}' \
+  -d '{"email":"test@stacklens.app","password":"Test@12345","returnSecureToken":true}' \
   | jq -r '.idToken'
 
 # Run tests with token

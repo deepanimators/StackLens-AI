@@ -875,7 +875,7 @@ test.describe('API Tests - Authentication & Authorization', () => {
         test('should allow access with admin token', async ({ apiContext }) => {
             // Login as admin
             const mockPayload = Buffer.from(JSON.stringify({
-                email: 'test@stacklens.ai',
+                email: 'test@stacklens.app',
                 sub: 'admin-user',
                 name: 'Admin User',
                 picture: 'https://example.com/avatar.jpg'

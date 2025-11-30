@@ -222,7 +222,7 @@ Using TEST_FIREBASE_TOKEN for authentication...
          |                          ^
       13 |             data: {
       14 |                 idToken: process.env.TEST_FIREBASE_TOKEN,
-      15 |                 email: 'test@stacklens.ai',
+      15 |                 email: 'test@stacklens.app',
         at /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/tests/api/auth-upload.test.ts:12:26
 
   2) [api-tests] › tests/api/auth-upload.test.ts:27:5 › Authentication API › POST /api/auth/firebase-verify - should verify token 
