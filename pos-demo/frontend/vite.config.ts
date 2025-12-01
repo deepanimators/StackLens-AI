@@ -17,13 +17,14 @@ export default defineConfig({
             'all',
             "localhost",
             "127.0.0.1",
-            "13.235.73.106",
-            "ec2-13-235-73-106.ap-south-1.compute.amazonaws.com",
             ".amazonaws.com", // Allow any AWS hostname
+            "pos.stacklens.app",
+            "posapi.stacklens.app",
+            ".stacklens.app"  // Allow all subdomains
         ],
         proxy: {
             "/api": {
-                target: process.env.POS_API_URL || "http://localhost:3000",
+                target: process.env.POS_API_URL || "http://127.0.0.1:3000",
                 changeOrigin: true,
                 secure: false,
             },
