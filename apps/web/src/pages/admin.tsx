@@ -30,6 +30,7 @@ import { useLayout } from "@/contexts/layout-context";
 import { useSettings } from "@/contexts/settings-context";
 import LayoutSelector from "@/components/layout-selector";
 import JiraIntegrationAdmin from "@/components/jira-integration-admin";
+import { APICredentialsManager } from "@/components/admin/APICredentialsManager";
 import {
   Users,
   Settings,
@@ -861,7 +862,7 @@ export default function AdminDashboard() {
       subtitle="System Administration & AI Model Management"
     >
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-8">
+        <TabsList className="grid w-full grid-cols-9">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="roles">Roles</TabsTrigger>
@@ -1856,102 +1857,8 @@ export default function AdminDashboard() {
           </div>
 
           <div className="grid gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Key className="h-5 w-5" />
-                  <span>API Configuration</span>
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Configure external API keys and endpoints
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <form onSubmit={handleSaveAPISettings} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="geminiApiKey">Gemini API Key</Label>
-                    <div className="flex space-x-2">
-                      <Input
-                        id="geminiApiKey"
-                        name="geminiApiKey"
-                        type={isGeminiApiKeyLocked ? "password" : "text"}
-                        placeholder="Enter Gemini API key"
-                        defaultValue={adminAPISettings?.geminiApiKey ?? ""}
-                        disabled={isGeminiApiKeyLocked}
-                        className={isGeminiApiKeyLocked ? "bg-muted" : ""}
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                          setIsGeminiApiKeyLocked(!isGeminiApiKeyLocked)
-                        }
-                      >
-                        {isGeminiApiKeyLocked ? "Edit" : "Lock"}
-                      </Button>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Used for AI-powered error analysis and suggestions
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="webhookUrl">Webhook URL</Label>
-                    <Input
-                      id="webhookUrl"
-                      name="webhookUrl"
-                      type="url"
-                      placeholder="https://your-webhook-endpoint.com"
-                      defaultValue={adminAPISettings?.webhookUrl ?? ""}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      Receive notifications about critical errors and analysis
-                      completion
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="maxFileSize">Max File Size (MB)</Label>
-                    <Select
-                      name="maxFileSize"
-                      defaultValue={adminAPISettings?.maxFileSize ?? "10"}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="5">5 MB</SelectItem>
-                        <SelectItem value="10">10 MB</SelectItem>
-                        <SelectItem value="25">25 MB</SelectItem>
-                        <SelectItem value="50">50 MB</SelectItem>
-                        <SelectItem value="100">100 MB</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <label className="text-sm font-medium">
-                        Auto Analysis
-                      </label>
-                      <p className="text-xs text-muted-foreground">
-                        Automatically analyze uploaded log files
-                      </p>
-                    </div>
-                    <Switch
-                      name="autoAnalysis"
-                      defaultChecked={adminAPISettings?.autoAnalysis ?? true}
-                    />
-                  </div>
-
-                  <Button type="submit" className="w-full">
-                    <Save className="h-4 w-4 mr-2" />
-                    Save API Settings
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+            {/* API Credentials Management Component */}
+            <APICredentialsManager />
 
             <Card>
               <CardHeader>

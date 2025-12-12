@@ -29,7 +29,7 @@ export class GroqProvider implements LLMProvider {
                     },
                     { role: "user", content: prompt }
                 ],
-                model: "llama3-70b-8192", // High performance model on Groq
+                model: "llama-3.3-70b-versatile", // Updated to current Groq model
                 response_format: { type: "json_object" },
             });
 

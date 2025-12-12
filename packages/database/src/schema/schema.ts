@@ -365,6 +365,34 @@ export const userSettings = sqliteTable("user_settings", {
   ),
 });
 
+// API Credentials - Encrypted storage for API keys and secrets
+export const apiCredentials = sqliteTable("api_credentials", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull().unique(), // gemini, openai, anthropic, etc.
+  provider: text("provider").notNull(), // gemini, openai, anthropic, groq, openrouter, jira, etc.
+  apiKey: text("api_key"), // Encrypted API key
+  apiSecret: text("api_secret"), // Encrypted API secret (if applicable)
+  endpoint: text("endpoint"), // Custom endpoint URL (optional)
+  organizationId: text("organization_id"), // For providers that need org ID
+  configuration: text("configuration", { mode: "json" }), // Additional provider-specific config
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  isGlobal: integer("is_global", { mode: "boolean" }).default(true), // Global vs user-specific
+  userId: integer("user_id").references(() => users.id), // null for global credentials
+  lastUsed: integer("last_used", { mode: "timestamp" }),
+  usageCount: integer("usage_count").default(0),
+  rateLimit: integer("rate_limit"), // Requests per minute (optional)
+  dailyLimit: integer("daily_limit"), // Daily request limit (optional)
+  monthlyLimit: integer("monthly_limit"), // Monthly request limit (optional)
+  currentMonthUsage: integer("current_month_usage").default(0),
+  createdBy: integer("created_by").references(() => users.id),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(
+    sql`(unixepoch() * 1000)`
+  ),
+});
+
 // Stores table - Physical store locations
 export const stores = sqliteTable("stores", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -543,6 +571,15 @@ export const insertAiTrainingDataSchema = createInsertSchema(
   updatedAt: true,
 });
 
+export const insertApiCredentialSchema = createInsertSchema(apiCredentials).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  lastUsed: true,
+  usageCount: true,
+  currentMonthUsage: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -584,6 +621,8 @@ export type Kiosk = typeof kiosks.$inferSelect;
 export type InsertKiosk = z.infer<typeof insertKioskSchema>;
 export type AiTrainingData = typeof aiTrainingData.$inferSelect;
 export type InsertAiTrainingData = z.infer<typeof insertAiTrainingDataSchema>;
+export type ApiCredential = typeof apiCredentials.$inferSelect;
+export type InsertApiCredential = z.infer<typeof insertApiCredentialSchema>;
 
 // Enums
 export const SeverityEnum = z.enum(["critical", "high", "medium", "low"]);

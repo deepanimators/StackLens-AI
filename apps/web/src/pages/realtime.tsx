@@ -489,6 +489,19 @@ export default function Realtime() {
                     <Workflow className="h-3 w-3" />
                     AI Automation Workflow
                   </Button>
+                  {aiAnalysisData.data.aiProvider && (
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="h-7 text-xs bg-green-50 text-green-700 border-green-200 dark:bg-green-950/30 dark:text-green-300">
+                        {aiAnalysisData.data.aiProvider}
+                      </Badge>
+                      {aiAnalysisData.data.aiResponseTimeMs && (
+                        <Badge variant="outline" className="h-7 text-xs bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/30 dark:text-purple-300">
+                          <Clock className="h-3 w-3 mr-1" />
+                          {aiAnalysisData.data.aiResponseTimeMs}ms
+                        </Badge>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <Badge 
                   className={`${

@@ -296,6 +296,22 @@ try {
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (updated_by) REFERENCES users(id)
     );
+
+    CREATE TABLE IF NOT EXISTS api_credentials (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      provider TEXT NOT NULL,
+      api_key TEXT NOT NULL,
+      api_secret TEXT,
+      endpoint TEXT,
+      model_name TEXT,
+      priority INTEGER DEFAULT 0,
+      is_active BOOLEAN DEFAULT TRUE,
+      scope TEXT DEFAULT 'global',
+      user_id INTEGER,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
   `);
 
   console.log('✅ SQLite database initialized successfully');

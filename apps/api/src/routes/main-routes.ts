@@ -57,6 +57,8 @@ import posRouter from "./posIntegration.js";
 import analyticsRouter from "./analyticsRoutes.js";
 import trainingRoutes from "./training-routes.js";
 import abTestingRoutes from "./ab-testing-routes.js";
+import credentialsRouter from "./admin/credentials-routes.js";
+import { getGeminiKey } from "../utils/get-api-credential.js";
 import crypto from "crypto";
 
 // Use different upload directories for test and production
@@ -601,17 +603,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
+        const userId = req.user?.id;
+
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        // Get user settings from database
+        let userSettings = await storage.getUserSettings(userId);
+
+        // If no settings exist, create default settings
+        if (!userSettings) {
+          userSettings = await storage.createUserSettings({
+            userId,
+            denseMode: false,
+            autoRefresh: false,
+            refreshInterval: 30,
+            theme: "dark",
+            language: "en",
+            timezone: "UTC",
+            notificationPreferences: JSON.stringify({
+              email: true,
+              push: true,
+              sms: false,
+            }),
+            displayPreferences: JSON.stringify({
+              itemsPerPage: 10,
+              defaultView: "grid",
+              primaryColor: "#3b82f6",
+            }),
+            navigationPreferences: JSON.stringify({
+              showTopNav: true,
+              topNavStyle: "fixed",
+              topNavColor: "#1f2937",
+              showSideNav: false,
+              sideNavStyle: "collapsible",
+              sideNavPosition: "left",
+              sideNavColor: "#374151",
+              enableBreadcrumbs: true,
+            }),
+            apiSettings: JSON.stringify({
+              geminiApiKey: "",
+              webhookUrl: "",
+              maxFileSize: "10",
+              autoAnalysis: true,
+            }),
+          });
+        }
+
+        // Parse JSON fields
+        const displayPrefs = typeof userSettings.displayPreferences === 'string'
+          ? JSON.parse(userSettings.displayPreferences)
+          : userSettings.displayPreferences || {};
+
+        const navPrefs = typeof userSettings.navigationPreferences === 'string'
+          ? JSON.parse(userSettings.navigationPreferences)
+          : userSettings.navigationPreferences || {};
+
         res.json({
-          theme: "light",
-          sidebarCollapsed: false,
-          showTopNav: true,
-          showSideNav: true,
-          autoRefresh: true,
-          refreshInterval: 30,
-          defaultPageSize: 20,
-          showErrorDetails: true,
-          enableRealTimeUpdates: true,
-          enableNotifications: true,
+          theme: userSettings.theme || "dark",
+          denseMode: userSettings.denseMode || false,
+          autoRefresh: userSettings.autoRefresh || false,
+          refreshInterval: userSettings.refreshInterval || 30,
+          displayPreferences: displayPrefs,
+          navigationPreferences: navPrefs,
         });
       } catch (error) {
         console.error("Error fetching UI settings:", error);
@@ -627,7 +682,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireAdmin,
     async (req: any, res: any) => {
       try {
-        // In a real app, you'd save these to database
+        const userId = req.user?.id;
+
+        if (!userId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        const {
+          theme,
+          navigationPreferences,
+          displayPreferences,
+          denseMode,
+          autoRefresh,
+          refreshInterval,
+        } = req.body;
+
+        console.log("=== BACKEND SAVE ===");
+        console.log("Received UI settings:", JSON.stringify(navigationPreferences, null, 2));
+
+        // Get existing settings
+        let userSettings = await storage.getUserSettings(userId);
+
+        // Prepare update data
+        const updateData: any = {};
+
+        if (theme !== undefined) updateData.theme = theme;
+        if (denseMode !== undefined) updateData.denseMode = denseMode;
+        if (autoRefresh !== undefined) updateData.autoRefresh = autoRefresh;
+        if (refreshInterval !== undefined) updateData.refreshInterval = refreshInterval;
+
+        if (displayPreferences !== undefined) {
+          updateData.displayPreferences = JSON.stringify(displayPreferences);
+        }
+
+        if (navigationPreferences !== undefined) {
+          updateData.navigationPreferences = JSON.stringify(navigationPreferences);
+        }
+
+        // Update or create settings
+        if (userSettings) {
+          await storage.updateUserSettings(userId, updateData);
+        } else {
+          await storage.createUserSettings({
+            userId,
+            ...updateData,
+          });
+        }
+
+        console.log("UI settings saved to database successfully");
+
         res.json({ message: "UI settings updated successfully" });
       } catch (error) {
         console.error("Error updating UI settings:", error);
@@ -652,8 +755,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Get user settings
         const userSettings = await storage.getUserSettings(userId);
 
+        // Get Gemini key from database or environment
+        const geminiKey = await getGeminiKey();
+
         let apiSettings = {
-          geminiApiKey: process.env.GEMINI_API_KEY || "",
+          geminiApiKey: geminiKey || "",
           webhookUrl: "",
           maxFileSize: "10",
           autoAnalysis: true,
@@ -1709,7 +1815,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       try {
         console.log("🤖 Attempting AI service analysis...");
-        console.log("🔑 API Key available:", !!process.env.GEMINI_API_KEY);
+        const geminiKey = await getGeminiKey();
+        console.log("🔑 API Key available:", !!geminiKey);
 
         const aiSuggestion = await aiService.generateSuggestion(
           error.message,
@@ -3092,9 +3199,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .json({ error: "Context is required for suggestions" });
         }
 
+        // Get Gemini API key from database or environment
+        const geminiKey = await getGeminiKey();
+
+        if (!geminiKey) {
+          return res
+            .status(503)
+            .json({ error: "AI service not configured. Please add Gemini API credentials." });
+        }
+
         // Use Google Gemini AI for intelligent suggestions (same pattern as AIService)
         const genAI = new genai.GoogleGenAI({
-          apiKey: process.env.GEMINI_API_KEY,
+          apiKey: geminiKey,
         });
         const model = genAI.models;
 
@@ -9945,6 +10061,11 @@ Format as JSON with the following structure:
   // A/B TESTING ROUTES
   // ============================================================================
   app.use(abTestingRoutes);
+
+  // ============================================================================
+  // ADMIN - CREDENTIAL MANAGEMENT ROUTES
+  // ============================================================================
+  app.use("/api/admin/credentials", credentialsRouter);
 
   // ============================================================================
   // JIRA INTEGRATION & AUTOMATION ROUTES

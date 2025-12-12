@@ -4,16 +4,113 @@ import { OpenAIProvider } from "./ai/providers/openai-provider";
 import { AnthropicProvider } from "./ai/providers/anthropic-provider";
 import { OpenRouterProvider } from "./ai/providers/openrouter-provider";
 import { GroqProvider } from "./ai/providers/groq-provider";
+import { GrokProvider } from "./ai/providers/grok-provider";
+import { DeepSeekProvider } from "./ai/providers/deepseek-provider";
+import { TogetherProvider } from "./ai/providers/together-provider";
+import { PerplexityProvider } from "./ai/providers/perplexity-provider";
+import { MistralProvider } from "./ai/providers/mistral-provider";
+import { CohereProvider } from "./ai/providers/cohere-provider";
+import { credentialService } from "./credential-service";
 
 export class AIService {
   private providers: LLMProvider[] = [];
+  private initialized: boolean = false;
 
   constructor() {
-    this.initializeProviders();
+    // Initialization is async, will be called on first use
   }
 
-  private initializeProviders() {
-    // Initialize providers in priority order
+  private async initializeProviders() {
+    if (this.initialized) return;
+
+    try {
+      // Try to load credentials from database first
+      const credentials = await this.loadCredentialsFromDatabase();
+
+      if (credentials.length > 0) {
+        console.log('🔐 Loading AI credentials from database...');
+        await this.initializeFromDatabase(credentials);
+      } else {
+        console.log('⚠️  No database credentials found, falling back to environment variables...');
+        this.initializeFromEnvironment();
+      }
+
+      this.initialized = true;
+      console.log(`🤖 AI Service initialized with ${this.providers.length} providers: ${this.providers.map(p => p.name).join(", ")}`);
+    } catch (error) {
+      console.error('❌ Error initializing AI providers from database, using environment fallback:', error);
+      this.initializeFromEnvironment();
+      this.initialized = true;
+    }
+  }
+
+  private async loadCredentialsFromDatabase() {
+    try {
+      // Load all global active credentials
+      const credentials = await credentialService.listCredentials();
+      return credentials.filter(c => c.isActive);
+    } catch (error) {
+      console.error('Error loading credentials from database:', error);
+      return [];
+    }
+  }
+
+  private async initializeFromDatabase(credentials: any[]) {
+    const providers = [
+      'gemini', 'google', 'openai', 'anthropic', 'openrouter',
+      'groq', 'grok', 'deepseek', 'together', 'perplexity', 'mistral', 'cohere'
+    ];
+
+    for (const providerName of providers) {
+      try {
+        const cred = await credentialService.getCredentialByProvider(providerName);
+
+        if (!cred?.apiKey) continue;
+
+        switch (providerName.toLowerCase()) {
+          case 'gemini':
+          case 'google':
+            this.providers.push(new GeminiProvider(cred.apiKey));
+            break;
+          case 'openai':
+            this.providers.push(new OpenAIProvider(cred.apiKey));
+            break;
+          case 'anthropic':
+            this.providers.push(new AnthropicProvider(cred.apiKey));
+            break;
+          case 'openrouter':
+            this.providers.push(new OpenRouterProvider(cred.apiKey));
+            break;
+          case 'groq':
+            this.providers.push(new GroqProvider(cred.apiKey));
+            break;
+          case 'grok':
+            this.providers.push(new GrokProvider(cred.apiKey));
+            break;
+          case 'deepseek':
+            this.providers.push(new DeepSeekProvider(cred.apiKey));
+            break;
+          case 'together':
+            this.providers.push(new TogetherProvider(cred.apiKey));
+            break;
+          case 'perplexity':
+            this.providers.push(new PerplexityProvider(cred.apiKey));
+            break;
+          case 'mistral':
+            this.providers.push(new MistralProvider(cred.apiKey));
+            break;
+          case 'cohere':
+            this.providers.push(new CohereProvider(cred.apiKey));
+            break;
+        }
+      } catch (error) {
+        console.warn(`⚠️ Failed to initialize ${providerName} from database:`, error);
+      }
+    }
+  }
+
+  private initializeFromEnvironment() {
+    // Initialize providers in priority order from environment variables
     // 1. Gemini (Primary)
     if (process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY) {
       this.providers.push(new GeminiProvider(process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || ""));
@@ -39,10 +136,41 @@ export class AIService {
       this.providers.push(new GroqProvider(process.env.GROQ_API_KEY));
     }
 
-    console.log(`🤖 AI Service initialized with ${this.providers.length} providers: ${this.providers.map(p => p.name).join(", ")}`);
+    // 6. Grok/xAI (Senary)
+    if (process.env.GROK_API_KEY) {
+      this.providers.push(new GrokProvider(process.env.GROK_API_KEY));
+    }
+
+    // 7. DeepSeek AI
+    if (process.env.DEEPSEEK_API_KEY) {
+      this.providers.push(new DeepSeekProvider(process.env.DEEPSEEK_API_KEY));
+    }
+
+    // 8. Together AI
+    if (process.env.TOGETHER_API_KEY) {
+      this.providers.push(new TogetherProvider(process.env.TOGETHER_API_KEY));
+    }
+
+    // 9. Perplexity AI
+    if (process.env.PERPLEXITY_API_KEY) {
+      this.providers.push(new PerplexityProvider(process.env.PERPLEXITY_API_KEY));
+    }
+
+    // 10. Mistral AI
+    if (process.env.MISTRAL_API_KEY) {
+      this.providers.push(new MistralProvider(process.env.MISTRAL_API_KEY));
+    }
+
+    // 11. Cohere AI
+    if (process.env.COHERE_API_KEY) {
+      this.providers.push(new CohereProvider(process.env.COHERE_API_KEY));
+    }
   }
 
   async generateSuggestion(errorText: string, errorType: string, severity: string): Promise<AISuggestion> {
+    // Ensure providers are initialized
+    await this.initializeProviders();
+
     if (this.providers.length === 0) {
       console.log('⚠️ No AI providers configured, using fallback suggestion');
       return this.getFallbackSuggestion(errorText, errorType, severity);
@@ -230,8 +358,51 @@ Focus on practical, actionable solutions that a developer can implement immediat
       };
     }
   }
+
+  /**
+   * Generate analytics insights for realtime monitoring
+   * Uses ONLY the first available provider (no fallback)
+   * Returns raw response from AI with metadata (response time, provider used)
+   */
+  async generateAnalyticsInsight(prompt: string): Promise<{
+    analysis: any;
+    responseTimeMs: number;
+    provider: string;
+  } | null> {
+    // Ensure providers are initialized
+    await this.initializeProviders();
+
+    if (this.providers.length === 0) {
+      console.log('⚠️ No AI providers configured for analytics');
+      return null;
+    }
+
+    // Use ONLY the first available provider (no fallback to other providers)
+    const provider = this.providers[0];
+
+    try {
+      console.log(`🤖 Using ${provider.name} for analytics generation...`);
+      const startTime = Date.now();
+
+      const result = await provider.generateSuggestion(prompt);
+
+      const responseTimeMs = Date.now() - startTime;
+      console.log(`✅ ${provider.name} generated analytics insight in ${responseTimeMs}ms`);
+      console.log('📊 AI Response:', JSON.stringify(result, null, 2));
+
+      // Return analysis with metadata
+      return {
+        analysis: result,
+        responseTimeMs,
+        provider: provider.name
+      };
+    } catch (error) {
+      console.error(`❌ ${provider.name} failed for analytics:`, error);
+      throw error; // Don't try other providers, just fail
+    }
+  }
 }
 
-// Export singleton instance for convenience
+// Export a singleton instance
 export const aiService = new AIService();
 

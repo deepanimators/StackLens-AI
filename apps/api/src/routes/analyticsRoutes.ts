@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { jiraService } from '../services/jiraService';
+import { aiService } from '../services/ai-service.js';
 
 const analyticsRouter = Router();
 
@@ -632,62 +633,45 @@ Provide your analysis in this exact JSON format:
 Be specific, technical, and actionable. Focus on POS-specific impacts like transaction failures, inventory sync issues, payment processing errors, etc.
         `;
 
-        // Call Gemini API
+        // Call AI Service (uses ONLY first configured provider)
         let aiAnalysis = null;
+        let responseTimeMs = 0;
+        let aiProvider = 'unknown';
         try {
-            const apiKey = process.env.GEMINI_API_KEY;
-            if (apiKey) {
-                console.log('🤖 Requesting AI analysis from Gemini 2.0 Flash...');
-                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: analysisPrompt
-                            }]
-                        }]
-                    })
-                });
+            console.log('🤖 Requesting AI analysis from configured provider...');
 
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                        const rawText = data.candidates[0].content.parts[0].text;
-                        // Clean up markdown code blocks if present
-                        const jsonStr = rawText.replace(/```json\n?|\n?```/g, '').trim();
-                        aiAnalysis = JSON.parse(jsonStr);
-                        console.log('✅ AI analysis received and parsed successfully');
+            // Create a unified prompt for the AI service
+            const response = await aiService.generateAnalyticsInsight(analysisPrompt);
 
-                        // 🎯 Create Jira ticket ONLY for Critical severity alerts (actual errors, not warnings)
-                        // Critical = High error rate, actual system errors
-                        // Warning = Individual errors, latency issues (no ticket needed)
-                        const criticalAlerts = alertsToAnalyze.filter((a: any) =>
-                            a.severity.toLowerCase() === 'critical'
-                        );
+            if (response) {
+                aiAnalysis = response.analysis;
+                responseTimeMs = response.responseTimeMs;
+                aiProvider = response.provider;
+                console.log(`✅ AI analysis received in ${responseTimeMs}ms from ${aiProvider}`);
 
-                        if (criticalAlerts.length > 0) {
-                            console.log(`Found ${criticalAlerts.length} critical alerts (errors). Triggering Jira ticket creation...`);
+                // 🎯 Create Jira ticket ONLY for Critical severity alerts (actual errors, not warnings)
+                // Critical = High error rate, actual system errors
+                // Warning = Individual errors, latency issues (no ticket needed)
+                const criticalAlerts = alertsToAnalyze.filter((a: any) =>
+                    a.severity.toLowerCase() === 'critical'
+                );
 
-                            // Create one ticket for the primary critical issue
-                            const primaryAlert = criticalAlerts[0];
+                if (criticalAlerts.length > 0) {
+                    console.log(`Found ${criticalAlerts.length} critical alerts (errors). Triggering Jira ticket creation...`);
 
-                            const ticketKey = await jiraService.createTicket(primaryAlert, rawText);
+                    // Create one ticket for the primary critical issue
+                    const primaryAlert = criticalAlerts[0];
 
-                            if (ticketKey) {
-                                aiAnalysis.jiraTicket = ticketKey;
-                                aiAnalysis.jiraStatus = 'Created';
-                                aiAnalysis.jiraLink = `https://${process.env.JIRA_DOMAIN}/browse/${ticketKey}`;
-                            }
-                        }
-                    } else {
-                        console.warn('⚠️ AI response did not contain valid JSON or candidates');
+                    const ticketKey = await jiraService.createTicket(primaryAlert, JSON.stringify(response));
+
+                    if (ticketKey) {
+                        aiAnalysis.jiraTicket = ticketKey;
+                        aiAnalysis.jiraStatus = 'Created';
+                        aiAnalysis.jiraLink = `https://${process.env.JIRA_DOMAIN}/browse/${ticketKey}`;
                     }
-                } else {
-                    console.error(`❌ Gemini API failed with status ${response.status}: ${await response.text()}`);
                 }
             } else {
-                console.warn('⚠️ No GEMINI_API_KEY found in environment variables');
+                console.warn('⚠️ AI service returned empty response');
             }
         } catch (aiError) {
             console.warn('AI analysis failed, returning basic analysis', aiError);
@@ -738,7 +722,9 @@ Be specific, technical, and actionable. Focus on POS-specific impacts like trans
             data: {
                 hasErrors: true,
                 analysis: aiAnalysis,
-                alertsCount: alertsToAnalyze.length
+                alertsCount: alertsToAnalyze.length,
+                aiResponseTimeMs: responseTimeMs,
+                aiProvider: aiProvider
             }
         });
     } catch (error) {

@@ -32,7 +32,7 @@ export class OpenRouterProvider implements LLMProvider {
                     },
                     { role: "user", content: prompt }
                 ],
-                model: "openai/gpt-4-turbo", // Default model, can be changed via env or config
+                model: "meta-llama/llama-3.1-70b-instruct", // Updated to current model
                 response_format: { type: "json_object" },
             });
 

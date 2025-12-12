@@ -314,6 +314,29 @@ export const aiTrainingData = sqliteTable("ai_training_data", {
     .$defaultFn(() => Date.now()),
 });
 
+// API Credentials (encrypted storage for API keys)
+export const apiCredentials = sqliteTable("api_credentials", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull().unique(),
+  provider: text("provider").notNull(), // gemini, openai, anthropic, openrouter, groq, etc.
+  apiKey: text("api_key"), // Encrypted
+  apiSecret: text("api_secret"), // Encrypted
+  endpoint: text("endpoint"), // Custom endpoint URL
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  isGlobal: integer("is_global", { mode: "boolean" }).default(true), // Global or user-specific
+  userId: integer("user_id").references(() => users.id), // If user-specific
+  rateLimit: integer("rate_limit"), // Monthly rate limit
+  usageCount: integer("usage_count").default(0), // Total usage count
+  currentMonthUsage: integer("current_month_usage").default(0), // Current month usage
+  lastUsed: text("last_used"), // ISO timestamp
+  createdAt: text("created_at")
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+  updatedAt: text("updated_at")
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+});
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
@@ -348,6 +371,8 @@ export type UserSettings = typeof userSettings.$inferSelect;
 export type InsertUserSettings = typeof userSettings.$inferInsert;
 export type AiTrainingData = typeof aiTrainingData.$inferSelect;
 export type InsertAiTrainingData = typeof aiTrainingData.$inferInsert;
+export type ApiCredential = typeof apiCredentials.$inferSelect;
+export type InsertApiCredential = typeof apiCredentials.$inferInsert;
 
 // Zod schemas
 export const insertUserSchema = createInsertSchema(users);
@@ -368,3 +393,11 @@ export const insertAuditLogSchema = createInsertSchema(auditLogs);
 export const insertNotificationSchema = createInsertSchema(notifications);
 export const insertUserSettingsSchema = createInsertSchema(userSettings);
 export const insertAiTrainingDataSchema = createInsertSchema(aiTrainingData);
+export const insertApiCredentialSchema = createInsertSchema(apiCredentials).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  lastUsed: true,
+  usageCount: true,
+  currentMonthUsage: true,
+});
