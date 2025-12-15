@@ -91,9 +91,11 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
               : f
           ));
 
+          // Use totalErrors if available, fall back to errors field
+          const errorCount = analysisData.totalErrors ?? analysisData.errors ?? 0;
           toast({
             title: "Success",
-            description: `File analyzed successfully. Found ${analysisData.totalErrors} errors.`,
+            description: `File analyzed successfully. Found ${errorCount} errors.`,
           });
 
           queryClient.invalidateQueries({ queryKey: ['/api/files'] });
@@ -149,9 +151,11 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
                 : f
             ));
 
+            // Ensure finalTotalErrors has a valid number
+            const displayErrors = finalTotalErrors ?? 0;
             toast({
               title: "Success",
-              description: `File analyzed successfully. Found ${finalTotalErrors} errors.`,
+              description: `File analyzed successfully. Found ${displayErrors} errors.`,
             });
           } else {
             // Polling timed out but analysis may still complete in background

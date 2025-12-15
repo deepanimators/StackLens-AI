@@ -249,6 +249,9 @@ export default function UploadPage() {
         );
         const analysisData = analysisResponse; // authenticatedRequest already parses JSON
 
+        // Handle both completed analysis and in-progress analysis
+        const totalErrors = analysisData.totalErrors || analysisData.errors || 0;
+
         setFiles((prev) =>
           prev.map((f) =>
             f.id === uploadFile.id
@@ -256,7 +259,7 @@ export default function UploadPage() {
                   ...f,
                   status: "completed",
                   progress: 100,
-                  result: { fileId, errors: analysisData.errors },
+                  result: { fileId, errors: totalErrors },
                 }
               : f
           )
@@ -264,7 +267,7 @@ export default function UploadPage() {
 
         toast({
           title: "Success",
-          description: `File analyzed successfully. Found ${analysisData.errors} errors.`,
+          description: `File analyzed successfully. Found ${totalErrors} errors.`,
         });
       } catch (error) {
         setFiles((prev) =>

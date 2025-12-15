@@ -5083,9 +5083,7 @@ Format as JSON with the following structure:
               const originalFileName = uploadedFile.originalname;
               standardizedFilename = `${storeName}_${kioskName}_${originalFileName}`;
 
-              // Update the actual file on disk
-              const fs = require('fs');
-              const path = require('path');
+              // Update the actual file on disk using imported modules
               const oldPath = uploadedFile.path;
               const newPath = path.join(path.dirname(oldPath), standardizedFilename);
 

@@ -120,7 +120,7 @@ class BackgroundJobProcessor {
       const UPLOAD_DIR = process.env.NODE_ENV === 'test' ? 'test-uploads/' : 'uploads/';
       const filePath = path.join(UPLOAD_DIR, logFile.filename);
       if (!fs.existsSync(filePath)) {
-        throw new Error("File not found on disk");
+        throw new Error(`File not found on disk at path: ${filePath}. Original filename: ${logFile.originalName}`);
       }
 
       // File size validation (limit to 50MB for performance)
