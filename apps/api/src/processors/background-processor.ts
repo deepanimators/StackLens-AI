@@ -124,9 +124,21 @@ class BackgroundJobProcessor {
 
       // Read file content with size validation and streaming for large files
       const UPLOAD_DIR = process.env.NODE_ENV === 'test' ? 'test-uploads/' : 'uploads/';
-      const filePath = path.join(UPLOAD_DIR, logFile.filename);
+
+      // Try to use stored filePath first, fallback to constructing from filename
+      let filePath = logFile.filePath || path.join(UPLOAD_DIR, logFile.filename);
+
       if (!fs.existsSync(filePath)) {
-        throw new Error(`File not found on disk at path: ${filePath}. Original filename: ${logFile.originalName}`);
+        // If constructed path doesn't exist, log error with helpful diagnostics
+        const diagnostics = {
+          attemptedPath: filePath,
+          storedFilePath: logFile.filePath,
+          filename: logFile.filename,
+          uploadDir: UPLOAD_DIR,
+          fallbackPath: path.join(UPLOAD_DIR, logFile.filename),
+          directoryContents: fs.existsSync(UPLOAD_DIR) ? fs.readdirSync(UPLOAD_DIR).slice(0, 5) : 'directory not found'
+        };
+        throw new Error(`File not found on disk. Attempted path: ${filePath}. Original filename: ${logFile.originalName}. Diagnostics: ${JSON.stringify(diagnostics)}`);
       }
 
       // File size validation (limit to 50MB for performance)

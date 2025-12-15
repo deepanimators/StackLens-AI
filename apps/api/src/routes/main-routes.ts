@@ -5081,16 +5081,25 @@ Format as JSON with the following structure:
 
               // Create standardized filename: StoreName_KioskName_OriginalFilename
               const originalFileName = uploadedFile.originalname;
-              standardizedFilename = `${storeName}_${kioskName}_${originalFileName}`;
+              const proposedStandardizedFilename = `${storeName}_${kioskName}_${originalFileName}`;
 
               // Update the actual file on disk using imported modules
               const oldPath = uploadedFile.path;
-              const newPath = path.join(path.dirname(oldPath), standardizedFilename);
+              const newPath = path.join(path.dirname(oldPath), proposedStandardizedFilename);
 
               if (fs.existsSync(oldPath)) {
-                fs.renameSync(oldPath, newPath);
-                uploadedFile.filename = standardizedFilename;
-                uploadedFile.path = newPath;
+                try {
+                  fs.renameSync(oldPath, newPath);
+                  uploadedFile.filename = proposedStandardizedFilename;
+                  uploadedFile.path = newPath;
+                  standardizedFilename = proposedStandardizedFilename;
+                  console.log(`✅ File renamed to: ${proposedStandardizedFilename}`);
+                } catch (renameError) {
+                  console.warn(`⚠️ Failed to rename file from ${oldPath} to ${newPath}:`, renameError);
+                  // Keep original filename if rename fails
+                }
+              } else {
+                console.warn(`⚠️ Original file not found at ${oldPath} - keeping original filename`);
               }
             }
           } catch (error) {
@@ -5108,7 +5117,7 @@ Format as JSON with the following structure:
           fileType: uploadedFile.mimetype.includes("text") ? "log" : "other",
           storeNumber: storeNumber,
           kioskNumber: kioskNumber,
-          filePath: uploadedFile.path,
+          filePath: uploadedFile.path, // Store the actual file path for later retrieval
         };
 
         const savedFile = await storage.createLogFile(fileData);

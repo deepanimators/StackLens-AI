@@ -158,16 +158,26 @@ function updateAlerts(latestMetric: Metric) {
     if (latestMetric.error_rate > 5) {
         const existingAlert = alerts.find(a => a.rule_name === 'High Error Rate' && a.status === 'active');
         if (!existingAlert) {
+            // Extract actual error types from recent error events
+            const recentErrors = posEvents.filter(e => e.type === 'error');
+            const errorTypes = Array.from(new Set(
+                recentErrors.map(e => e.action || e.category || 'Unknown Error').filter(Boolean)
+            ));
+            const topErrorType = errorTypes.length > 0 ? errorTypes[0] : 'System Error';
+            const errorTypesSummary = errorTypes.slice(0, 3).join(', ');
+
             alerts.push({
                 id: `alert-${Date.now()}-errors`,
                 rule_name: 'High Error Rate',
                 severity: 'critical',
-                message: 'Error rate exceeded acceptable threshold',
+                message: `Error rate exceeded acceptable threshold (${latestMetric.error_rate.toFixed(2)}%) - Top errors: ${errorTypesSummary}`,
                 metric: 'error_rate',
                 value: latestMetric.error_rate,
                 threshold: 5,
                 timestamp: new Date().toISOString(),
-                status: 'active'
+                status: 'active',
+                errorTypes: errorTypes,
+                topErrorType: topErrorType
             });
         }
     } else {

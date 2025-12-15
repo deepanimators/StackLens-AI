@@ -34,6 +34,7 @@ try {
       file_size INTEGER NOT NULL,
       mime_type TEXT NOT NULL,
       file_type TEXT NOT NULL,
+      file_path TEXT,
       store_number TEXT,
       kiosk_number TEXT,
       uploaded_by INTEGER NOT NULL,
@@ -313,6 +314,22 @@ try {
       FOREIGN KEY (user_id) REFERENCES users(id)
     );
   `);
+
+  // Add file_path column to log_files table if it doesn't exist (migration for existing databases)
+  try {
+    const tableInfo = sqlite.prepare("PRAGMA table_info(log_files)").all();
+    const hasFilePathColumn = tableInfo.some((col: any) => col.name === 'file_path');
+
+    if (!hasFilePathColumn) {
+      console.log('🔄 Migrating: Adding file_path column to log_files table...');
+      sqlite.exec(`
+        ALTER TABLE log_files ADD COLUMN file_path TEXT;
+      `);
+      console.log('✅ Migration complete: file_path column added');
+    }
+  } catch (migrationError) {
+    console.warn('⚠️ Could not check or add file_path column:', migrationError);
+  }
 
   console.log('✅ SQLite database initialized successfully');
 } catch (error) {

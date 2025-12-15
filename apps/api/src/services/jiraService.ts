@@ -433,9 +433,10 @@ export class JiraService {
             const priority = this.mapSeverityToPriority(alert.severity, aiAnalysisData.severity);
 
             // Build summary with proper category - include first error type if available
-            const primaryErrorType = aiAnalysisData.errorTypes?.[0] || '';
+            // Priority: AI analysis error types > alert.topErrorType > AI analysis pattern > message
+            const primaryErrorType = aiAnalysisData.errorTypes?.[0] || alert.topErrorType || '';
             const ticketSummary = primaryErrorType
-                ? `[${severityValue}] ${categoryValue}: ${primaryErrorType}`
+                ? `[${severityValue}] ${primaryErrorType}: ${categoryValue}`
                 : `[${severityValue}] ${categoryValue}: ${messageValue}`;
 
             const bodyData = {

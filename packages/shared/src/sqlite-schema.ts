@@ -42,6 +42,7 @@ export const logFiles = sqliteTable("log_files", {
   fileType: text("file_type").notNull(),
   fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),
+  filePath: text("file_path"), // Actual file path on disk
   uploadedBy: integer("uploaded_by").references(() => users.id),
   storeNumber: text("store_number"),
   kioskNumber: text("kiosk_number"),
