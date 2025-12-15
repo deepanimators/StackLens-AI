@@ -79,6 +79,7 @@ export class CredentialService {
     /**
      * Get credential by provider (finds first active global credential respecting priority)
      * Returns credential with lowest priority number (highest priority)
+     * Handles backward compatibility if priority column doesn't exist yet
      */
     async getCredentialByProvider(provider: string, userId?: number): Promise<{
         id: number;
@@ -102,16 +103,26 @@ export class CredentialService {
                 eq(apiCredentials.isGlobal, true)
             );
 
-        const [credential] = await db
+        // Get all credentials for this provider without priority ordering
+        // (to avoid issues if priority column doesn't exist)
+        const credentials = await db
             .select()
             .from(apiCredentials)
             .where(conditions)
-            .orderBy(sql`${apiCredentials.priority} ASC`) // Lower priority = higher priority (appears first)
-            .limit(1);
+            .limit(10); // Get up to 10, then sort in memory
 
-        if (!credential) {
+        if (!credentials || credentials.length === 0) {
             return null;
         }
+
+        // Sort by priority in memory (default 100 if priority is null/undefined)
+        credentials.sort((a: any, b: any) => {
+            const aPriority = a.priority ?? 100;
+            const bPriority = b.priority ?? 100;
+            return aPriority - bPriority;
+        });
+
+        const credential = credentials[0];
 
         // Update usage tracking
         await this.recordUsage(credential.id);
@@ -123,14 +134,13 @@ export class CredentialService {
             apiKey: credential.apiKey ? decrypt(credential.apiKey) : undefined,
             apiSecret: credential.apiSecret ? decrypt(credential.apiSecret) : undefined,
             endpoint: credential.endpoint,
-            priority: credential.priority,
+            priority: credential.priority ?? 100,
             isActive: credential.isActive,
         };
-    }
-
-    /**
+    }    /**
      * Get all active credentials for a provider, sorted by priority
      * Useful for trying multiple providers in order
+     * Handles backward compatibility if priority column doesn't exist yet
      */
     async getCredentialsByProvider(provider: string, userId?: number): Promise<Array<{
         id: number;
@@ -154,11 +164,16 @@ export class CredentialService {
                 eq(apiCredentials.isGlobal, true)
             );
 
+        // Fetch all active credentials for this provider
+        // Sort by priority in-memory (works with or without priority column)
         const credentials = await db
             .select()
             .from(apiCredentials)
             .where(conditions)
-            .orderBy(sql`${apiCredentials.priority} ASC`); // Sort by priority (lowest first)
+            .limit(100); // Reasonable limit for credentials
+
+        // Sort by priority in-memory - handles missing column gracefully
+        credentials.sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100));
 
         return credentials.map(c => ({
             id: c.id,
@@ -167,7 +182,7 @@ export class CredentialService {
             apiKey: c.apiKey ? decrypt(c.apiKey) : undefined,
             apiSecret: c.apiSecret ? decrypt(c.apiSecret) : undefined,
             endpoint: c.endpoint,
-            priority: c.priority,
+            priority: c.priority || 100,
             isActive: c.isActive,
         }));
     }
@@ -195,7 +210,7 @@ export class CredentialService {
                 return credential;
             }
         }
-        
+
         console.warn(`⚠️ No credentials found for any of: ${providers.join(', ')}`);
         return null;
     }
@@ -203,6 +218,7 @@ export class CredentialService {
     /**
      * Get all active credentials sorted by priority
      * Useful for initializing all providers
+     * Handles backward compatibility if priority column doesn't exist yet
      */
     async listCredentialsByPriority(userId?: number): Promise<Array<{
         id: number;
@@ -218,11 +234,16 @@ export class CredentialService {
             ? eq(apiCredentials.userId, userId)
             : eq(apiCredentials.isGlobal, true);
 
+        // Fetch all credentials without SQL-based ordering
+        // Sort by priority in-memory (works with or without priority column)
         const credentials = await db
             .select()
             .from(apiCredentials)
             .where(conditions)
-            .orderBy(sql`${apiCredentials.priority} ASC`); // Sort by priority
+            .limit(1000); // Reasonable limit for all credentials
+
+        // Sort by priority in-memory - handles missing column gracefully
+        credentials.sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100));
 
         return credentials.map(c => ({
             id: c.id,
@@ -231,7 +252,7 @@ export class CredentialService {
             apiKey: c.apiKey ? decrypt(c.apiKey) : undefined,
             apiSecret: c.apiSecret ? decrypt(c.apiSecret) : undefined,
             endpoint: c.endpoint,
-            priority: c.priority,
+            priority: c.priority || 100,
             isActive: c.isActive,
         }));
     }
@@ -262,8 +283,10 @@ export class CredentialService {
                 updatedAt: apiCredentials.updatedAt,
             })
             .from(apiCredentials)
-            .where(conditions)
-            .orderBy(sql`${apiCredentials.priority} ASC`);
+            .where(conditions);
+
+        // Sort by priority in-memory
+        credentials.sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100));
 
         return credentials;
     }

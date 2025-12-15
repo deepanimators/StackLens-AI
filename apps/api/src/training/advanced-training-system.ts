@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { DatabaseStorage } from "./database-storage";
-import { ErrorPatternAnalyzer } from "./error-pattern-analyzer";
+import { DatabaseStorage } from "../database/database-storage.js";
+import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
 
 interface TrainingRecord {
   id: string;
@@ -954,12 +954,12 @@ export class AdvancedTrainingSystem {
         hasModel: !!latestModel,
         modelInfo: latestModel
           ? {
-              name: latestModel.name,
-              version: latestModel.version,
-              accuracy: latestModel.accuracy,
-              trainedAt: latestModel.trainedAt,
-              isActive: latestModel.isActive,
-            }
+            name: latestModel.name,
+            version: latestModel.version,
+            accuracy: latestModel.accuracy,
+            trainedAt: latestModel.trainedAt,
+            isActive: latestModel.isActive,
+          }
           : null,
         trainingDataCount: trainingModules.length,
         lastTrainingDate: latestModel?.trainedAt || null,
@@ -1067,8 +1067,8 @@ export class AdvancedTrainingSystem {
             pattern.severity === "critical"
               ? "critical"
               : pattern.severity === "high"
-              ? "high"
-              : "medium",
+                ? "high"
+                : "medium",
           frequency: 1,
         })),
         recommendations: [

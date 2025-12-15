@@ -1,8 +1,10 @@
 
-> stacklens-ai-platform@1.0.0 start
-> cross-env NODE_ENV=production node dist/index.js
+> stacklens-ai-platform@1.0.0 dev:server
+> cross-env NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts
 
-[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
 [JiraIntegrationService] Configuration check:
           - JIRA_HOST: not set
           - JIRA_DOMAIN: set
@@ -12,14 +14,11 @@
           - JIRA_API_TOKEN: set (hidden)
           - Resolved host: https://stacklens.atlassian.net
           - Configured: true
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
 🚀 RAG: Vector database initialized
 🔄 RAG: Starting knowledge base population...
-{"level":"WARN","timestamp":"2025-12-12T14:19:59.465Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+{"level":"WARN","timestamp":"2025-12-15T17:20:03.012Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
 Setting up SQLite database...
 ✅ SQLite database initialized successfully
-🌱 Seeding SQLite database...
 🔄 Starting server initialization...
 ✅ Database tables initialized
 Starting LogWatcher service for real-time monitoring...
@@ -27,6 +26,1282 @@ Starting LogWatcher service for real-time monitoring...
 [LogWatcherService] Started watching 1 file(s)
 ✅ LogWatcher service started successfully
 ⏳ Waiting for RAG initialization to complete...
-📚 RAG: Indexing 50 resolved error patterns...
-🔄 RAG: Generating embeddings for all errors...
-ℹ️ Database already seeded. Skipping seed process.
+❌ RAG: Error populating knowledge base: SqliteError: no such column: "ml_confidence" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15) {
+  code: 'SQLITE_ERROR'
+}
+❌ RAG: Stack trace: SqliteError: no such column: "ml_confidence" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
+✅ RAG initialization complete
+✅ Routes registered successfully
+🔄 Setting up Vite...
+🔄 Indexing existing errors for RAG system...
+ℹ️ No errors with suggestions found for indexing
+✅ Enhanced RAG Suggestor initialized
+🎯 Enhanced RAG system ready with vector database
+🚀 Starting Python vector database service...
+⚠️ Enhanced vector service not found, using fallback similarity search
+✅ Vector database service initialized
+Re-optimizing dependencies because vite config has changed
+✅ Vite setup complete
+🌱 Seeding SQLite database...
+❌ Error seeding SQLite database: SqliteError: no such column: "navigation_preferences" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15) {
+  code: 'SQLITE_ERROR'
+}
+❌ Error seeding SQLite database: SqliteError: no such column: "navigation_preferences" - should this be a string literal in single-quotes?
+    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
+    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
+    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
+    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
+    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
+    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
+    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15) {
+  code: 'SQLITE_ERROR'
+}
+ℹ️ Database seeding skipped or partial (data may already exist)
+10:50:06 PM [express] serving on 0.0.0.0:4000
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+⚠️ RAG initialization timeout (30s), continuing...
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 1, Total Events: 1
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+10:51:30 PM [express] POST /api/analytics/events 201 in 73ms :: {"success":true,"message":"Event reco…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+10:51:30 PM [express] POST /api/analytics/events 201 in 10ms :: {"success":true,"message":"Event reco…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔧 Checking for stuck processing jobs...
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔧 Checking for stuck processing jobs...
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔧 Checking for stuck processing jobs...
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔧 Checking for stuck processing jobs...
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔧 Checking for stuck processing jobs...
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 0
+🧹 Cleaned up old events. Current count: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0

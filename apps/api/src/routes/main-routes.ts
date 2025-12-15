@@ -1822,7 +1822,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           createdAt: error.createdAt || new Date(),
         };
         suggestion = await suggestor.getSuggestion(errorWithMlData);
-        
+
         // Only use if confidence is reasonably high
         if (suggestion && suggestion.confidence >= 0.6) {
           source = "trained_model";

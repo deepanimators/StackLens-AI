@@ -7,19 +7,19 @@ node_modules/
 
 
 # Database files
-*.db
-*.sqlite
-*.db-shm
-*.db-wal
-*.db-journal
-data/database/
-data/Database/
-data/Database/*.db
-data/database/*.db
-data/[Dd]atabase/*.db
-db/*.db
-db/**/*.db
-python-services/**/*.db
+# *.db
+# *.sqlite
+# *.db-shm
+# *.db-wal
+# *.db-journal
+# data/database/
+# data/Database/
+# data/Database/*.db
+# data/database/*.db
+# data/[Dd]atabase/*.db
+# db/*.db
+# db/**/*.db
+# python-services/**/*.db
 
 
 # Logs

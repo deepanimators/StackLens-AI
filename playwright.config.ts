@@ -24,8 +24,8 @@ export default defineConfig({
     testDir: './tests',
 
     // Global setup and teardown
-    globalSetup: require.resolve('./tests/global-setup.ts'),
-    globalTeardown: require.resolve('./tests/global-teardown.ts'),
+    globalSetup: path.resolve(__dirname, './tests/global-setup.ts'),
+    globalTeardown: path.resolve(__dirname, './tests/global-teardown.ts'),
 
     // Maximum time one test can run
     timeout: 30 * 1000,

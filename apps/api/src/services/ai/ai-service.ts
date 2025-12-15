@@ -20,7 +20,7 @@ export class AIService {
     try {
       const credential = await credentialService.getHighestPriorityCredential(['gemini', 'google']);
       this.geminiKey = credential?.apiKey || null;
-      
+
       if (this.geminiKey) {
         console.log("✅ AIService initialized with database credential");
       }
@@ -60,7 +60,7 @@ export class AIService {
 
       const data = await response.json();
       const generatedText = data.candidates[0]?.content?.parts[0]?.text || '';
-      
+
       return this.parseAIResponse(generatedText);
     } catch (error) {
       console.error('AI Service Error:', error);

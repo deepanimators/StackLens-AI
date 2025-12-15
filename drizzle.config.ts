@@ -5,7 +5,7 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "sqlite",
   dbCredentials: {
-    url: "./db/stacklens.db",
+    url: "./data/database/stacklens.db",
   },
   verbose: true,
   strict: true,
