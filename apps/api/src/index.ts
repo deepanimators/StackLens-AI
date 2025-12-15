@@ -23,17 +23,21 @@ app.get('/health', (req, res) => {
 const serverIp = process.env.SERVER_IP || 'localhost';
 const corsOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
   "http://localhost:3000",
   "http://localhost:4000",
   `http://${serverIp}:5173`,
+  `http://${serverIp}:5174`,
   `http://${serverIp}:3000`,
   `http://${serverIp}:4000`,
   // EC2 public IP for Windows deployment
   "http://13.235.73.106:5173",
+  "http://13.235.73.106:5174",
   "http://13.235.73.106:3000",
   "http://13.235.73.106:4000",
   // EC2 hostname (AWS auto-generated DNS name)
   "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:5173",
+  "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:5174",
   "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:3000",
   "http://ec2-13-235-73-106.ap-south-1.compute.amazonaws.com:4000",
 

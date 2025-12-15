@@ -43,14 +43,25 @@ router.get("/:id", verifyToken, requireAdmin, async (req, res) => {
 /**
  * POST /api/admin/credentials
  * Create a new credential
+ * Priority system: Lower number = higher priority (default 100)
+ * Recommended: Gemini=10, Groq=20, OpenRouter=30, OpenAI=40, Anthropic=50
  */
 router.post("/", verifyToken, requireAdmin, async (req, res) => {
     try {
-        const { name, provider, apiKey, apiSecret, endpoint, isGlobal, rateLimit } = req.body;
+        const { name, provider, apiKey, apiSecret, endpoint, isGlobal, rateLimit, priority } = req.body;
 
         if (!name || !provider) {
             return res.status(400).json({ error: "Name and provider are required" });
         }
+
+        // Set default priorities based on provider
+        let defaultPriority = 100;
+        const providerLower = provider.toLowerCase();
+        if (providerLower === 'gemini') defaultPriority = 10;
+        else if (providerLower === 'groq') defaultPriority = 20;
+        else if (providerLower === 'openrouter') defaultPriority = 30;
+        else if (providerLower === 'openai') defaultPriority = 40;
+        else if (providerLower === 'anthropic') defaultPriority = 50;
 
         const credential = await credentialService.createCredential({
             name,
@@ -61,12 +72,14 @@ router.post("/", verifyToken, requireAdmin, async (req, res) => {
             isGlobal: isGlobal !== undefined ? isGlobal : true,
             userId: isGlobal ? undefined : req.user?.id,
             rateLimit,
+            priority: priority !== undefined ? priority : defaultPriority,
         });
 
         res.status(201).json({
             id: credential.id,
             name: credential.name,
             provider: credential.provider,
+            priority: credential.priority,
             isActive: credential.isActive,
             isGlobal: credential.isGlobal,
             createdAt: credential.createdAt,
@@ -84,7 +97,7 @@ router.post("/", verifyToken, requireAdmin, async (req, res) => {
 router.patch("/:id", verifyToken, requireAdmin, async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const { name, provider, apiKey, apiSecret, endpoint, isActive, rateLimit } = req.body;
+        const { name, provider, apiKey, apiSecret, endpoint, isActive, rateLimit, priority } = req.body;
 
         const updated = await credentialService.updateCredential(id, {
             name,
@@ -94,6 +107,7 @@ router.patch("/:id", verifyToken, requireAdmin, async (req, res) => {
             endpoint,
             isActive,
             rateLimit,
+            priority,
         });
 
         if (!updated) {
@@ -104,6 +118,7 @@ router.patch("/:id", verifyToken, requireAdmin, async (req, res) => {
             id: updated.id,
             name: updated.name,
             provider: updated.provider,
+            priority: updated.priority,
             isActive: updated.isActive,
             updatedAt: updated.updatedAt,
         });

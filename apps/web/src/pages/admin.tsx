@@ -2224,6 +2224,10 @@ export default function AdminDashboard() {
             </Card>
           </div>
         </TabsContent>
+
+        <TabsContent value="api-credentials" className="space-y-6">
+          <APICredentialsManager />
+        </TabsContent>
       </Tabs>
 
       {/* Create User Dialog */}

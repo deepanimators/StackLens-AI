@@ -53,6 +53,7 @@ import { logWatcher } from "../services/log-watcher.js";
 import { errorAutomation } from "../services/error-automation.js";
 import { ErrorPatternAnalyzer } from "../services/analysis/error-pattern-analyzer.js";
 import { createRAGRoutes } from "./rag-routes.js";
+import { ragSuggestionService } from "../services/rag-suggestion-service.js";
 import posRouter from "./posIntegration.js";
 import analyticsRouter from "./analyticsRoutes.js";
 import trainingRoutes from "./training-routes.js";
@@ -1809,56 +1810,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log(`✅ Found error: ${error.message.substring(0, 50)}...`);
 
-      // Try AI service first for real content analysis
+      // FIRST: Try trained/ML model via suggestor
       let suggestion = null;
       let source = "fallback";
 
       try {
-        console.log("🤖 Attempting AI service analysis...");
-        const geminiKey = await getGeminiKey();
-        console.log("🔑 API Key available:", !!geminiKey);
-
-        const aiSuggestion = await aiService.generateSuggestion(
-          error.message,
-          error.errorType,
-          error.severity
-        );
-
-        if (aiSuggestion) {
-          suggestion = {
-            source: "ai_service",
-            confidence: aiSuggestion.confidence,
-            rootCause: aiSuggestion.rootCause,
-            resolutionSteps: aiSuggestion.resolutionSteps,
-            codeExample: aiSuggestion.codeExample,
-            preventionMeasures: aiSuggestion.preventionMeasures,
-            reasoning: `AI-powered analysis of error content and context`,
-            relatedPatterns: [error.errorType, error.severity].filter(Boolean),
-            estimatedResolutionTime: "30-60 minutes",
-            priority: "normal",
-          };
-          source = "ai_service";
-          console.log(
-            `✅ AI suggestion generated with confidence: ${aiSuggestion.confidence}`
-          );
-        }
-      } catch (aiError: any) {
-        console.warn(
-          "⚠️ AI service failed:",
-          aiError?.message || "Unknown error"
-        );
-      }
-
-      // If AI service failed, try the suggestor
-      if (!suggestion) {
-        console.log("🔧 Trying suggestor service...");
+        console.log("🧠 FIRST: Attempting trained/ML model analysis via suggestor...");
         const errorWithMlData = {
           ...error,
           mlConfidence: (error as any).mlConfidence || 0,
           createdAt: error.createdAt || new Date(),
         };
         suggestion = await suggestor.getSuggestion(errorWithMlData);
-        source = "suggestor";
+        
+        // Only use if confidence is reasonably high
+        if (suggestion && suggestion.confidence >= 0.6) {
+          source = "trained_model";
+          console.log(`✅ Trained model suggestion generated with confidence: ${suggestion.confidence}`);
+        } else {
+          console.log("⚠️ Trained model confidence too low, will try AI service");
+          suggestion = null;
+        }
+      } catch (mlError: any) {
+        console.warn("⚠️ Trained model failed:", mlError?.message || "Unknown error");
+      }
+
+      // SECOND: If trained model didn't work well, try AI service
+      if (!suggestion) {
+        try {
+          console.log("🤖 SECOND: Attempting AI service analysis (Gemini/Groq/OpenRouter)...");
+          const geminiKey = await getGeminiKey();
+          console.log("🔑 API Key available:", !!geminiKey);
+
+          const aiSuggestion = await aiService.generateSuggestion(
+            error.message,
+            error.errorType,
+            error.severity
+          );
+
+          if (aiSuggestion) {
+            suggestion = {
+              source: "api_service",
+              confidence: aiSuggestion.confidence,
+              rootCause: aiSuggestion.rootCause,
+              resolutionSteps: aiSuggestion.resolutionSteps,
+              codeExample: aiSuggestion.codeExample,
+              preventionMeasures: aiSuggestion.preventionMeasures,
+              reasoning: `AI-powered analysis of error content and context`,
+              relatedPatterns: [error.errorType, error.severity].filter(Boolean),
+              estimatedResolutionTime: "30-60 minutes",
+              priority: "normal",
+            };
+            source = "api_service";
+            console.log(
+              `✅ AI suggestion generated with confidence: ${aiSuggestion.confidence}`
+            );
+          }
+        } catch (aiError: any) {
+          console.warn("⚠️ AI service failed:", aiError?.message || "Unknown error");
+        }
+      }
+
+      // THIRD: If both failed, return fallback
+      if (!suggestion) {
+        console.log("📋 Using fallback suggestion");
+        suggestion = {
+          source: "fallback",
+          confidence: 0.3,
+          rootCause: "Unable to determine root cause",
+          resolutionSteps: ["Review error logs and context", "Check system resources", "Consult documentation"],
+          preventionMeasures: ["Implement comprehensive logging", "Add monitoring and alerts"],
+          reasoning: "Both trained model and AI service unavailable",
+          relatedPatterns: [error.errorType],
+          estimatedResolutionTime: "1-2 hours",
+          priority: "normal",
+        };
+        source = "fallback";
       }
 
       // Save suggestion to database if confidence is good
@@ -5048,8 +5075,8 @@ Format as JSON with the following structure:
             const kiosks = await storage.getAllKiosks();
             const kiosk = kiosks.find((k: any) => k.kioskNumber === kioskNumber);
 
-            if (store && kiosk) {
-              storeName = store.name.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize for filename
+            if (matchedStore && kiosk) {
+              storeName = matchedStore.name.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize for filename
               kioskName = kiosk.name.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize for filename
 
               // Create standardized filename: StoreName_KioskName_OriginalFilename
@@ -6092,6 +6119,92 @@ Format as JSON with the following structure:
     } catch (error) {
       console.error("Error fetching analysis history:", error);
       res.status(500).json({ error: "Failed to fetch analysis history" });
+    }
+  });
+
+  // Get processing analyses endpoint - for displaying in-progress analyses
+  app.get("/api/analysis/processing", requireAuth, async (req: any, res: any) => {
+    try {
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+
+      const allAnalyses = await storage.getAnalysisHistoryByUser(req.user.id);
+
+      // Filter to include only processing, pending, or failed analyses
+      const processingAnalyses = allAnalyses.filter(
+        (analysis: any) =>
+          analysis.status === "processing" ||
+          analysis.status === "pending" ||
+          analysis.status === "failed"
+      );
+
+      console.log(`📊 Processing analyses for user: ${processingAnalyses.length} found`);
+
+      // Get corresponding log files to get actual file names
+      const history = await Promise.all(
+        processingAnalyses.map(async (item: any) => {
+          let fileName = "Unknown File";
+          let uploadDate = item.createdAt;
+
+          if (item.filename) {
+            fileName = item.filename;
+            uploadDate = item.uploadTimestamp || item.createdAt;
+          }
+
+          if (item.fileId) {
+            try {
+              const logFile = await storage.getLogFile(item.fileId);
+              if (logFile) {
+                if (!item.filename) {
+                  fileName = logFile.originalName || logFile.filename;
+                  uploadDate = logFile.uploadTimestamp || item.createdAt;
+                }
+              }
+            } catch (error) {
+              console.warn(`Could not fetch log file ${item.fileId}:`, error);
+            }
+          }
+
+          // Handle invalid dates
+          let validUploadDate = uploadDate;
+          try {
+            const dateTest = new Date(uploadDate);
+            if (isNaN(dateTest.getTime()) || dateTest.getFullYear() > 3000) {
+              validUploadDate = new Date().toISOString();
+            }
+          } catch (error) {
+            validUploadDate = new Date().toISOString();
+          }
+
+          return {
+            id: item.id,
+            fileId: item.fileId,
+            filename: fileName,
+            uploadDate: validUploadDate,
+            totalErrors: item.totalErrors || 0,
+            criticalErrors: item.criticalErrors || 0,
+            highErrors: item.highErrors || 0,
+            mediumErrors: item.mediumErrors || 0,
+            lowErrors: item.lowErrors || 0,
+            status: item.status || "processing",
+            progress: item.progress || 0,
+            currentStep: item.currentStep || "Processing...",
+            modelAccuracy: item.modelAccuracy ?
+              (item.modelAccuracy < 1 ? item.modelAccuracy * 100 : item.modelAccuracy) : 0,
+            suggestions: item.suggestions || 0,
+            processingTime: item.processingTime || 0,
+          };
+        })
+      );
+
+      res.json({
+        history,
+        count: processingAnalyses.length,
+      });
+    } catch (error) {
+      console.error("Error fetching processing analyses:", error);
+      res.status(500).json({ error: "Failed to fetch processing analyses" });
     }
   });
 
@@ -10360,6 +10473,28 @@ Format as JSON with the following structure:
 
   // Create HTTP server
   const httpServer = createServer(app);
+
+  // CRITICAL: Wait for RAG initialization before returning, but with timeout
+  // This ensures the RAG knowledge base is populated before server starts
+  // But allows server to continue if RAG initialization takes too long
+  try {
+    console.log('⏳ Waiting for RAG initialization to complete...');
+
+    // Create a timeout promise that resolves after 30 seconds
+    const initPromise = ragSuggestionService.waitForInit();
+    const timeoutPromise = new Promise<void>((resolve) => {
+      setTimeout(() => {
+        console.warn('⚠️ RAG initialization timeout (30s), continuing...');
+        resolve();
+      }, 30000);
+    });
+
+    // Race both promises - whichever completes first
+    await Promise.race([initPromise, timeoutPromise]);
+    console.log('✅ RAG initialization complete');
+  } catch (error) {
+    console.warn('⚠️ RAG initialization error, server will continue:', error);
+  }
 
   return httpServer;
 }

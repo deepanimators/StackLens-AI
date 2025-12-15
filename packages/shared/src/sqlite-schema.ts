@@ -408,6 +408,7 @@ export const apiCredentials = sqliteTable("api_credentials", {
   apiKey: text("api_key"), // Encrypted
   apiSecret: text("api_secret"), // Encrypted (for providers that need it)
   endpoint: text("endpoint"), // Custom endpoint URL if needed
+  priority: integer("priority").notNull().default(100), // Lower = higher priority (default 100). Gemini=10, Groq=20, OpenRouter=30, etc.
   isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
   isGlobal: integer("is_global", { mode: "boolean" }).notNull().default(true),
   userId: integer("user_id").references(() => users.id), // null for global credentials

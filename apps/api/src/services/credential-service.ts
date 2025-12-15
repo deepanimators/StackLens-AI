@@ -5,6 +5,11 @@ import { encrypt, decrypt } from "../utils/encryption";
 
 /**
  * Service for managing API credentials with encrypted storage
+ * 
+ * Priority system:
+ * - Lower priority number = higher priority (will be tried first)
+ * - Default priority: 100
+ * - Recommended: Gemini=10, Groq=20, OpenRouter=30, OpenAI=40, Anthropic=50, etc.
  */
 
 export class CredentialService {
@@ -39,6 +44,7 @@ export class CredentialService {
         apiKey?: string;
         apiSecret?: string;
         endpoint?: string | null;
+        priority?: number;
         isActive: boolean;
     } | null> {
         const conditions = userId
@@ -65,12 +71,14 @@ export class CredentialService {
             apiKey: credential.apiKey ? decrypt(credential.apiKey) : undefined,
             apiSecret: credential.apiSecret ? decrypt(credential.apiSecret) : undefined,
             endpoint: credential.endpoint,
+            priority: credential.priority,
             isActive: credential.isActive,
         };
     }
 
     /**
-     * Get credential by provider (finds first active global credential)
+     * Get credential by provider (finds first active global credential respecting priority)
+     * Returns credential with lowest priority number (highest priority)
      */
     async getCredentialByProvider(provider: string, userId?: number): Promise<{
         id: number;
@@ -79,6 +87,7 @@ export class CredentialService {
         apiKey?: string;
         apiSecret?: string;
         endpoint?: string | null;
+        priority?: number;
         isActive: boolean;
     } | null> {
         const conditions = userId
@@ -97,6 +106,7 @@ export class CredentialService {
             .select()
             .from(apiCredentials)
             .where(conditions)
+            .orderBy(sql`${apiCredentials.priority} ASC`) // Lower priority = higher priority (appears first)
             .limit(1);
 
         if (!credential) {
@@ -113,8 +123,117 @@ export class CredentialService {
             apiKey: credential.apiKey ? decrypt(credential.apiKey) : undefined,
             apiSecret: credential.apiSecret ? decrypt(credential.apiSecret) : undefined,
             endpoint: credential.endpoint,
+            priority: credential.priority,
             isActive: credential.isActive,
         };
+    }
+
+    /**
+     * Get all active credentials for a provider, sorted by priority
+     * Useful for trying multiple providers in order
+     */
+    async getCredentialsByProvider(provider: string, userId?: number): Promise<Array<{
+        id: number;
+        name: string;
+        provider: string;
+        apiKey?: string;
+        apiSecret?: string;
+        endpoint?: string | null;
+        priority?: number;
+        isActive: boolean;
+    }>> {
+        const conditions = userId
+            ? and(
+                eq(apiCredentials.provider, provider),
+                eq(apiCredentials.isActive, true),
+                eq(apiCredentials.userId, userId)
+            )
+            : and(
+                eq(apiCredentials.provider, provider),
+                eq(apiCredentials.isActive, true),
+                eq(apiCredentials.isGlobal, true)
+            );
+
+        const credentials = await db
+            .select()
+            .from(apiCredentials)
+            .where(conditions)
+            .orderBy(sql`${apiCredentials.priority} ASC`); // Sort by priority (lowest first)
+
+        return credentials.map(c => ({
+            id: c.id,
+            name: c.name,
+            provider: c.provider,
+            apiKey: c.apiKey ? decrypt(c.apiKey) : undefined,
+            apiSecret: c.apiSecret ? decrypt(c.apiSecret) : undefined,
+            endpoint: c.endpoint,
+            priority: c.priority,
+            isActive: c.isActive,
+        }));
+    }
+
+    /**
+     * Get the highest priority credential from multiple providers
+     * Tries each provider in the array order, returns first found with highest priority
+     * Useful for: try Gemini first, then Google, then fallback to OpenAI
+     */
+    async getHighestPriorityCredential(providers: string[], userId?: number): Promise<{
+        id: number;
+        name: string;
+        provider: string;
+        apiKey?: string;
+        apiSecret?: string;
+        endpoint?: string | null;
+        priority?: number;
+        isActive: boolean;
+    } | null> {
+        // Try each provider in order
+        for (const provider of providers) {
+            const credential = await this.getCredentialByProvider(provider, userId);
+            if (credential) {
+                console.log(`✅ Found credential for provider: ${provider} (priority: ${credential.priority || 100})`);
+                return credential;
+            }
+        }
+        
+        console.warn(`⚠️ No credentials found for any of: ${providers.join(', ')}`);
+        return null;
+    }
+
+    /**
+     * Get all active credentials sorted by priority
+     * Useful for initializing all providers
+     */
+    async listCredentialsByPriority(userId?: number): Promise<Array<{
+        id: number;
+        name: string;
+        provider: string;
+        apiKey?: string;
+        apiSecret?: string;
+        endpoint?: string | null;
+        priority?: number;
+        isActive: boolean;
+    }>> {
+        const conditions = userId
+            ? eq(apiCredentials.userId, userId)
+            : eq(apiCredentials.isGlobal, true);
+
+        const credentials = await db
+            .select()
+            .from(apiCredentials)
+            .where(conditions)
+            .orderBy(sql`${apiCredentials.priority} ASC`); // Sort by priority
+
+        return credentials.map(c => ({
+            id: c.id,
+            name: c.name,
+            provider: c.provider,
+            apiKey: c.apiKey ? decrypt(c.apiKey) : undefined,
+            apiSecret: c.apiSecret ? decrypt(c.apiSecret) : undefined,
+            endpoint: c.endpoint,
+            priority: c.priority,
+            isActive: c.isActive,
+        }));
     }
 
     /**
@@ -131,6 +250,7 @@ export class CredentialService {
                 name: apiCredentials.name,
                 provider: apiCredentials.provider,
                 endpoint: apiCredentials.endpoint,
+                priority: apiCredentials.priority,
                 isActive: apiCredentials.isActive,
                 isGlobal: apiCredentials.isGlobal,
                 userId: apiCredentials.userId,
@@ -142,7 +262,8 @@ export class CredentialService {
                 updatedAt: apiCredentials.updatedAt,
             })
             .from(apiCredentials)
-            .where(conditions);
+            .where(conditions)
+            .orderBy(sql`${apiCredentials.priority} ASC`);
 
         return credentials;
     }

@@ -1,3 +1,5 @@
+import { credentialService } from "../credential-service.js";
+
 interface AISuggestion {
   rootCause: string;
   resolutionSteps: string[];
@@ -7,20 +9,38 @@ interface AISuggestion {
 }
 
 export class AIService {
-  private apiKey: string;
+  private geminiKey: string | null = null;
 
   constructor() {
-    this.apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || "";
+    // Initialize key from database on creation, but will reload for each request
+    this.initializeKey();
+  }
+
+  private async initializeKey(): Promise<void> {
+    try {
+      const credential = await credentialService.getHighestPriorityCredential(['gemini', 'google']);
+      this.geminiKey = credential?.apiKey || null;
+      
+      if (this.geminiKey) {
+        console.log("✅ AIService initialized with database credential");
+      }
+    } catch (error) {
+      console.error("Error initializing AIService key:", error);
+    }
   }
 
   async generateSuggestion(errorText: string, errorType: string, severity: string): Promise<AISuggestion> {
-    if (!this.apiKey) {
-      return this.getFallbackSuggestion(errorText, errorType, severity);
-    }
-
     try {
+      // Reload key for each request to ensure we have the latest priority
+      await this.initializeKey();
+
+      if (!this.geminiKey) {
+        console.warn("⚠️ No Gemini API key available, using fallback");
+        return this.getFallbackSuggestion(errorText, errorType, severity);
+      }
+
       const prompt = this.buildPrompt(errorText, errorType, severity);
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + this.apiKey, {
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + this.geminiKey, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

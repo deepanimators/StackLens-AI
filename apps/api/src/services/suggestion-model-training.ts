@@ -12,6 +12,7 @@ import fs from "fs";
 import path from "path";
 import * as XLSX from "xlsx";
 import { POS_ERROR_SCENARIOS, EnhancedErrorScenario } from "../data/pos-error-scenarios";
+import { getGeminiKey } from "../utils/get-api-credential.js";
 
 interface SuggestionTrainingData {
   errorDescription: string;
@@ -59,8 +60,28 @@ export class SuggestionModelTrainingService {
   private geminiApiKey: string | null = null;
 
   constructor() {
-    // Try to get Gemini API key from environment
-    this.geminiApiKey = process.env.GEMINI_API_KEY || null;
+    // API key will be loaded asynchronously when needed via getGeminiKey()
+    this.geminiApiKey = null;
+  }
+
+  /**
+   * Initialize Gemini API key from database or environment
+   * This is called asynchronously before using the key
+   */
+  private async initializeGeminiKey(): Promise<void> {
+    if (!this.geminiApiKey) {
+      try {
+        this.geminiApiKey = await getGeminiKey();
+        if (this.geminiApiKey) {
+          console.log("✅ Gemini API key loaded from database credentials");
+        } else {
+          console.warn("⚠️ No Gemini API key found in database or environment");
+        }
+      } catch (error) {
+        console.error("Error loading Gemini API key:", error);
+        this.geminiApiKey = null;
+      }
+    }
   }
 
   /**
@@ -100,6 +121,9 @@ export class SuggestionModelTrainingService {
     try {
       console.log("🔥 Starting Suggestion Model training from Excel data...");
       console.log(`📁 Processing ${excelFilePaths.length} Excel files`);
+
+      // Initialize Gemini API key from database first
+      await this.initializeGeminiKey();
 
       // Step 1: Process all Excel files
       this.trainingData = [];

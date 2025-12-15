@@ -78,25 +78,103 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
         const analysisResponse = await authenticatedRequest('POST', `/api/files/${fileId}/analyze`);
         const analysisData = analysisResponse;
         
-        setFiles(prev => prev.map(f => 
-          f.id === uploadFile.id 
-            ? { 
-                ...f, 
-                status: 'completed', 
-                progress: 100,
-                result: { fileId, errors: analysisData.errors }
+        // If analysis is already completed, we get totalErrors immediately
+        if (analysisData.status === 'completed' && analysisData.totalErrors !== undefined) {
+          setFiles(prev => prev.map(f => 
+            f.id === uploadFile.id 
+              ? { 
+                  ...f, 
+                  status: 'completed', 
+                  progress: 100,
+                  result: { fileId, errors: analysisData.totalErrors }
+                }
+              : f
+          ));
+
+          toast({
+            title: "Success",
+            description: `File analyzed successfully. Found ${analysisData.totalErrors} errors.`,
+          });
+
+          queryClient.invalidateQueries({ queryKey: ['/api/files'] });
+          queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
+          return;
+        }
+
+        // If analysis is in progress, poll the job status
+        if (analysisData.jobId) {
+          const jobId = analysisData.jobId;
+          let completed = false;
+          let attempts = 0;
+          const maxAttempts = 120; // 2 minutes with 1 second intervals
+          let finalTotalErrors = 0;
+
+          while (!completed && attempts < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before polling
+            attempts++;
+
+            try {
+              const jobStatus = await authenticatedRequest('GET', `/api/analysis/job/${jobId}`);
+              
+              if (jobStatus.status === 'completed') {
+                completed = true;
+                // Get the final analysis data from analysis history
+                const analysisHistory = await authenticatedRequest('GET', `/api/analysis/history?fileId=${fileId}`);
+                if (analysisHistory.history && analysisHistory.history.length > 0) {
+                  finalTotalErrors = analysisHistory.history[0].totalErrors || 0;
+                }
+              } else if (jobStatus.progress) {
+                // Update progress while polling
+                setFiles(prev => prev.map(f => 
+                  f.id === uploadFile.id 
+                    ? { ...f, progress: Math.min(50 + (jobStatus.progress / 2), 99) }
+                    : f
+                ));
               }
-            : f
-        ));
+            } catch (pollError) {
+              console.warn('Error polling job status:', pollError);
+              // Continue polling even if one attempt fails
+            }
+          }
 
-        toast({
-          title: "Success",
-          description: `File analyzed successfully. Found ${analysisData.errors} errors.`,
-        });
+          if (completed) {
+            setFiles(prev => prev.map(f => 
+              f.id === uploadFile.id 
+                ? { 
+                    ...f, 
+                    status: 'completed', 
+                    progress: 100,
+                    result: { fileId, errors: finalTotalErrors }
+                  }
+                : f
+            ));
 
-        // Invalidate related queries
-        queryClient.invalidateQueries({ queryKey: ['/api/files'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
+            toast({
+              title: "Success",
+              description: `File analyzed successfully. Found ${finalTotalErrors} errors.`,
+            });
+          } else {
+            // Polling timed out but analysis may still complete in background
+            setFiles(prev => prev.map(f => 
+              f.id === uploadFile.id 
+                ? { 
+                    ...f, 
+                    status: 'completed', 
+                    progress: 100,
+                    result: { fileId, errors: 0 }
+                  }
+                : f
+            ));
+
+            toast({
+              title: "Analysis In Progress",
+              description: "File analysis is still processing. Check analysis history for results.",
+            });
+          }
+
+          queryClient.invalidateQueries({ queryKey: ['/api/files'] });
+          queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
+        }
       } catch (error) {
         setFiles(prev => prev.map(f => 
           f.id === uploadFile.id 

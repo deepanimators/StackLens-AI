@@ -422,20 +422,31 @@ export class EmbeddingService {
       const truncatedText =
         text.length > this.maxLength ? text.substring(0, this.maxLength) : text;
 
-      const response = await fetch(`${this.serviceUrl}/embed`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: truncatedText }),
-      });
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-      if (!response.ok) {
-        throw new Error(`Embedding generation failed: ${response.statusText}`);
+      try {
+        const response = await fetch(`${this.serviceUrl}/embed`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: truncatedText }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeout);
+
+        if (!response.ok) {
+          throw new Error(`Embedding generation failed: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data.embedding;
+      } finally {
+        clearTimeout(timeout);
       }
-
-      const data = await response.json();
-      return data.embedding;
     } catch (error) {
       console.error("❌ Embedding generation failed:", error);
       // Return a random embedding as fallback

@@ -193,12 +193,15 @@ class BackgroundJobProcessor {
           });
           errorLogs.push(errorLog);
 
-          // 🔥 CRITICAL FIX #1: Call error automation to process error (create Jira tickets, etc.)
-          try {
-            await errorAutomation.executeAutomation(error);
-          } catch (automationError) {
-            console.error(`Error automation failed for error ${errorLog.id}:`, automationError);
-          }
+          // 🔥 CRITICAL FIX #1: SKIP automation for file uploads - Jira tickets only for realtime/Error Simulator
+          // File uploads are batch processing, not realtime alerts
+          // Automation will be called from LogWatcher/Error Simulator instead
+          // Disabled per user request: "Jira ticket should not be created [for file uploads] only for realtime page in Error simulator"
+          // try {
+          //   await errorAutomation.executeAutomation(error);
+          // } catch (automationError) {
+          //   console.error(`Error automation failed for error ${errorLog.id}:`, automationError);
+          // }
         }
 
         // Update progress during batch processing
@@ -259,94 +262,19 @@ class BackgroundJobProcessor {
         }));
 
         try {
-          // Update progress
-          await this.updateJobStatus(
-            job.id,
-            "processing",
-            82,
-            `Generating AI suggestions (0/${maxSuggestions})`
-          );
-
-          // Use batch processing for AI suggestions
-          const suggestions = await aiService.generateBatchSuggestions(errorsToProcess);
-
-          // Update progress
+          // Update progress - Skip AI suggestions as the methods don't exist
+          // The aiService doesn't have generateBatchSuggestions or generateErrorSuggestion methods
           await this.updateJobStatus(
             job.id,
             "processing",
             88,
-            `Saving AI suggestions to database`
+            `Skipping AI suggestion generation (not configured)`
           );
 
-          // Bulk update database with all AI suggestions
-          const bulkUpdates = suggestions.map((suggestion, index) => ({
-            id: errorsToProcess[index].id,
-            data: {
-              aiSuggestion: {
-                rootCause: suggestion.rootCause,
-                resolutionSteps: suggestion.resolutionSteps,
-                codeExample: suggestion.codeExample,
-                preventionMeasures: suggestion.preventionMeasures,
-                confidence: suggestion.confidence,
-              },
-            }
-          }));
-
-          // Process updates in batches of 5 to avoid database lock issues
-          const UPDATE_BATCH_SIZE = 5;
-          for (let i = 0; i < bulkUpdates.length; i += UPDATE_BATCH_SIZE) {
-            const batch = bulkUpdates.slice(i, i + UPDATE_BATCH_SIZE);
-
-            // Use Promise.all for parallel database updates within each batch
-            const batchPromises = batch.map(({ id, data }) =>
-              storage.updateErrorLog(id, data)
-            );
-
-            await Promise.all(batchPromises);
-
-            // Update progress
-            const completedUpdates = Math.min(i + UPDATE_BATCH_SIZE, bulkUpdates.length);
-            const progressPercent = 88 + Math.floor((completedUpdates / bulkUpdates.length) * 7);
-            await this.updateJobStatus(
-              job.id,
-              "processing",
-              progressPercent,
-              `Saved AI suggestions (${completedUpdates}/${bulkUpdates.length})`
-            );
-          }
-
-          console.log(`✅ Successfully processed ${maxSuggestions} AI suggestions using batch processing`);
+          console.log(`⏭️ Skipped AI suggestion generation (methods not available)`);
         } catch (aiError) {
-          console.error("❌ Batch AI suggestion error:", aiError);
-          // Fallback to individual processing if batch fails
-          console.log("🔄 Falling back to individual AI processing");
-
-          for (let i = 0; i < maxSuggestions; i++) {
-            const error = errorsToProcess[i];
-            try {
-              const suggestion = await aiService.generateErrorSuggestion(error);
-              await storage.updateErrorLog(error.id, {
-                aiSuggestion: {
-                  rootCause: suggestion.rootCause,
-                  resolutionSteps: suggestion.resolutionSteps,
-                  codeExample: suggestion.codeExample,
-                  preventionMeasures: suggestion.preventionMeasures,
-                  confidence: suggestion.confidence,
-                },
-              });
-            } catch (individualError) {
-              console.error(`❌ Individual AI suggestion error for ${error.id}:`, individualError);
-            }
-
-            // Update progress
-            const suggestionProgress = 80 + Math.floor((i / maxSuggestions) * 15);
-            await this.updateJobStatus(
-              job.id,
-              "processing",
-              suggestionProgress,
-              `Generating AI suggestions (${i + 1}/${maxSuggestions})`
-            );
-          }
+          console.error("❌ AI suggestion processing error:", aiError);
+          // Continue without AI suggestions
         }
       }
 
@@ -425,7 +353,7 @@ class BackgroundJobProcessor {
           "Triggering automatic model retraining after file analysis completion..."
         );
         const { AdvancedTrainingSystem } = await import(
-          "./advanced-training-system"
+          "../training/advanced-training-system"
         );
         const trainingSystem = new AdvancedTrainingSystem();
 

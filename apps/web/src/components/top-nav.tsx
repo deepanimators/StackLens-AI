@@ -84,24 +84,19 @@ export default function TopNav({ className }: TopNavProps) {
     queryFn: async () => {
       try {
         console.log("🔍 Fetching processing analyses...");
-        const data = await authenticatedRequest("GET", "/api/analysis/history");
+        const data = await authenticatedRequest("GET", "/api/analysis/processing");
 
-        console.log(`📊 Analysis history response:`, data);
+        console.log(`📊 Processing analyses response:`, data);
 
-        if (!data) {
-          console.warn(`⚠️ Analysis history request failed: no data received`);
+        if (!data || !data.history) {
+          console.warn(`⚠️ Processing analyses request failed: no data received`);
           return [];
         }
 
-        console.log(`✅ Analysis history data received`);
+        console.log(`✅ Processing analyses data received`);
 
-        const allAnalyses = data.history || data || [];
-        const processingItems = Array.isArray(allAnalyses)
-          ? allAnalyses.filter(
-              (analysis: any) =>
-                analysis.status === "processing" ||
-                analysis.status === "pending"
-            )
+        const processingItems = Array.isArray(data.history)
+          ? data.history
           : [];
 
         console.log(`📈 Found ${processingItems.length} processing analyses`);

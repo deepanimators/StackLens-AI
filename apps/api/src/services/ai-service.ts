@@ -24,11 +24,11 @@ export class AIService {
     if (this.initialized) return;
 
     try {
-      // Try to load credentials from database first
+      // Try to load credentials from database first (with priority ordering)
       const credentials = await this.loadCredentialsFromDatabase();
 
       if (credentials.length > 0) {
-        console.log('🔐 Loading AI credentials from database...');
+        console.log(`🔐 Loading ${credentials.length} AI credentials from database (by priority)...`);
         await this.initializeFromDatabase(credentials);
       } else {
         console.log('⚠️  No database credentials found, falling back to environment variables...');
@@ -46,8 +46,8 @@ export class AIService {
 
   private async loadCredentialsFromDatabase() {
     try {
-      // Load all global active credentials
-      const credentials = await credentialService.listCredentials();
+      // Load all global active credentials sorted by priority
+      const credentials = await credentialService.listCredentialsByPriority();
       return credentials.filter(c => c.isActive);
     } catch (error) {
       console.error('Error loading credentials from database:', error);
@@ -56,51 +56,67 @@ export class AIService {
   }
 
   private async initializeFromDatabase(credentials: any[]) {
-    const providers = [
-      'gemini', 'google', 'openai', 'anthropic', 'openrouter',
-      'groq', 'grok', 'deepseek', 'together', 'perplexity', 'mistral', 'cohere'
-    ];
+    // Group credentials by provider, maintaining priority order
+    const providerMap = new Map<string, any>();
 
-    for (const providerName of providers) {
+    for (const cred of credentials) {
+      if (!cred?.apiKey) continue;
+
+      // For each provider, keep only the highest priority (lowest number)
+      const provider = cred.provider.toLowerCase();
+      if (!providerMap.has(provider) || (cred.priority < (providerMap.get(provider)?.priority || 999))) {
+        providerMap.set(provider, cred);
+      }
+    }
+
+    // Initialize providers based on credentials
+    for (const [providerName, cred] of providerMap.entries()) {
       try {
-        const cred = await credentialService.getCredentialByProvider(providerName);
-
-        if (!cred?.apiKey) continue;
-
         switch (providerName.toLowerCase()) {
           case 'gemini':
           case 'google':
             this.providers.push(new GeminiProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Gemini) - Priority: ${cred.priority}`);
             break;
           case 'openai':
             this.providers.push(new OpenAIProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (OpenAI) - Priority: ${cred.priority}`);
             break;
           case 'anthropic':
             this.providers.push(new AnthropicProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Anthropic) - Priority: ${cred.priority}`);
             break;
           case 'openrouter':
             this.providers.push(new OpenRouterProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (OpenRouter) - Priority: ${cred.priority}`);
             break;
           case 'groq':
             this.providers.push(new GroqProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Groq) - Priority: ${cred.priority}`);
             break;
           case 'grok':
             this.providers.push(new GrokProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Grok) - Priority: ${cred.priority}`);
             break;
           case 'deepseek':
             this.providers.push(new DeepSeekProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (DeepSeek) - Priority: ${cred.priority}`);
             break;
           case 'together':
             this.providers.push(new TogetherProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Together) - Priority: ${cred.priority}`);
             break;
           case 'perplexity':
             this.providers.push(new PerplexityProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Perplexity) - Priority: ${cred.priority}`);
             break;
           case 'mistral':
             this.providers.push(new MistralProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Mistral) - Priority: ${cred.priority}`);
             break;
           case 'cohere':
             this.providers.push(new CohereProvider(cred.apiKey));
+            console.log(`  ✅ ${cred.name} (Cohere) - Priority: ${cred.priority}`);
             break;
         }
       } catch (error) {

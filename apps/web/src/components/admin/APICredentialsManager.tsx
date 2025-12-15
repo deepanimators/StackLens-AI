@@ -39,6 +39,7 @@ interface APICredential {
   name: string;
   provider: string;
   endpoint?: string | null;
+  priority?: number;
   isActive: boolean;
   isGlobal: boolean;
   userId?: number | null;
@@ -59,6 +60,7 @@ interface CredentialFormData {
   isGlobal: boolean;
   isActive?: boolean;
   rateLimit?: number;
+  priority?: number;
 }
 
 const PROVIDERS = [
@@ -151,6 +153,7 @@ export function APICredentialsManager() {
     endpoint: "",
     isGlobal: true,
     rateLimit: undefined,
+    priority: 100,
   });
 
   // Fetch credentials
@@ -238,6 +241,7 @@ export function APICredentialsManager() {
       endpoint: "",
       isGlobal: true,
       rateLimit: undefined,
+      priority: 100,
     });
     setShowApiKey(false);
   };
@@ -257,6 +261,7 @@ export function APICredentialsManager() {
       endpoint: credential.endpoint || "",
       isGlobal: credential.isGlobal,
       rateLimit: credential.rateLimit || undefined,
+      priority: credential.priority || 100,
     });
     setIsEditDialogOpen(true);
   };
@@ -273,6 +278,7 @@ export function APICredentialsManager() {
     if (formData.apiSecret) updateData.apiSecret = formData.apiSecret;
     if (formData.endpoint !== selectedCredential.endpoint) updateData.endpoint = formData.endpoint;
     if (formData.rateLimit !== selectedCredential.rateLimit) updateData.rateLimit = formData.rateLimit;
+    if (formData.priority !== selectedCredential.priority) updateData.priority = formData.priority;
 
     updateMutation.mutate({ id: selectedCredential.id, data: updateData });
   };
@@ -405,6 +411,25 @@ export function APICredentialsManager() {
                   </div>
 
                   <div className="space-y-2">
+                    <Label htmlFor="priority">Priority (Lower = Higher Priority)</Label>
+                    <Input
+                      id="priority"
+                      type="number"
+                      placeholder="100"
+                      value={formData.priority || 100}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          priority: e.target.value ? parseInt(e.target.value) : 100,
+                        })
+                      }
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Gemini=10, Groq=20, OpenRouter=30, OpenAI=40, Anthropic=50. Lower numbers have higher priority.
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
                     <Label htmlFor="rateLimit">Monthly Rate Limit (Optional)</Label>
                     <Input
                       id="rateLimit"
@@ -454,6 +479,7 @@ export function APICredentialsManager() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Provider</TableHead>
+                  <TableHead>Priority</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Monthly Usage</TableHead>
                   <TableHead>Last Used</TableHead>
@@ -466,6 +492,9 @@ export function APICredentialsManager() {
                     <TableCell className="font-medium">{credential.name}</TableCell>
                     <TableCell>
                       <Badge variant="outline">{credential.provider}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm font-medium text-blue-600">{credential.priority || 100}</span>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
@@ -586,6 +615,25 @@ export function APICredentialsManager() {
                 value={formData.endpoint}
                 onChange={(e) => setFormData({ ...formData, endpoint: e.target.value })}
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="edit-priority">Priority (Lower = Higher Priority)</Label>
+              <Input
+                id="edit-priority"
+                type="number"
+                placeholder="100"
+                value={formData.priority || 100}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    priority: e.target.value ? parseInt(e.target.value) : 100,
+                  })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                Gemini=10, Groq=20, OpenRouter=30, OpenAI=40, Anthropic=50
+              </p>
             </div>
 
             <div className="space-y-2">
