@@ -47,32 +47,39 @@ export class CredentialService {
         priority?: number;
         isActive: boolean;
     } | null> {
-        const conditions = userId
-            ? and(eq(apiCredentials.name, name), eq(apiCredentials.userId, userId))
-            : eq(apiCredentials.name, name);
+        try {
+            const conditions = userId
+                ? and(eq(apiCredentials.name, name), eq(apiCredentials.userId, userId))
+                : eq(apiCredentials.name, name);
 
-        const [credential] = await db
-            .select()
-            .from(apiCredentials)
-            .where(conditions)
-            .limit(1);
+            const [credential] = await db
+                .select()
+                .from(apiCredentials)
+                .where(conditions)
+                .limit(1);
 
-        if (!credential || !credential.isActive) {
+            if (!credential || !credential.isActive) {
+                return null;
+            }
+
+            // Update usage tracking
+            await this.recordUsage(credential.id);
+
+            return {
+                id: credential.id,
+                name: credential.name,
+                provider: credential.provider,
+                apiKey: credential.apiKey ? decrypt(credential.apiKey) : undefined,
+                apiSecret: credential.apiSecret ? decrypt(credential.apiSecret) : undefined,
+                endpoint: credential.endpoint,
+                priority: credential.priority,
+                isActive: credential.isActive,
+            };
+        } catch (error: any) {
+            // Handle table not existing or other database errors gracefully
+            console.warn(`Warning: Could not fetch credential by name from database: ${error.message}`);
             return null;
         }
-
-        // Update usage tracking
-        await this.recordUsage(credential.id);
-
-        return {
-            id: credential.id,
-            name: credential.name,
-            provider: credential.provider,
-            apiKey: credential.apiKey ? decrypt(credential.apiKey) : undefined,
-            apiSecret: credential.apiSecret ? decrypt(credential.apiSecret) : undefined,
-            endpoint: credential.endpoint,
-            priority: credential.priority,
-            isActive: credential.isActive,
         };
     }
 
@@ -91,33 +98,34 @@ export class CredentialService {
         priority?: number;
         isActive: boolean;
     } | null> {
-        const conditions = userId
-            ? and(
-                eq(apiCredentials.provider, provider),
-                eq(apiCredentials.isActive, true),
-                eq(apiCredentials.userId, userId)
-            )
-            : and(
-                eq(apiCredentials.provider, provider),
-                eq(apiCredentials.isActive, true),
-                eq(apiCredentials.isGlobal, true)
-            );
+        try {
+            const conditions = userId
+                ? and(
+                    eq(apiCredentials.provider, provider),
+                    eq(apiCredentials.isActive, true),
+                    eq(apiCredentials.userId, userId)
+                )
+                : and(
+                    eq(apiCredentials.provider, provider),
+                    eq(apiCredentials.isActive, true),
+                    eq(apiCredentials.isGlobal, true)
+                );
 
-        // Get all credentials for this provider without priority ordering
-        // (to avoid issues if priority column doesn't exist)
-        const credentials = await db
-            .select()
-            .from(apiCredentials)
-            .where(conditions)
-            .limit(10); // Get up to 10, then sort in memory
+            // Get all credentials for this provider without priority ordering
+            // (to avoid issues if priority column doesn't exist)
+            const credentials = await db
+                .select()
+                .from(apiCredentials)
+                .where(conditions)
+                .limit(10); // Get up to 10, then sort in memory
 
-        if (!credentials || credentials.length === 0) {
-            return null;
-        }
+            if (!credentials || credentials.length === 0) {
+                return null;
+            }
 
-        // Sort by priority in memory (default 100 if priority is null/undefined)
-        credentials.sort((a: any, b: any) => {
-            const aPriority = a.priority ?? 100;
+            // Sort by priority in memory (default 100 if priority is null/undefined)
+            credentials.sort((a: any, b: any) => {
+                const aPriority = a.priority ?? 100;
             const bPriority = b.priority ?? 100;
             return aPriority - bPriority;
         });
@@ -137,6 +145,12 @@ export class CredentialService {
             priority: credential.priority ?? 100,
             isActive: credential.isActive,
         };
+        } catch (error: any) {
+            // Handle table not existing or other database errors gracefully
+            console.warn(`Warning: Could not fetch credential from database: ${error.message}`);
+            console.warn(`Falling back to environment variables for ${provider} provider`);
+            return null;
+        }
     }    /**
      * Get all active credentials for a provider, sorted by priority
      * Useful for trying multiple providers in order
