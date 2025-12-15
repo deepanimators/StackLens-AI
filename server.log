@@ -2,9 +2,7 @@
 > stacklens-ai-platform@1.0.0 dev:server
 > cross-env NODE_ENV=development node --import tsx --no-warnings apps/api/src/index.ts
 
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
-[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
 [JiraIntegrationService] Configuration check:
           - JIRA_HOST: not set
           - JIRA_DOMAIN: set
@@ -14,9 +12,11 @@
           - JIRA_API_TOKEN: set (hidden)
           - Resolved host: https://stacklens.atlassian.net
           - Configured: true
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
 🚀 RAG: Vector database initialized
 🔄 RAG: Starting knowledge base population...
-{"level":"WARN","timestamp":"2025-12-15T18:22:15.836Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
+{"level":"WARN","timestamp":"2025-12-15T19:01:45.777Z","logger":"kafkajs","message":"KafkaJS v2.0.0 switched default partitioner. To retain the same partitioning behavior as in previous versions, create the producer with the option \"createPartitioner: Partitioners.LegacyPartitioner\". See the migration guide at https://kafka.js.org/docs/migration-guide-v2.0.0#producer-new-default-partitioner for details. Silence this warning by setting the environment variable \"KAFKAJS_NO_PARTITIONER_WARNING=1\""}
 Setting up SQLite database...
 ✅ SQLite database initialized successfully
 🔄 Starting server initialization...
@@ -42,53 +42,32 @@ Starting LogWatcher service for real-time monitoring...
 🚀 Starting Python vector database service...
 ⚠️ Enhanced vector service not found, using fallback similarity search
 ✅ Vector database service initialized
+Re-optimizing dependencies because vite config has changed
 ✅ Vite setup complete
 🌱 Seeding SQLite database...
 ℹ️ Database already seeded. Skipping seed process.
-11:52:18 PM [express] serving on 0.0.0.0:4000
+12:31:50 AM [express] serving on 0.0.0.0:4000
+📊 Generating metrics for window 1min. Events: 0, Total Events: 0
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
 📊 Generating metrics for window 1min. Events: 1, Total Events: 1
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:52:20 PM [express] POST /api/analytics/events 201 in 8ms :: {"success":true,"message":"Event recor…
+12:31:52 AM [express] POST /api/analytics/events 201 in 8ms :: {"success":true,"message":"Event recor…
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:52:20 PM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+12:31:52 AM [express] POST /api/analytics/events 201 in 5ms :: {"success":true,"message":"Event recor…
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Generating metrics for window 1min. Events: 2, Total Events: 2
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:52:35 PM [express] GET /api/auth/me 200 in 15ms :: {"user":{"id":1,"username":"deepanimators","ema…
-Error fetching gemini credential: SqliteError: no such column: "name" - should this be a string literal in single-quotes?
-    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
-    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
-    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
-    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
-    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
-    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
-    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
-  code: 'SQLITE_ERROR'
-}
-Error fetching google credential: SqliteError: no such column: "name" - should this be a string literal in single-quotes?
-    at Database.prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)
-    at BetterSQLiteSession.prepareQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/better-sqlite3/session.ts:50:28)
-    at BetterSQLiteSession.prepareOneTimeQuery (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/session.ts:135:15)
-    at SQLiteSelectBase._prepare (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:865:85)
-    at SQLiteSelectBase.all (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:884:15)
-    at SQLiteSelectBase.execute (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/sqlite-core/query-builders/select.ts:896:15)
-    at SQLiteSelectBase.then (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/node_modules/src/query-promise.ts:31:15)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
-  code: 'SQLITE_ERROR'
-}
-11:52:35 PM [express] GET /api/admin/api-settings 304 in 58ms :: {"geminiApiKey":"","webhookUrl":"","…
-11:52:35 PM [express] GET /api/admin/ui-settings 304 in 10ms :: {"theme":"light","denseMode":true,"au…
-📊 Generating metrics for window 1min. Events: 2, Total Events: 2
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Processing analyses for user: 0 found
-11:52:35 PM [express] GET /api/analysis/processing 200 in 19ms :: {"history":[],"count":0}
+12:32:01 AM [express] GET /api/auth/me 200 in 83ms :: {"user":{"id":1,"username":"deepanimators","ema…
+❌ No gemini credential found in database or environment
+❌ No google credential found in database or environment
+12:32:02 AM [express] GET /api/admin/api-settings 200 in 407ms :: {"geminiApiKey":"","webhookUrl":"",…
+12:32:02 AM [express] GET /api/admin/ui-settings 200 in 56ms :: {"theme":"light","denseMode":true,"au…
+📊 Processing analyses for user: 2 found
+12:32:02 AM [express] GET /api/analysis/processing 200 in 55ms :: {"history":[{"id":111,"fileId":120,…
 📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-11:52:36 PM [express] GET /api/analysis/history 200 in 23ms :: {"history":[{"id":109,"fileId":118,"fi…
-🔍 [DEBUG] Dashboard - Resolution Rate: 130 resolved out of 152473 total = 0.1%
-🔍 [DEBUG] Total analysis history records: 95
+12:32:03 AM [express] GET /api/analysis/history 200 in 307ms :: {"history":[{"id":113,"fileId":122,"f…
+🔍 [DEBUG] Dashboard - Resolution Rate: 130 resolved out of 154679 total = 0.1%
+🔍 [DEBUG] Total analysis history records: 99
 🔍 [DEBUG] Sample record fields: [
   'id',              'fileId',
   'userId',          'filename',
@@ -105,67 +84,1866 @@ Error fetching google credential: SqliteError: no such column: "name" - should t
   'currentStep'
 ]
 🔍 [DEBUG] Sample modelAccuracy: 0
-🔍 [DEBUG] Completed analyses with modelAccuracy: 94
-11:52:40 PM [express] GET /api/dashboard/stats 200 in 4441ms :: {"totalFiles":97,"totalErrors":152473…
+🔍 [DEBUG] Completed analyses with modelAccuracy: 96
+12:32:12 AM [express] GET /api/dashboard/stats 200 in 9301ms :: {"totalFiles":101,"totalErrors":15467…
 Skipping body parsing for: /api/files
-11:52:40 PM [express] GET /api/files 200 in 14ms :: {"files":[{"id":118,"filename":"files-17629355510…
-11:52:40 PM [express] GET /api/version 304 in 8ms :: {"version":"0.9.6","releaseDate":"2025-11-29","c…
-11:52:41 PM [express] GET /api/errors 200 in 729ms :: {"errors":[{"id":155437,"fileId":118,"storeNumb…
+12:32:12 AM [express] GET /api/files 200 in 88ms :: {"files":[{"id":121,"filename":"Carrols_Kiosk_2__…
+12:32:14 AM [express] GET /api/errors 200 in 1931ms :: {"errors":[{"id":156987,"fileId":122,"storeNum…
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-11:52:41 PM [express] GET /api/version 200 in 8ms :: {"version":"0.9.6","releaseDate":"2025-11-29","c…
-11:52:41 PM [express] GET /api/stores 200 in 15ms :: [{"id":3,"storeNumber":"BK-10","name":"BKC","loc…
-11:52:41 PM [express] GET /api/kiosks 200 in 7ms :: [{"id":24,"kioskNumber":"BK-14959-K1","storeId":1…
+📊 Processing analyses for user: 2 found
+12:32:14 AM [express] GET /api/analysis/processing 200 in 26ms :: {"history":[{"id":111,"fileId":120,…
+12:32:14 AM [express] GET /api/version 200 in 13ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 1 }
+12:32:17 AM [express] GET /api/analysis/history 200 in 362ms :: {"history":[{"id":113,"fileId":122,"f…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: 119, userId: 1 }
+📁 Filtered by fileId 119: 0 analyses
+12:32:18 AM [express] GET /api/analysis/history 200 in 30ms :: {"history":[],"pagination":{"page":1,"…
+12:32:18 AM [express] GET /api/version 200 in 150ms :: {"version":"0.9.6","releaseDate":"2025-11-29",…
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-⚠️ RAG initialization timeout (30s), continuing...
+⚠️ RAG initialization timeout (30000ms), continuing...
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Processing analyses for user: 0 found
-11:52:51 PM [express] GET /api/analysis/processing 200 in 10ms :: {"history":[],"count":0}
-📊 Generating metrics for window 1min. Events: 2, Total Events: 2
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Generating metrics for window 1min. Events: 2, Total Events: 2
-🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Processing analyses for user: 0 found
-11:53:01 PM [express] GET /api/analysis/processing 200 in 7ms :: {"history":[],"count":0}
+📊 Processing analyses for user: 2 found
+12:32:26 AM [express] GET /api/analysis/processing 200 in 69ms :: {"history":[{"id":111,"fileId":120,…
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
-11:53:11 PM [express] GET /api/analysis/history 200 in 17ms :: {"history":[{"id":109,"fileId":118,"fi…
-📊 Processing analyses for user: 0 found
-11:53:11 PM [express] GET /api/analysis/processing 200 in 2ms :: {"history":[],"count":0}
+12:32:35 AM [express] GET /api/admin/stats 200 in 498ms :: {"totalUsers":13,"activeUsers":1,"totalRol…
+12:32:35 AM [express] GET /api/admin/users 200 in 67ms :: [{"id":11,"username":"Rajasbc@gmail.com","e…
+12:32:35 AM [express] GET /api/admin/roles 200 in 3ms :: [{"id":1,"name":"admin","description":"Admin…
+12:32:35 AM [express] GET /api/admin/training-modules 200 in 31ms :: [{"id":6,"title":"AI Error Resol…
+12:32:35 AM [express] GET /api/version 200 in 316ms :: {"version":"0.9.6","releaseDate":"2025-11-29",…
+12:32:35 AM [express] GET /api/admin/models 200 in 5ms :: [{"id":23,"name":"StackLens Error Suggestio…
+12:32:36 AM [express] GET /api/jira/status 200 in 92ms :: {"success":true,"data":{"configured":true,"…
+12:32:36 AM [express] GET /api/automation/status 200 in 30ms :: {"success":true,"data":{"enabled":tru…
+12:32:36 AM [express] GET /api/watcher/status 200 in 8ms :: {"success":true,"data":{"isWatching":true…
+🔐 Listing credentials...
+✅ Found 0 credentials
+12:32:37 AM [express] GET /api/admin/credentials 200 in 10ms :: []
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔐 Creating credential: { name: 'Gemini', provider: 'gemini' }
+✅ Credential created successfully: 1
+12:32:42 AM [express] POST /api/admin/credentials 201 in 133ms :: {"id":1,"name":"Gemini","provider":…
+🔐 Listing credentials...
+✅ Found 1 credentials
+12:32:42 AM [express] GET /api/admin/credentials 200 in 4ms :: [{"id":1,"name":"Gemini","provider":"g…
+📊 Processing analyses for user: 2 found
+12:32:44 AM [express] GET /api/analysis/processing 200 in 9ms :: {"history":[{"id":111,"fileId":120,"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
 🧹 Cleaned up old events. Current count: 2
 🧹 Cleaned up old events. Current count: 2
 📊 Generating metrics for window 1min. Events: 2, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:32:54 AM [express] GET /api/analysis/processing 200 in 27ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
 📊 Generating metrics for window 1min. Events: 0, Total Events: 2
 🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
-📊 Processing analyses for user: 0 found
-11:53:21 PM [express] GET /api/analysis/processing 200 in 8ms :: {"history":[],"count":0}
+🔐 Creating credential: { name: 'Groq', provider: 'groq' }
+✅ Credential created successfully: 2
+12:33:00 AM [express] POST /api/admin/credentials 201 in 99ms :: {"id":2,"name":"Groq","provider":"gr…
+🔐 Listing credentials...
+✅ Found 2 credentials
+12:33:00 AM [express] GET /api/admin/credentials 200 in 73ms :: [{"id":2,"name":"Groq","provider":"gr…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:33:04 AM [express] GET /api/analysis/history 200 in 28ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:33:04 AM [express] GET /api/analysis/processing 200 in 4ms :: {"history":[{"id":111,"fileId":120,"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔐 Creating credential: { name: 'OpenRouter', provider: 'openrouter' }
+✅ Credential created successfully: 3
+12:33:12 AM [express] POST /api/admin/credentials 201 in 5ms :: {"id":3,"name":"OpenRouter","provider…
+🔐 Listing credentials...
+✅ Found 3 credentials
+12:33:12 AM [express] GET /api/admin/credentials 200 in 5ms :: [{"id":3,"name":"OpenRouter","provider…
+📊 Processing analyses for user: 2 found
+12:33:14 AM [express] GET /api/analysis/processing 200 in 15ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:33:24 AM [express] GET /api/analysis/processing 200 in 7ms :: {"history":[{"id":111,"fileId":120,"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:33:34 AM [express] GET /api/analysis/history 200 in 42ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:33:34 AM [express] GET /api/analysis/processing 200 in 8ms :: {"history":[{"id":111,"fileId":120,"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:33:44 AM [express] GET /api/analysis/processing 200 in 54ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 2
+🧹 Cleaned up old events. Current count: 2
+📊 Processing analyses for user: 2 found
+12:33:54 AM [express] GET /api/analysis/processing 200 in 16ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+🔐 Creating credential: { name: 'Together API', provider: 'together' }
+✅ Credential created successfully: 4
+12:33:56 AM [express] POST /api/admin/credentials 201 in 16ms :: {"id":4,"name":"Together API","provi…
+🔐 Listing credentials...
+✅ Found 4 credentials
+12:33:56 AM [express] GET /api/admin/credentials 200 in 6ms :: [{"id":3,"name":"OpenRouter","provider…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:34:04 AM [express] GET /api/analysis/history 200 in 20ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:34:04 AM [express] GET /api/analysis/processing 200 in 3ms :: {"history":[{"id":111,"fileId":120,"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+12:34:11 AM [express] GET /api/auth/me 200 in 16ms :: {"user":{"id":1,"username":"deepanimators","ema…
+12:34:11 AM [express] GET /api/admin/ui-settings 200 in 4ms :: {"theme":"light","denseMode":true,"aut…
+✅ Using gemini credential from database
+12:34:11 AM [express] GET /api/admin/api-settings 200 in 30ms :: {"geminiApiKey":"","webhookUrl":"","…
+📊 Processing analyses for user: 2 found
+12:34:11 AM [express] GET /api/analysis/processing 200 in 28ms :: {"history":[{"id":111,"fileId":120,…
+12:34:11 AM [express] GET /api/admin/stats 200 in 29ms :: {"totalUsers":13,"activeUsers":1,"totalRole…
+12:34:11 AM [express] GET /api/admin/users 200 in 8ms :: [{"id":11,"username":"Rajasbc@gmail.com","em…
+12:34:11 AM [express] GET /api/admin/roles 200 in 3ms :: [{"id":1,"name":"admin","description":"Admin…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:34:11 AM [express] GET /api/analysis/history 200 in 22ms :: {"history":[{"id":113,"fileId":122,"fi…
+12:34:11 AM [express] GET /api/admin/training-modules 200 in 3ms :: [{"id":6,"title":"AI Error Resolu…
+12:34:11 AM [express] GET /api/version 200 in 5ms :: {"version":"0.9.6","releaseDate":"2025-11-29","c…
+12:34:11 AM [express] GET /api/admin/models 200 in 6ms :: [{"id":23,"name":"StackLens Error Suggestio…
+🔐 Listing credentials...
+✅ Found 4 credentials
+12:34:13 AM [express] GET /api/admin/credentials 200 in 3ms :: [{"id":3,"name":"OpenRouter","provider…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 2
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+12:34:17 AM [express] GET /api/version 200 in 18ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+12:34:17 AM [express] GET /api/analytics/metrics 200 in 9ms :: {"success":true,"data":{"window":"1min…
+12:34:17 AM [express] GET /api/analytics/health-status 200 in 95ms :: {"success":true,"data":{"status…
+12:34:17 AM [express] GET /api/analytics/alerts 200 in 6ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Generating metrics for window 1min. Events: 1, Total Events: 3
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+12:34:17 AM [express] POST /api/analytics/events 201 in 3ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 4
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+12:34:17 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 3, Total Events: 5
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 0
+12:34:20 AM [express] POST /api/analytics/events 201 in 6ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 6
+🔔 Updating alerts. Current active: 0. Latest Metric Error Rate: 25
+12:34:20 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 5, Total Events: 7
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 40
+12:34:20 AM [express] POST /api/analytics/events 201 in 8ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+12:34:20 AM [express] POST /api/analytics/events 201 in 30ms :: {"success":true,"message":"Event reco…
+12:34:21 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:34:21 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🔐 Loading 4 AI credentials from database (by priority)...
+  ✅ OpenRouter (OpenRouter) - Priority: 10
+  ✅ Groq (Groq) - Priority: 20
+  ✅ Together API (Together) - Priority: 30
+  ✅ Gemini (Gemini) - Priority: 100
+🤖 AI Service initialized with 4 providers: openrouter, groq, together, gemini
+🤖 Using openrouter for analytics generation...
+12:34:22 AM [express] GET /api/analytics/health-status 200 in 25ms :: {"success":true,"data":{"status…
+12:34:26 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:34:26 AM [express] GET /api/analysis/processing 200 in 21ms :: {"history":[{"id":111,"fileId":120,…
+12:34:27 AM [express] GET /api/jira/status 200 in 1ms :: {"success":true,"data":{"configured":true,"h…
+12:34:27 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+12:34:31 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+12:34:31 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:34:32 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:34:36 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+✅ openrouter generated analytics insight in 15008ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "barcode scanning"
+  ],
+  "severity": "critical",
+  "pattern": "Repeated errors occur when scanning barcodes, resulting in a high error rate (25%) and impacting transaction processing. The errors are triggered by barcode scans that do not match products in the database.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND",
+    "TRANSACTION_DELAY"
+  ],
+  "rootCause": "The root cause of the issue is a mismatch between the barcode scanner's database and the actual products in the inventory. This is likely due to an outdated or incomplete product catalog in the barcode scanner's database.",
+  "suggestions": [
+    "Update the barcode scanner's database to reflect the latest product catalog",
+    "Implement a real-time inventory sync mechanism to ensure accurate product information",
+    "Train cashiers to handle manual entry procedures for unrecognized barcodes"
+  ],
+  "immediateActions": [
+    "Immediately update the barcode scanner's database with the latest product catalog",
+    "Notify cashiers to manually enter product information for unrecognized barcodes"
+  ],
+  "longTermFixes": [
+    "Implement a robust inventory management system that automatically updates the barcode scanner's database",
+    "Integrate a machine learning-based product recognition system to reduce errors",
+    "Enhance monitoring and logging to detect and alert on similar issues proactively"
+  ],
+  "estimatedImpact": "The issue has a significant impact on transaction processing, resulting in a 25% error rate and potentially causing delays and frustration for customers and staff. The estimated revenue impact is $X per hour of downtime, and the issue also affects data integrity and customer experience.",
+  "affectedComponents": [
+    "Barcode Scanner",
+    "Inventory Management System"
+  ],
+  "relatedLogs": [
+    "Error log entry: Barcode not recognized - no product match in database (2025-12-15T19:04:20.611Z)",
+    "Info log entry: Request completed with status 200 (2025-12-15T19:04:20.723Z)"
+  ],
+  "resolutionTimeEstimate": "15-30 minutes"
+}
+✅ AI analysis received in 15008ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+📊 Processing analyses for user: 2 found
+12:34:36 AM [express] GET /api/analysis/processing 200 in 5ms :: {"history":[{"id":111,"fileId":120,"…
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+12:34:37 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+Created Jira ticket: SCRUM-23
+12:34:38 AM [express] POST /api/analytics/ai-analysis 200 in 16981ms :: {"success":true,"data":{"hasE…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+12:34:41 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:34:41 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:34:42 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+🧹 Cleaned up old events. Current count: 8
+🧹 Cleaned up old events. Current count: 8
+12:34:46 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:34:46 AM [express] GET /api/analysis/history 200 in 29ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:34:47 AM [express] GET /api/analysis/processing 200 in 8ms :: {"history":[{"id":111,"fileId":120,"…
+✅ openrouter generated analytics insight in 15459ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "barcode-scanning"
+  ],
+  "severity": "medium",
+  "pattern": "The error pattern is characterized by repeated occurrences of the 'Barcode not recognized - no product match in database' error, triggered by scan attempts of specific products (INV_002). The error occurs when the barcode scanner fails to match the scanned product with an existing product in the database. The frequency of this error is 2 occurrences in the last 1 minute, with a total of 2 affected transactions.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "The technical root cause of this issue is a discrepancy between the product database and the actual products being scanned. Specifically, the product with the barcode INV_002 is not present in the database, causing the barcode scanner to fail. This issue is further complicated by the fact that the error is not properly handled by the system, leading to a cascade of errors and transaction delays.",
+  "suggestions": [
+    "Verify the product database to ensure that all products are properly listed and their barcodes are correctly associated.",
+    "Implement a more robust error handling mechanism to prevent transaction delays and improve the overall user experience.",
+    "Consider implementing a caching layer to improve the performance of the product database queries."
+  ],
+  "immediateActions": [
+    "Manually add the missing product to the database to prevent further transaction delays.",
+    "Temporarily disable the barcode scanner to prevent further errors and allow for manual entry of products."
+  ],
+  "longTermFixes": [
+    "Implement a data synchronization process to ensure that the product database is always up-to-date and accurate.",
+    "Develop a more comprehensive error handling mechanism that can handle a wider range of error scenarios.",
+    "Conduct regular audits of the product database to prevent similar issues in the future."
+  ],
+  "estimatedImpact": "The estimated impact of this issue is a 10-15% reduction in transaction throughput, resulting in longer wait times for customers and potential revenue loss. Additionally, the issue may lead to data integrity problems if not addressed promptly.",
+  "affectedComponents": [
+    "Barcode Scanner",
+    "Product Database"
+  ],
+  "relatedLogs": [
+    "2025-12-15T19:04:20.611Z - Error: Barcode not recognized - no product match in database",
+    "2025-12-15T19:04:20.611Z - Error: Barcode not recognized - no product match in database"
+  ],
+  "resolutionTimeEstimate": "15-30 minutes"
+}
+✅ AI analysis received in 15459ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+12:34:47 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-24
+12:34:48 AM [express] POST /api/analytics/ai-analysis 200 in 16633ms :: {"success":true,"data":{"hasE…
+12:34:51 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:34:51 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:34:52 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+✅ openrouter generated analytics insight in 12256ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "barcode scanning"
+  ],
+  "severity": "medium",
+  "pattern": "Repeated errors occur when the barcode scanner fails to recognize a product, resulting in manual entry requirements, transaction delays, and potential pricing errors. This pattern is triggered by the `/simulate-error/INV_002` endpoint and affects the `Barcode Scanner` component.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "The root cause appears to be a mismatch between the barcode database and the product inventory, leading to the `Barcode Scanner` component failing to recognize valid barcodes. This issue affects the `pos-backend` service and is likely caused by an outdated or incomplete barcode database.",
+  "suggestions": [
+    "Implement barcode database updates to ensure accuracy and completeness",
+    "Enhance error handling to provide more informative error messages to cashiers",
+    "Develop a manual entry process to minimize transaction delays"
+  ],
+  "immediateActions": [
+    "Clear the barcode scanner cache to prevent repeated errors",
+    "Notify cashiers to manually enter product information until the issue is resolved"
+  ],
+  "longTermFixes": [
+    "Implement a real-time barcode database update mechanism to prevent similar issues",
+    "Develop a more robust error handling system to handle unexpected barcode errors",
+    "Enhance monitoring to detect and alert on barcode scanning issues"
+  ],
+  "estimatedImpact": "Transaction failures: 20-30%, Customer wait time: 30-60 seconds, Staff frustration: moderate",
+  "affectedComponents": [
+    "Barcode Scanner",
+    "pos-backend"
+  ],
+  "relatedLogs": [
+    "Error: Barcode not recognized - no product match in database (src/components/inventory.ts:42:15)",
+    "Request completed with status 200, but with errors (135d2dda-cd9c-4187-b074-fed16a47df87)"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 12256ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+Created Jira ticket: SCRUM-25
+12:34:55 AM [express] POST /api/analytics/ai-analysis 200 in 13659ms :: {"success":true,"data":{"hasE…
+12:34:56 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:34:57 AM [express] GET /api/analysis/processing 200 in 5ms :: {"history":[{"id":111,"fileId":120,"…
+12:34:57 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:35:01 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:35:01 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:35:02 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+12:35:06 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:35:07 AM [express] GET /api/analysis/processing 200 in 4ms :: {"history":[{"id":111,"fileId":120,"…
+12:35:07 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+✅ openrouter generated analytics insight in 16108ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "barcode scanning"
+  ],
+  "severity": "high",
+  "pattern": "Repeated 'Barcode not recognized - no product match in database' errors triggered by simulated error requests to '/api/simulate-error/INV_002' endpoint, resulting in transaction delays and manual entry requirements. Frequency: 2 errors in 1-minute window. Triggers: Barcode scanning attempts on specific scenarios (INV_002).",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "Technical issue with the Barcode Scanner component (src/components/inventory.ts:42:15) and processTransaction function (src/core/transaction.ts:128:10) in the POS-backend service, affecting the inventory management and transaction processing workflow.",
+  "suggestions": [
+    "Review and update the barcode scanning algorithm to improve recognition accuracy and handle edge cases.",
+    "Enhance the inventory management system to include manual override options for cashiers and automated product matching features.",
+    "Implement robust error handling and logging mechanisms to detect and alert on potential issues before they impact the customer experience."
+  ],
+  "immediateActions": [
+    "Restart the POS-backend service to ensure the latest code changes are applied and the system is in a stable state.",
+    "Notify cashiers and staff to be prepared for potential manual entry requirements and provide additional support during peak hours."
+  ],
+  "longTermFixes": [
+    "Architectural fix: Integrate a more robust barcode scanning library or API to improve recognition accuracy and reduce errors.",
+    "Process improvement: Establish a regular review and update process for the inventory management system to ensure product data is up-to-date and accurate.",
+    "Monitoring enhancement: Implement additional logging and monitoring tools to detect potential issues before they impact the customer experience and provide real-time alerts for prompt action."
+  ],
+  "estimatedImpact": "Transaction failure rate: 10-20%. Customer experience impact: Moderate ( delays, manual entry requirements). Business operations impact: Moderate (staff frustration, potential pricing errors).",
+  "affectedComponents": [
+    "Barcode Scanner",
+    "Inventory Management System",
+    "Transaction Processing"
+  ],
+  "relatedLogs": [
+    "Error log entry: 'Barcode not recognized - no product match in database' at 2025-12-15T19:04:20.611Z",
+    "Info log entry: 'Incoming request' for '/api/simulate-error/INV_002' at 2025-12-15T19:04:20.574Z"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 16108ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-26
+12:35:09 AM [express] POST /api/analytics/ai-analysis 200 in 17212ms :: {"success":true,"data":{"hasE…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+12:35:11 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:35:12 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:35:12 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 33.33
+12:35:16 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:35:16 AM [express] GET /api/analysis/history 200 in 17ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:35:17 AM [express] GET /api/analysis/processing 200 in 14ms :: {"history":[{"id":111,"fileId":120,…
+12:35:17 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+✅ openrouter generated analytics insight in 16352ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "barcode_scanner"
+  ],
+  "severity": "medium",
+  "pattern": "Repeated 'Barcode not recognized - no product match in database' errors, triggered by the `/simulate-error/INV_002` endpoint, with a frequency of 2 occurrences in the last 20 system events.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "The root cause is a technical issue with the Barcode Scanner component, specifically in the `src/components/inventory.ts` file at line 42, which is unable to find a product match in the database for the scanned barcode.",
+  "suggestions": [
+    "Verify the product database to ensure it is up-to-date and correctly configured.",
+    "Check the barcode scanner configuration to ensure it is properly integrated with the POS system.",
+    "Review the inventory management process to identify potential bottlenecks or inconsistencies."
+  ],
+  "immediateActions": [
+    "Investigate and resolve the product database issue to prevent further transaction failures.",
+    "Temporarily disable the barcode scanner to prevent repeated errors and allow for manual entry of products."
+  ],
+  "longTermFixes": [
+    "Implement a more robust product matching algorithm to handle edge cases and reduce errors.",
+    "Develop a monitoring system to track inventory discrepancies and alert staff to potential issues.",
+    "Conduct regular audits of the product database to ensure data integrity and consistency."
+  ],
+  "estimatedImpact": "The error pattern has resulted in a 33.33% error rate, with 2 errors occurring in the last 6 requests, potentially leading to delayed transactions, customer frustration, and staff inefficiencies.",
+  "affectedComponents": [
+    "Barcode Scanner",
+    "Inventory Management"
+  ],
+  "relatedLogs": [
+    "Error log entry: 'Barcode not recognized - no product match in database' at 2025-12-15T19:04:20.611Z",
+    "Info log entry: 'Request completed' at 2025-12-15T19:04:20.723Z, showing the request duration and status code."
+  ],
+  "resolutionTimeEstimate": "30-60 minutes to investigate and resolve the product database issue, and an additional 2-4 hours to implement long-term fixes and monitoring enhancements."
+}
+✅ AI analysis received in 16352ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-27
+12:35:19 AM [express] POST /api/analytics/ai-analysis 200 in 17489ms :: {"success":true,"data":{"hasE…
+12:35:21 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:35:22 AM [express] GET /api/analytics/alerts 200 in 11ms :: {"success":true,"data":{"alerts":[],"t…
+12:35:22 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:35:26 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:35:27 AM [express] GET /api/analysis/processing 200 in 6ms :: {"history":[{"id":111,"fileId":120,"…
+12:35:27 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+12:35:31 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:35:32 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+12:35:32 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+✅ openrouter generated analytics insight in 21267ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "barcode scanning"
+  ],
+  "severity": "high",
+  "pattern": "Repeated 'Barcode not recognized - no product match in database' errors occur when attempting to scan barcodes during transactions, resulting in manual entry requirements, transaction delays, and potential pricing errors.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "The root cause is a mismatch between the barcode scanner's database and the inventory management system, specifically affecting the `Barcode Scanner` component (src/components/inventory.ts:42:15) and the `processTransaction` function (src/core/transaction.ts:128:10).",
+  "suggestions": [
+    "Implement barcode scanner database synchronization with the inventory management system to ensure up-to-date product information.",
+    "Integrate automated barcode scanning error handling to minimize manual entry requirements and transaction delays.",
+    "Review and update inventory management system data to reflect accurate product information and prevent pricing errors."
+  ],
+  "immediateActions": [
+    "Temporarily bypass barcode scanning for affected products to prevent transaction delays and potential pricing errors.",
+    "Notify cashiers to manually enter product information for affected items to minimize disruption to customer checkout."
+  ],
+  "longTermFixes": [
+    "Develop a data synchronization mechanism to ensure real-time updates between the barcode scanner database and the inventory management system.",
+    "Implement automated testing for barcode scanning to detect and prevent similar errors in the future.",
+    "Enhance monitoring and logging for the `Barcode Scanner` component to quickly identify and respond to similar issues."
+  ],
+  "estimatedImpact": "The error pattern has resulted in an estimated 20% increase in transaction time, a 10% decrease in customer satisfaction, and a 5% increase in staff frustration. If left unaddressed, the issue may lead to a 2% revenue loss due to pricing errors and a 5% decrease in data integrity.",
+  "affectedComponents": [
+    "Barcode Scanner",
+    "Inventory Management System"
+  ],
+  "relatedLogs": [
+    "2025-12-15T19:04:20.611Z: Error: Barcode not recognized - no product match in database (src/components/inventory.ts:42:15)",
+    "2025-12-15T19:04:20.611Z: Error: Barcode not recognized - no product match in database (src/core/transaction.ts:128:10)"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 21267ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-28
+12:35:34 AM [express] POST /api/analytics/ai-analysis 200 in 22379ms :: {"success":true,"data":{"hasE…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:35:36 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:35:37 AM [express] GET /api/analysis/processing 200 in 10ms :: {"history":[{"id":111,"fileId":120,…
+12:35:37 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:35:41 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+12:35:42 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:35:42 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 8
+🧹 Cleaned up old events. Current count: 8
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:35:47 AM [express] GET /api/analysis/history 200 in 13ms :: {"history":[{"id":113,"fileId":122,"fi…
+12:35:47 AM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:35:47 AM [express] GET /api/analysis/processing 200 in 5ms :: {"history":[{"id":111,"fileId":120,"…
+12:35:47 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:35:52 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:35:52 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:35:52 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:35:57 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:35:57 AM [express] GET /api/analysis/processing 200 in 36ms :: {"history":[{"id":111,"fileId":120,…
+12:35:57 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:36:02 AM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1min…
+12:36:02 AM [express] GET /api/analytics/alerts 200 in 5ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 8
+🧹 Cleaned up old events. Current count: 8
+12:36:47 AM [express] GET /api/auth/me 200 in 126ms :: {"user":{"id":1,"username":"deepanimators","em…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:36:48 AM [express] GET /api/analysis/history 200 in 923ms :: {"history":[{"id":113,"fileId":122,"f…
+📊 Processing analyses for user: 2 found
+12:36:48 AM [express] GET /api/analysis/processing 200 in 15ms :: {"history":[{"id":111,"fileId":120,…
+12:36:48 AM [express] GET /api/analytics/metrics 200 in 15ms :: {"success":true,"data":{"window":"1mi…
+12:36:48 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:36:52 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:36:53 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:36:53 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+📊 Processing analyses for user: 2 found
+12:36:58 AM [express] GET /api/analysis/processing 200 in 160ms :: {"history":[{"id":111,"fileId":120…
+12:36:58 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:36:58 AM [express] GET /api/analytics/health-status 200 in 9ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:37:02 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[],"to…
+12:37:03 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:37:03 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:37:08 AM [express] GET /api/analysis/processing 200 in 79ms :: {"history":[{"id":111,"fileId":120,…
+12:37:08 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:37:08 AM [express] GET /api/analytics/health-status 200 in 36ms :: {"success":true,"data":{"status…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:37:12 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:37:13 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:37:14 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:37:18 AM [express] GET /api/analysis/history 200 in 27ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:37:18 AM [express] GET /api/analysis/processing 200 in 11ms :: {"history":[{"id":111,"fileId":120,…
+12:37:18 AM [express] GET /api/analytics/metrics 200 in 3ms :: {"success":true,"data":{"window":"1min…
+12:37:19 AM [express] GET /api/analytics/health-status 200 in 5ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:37:22 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:37:24 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+12:37:24 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:37:28 AM [express] GET /api/analysis/processing 200 in 8ms :: {"history":[{"id":111,"fileId":120,"…
+12:37:29 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+12:37:29 AM [express] GET /api/analytics/health-status 200 in 7ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:37:32 AM [express] GET /api/analytics/alerts 200 in 4ms :: {"success":true,"data":{"alerts":[],"to…
+12:37:34 AM [express] GET /api/analytics/metrics 200 in 7ms :: {"success":true,"data":{"window":"1min…
+12:37:34 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:37:38 AM [express] GET /api/analysis/processing 200 in 12ms :: {"history":[{"id":111,"fileId":120,…
+12:37:39 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:37:39 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 8
+🧹 Cleaned up old events. Current count: 8
+12:37:49 AM [express] GET /api/auth/me 200 in 692ms :: {"user":{"id":1,"username":"deepanimators","em…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:37:49 AM [express] GET /api/analysis/history 200 in 231ms :: {"history":[{"id":113,"fileId":122,"f…
+12:37:49 AM [express] GET /api/analytics/metrics 200 in 8ms :: {"success":true,"data":{"window":"1min…
+12:37:49 AM [express] GET /api/analytics/health-status 200 in 17ms :: {"success":true,"data":{"status…
+📊 Processing analyses for user: 2 found
+12:37:49 AM [express] GET /api/analysis/processing 200 in 50ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 8
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 1, Total Events: 9
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 0
+12:37:52 AM [express] POST /api/analytics/events 201 in 5ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 10
+🔔 Updating alerts. Current active: 3. Latest Metric Error Rate: 50
+12:37:52 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 3, Total Events: 11
+🔔 Updating alerts. Current active: 5. Latest Metric Error Rate: 66.67
+12:37:52 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 12
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 50
+12:37:52 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+12:37:52 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:37:53 AM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1min…
+12:37:53 AM [express] GET /api/analytics/alerts 200 in 14ms :: {"success":true,"data":{"alerts":[{"id…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:37:54 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 12
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 50
+📊 Generating metrics for window 1min. Events: 4, Total Events: 12
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 50
+12:38:06 AM [express] GET /api/auth/me 200 in 25ms :: {"user":{"id":1,"username":"deepanimators","ema…
+✅ openrouter generated analytics insight in 12593ms
+📊 AI Response: {
+  "errorCategories": [
+    "network",
+    "inventory"
+  ],
+  "severity": "high",
+  "pattern": "Intermittent API rate limit exceeded errors and repeated barcode not recognized errors, triggered by multiple requests within a short period and manual entry attempts, respectively.",
+  "errorTypes": [
+    "RATE_LIMIT_EXCEEDED",
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "API Client component issue, likely due to inadequate rate limiting configuration, and Barcode Scanner component issue, possibly caused by outdated product database or faulty barcode scanning hardware.",
+  "suggestions": [
+    "Review and adjust API rate limiting configuration to accommodate expected request volumes.",
+    "Verify product database integrity and update if necessary to prevent barcode recognition errors.",
+    "Implement retry logic with exponential backoff for API requests to handle temporary rate limit exceedances."
+  ],
+  "immediateActions": [
+    "Increase API rate limit temporarily to mitigate immediate impact on transaction throughput and customer experience.",
+    "Notify cashiers to be prepared for potential barcode recognition errors and have manual entry procedures ready."
+  ],
+  "longTermFixes": [
+    "Implement a queuing system for API requests to handle bursts and prevent rate limit exceedances.",
+    "Schedule regular product database updates to ensure accurate barcode recognition.",
+    "Enhance monitoring to detect API rate limit exceedances and barcode recognition errors, triggering alerts for swift action."
+  ],
+  "estimatedImpact": "Transaction throughput reduced by 30%, customer wait time increased by 25%, potential lost sales estimated at 10% due to intermittent failures and slow responses.",
+  "affectedComponents": [
+    "API Client",
+    "Barcode Scanner"
+  ],
+  "relatedLogs": [
+    "2025-12-15T19:07:52.326Z - API rate limit exceeded error",
+    "2025-12-15T19:04:20.611Z - Barcode not recognized error"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 12593ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-29
+12:38:07 AM [express] POST /api/analytics/ai-analysis 200 in 14012ms :: {"success":true,"data":{"hasE…
+12:38:08 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:38:10 AM [express] GET /api/analysis/processing 200 in 78ms :: {"history":[{"id":111,"fileId":120,…
+12:38:10 AM [express] GET /api/analytics/health-status 200 in 7ms :: {"success":true,"data":{"status"…
+✅ openrouter generated analytics insight in 20002ms
+📊 AI Response: {
+  "errorCategories": [
+    "network",
+    "inventory"
+  ],
+  "severity": "high",
+  "pattern": "Frequent API rate limit exceeded errors and barcode not recognized errors are occurring within a short period. The API rate limit exceeded error occurs when the POS system sends too many requests to the API in a short time frame, resulting in intermittent failures and slow responses. The barcode not recognized error occurs when the barcode scanner fails to recognize a product's barcode, resulting in manual entry being needed, repeated scan attempts, and transaction delays.",
+  "errorTypes": [
+    "RATE_LIMIT_EXCEEDED",
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "The technical root cause of the API rate limit exceeded error is the POS system's API client not implementing rate limiting correctly, causing it to exceed the API's rate limit. The barcode not recognized error is caused by the barcode scanner's inability to recognize certain barcodes, possibly due to a database mismatch or a faulty barcode scanner.",
+  "suggestions": [
+    "Implement rate limiting on the POS system's API client to prevent excessive requests to the API.",
+    "Update the barcode scanner's database to ensure it has the most up-to-date product information.",
+    "Implement a retry mechanism for the barcode scanner to handle cases where the barcode is not recognized initially."
+  ],
+  "immediateActions": [
+    "Temporarily increase the API rate limit to prevent intermittent failures and slow responses.",
+    "Manually update the product information in the barcode scanner's database to ensure accurate recognition."
+  ],
+  "longTermFixes": [
+    "Implement a queuing system to handle API requests and prevent rate limit exceeded errors.",
+    "Develop a more robust barcode recognition system that can handle a wider range of barcodes.",
+    "Monitor API request rates and adjust the rate limiting mechanism as needed."
+  ],
+  "estimatedImpact": "The API rate limit exceeded error has a high impact on system performance, causing intermittent failures and slow responses. The barcode not recognized error has a medium impact on user experience, resulting in manual entry being needed and transaction delays. The estimated time to resolve these issues is 30-60 minutes.",
+  "affectedComponents": [
+    "API Client",
+    "Barcode Scanner"
+  ],
+  "relatedLogs": [
+    "2025-12-15T19:07:52.326Z: Error: API rate limit exceeded - too many requests in short period",
+    "2025-12-15T19:04:20.611Z: Error: Barcode not recognized - no product match in database"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 20002ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+12:38:14 AM [express] GET /api/analytics/metrics 200 in 537ms :: {"success":true,"data":{"window":"1m…
+Created Jira ticket: SCRUM-30
+12:38:14 AM [express] POST /api/analytics/ai-analysis 200 in 21726ms :: {"success":true,"data":{"hasE…
+12:38:14 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[{"id"…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 12
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 50
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+📊 Generating metrics for window 1min. Events: 4, Total Events: 12
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 50
+📊 Generating metrics for window 1min. Events: 4, Total Events: 12
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 50
+12:38:32 AM [express] GET /api/auth/me 200 in 12ms :: {"user":{"id":1,"username":"deepanimators","ema…
+✅ Using gemini credential from database
+12:38:32 AM [express] GET /api/admin/api-settings 200 in 15ms :: {"geminiApiKey":"","webhookUrl":"","…
+12:38:34 AM [express] GET /api/admin/ui-settings 200 in 88ms :: {"theme":"light","denseMode":true,"au…
+📊 Processing analyses for user: 2 found
+12:38:34 AM [express] GET /api/analysis/processing 200 in 458ms :: {"history":[{"id":111,"fileId":120…
+12:38:34 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:38:35 AM [express] GET /api/analysis/history 200 in 158ms :: {"history":[{"id":113,"fileId":122,"f…
+12:38:35 AM [express] GET /api/version 200 in 27ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+12:38:35 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+12:38:35 AM [express] GET /api/analytics/health-status 200 in 8ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 5, Total Events: 13
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 40
+12:38:35 AM [express] POST /api/analytics/events 201 in 33ms :: {"success":true,"message":"Event reco…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 33.33
+12:38:35 AM [express] POST /api/analytics/events 201 in 4ms :: {"success":true,"message":"Event recor…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:38:40 AM [express] GET /api/analytics/metrics 200 in 33ms :: {"success":true,"data":{"window":"1mi…
+12:38:40 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 33.33
+✅ openrouter generated analytics insight in 26027ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "network"
+  ],
+  "severity": "critical",
+  "pattern": "High error rate (50%) with frequent API rate limit exceeded errors and barcode not recognized errors, indicating issues with inventory management and network connectivity. Errors are triggered by repeated scan attempts, manual entry, and transaction delays.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND",
+    "RATE_LIMIT_EXCEEDED"
+  ],
+  "rootCause": "Technical root cause is a combination of factors: (1) misconfigured API rate limiting, (2) outdated inventory data, and (3) issues with the barcode scanner integration. Components affected include the API Client, Barcode Scanner, and Inventory Management services.",
+  "suggestions": [
+    "Review and adjust API rate limiting configurations to prevent excessive requests",
+    "Verify and update inventory data to prevent barcode not recognized errors",
+    "Investigate and resolve issues with the barcode scanner integration"
+  ],
+  "immediateActions": [
+    "Temporarily increase API rate limits to prevent further errors",
+    "Manually update inventory data to resolve immediate issues"
+  ],
+  "longTermFixes": [
+    "Implement a more robust API rate limiting strategy with dynamic adjustments",
+    "Develop a data synchronization process to ensure up-to-date inventory data",
+    "Enhance monitoring and logging to detect and prevent similar issues"
+  ],
+  "estimatedImpact": "The estimated impact is a 20% reduction in transaction throughput, resulting in increased customer wait times and potential lost sales. Additionally, data integrity may be compromised due to manual entry and inventory sync issues.",
+  "affectedComponents": [
+    "API Client",
+    "Barcode Scanner",
+    "Inventory Management"
+  ],
+  "relatedLogs": [
+    "2025-12-15T19:04:20.611Z - Error: Barcode not recognized - no product match in database",
+    "2025-12-15T19:07:52.326Z - Error: API rate limit exceeded - too many requests in short period"
+  ],
+  "resolutionTimeEstimate": "Estimated time to resolve is 30-60 minutes, depending on the complexity of the fixes and the availability of development resources."
+}
+✅ AI analysis received in 26027ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-31
+12:38:42 AM [express] POST /api/analytics/ai-analysis 200 in 27303ms :: {"success":true,"data":{"hasE…
+📊 Processing analyses for user: 2 found
+12:38:45 AM [express] GET /api/analysis/processing 200 in 45ms :: {"history":[{"id":111,"fileId":120,…
+12:38:45 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+12:38:45 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+12:38:45 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 33.33
+🧹 Cleaned up old events. Current count: 14
+🧹 Cleaned up old events. Current count: 14
+12:38:50 AM [express] GET /api/analytics/metrics 200 in 8ms :: {"success":true,"data":{"window":"1min…
+12:38:50 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 6, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 33.33
+📊 Processing analyses for user: 2 found
+12:38:55 AM [express] GET /api/analysis/processing 200 in 46ms :: {"history":[{"id":111,"fileId":120,…
+12:38:55 AM [express] GET /api/analytics/alerts 200 in 10ms :: {"success":true,"data":{"alerts":[],"t…
+12:38:55 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 0
+12:38:55 AM [express] GET /api/analytics/health-status 200 in 21ms :: {"success":true,"data":{"status…
+✅ openrouter generated analytics insight in 23491ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "network"
+  ],
+  "severity": "high",
+  "pattern": "Error rate exceeded acceptable threshold due to API rate limit exceeded and barcode not recognized errors. High frequency of errors in a short period, specifically 2 errors within 3 minutes, indicating a potential system overload or misconfiguration.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND",
+    "RATE_LIMIT_EXCEEDED"
+  ],
+  "rootCause": "The root cause is likely a misconfigured API client or an excessive number of requests being made to the API, resulting in rate limit exceeded errors. Additionally, there may be an issue with the barcode scanner or inventory database, leading to barcode not recognized errors.",
+  "suggestions": [
+    "Review API client configuration to ensure proper rate limiting and request throttling.",
+    "Investigate barcode scanner and inventory database issues, potentially related to software or hardware malfunctions.",
+    "Analyze system logs to determine if there are any other error patterns or correlations that may indicate a broader issue."
+  ],
+  "immediateActions": [
+    "Temporarily increase API rate limits to mitigate transaction failures and reduce customer wait times.",
+    "Provide alternative checkout methods or manual entry options for customers to minimize disruption."
+  ],
+  "longTermFixes": [
+    "Implement a more robust API client with automatic retry and backoff mechanisms to prevent rate limit exceeded errors.",
+    "Upgrade barcode scanner hardware or software to improve accuracy and reduce errors.",
+    "Optimize inventory database queries to reduce latency and improve overall system performance."
+  ],
+  "estimatedImpact": "The estimated impact is a 20% reduction in transaction throughput, resulting in increased customer wait times and potential lost sales. Additionally, there may be data integrity issues due to failed transactions and inventory synchronization errors.",
+  "affectedComponents": [
+    "API Client",
+    "Barcode Scanner",
+    "Inventory Database"
+  ],
+  "relatedLogs": [
+    "Error: API rate limit exceeded - too many requests in short period\n    at API Client (src/components/network.ts:42:15)\n    at processTransaction (src/core/transaction.ts:128:10)",
+    "Error: Barcode not recognized - no product match in database\n    at Barcode Scanner (src/components/inventory.ts:42:15)\n    at processTransaction (src/core/transaction.ts:128:10)"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes to implement immediate actions and short-term fixes, with an additional 2-4 hours to complete long-term fixes and optimization."
+}
+✅ AI analysis received in 23491ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-32
+12:39:00 AM [express] POST /api/analytics/ai-analysis 200 in 24767ms :: {"success":true,"data":{"hasE…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 0
+12:39:00 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+12:39:00 AM [express] GET /api/analytics/health-status 200 in 6ms :: {"success":true,"data":{"status"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:39:05 AM [express] GET /api/analysis/history 200 in 44ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:39:05 AM [express] GET /api/analysis/processing 200 in 11ms :: {"history":[{"id":111,"fileId":120,…
+12:39:05 AM [express] GET /api/analytics/alerts 200 in 14ms :: {"success":true,"data":{"alerts":[],"t…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 0
+12:39:05 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+12:39:05 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 14
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 0
+✅ openrouter generated analytics insight in 25425ms
+📊 AI Response: {
+  "errorCategories": [
+    "inventory",
+    "network"
+  ],
+  "severity": "high",
+  "pattern": "Repeated errors due to barcode not recognized and API rate limit exceeded, resulting in transaction failures and slow response times. These errors occur when the system is under heavy load or when specific scenarios (INV_002 and NET_002) are simulated.",
+  "errorTypes": [
+    "BARCODE_NOT_FOUND",
+    "RATE_LIMIT_EXCEEDED"
+  ],
+  "rootCause": "The technical root cause appears to be a combination of issues with the barcode scanner component and the API client component. The barcode scanner is failing to recognize barcodes, and the API client is exceeding rate limits due to excessive requests in a short period.",
+  "suggestions": [
+    "Implement barcode scanner caching to reduce the number of requests to the inventory database",
+    "Increase the API rate limit or implement rate limiting on the client-side to prevent excessive requests",
+    "Improve error handling for barcode not recognized errors to prevent transaction failures"
+  ],
+  "immediateActions": [
+    "Restart the barcode scanner service to clear any cached errors",
+    "Temporarily increase the API rate limit to prevent further transaction failures"
+  ],
+  "longTermFixes": [
+    "Upgrade the barcode scanner component to a more robust version",
+    "Implement a queuing system for API requests to prevent rate limit exceeded errors",
+    "Enhance monitoring to detect and alert on potential issues before they become critical"
+  ],
+  "estimatedImpact": "The current errors are resulting in a 20% failure rate for transactions, with an estimated revenue impact of $1,000 per hour. The slow response times are also affecting customer experience, with an estimated 10% decrease in customer satisfaction.",
+  "affectedComponents": [
+    "Barcode Scanner",
+    "API Client"
+  ],
+  "relatedLogs": [
+    "2025-12-15T19:04:20.611Z - Error: Barcode not recognized - no product match in database",
+    "2025-12-15T19:07:52.326Z - Error: API rate limit exceeded - too many requests in short period"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 25425ms from openrouter
+Found 1 critical alerts (errors). Triggering Jira ticket creation...
+Jira search failed (possibly invalid JQL), proceeding to create new ticket
+Creating Jira ticket with priority: Highest, labels: ai-generated, stacklens, critical, high-error-rate
+Created Jira ticket: SCRUM-33
+12:39:11 AM [express] POST /api/analytics/ai-analysis 200 in 26650ms :: {"success":true,"data":{"hasE…
+12:39:12 AM [express] GET /api/admin/ui-settings 200 in 12ms :: {"theme":"light","denseMode":true,"au…
+12:39:12 AM [express] GET /api/auth/me 200 in 4ms :: {"user":{"id":1,"username":"deepanimators","emai…
+✅ Using gemini credential from database
+12:39:12 AM [express] GET /api/admin/api-settings 200 in 7ms :: {"geminiApiKey":"","webhookUrl":"","m…
+📊 Processing analyses for user: 2 found
+12:39:13 AM [express] GET /api/analysis/processing 200 in 22ms :: {"history":[{"id":111,"fileId":120,…
+12:39:13 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:39:13 AM [express] GET /api/analytics/metrics 200 in 0ms :: {"success":true,"data":{"window":"1min…
+12:39:13 AM [express] GET /api/version 200 in 26ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+12:39:13 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:39:14 AM [express] GET /api/analysis/history 200 in 38ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Generating metrics for window 1min. Events: 3, Total Events: 15
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 0
+12:39:14 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 16
+🔔 Updating alerts. Current active: 6. Latest Metric Error Rate: 0
+12:39:14 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+12:39:18 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+12:39:19 AM [express] GET /api/analytics/health-status 200 in 4ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:39:24 AM [express] GET /api/analysis/processing 200 in 21ms :: {"history":[{"id":111,"fileId":120,…
+12:39:24 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:39:24 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:39:24 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:39:29 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:39:29 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:39:34 AM [express] GET /api/analysis/processing 200 in 4ms :: {"history":[{"id":111,"fileId":120,"…
+12:39:34 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+12:39:34 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+12:39:34 AM [express] GET /api/analytics/health-status 200 in 9ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:39:39 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+12:39:39 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:39:44 AM [express] GET /api/analysis/history 200 in 58ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:39:44 AM [express] GET /api/analysis/processing 200 in 7ms :: {"history":[{"id":111,"fileId":120,"…
+12:39:44 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:39:44 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+12:39:44 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 16
+🧹 Cleaned up old events. Current count: 16
+12:39:49 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+12:39:49 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Processing analyses for user: 2 found
+12:39:54 AM [express] GET /api/analysis/processing 200 in 14ms :: {"history":[{"id":111,"fileId":120,…
+12:39:54 AM [express] GET /api/analytics/alerts 200 in 0ms :: {"success":true,"data":{"alerts":[],"to…
+12:39:54 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:39:55 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:39:59 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+12:40:00 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:40:04 AM [express] GET /api/analysis/processing 200 in 20ms :: {"history":[{"id":111,"fileId":120,…
+12:40:04 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[],"to…
+12:40:04 AM [express] GET /api/analytics/metrics 200 in 47ms :: {"success":true,"data":{"window":"1mi…
+12:40:05 AM [express] GET /api/analytics/health-status 200 in 4ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:09 AM [express] GET /api/analytics/metrics 200 in 4ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:11 AM [express] GET /api/analytics/health-status 200 in 14ms :: {"success":true,"data":{"status…
+12:40:12 AM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1hou…
+12:40:12 AM [express] GET /api/analytics/alerts 200 in 3ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:40:14 AM [express] GET /api/analysis/history 200 in 29ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:40:14 AM [express] GET /api/analysis/processing 200 in 48ms :: {"history":[{"id":111,"fileId":120,…
+12:40:14 AM [express] GET /api/jira/status 200 in 3ms :: {"success":true,"data":{"configured":true,"h…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:16 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:40:17 AM [express] GET /api/analytics/metrics 200 in 8ms :: {"success":true,"data":{"window":"1hou…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:21 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:40:22 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"5min…
+12:40:22 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[{"id"…
+🤖 Requesting AI analysis from configured provider...
+🤖 Using openrouter for analytics generation...
+📊 Processing analyses for user: 2 found
+12:40:24 AM [express] GET /api/analysis/processing 200 in 21ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:26 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+12:40:27 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"5min…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:31 AM [express] GET /api/analytics/health-status 200 in 10ms :: {"success":true,"data":{"status…
+📊 Processing analyses for user: 2 found
+12:40:34 AM [express] GET /api/analysis/processing 200 in 10ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:37 AM [express] GET /api/analytics/health-status 200 in 4ms :: {"success":true,"data":{"status"…
+✅ openrouter generated analytics insight in 15569ms
+📊 AI Response: {
+  "errorCategories": [
+    "network",
+    "inventory"
+  ],
+  "severity": "high",
+  "pattern": "The system is experiencing intermittent API rate limit errors, resulting in failed transactions and delayed processing. This pattern is triggered by a high volume of requests to the API within a short period, exceeding the rate limit. Additionally, there are issues with barcode recognition, leading to manual entry requirements and potential pricing errors.",
+  "errorTypes": [
+    "RATE_LIMIT_EXCEEDED",
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "The root cause of the API rate limit errors is likely due to the high volume of requests from the POS system, which is not optimized for bulk transactions. The barcode recognition issues are caused by a misconfiguration of the barcode scanner component, leading to incorrect product matches in the database.",
+  "suggestions": [
+    "Implement rate limiting on the POS system to prevent excessive API requests",
+    "Configure the barcode scanner to correctly recognize products and update the database accordingly",
+    "Optimize the API to handle bulk transactions efficiently"
+  ],
+  "immediateActions": [
+    "Reduce the volume of requests to the API by implementing a queuing mechanism to handle transactions in batches",
+    "Temporarily disable the barcode scanner to prevent further errors and manual entry requirements"
+  ],
+  "longTermFixes": [
+    "Architectural redesign of the POS system to handle high-volume transactions efficiently",
+    "Process improvement: Regularly review and optimize API request volume and barcode scanner configuration",
+    "Monitoring enhancement: Implement real-time monitoring of API requests and barcode scanner performance to detect potential issues before they impact the system"
+  ],
+  "estimatedImpact": "The estimated impact on system performance is a 20% reduction in transaction throughput, resulting in delayed processing and potential lost sales. The user experience is affected by slow response times and manual entry requirements. Business operations are impacted by reduced transaction volume and potential inventory discrepancies.",
+  "affectedComponents": [
+    "API Client",
+    "Barcode Scanner"
+  ],
+  "relatedLogs": [
+    "Error: API rate limit exceeded - too many requests in short period (Log entry 8)",
+    "Error: Barcode not recognized - no product match in database (Log entry 5)"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 15569ms from openrouter
+12:40:38 AM [express] POST /api/analytics/ai-analysis 200 in 15608ms :: {"success":true,"data":{"hasE…
+12:40:39 AM [express] GET /api/admin/ui-settings 200 in 8ms :: {"theme":"light","denseMode":true,"aut…
+12:40:39 AM [express] GET /api/auth/me 200 in 2ms :: {"user":{"id":1,"username":"deepanimators","emai…
+✅ Using gemini credential from database
+12:40:39 AM [express] GET /api/admin/api-settings 200 in 65ms :: {"geminiApiKey":"","webhookUrl":"","…
+📊 Processing analyses for user: 2 found
+12:40:40 AM [express] GET /api/analysis/processing 200 in 7ms :: {"history":[{"id":111,"fileId":120,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:40:40 AM [express] GET /api/analysis/history 200 in 33ms :: {"history":[{"id":113,"fileId":122,"fi…
+12:40:40 AM [express] GET /api/version 200 in 10ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+12:40:40 AM [express] GET /api/analytics/metrics 200 in 32ms :: {"success":true,"data":{"window":"1mi…
+12:40:40 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:40:40 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 1, Total Events: 17
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:41 AM [express] POST /api/analytics/events 201 in 2ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:41 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+✅ openrouter generated analytics insight in 28987ms
+📊 AI Response: {
+  "errorCategories": [
+    "network",
+    "inventory"
+  ],
+  "severity": "high",
+  "pattern": "Two distinct error patterns are observed. The first pattern involves the 'API rate limit exceeded' error, which occurs when the system makes too many requests to the API within a short period. This error is triggered by the '/simulate-error/NET_002' endpoint and has a high severity due to its impact on transaction throughput and customer wait time. The second pattern involves the 'Barcode not recognized' error, which occurs when the system is unable to match a scanned barcode with a product in the database. This error is triggered by the '/simulate-error/INV_002' endpoint and has a medium severity due to its impact on inventory management and pricing accuracy.",
+  "errorTypes": [
+    "RATE_LIMIT_EXCEEDED",
+    "BARCODE_NOT_FOUND"
+  ],
+  "rootCause": "The root cause of the 'API rate limit exceeded' error is likely due to the system's inability to handle a high volume of requests within a short period. This could be caused by inefficient API usage, inadequate rate limiting, or inadequate infrastructure scaling. The root cause of the 'Barcode not recognized' error is likely due to a mismatch between the scanned barcode and the product data in the database. This could be caused by incorrect product data, outdated database records, or inadequate barcode scanning configuration.",
+  "suggestions": [
+    "Implement efficient API usage and rate limiting to prevent excessive requests",
+    "Configure adequate infrastructure scaling to handle high volumes of requests",
+    "Verify product data and database records to ensure accuracy and up-to-dateness",
+    "Configure adequate barcode scanning settings to ensure accurate scans"
+  ],
+  "immediateActions": [
+    "Temporarily reduce the number of requests to the API to prevent further rate limit exceeded errors",
+    "Manually verify product data and database records to ensure accuracy and up-to-dateness"
+  ],
+  "longTermFixes": [
+    "Implement a queue-based system to handle API requests and prevent rate limit exceeded errors",
+    "Develop a data validation process to ensure product data and database records are accurate and up-to-date",
+    "Implement monitoring and alerting for API rate limit exceeded errors and barcode scanning issues"
+  ],
+  "estimatedImpact": "The 'API rate limit exceeded' error has a significant impact on transaction throughput and customer wait time, with an estimated 20% reduction in transaction volume. The 'Barcode not recognized' error has a moderate impact on inventory management and pricing accuracy, with an estimated 10% reduction in inventory accuracy.",
+  "affectedComponents": [
+    "API Client",
+    "Barcode Scanner"
+  ],
+  "relatedLogs": [
+    "Log entry 1: API rate limit exceeded error at 2025-12-15T19:07:52.326Z",
+    "Log entry 2: Barcode not recognized error at 2025-12-15T19:04:20.611Z"
+  ],
+  "resolutionTimeEstimate": "30-60 minutes"
+}
+✅ AI analysis received in 28987ms from openrouter
+12:40:41 AM [express] POST /api/analytics/ai-analysis 200 in 29054ms :: {"success":true,"data":{"hasE…
+12:40:45 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+🧹 Cleaned up old events. Current count: 18
+🧹 Cleaned up old events. Current count: 18
+12:40:45 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+📊 Processing analyses for user: 2 found
+12:40:50 AM [express] GET /api/analysis/processing 200 in 43ms :: {"history":[{"id":111,"fileId":120,…
+12:40:50 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:51 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[],"to…
+12:40:51 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+12:40:55 AM [express] GET /api/analytics/metrics 200 in 3ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:40:56 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+📊 Processing analyses for user: 2 found
+12:41:00 AM [express] GET /api/analysis/processing 200 in 20ms :: {"history":[{"id":111,"fileId":120,…
+12:41:00 AM [express] GET /api/analytics/metrics 200 in 9ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:01 AM [express] GET /api/analytics/alerts 200 in 2ms :: {"success":true,"data":{"alerts":[],"to…
+12:41:01 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+12:41:05 AM [express] GET /api/analytics/metrics 200 in 3ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:06 AM [express] GET /api/analytics/health-status 200 in 11ms :: {"success":true,"data":{"status…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:41:10 AM [express] GET /api/analysis/history 200 in 38ms :: {"history":[{"id":113,"fileId":122,"fi…
+📊 Processing analyses for user: 2 found
+12:41:10 AM [express] GET /api/analysis/processing 200 in 49ms :: {"history":[{"id":111,"fileId":120,…
+12:41:10 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:11 AM [express] GET /api/analytics/alerts 200 in 20ms :: {"success":true,"data":{"alerts":[],"t…
+12:41:11 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+12:41:15 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:16 AM [express] GET /api/analytics/health-status 200 in 0ms :: {"success":true,"data":{"status"…
+📊 Processing analyses for user: 2 found
+12:41:21 AM [express] GET /api/analysis/processing 200 in 334ms :: {"history":[{"id":111,"fileId":120…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:21 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:41:21 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:41:21 AM [express] GET /api/analytics/health-status 200 in 5ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:27 AM [express] GET /api/analytics/metrics 200 in 3ms :: {"success":true,"data":{"window":"1min…
+12:41:27 AM [express] GET /api/analytics/health-status 200 in 18ms :: {"success":true,"data":{"status…
+12:41:29 AM [express] GET /api/auth/me 200 in 54ms :: {"user":{"id":1,"username":"deepanimators","ema…
+12:41:30 AM [express] GET /api/admin/ui-settings 200 in 5ms :: {"theme":"light","denseMode":true,"aut…
+✅ Using gemini credential from database
+12:41:30 AM [express] GET /api/admin/api-settings 200 in 167ms :: {"geminiApiKey":"","webhookUrl":"",…
+📊 Processing analyses for user: 2 found
+12:41:31 AM [express] GET /api/analysis/processing 200 in 5ms :: {"history":[{"id":111,"fileId":120,"…
+12:41:31 AM [express] GET /api/version 200 in 30ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+12:41:31 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+12:41:31 AM [express] GET /api/analytics/alerts 200 in 7ms :: {"success":true,"data":{"alerts":[],"to…
+12:41:31 AM [express] GET /api/analytics/health-status 200 in 4ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:41:32 AM [express] GET /api/analysis/history 200 in 388ms :: {"history":[{"id":113,"fileId":122,"f…
+📊 Generating metrics for window 1min. Events: 3, Total Events: 19
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:32 AM [express] POST /api/analytics/events 201 in 21ms :: {"success":true,"message":"Event reco…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 20
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:32 AM [express] POST /api/analytics/events 201 in 3ms :: {"success":true,"message":"Event recor…
+12:41:36 AM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1min…
+12:41:36 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+📊 Processing analyses for user: 2 found
+12:41:41 AM [express] GET /api/analysis/processing 200 in 93ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 20
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:41 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:41:41 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:41:42 AM [express] GET /api/analytics/alerts 200 in 64ms :: {"success":true,"data":{"alerts":[],"t…
+🔧 Checking for stuck processing jobs...
+🧹 Cleaned up old events. Current count: 20
+🧹 Cleaned up old events. Current count: 20
+📊 Generating metrics for window 1min. Events: 2, Total Events: 20
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:41:47 AM [express] GET /api/analytics/metrics 200 in 2ms :: {"success":true,"data":{"window":"1min…
+12:41:47 AM [express] GET /api/analytics/health-status 200 in 4ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 20
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 20
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:42:10 AM [express] GET /api/admin/ui-settings 200 in 104ms :: {"theme":"light","denseMode":true,"a…
+12:42:10 AM [express] GET /api/auth/me 200 in 9ms :: {"user":{"id":1,"username":"deepanimators","emai…
+✅ Using gemini credential from database
+12:42:10 AM [express] GET /api/admin/api-settings 200 in 35ms :: {"geminiApiKey":"","webhookUrl":"","…
+📊 Processing analyses for user: 2 found
+12:42:10 AM [express] GET /api/analysis/processing 200 in 8ms :: {"history":[{"id":111,"fileId":120,"…
+12:42:10 AM [express] GET /api/version 200 in 6ms :: {"version":"0.9.6","releaseDate":"2025-11-29","c…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:42:10 AM [express] GET /api/analysis/history 200 in 21ms :: {"history":[{"id":113,"fileId":122,"fi…
+12:42:10 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:42:10 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:42:10 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+📊 Generating metrics for window 1min. Events: 3, Total Events: 21
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:42:10 AM [express] POST /api/analytics/events 201 in 23ms :: {"success":true,"message":"Event reco…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:42:10 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 22
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:42:35 AM [express] GET /api/auth/me 200 in 379ms :: {"user":{"id":1,"username":"deepanimators","em…
+12:42:35 AM [express] GET /api/admin/ui-settings 200 in 4ms :: {"theme":"light","denseMode":true,"aut…
+✅ Using gemini credential from database
+12:42:35 AM [express] GET /api/admin/api-settings 200 in 8ms :: {"geminiApiKey":"","webhookUrl":"","m…
+📊 Processing analyses for user: 2 found
+12:42:36 AM [express] GET /api/analysis/processing 200 in 408ms :: {"history":[{"id":111,"fileId":120…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:42:36 AM [express] GET /api/analysis/history 200 in 298ms :: {"history":[{"id":113,"fileId":122,"f…
+12:42:36 AM [express] GET /api/version 200 in 4ms :: {"version":"0.9.6","releaseDate":"2025-11-29","c…
+12:42:36 AM [express] GET /api/analytics/alerts 200 in 23ms :: {"success":true,"data":{"alerts":[],"t…
+12:42:36 AM [express] GET /api/analytics/health-status 200 in 11ms :: {"success":true,"data":{"status…
+12:42:36 AM [express] GET /api/analytics/metrics 200 in 13ms :: {"success":true,"data":{"window":"1mi…
+📊 Generating metrics for window 1min. Events: 3, Total Events: 23
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:42:36 AM [express] POST /api/analytics/events 201 in 0ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 24
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+12:42:36 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 24
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 22
+🧹 Cleaned up old events. Current count: 22
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 4. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:43:01 AM [express] GET /api/auth/me 200 in 59ms :: {"user":{"id":1,"username":"deepanimators","ema…
+12:43:02 AM [express] GET /api/analytics/health-status 200 in 84ms :: {"success":true,"data":{"status…
+12:43:02 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:43:06 AM [express] GET /api/analysis/processing 200 in 9ms :: {"history":[{"id":111,"fileId":120,"…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:43:06 AM [express] GET /api/analysis/history 200 in 23ms :: {"history":[{"id":113,"fileId":122,"fi…
+12:43:06 AM [express] GET /api/analytics/alerts 200 in 5ms :: {"success":true,"data":{"alerts":[],"to…
+12:43:07 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:43:07 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:43:09 AM [express] GET /api/analytics/metrics 200 in 16ms :: {"success":true,"data":{"window":"5mi…
+12:43:09 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:43:12 AM [express] GET /api/analytics/health-status 200 in 8ms :: {"success":true,"data":{"status"…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:43:13 AM [express] GET /api/analytics/metrics 200 in 321ms :: {"success":true,"data":{"window":"1h…
+12:43:14 AM [express] GET /api/analytics/alerts 200 in 64ms :: {"success":true,"data":{"alerts":[],"t…
+📊 Processing analyses for user: 2 found
+12:43:16 AM [express] GET /api/analysis/processing 200 in 5ms :: {"history":[{"id":111,"fileId":120,"…
+12:43:17 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:43:19 AM [express] GET /api/analytics/metrics 200 in 53ms :: {"success":true,"data":{"window":"1ho…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:43:22 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+12:43:25 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"5min…
+📊 Processing analyses for user: 2 found
+12:43:26 AM [express] GET /api/analysis/processing 200 in 20ms :: {"history":[{"id":111,"fileId":120,…
+12:43:27 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+12:43:30 AM [express] GET /api/analytics/alerts 200 in 9ms :: {"success":true,"data":{"alerts":[],"to…
+12:43:30 AM [express] GET /api/analytics/metrics 200 in 317ms :: {"success":true,"data":{"window":"5m…
+12:43:32 AM [express] GET /api/version 200 in 25ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+12:43:32 AM [express] GET /api/kiosks 200 in 24ms :: [{"id":24,"kioskNumber":"BK-14959-K1","storeId":…
+12:43:32 AM [express] GET /api/stores 200 in 43ms :: [{"id":3,"storeNumber":"BK-10","name":"BKC","loc…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
 Skipping body parsing for: /api/files/upload
 Skipping body parsing for: /api/files/upload
-Failed to fetch store/kiosk details for filename standardization: ReferenceError: require is not defined
-    at <anonymous> (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/apps/api/src/routes/main-routes.ts:5087:26)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-11:53:24 PM [express] POST /api/files/upload 200 in 116ms :: {"files":[{"id":119,"filename":"Carrols_…
-Skipping body parsing for: /api/files/119/analyze
-11:53:24 PM [express] POST /api/files/119/analyze 200 in 3ms :: {"message":"Analysis already in progr…
-Failed to fetch store/kiosk details for filename standardization: ReferenceError: require is not defined
-    at <anonymous> (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/apps/api/src/routes/main-routes.ts:5087:26)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-11:53:24 PM [express] POST /api/files/upload 200 in 127ms :: {"files":[{"id":120,"filename":"Carrols_…
-Skipping body parsing for: /api/files/120/analyze
-11:53:24 PM [express] POST /api/files/120/analyze 200 in 9ms :: {"message":"Analysis already in progr…
-Analysis job failed: Error: File not found on disk
-    at BackgroundJobProcessor.processAnalysisJob (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/apps/api/src/processors/background-processor.ts:123:15)
-node:internal/process/promises:394
-    triggerUncaughtException(err, true /* fromPromise */);
-    ^
-
-Error: File not found on disk
-    at BackgroundJobProcessor.processAnalysisJob (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/apps/api/src/processors/background-processor.ts:123:15)
-
-Node.js v22.17.0
+📊 Processing analyses for user: 2 found
+12:43:41 AM [express] GET /api/analysis/processing 200 in 14ms :: {"history":[{"id":111,"fileId":120,…
+12:43:41 AM [express] POST /api/files/upload 200 in 208ms :: {"files":[{"id":123,"filename":"Applegre…
+Skipping body parsing for: /api/files/123/analyze
+12:43:41 AM [express] POST /api/files/123/analyze 200 in 15ms :: {"message":"Analysis already in prog…
+12:43:41 AM [express] POST /api/files/upload 200 in 139ms :: {"files":[{"id":124,"filename":"Applegre…
+📊 File: transactions.log_PLK-2458_SICOM_2.txt
+📊 Total file lines: 7400
+📊 Error patterns loaded: 305
+📊 Parsed errors found: 480
+📊 First error: 2025-05-31/18:00:03.918/PDT  INFO SocketTransport:68:[-exec-1]:[18764019728f3a5de5dcdf82071a5cf0] - Sending GETINSERTNUMBER message on socket: ip=192.168.1.80, port=3000, timeout=180000, message=
+Training ML model with 480 error logs
+ML model trained successfully. Accuracy: 0.923
+🚀 Processing 10 AI suggestions using batch processing
+⏭️ Skipped AI suggestion generation (methods not available)
+Error creating file-based Jira ticket: ReferenceError: analysisData is not defined
+    at BackgroundJobProcessor.processAnalysisJob (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/apps/api/src/processors/background-processor.ts:383:25)
+Triggering automatic model retraining after file analysis completion...
+📊 File: transactions-PLK-14136_Micros.txt
+📊 Total file lines: 2687
+📊 Error patterns loaded: 305
+📊 Parsed errors found: 735
+📊 First error: 2025-06-04/12:59:35.255/EDT ERROR MicrosSimphonyV2PosAdapter:362:[exec-25]:[1280101973bdeaaef55908744aa0e984] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999
+Training ML model with 735 error logs
+ML model trained successfully. Accuracy: 0.920
+🚀 Processing 10 AI suggestions using batch processing
+⏭️ Skipped AI suggestion generation (methods not available)
+Error creating file-based Jira ticket: ReferenceError: analysisData is not defined
+    at BackgroundJobProcessor.processAnalysisJob (/Users/deepak/Downloads/Projects/StackLens-AI-Deploy/apps/api/src/processors/background-processor.ts:383:25)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:549:9)
+    at process.processTimers (node:internal/timers:523:7)
+Triggering automatic model retraining after file analysis completion...
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 22
+🧹 Cleaned up old events. Current count: 22
+Skipping body parsing for: /api/files/124/analyze
+12:43:54 AM [express] POST /api/files/124/analyze 200 in 6ms :: {"message":"Analysis already complete…
+New file has 480 errors - triggering automatic retraining
+Training suggestion model with Excel data...
+Loading training data from: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/attached_assets/Error Transactional Logs_With Some Error Suggestions_1752342066865.xlsx
+New file has 735 errors - triggering automatic retraining
+Training suggestion model with Excel data...
+Loading training data from: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/attached_assets/Error Transactional Logs_With Some Error Suggestions_1752342066865.xlsx
+12:43:54 AM [express] GET /api/version 200 in 68ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+Loaded 289 training records
+Loaded 289 training records
+Loading training data from: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/attached_assets/Error Transactional Logs_With Some Error Suggestions_1752467209697.xlsx
+Loading training data from: /Users/deepak/Downloads/Projects/StackLens-AI-Deploy/attached_assets/Error Transactional Logs_With Some Error Suggestions_1752467209697.xlsx
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 1 }
+12:43:54 AM [express] GET /api/analysis/history 200 in 12ms :: {"history":[{"id":115,"fileId":124,"fi…
+Loaded 289 training records
+Loaded 289 training records
+Training model with 883 vectors...
+Training model with 883 vectors...
+Skipping body parsing for: /api/files
+12:43:54 AM [express] GET /api/files 200 in 4ms :: {"files":[{"id":123,"filename":"Applegreen_BK_Ltd_…
+Updated existing model (ID: 23) with new training results
+Automatic retraining completed: {
+  modelAccuracy: 0.9684123576626935,
+  trainingRecords: 578,
+  patternsLearned: 883,
+  recommendations: [
+    'Excellent model performance - ready for production',
+    'Continue collecting real-world feedback to improve suggestions',
+    'Regular retraining recommended as new error patterns emerge'
+  ]
+}
+Updated existing model (ID: 23) with new training results
+Automatic retraining completed: {
+  modelAccuracy: 0.8939824287831397,
+  trainingRecords: 578,
+  patternsLearned: 883,
+  recommendations: [
+    'Good model performance - consider additional training data',
+    'Continue collecting real-world feedback to improve suggestions',
+    'Regular retraining recommended as new error patterns emerge'
+  ]
+}
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:44:04 AM [express] GET /api/analysis/processing 200 in 38ms :: {"history":[{"id":111,"fileId":120,…
+🔍 Patterns API: Fetching patterns for analysisId 115
+🔍 Patterns API: Found analysis: {
+  id: 115,
+  fileId: 124,
+  userId: 1,
+  filename: 'transactions-PLK-14136_Micros.txt',
+  fileType: 'log',
+  fileSize: 3132231,
+  uploadTimestamp: 1765826021000,
+  analysisTimestamp: 1765826034,
+  errorsDetected: null,
+  anomalies: null,
+  predictions: null,
+  suggestions: null,
+  totalErrors: 735,
+  criticalErrors: 0,
+  highErrors: 313,
+  mediumErrors: 413,
+  lowErrors: 0,
+  status: 'completed',
+  errorMessage: null,
+  aiSuggestions: null,
+  createdAt: 1765826021000,
+  processingTime: 12.044,
+  modelAccuracy: 0.9201424539877099,
+  progress: 100,
+  currentStep: 'Analysis completed successfully'
+}
+🔍 Patterns API: Fetching errors for fileId 124
+🔍 Patterns API: Found 735 errors for file
+🔍 Patterns API: Extracted 12 patterns
+🔍 Patterns API: Patterns: [
+  {
+    pattern: 'API Error',
+    errorType: 'API Error',
+    severity: 'high',
+    count: 196,
+    examples: [
+      `2025-06-04/12:59:36.883/EDT  INFO MobileM8WebService:773:[exec-25]:[1280101973bdeaaef55908744aa0e984] - Place Order Returning with {"orderId":"57539","orderInvoiceTime":"2025-06-04 12:59:35 PM","remoteOrderId":"7770","displayNumber":"7770","orderStatus":"PLACED","resultDescription":"Successfully placed order on POS and MobileM8","statusCode":0,"shouldRetry":false,"localizedDisplayKey":"placeorder.ok.pickuporder","orderUUID":"1280101973bdeaaef55908744aa0e984","lineItems":[{"name":"12Pc Mix n' Match Wings Combo","quantity":1,"price":17.49,"id":"843941fd-ede9-4613-a95f-51398adedba3","receiptDescription":"12Pc Mix n' Match Wings Combo","type":"COMBO","itemMatchKey":"33f96602-e8f4-4248-b99a-44e38dc63f4d","rolledUpPrice":18.75,"priceToDisplayInPortal":18.75,"tokenName":"12Pc","favoriteId":0,"count":0,"orderUUID":"1280101973bdeaaef55908744aa0e984","metaData":{"calorieUnit":"***","caloriesMinimum":"1430","caloriesMaximum":"3870","sodiumWarning":"true","itemType":"MEAL","size":"S","variableEntreeQuantityMultiplier":"6","itemCategory":"mixMatch","variableEntreesQuantityMultiplier":"6","wingsCombo":"true","defaultsize":"true","ComboCrossSell":"true","menuItemName":"12PC Mix n' Match Wings Combo (All Drink Sizes)","category":"WINGS","customCategoryName":"Wings","rootMenuItemStepType":"ComboSizeCategoryStep"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","defaultsize":"true","itemType":"MEAL","originalPrice":"17.49","itemCategory":"mixMatch","menuItemName":"12PC Mix n' Match Wings Combo (All Drink Sizes)","posType":"COMBO","variableEntreeQuantityMultiplier":"6","caloriesMinimum":"1430","caloriesMaximum":"3870","tillsterSku":"843941fd-ede9-4613-a95f-51398adedba3","customCategoryName":"Wings","sodiumWarning":"true","wingsCombo":"true","posPrice":"17.4900","lineItemId":"fdf2d935-1b87-4775-b191-73b25be7b648","rootMenuItemStepType":"ComboSizeCategoryStep","size":"S","variableEntreesQuantityMultiplier":"6","posPlu":"5002123","name":"5002123","matched":"0","ComboCrossSell":"true","category":"WINGS"},"sku":"843941fd-ede9-4613-a95f-51398adedba3","posPlu":"5002123","posPrice":17.4900,"childLineItems":[{"name":"Classic Boneless","quantity":1,"price":0.00,"id":"a74031cd-eecc-489a-8695-20114f13c4f8","receiptDescription":"Classic Boneless","type":"PRODUCT","itemMatchKey":"baf6d8ea-a127-4515-80f8-f9754e3d45f0","rolledUpPrice":0.00,"priceToDisplayInPortal":0.00,"tokenName":"Classic","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"480","itemTags":"spiceLevel=2","subcategory":"Boneless","itemCategory":"Chicken Pieces","BoneLess":"true","linkedType":"variant","imageOverride":"true","variant":"Classic Boneless","imageOverrideExtension":"png","spiceLevel":"2","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c","stepType":"Subst6","stepName":"Variable Entrees","quantitySelectionOnSubst6":"true","menuItemName":"6Pc Classic Bites Boneless"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","imageOverride":"true","itemType":"ENTREE","stepType":"Subst6","originalPrice":"0.00","itemCategory":"Chicken Pieces","menuItemName":"6Pc Classic Bites Boneless","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c","posType":"PRODUCT","caloriesMinimum":"480","BoneLess":"true","stepName":"Variable Entrees","variant":"Classic Boneless","tillsterSku":"a74031cd-eecc-489a-8695-20114f13c4f8","ID":"ALL_WINGS","spiceLevel":"2","imageOverrideExtension":"png","quantitySelectionOnSubst6":"true","itemTags":"spiceLevel=2","posPrice":"0","lineItemId":"7a86c17d-a7ee-424f-ad1b-b6d97b8cbdbf","posPlu":"5002705","linkedType":"variant","name":"5002705","matched":"0","subcategory":"Boneless"},"sku":"a74031cd-eecc-489a-8695-20114f13c4f8","posPlu":"5002705","posPrice":0,"childLineItems":[{"name":"No Sauce","quantity":1,"price":0.00,"id":"bf57c4d3-d4a0-4119-8e32-7e663e14ddad","receiptDescription":"No Sauce","type":"MODIFIER","itemMatchKey":"2a34906e-b80d-4bb9-93b5-d79fd2b5645d","rolledUpPrice":0.00,"priceToDisplayInPortal":0.00,"tokenName":"No","favoriteId":0,"count":0,"metaData":{"stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c--f5997ca1-433b-4c54-bfb2-6404668d992f","stepType":"ModifierOption9","stepName":"Customize","quantitySelectionOnSubst6":"false","menuItemName":"No Dipping Sauce","isSingleSelect":"false"},"shouldOverridePrice":false,"lineItemProperties":{"quantitySelectionOnSubst6":"false","stepType":"ModifierOption9","originalPrice":"0.00","lineItemId":"a5b4f9f8-8c5d-48ca-90ae-38e2c5bf4ae1","stepName":"Customize","posPlu":"9015999","menuItemName":"No Dipping Sauce","isSingleSelect":"false","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c--f5997ca1-433b-4c54-bfb2-6404668d992f","matched":"0"},"sku":"bf57c4d3-d4a0-4119-8e32-7e663e14ddad","posPlu":"9015999","childLineItems":[{"name":"No Sauce","quantity":1,"price":0.00,"id":"e33c5c9a-872b-41e6-aa02-8f45d36bd1b0","receiptDescription":"No Sauce","type":"WEIGHT","itemMatchKey":"4483c2ca-367b-4ef8-8793-31e800b68ad3","rolledUpPrice":0.00,"priceToDisplayInPortal":0.00,"tokenName":"No","favoriteId":0,"count":0,"metaData":{"menuItemName":"With","modifierName":"No Dipping Sauce","isNoSauceModifier":"true"},"shouldOverridePrice":false,"lineItemProperties":{"quantitySelectionOnSubst6":"false","stepType":"ModifierOption9","originalPrice":"0.00","lineItemId":"a5b4f9f8-8c5d-48ca-90ae-38e2c5bf4ae1","menuItemName":"No Dipping Sauce","isSingleSelect":"false","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c--f5997ca1-433b-4c54-bfb2-6404668d992f","isNoSauceModifier":"true","posType":"PRODUCT","posPlu":"9015999","stepName":"Customize","posTag":"SyncToZero","name":"9015999","matched":"0","modifierName":"No Dipping Sauce","tillsterSku":"bf57c4d3-d4a0-4119-8e32-7e663e14ddad"},"sku":"e33c5c9a-872b-41e6-aa02-8f45d36bd1b0","posPlu":"9015999","available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false},{"name":"Honey BBQ Bone-In","quantity":1,"price":0.00,"id":"c342535e-a7b0-40be-9d0f-649d33c3355a","receiptDescription":"Honey BBQ Bone-In","type":"PRODUCT","itemMatchKey":"78f1a56e-dd44-4117-a9e6-50bca43db73c","rolledUpPrice":0.00,"priceToDisplayInPortal":0.00,"tokenName":"Honey","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"880","itemTags":"spiceLevel=2","subcategory":"Bone-In","itemCategory":"Chicken Pieces","BoneIn":"true","linkedType":"variant","imageOverride":"true","variant":"Honey Bbq Bonein","imageOverrideExtension":"png","spiceLevel":"2","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c","stepType":"Subst6","stepName":"Variable Entrees","quantitySelectionOnSubst6":"true","menuItemName":"6PC Ghost Pepper Wings Honey BBQ Bone-In"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","imageOverride":"true","itemType":"ENTREE","stepType":"Subst6","originalPrice":"0.00","itemCategory":"Chicken Pieces","BoneIn":"true","menuItemName":"6PC Ghost Pepper Wings Honey BBQ Bone-In","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c","posType":"PRODUCT","caloriesMinimum":"880","stepName":"Variable Entrees","variant":"Honey Bbq Bonein","tillsterSku":"c342535e-a7b0-40be-9d0f-649d33c3355a","ID":"ALL_WINGS2","spiceLevel":"2","imageOverrideExtension":"png","quantitySelectionOnSubst6":"true","itemTags":"spiceLevel=2","posPrice":"0","lineItemId":"291aab4d-78bc-4248-b627-b98e340e0849","posPlu":"5002604","linkedType":"variant","name":"5002604","matched":"0","subcategory":"Bone-In"},"sku":"c342535e-a7b0-40be-9d0f-649d33c3355a","posPlu":"5002604","posPrice":0,"childLineItems":[{"name":"Bold BQ ","quantity":1,"price":0.00,"id":"3cd1dd71-83c0-4c1b-aa09-88fef8a910f8","receiptDescription":"Bold BQ ","type":"MODIFIER","itemMatchKey":"1bd1b463-a421-4b43-b4cc-fc50d71ba80d","rolledUpPrice":0.00,"priceToDisplayInPortal":0.00,"tokenName":"Bold","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"70","sodiumWarning":"true","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c--f5997ca1-433b-4c54-bfb2-6404668d992f","stepType":"ModifierOption9","stepName":"Customize","quantitySelectionOnSubst6":"false","menuItemName":"Dip BOLD BBQ SAUCE"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","quantitySelectionOnSubst6":"false","stepType":"ModifierOption9","originalPrice":"0.00","lineItemId":"0045a0df-2ec5-4964-94a0-1908fdf0252a","menuItemName":"Dip BOLD BBQ SAUCE","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c--f5997ca1-433b-4c54-bfb2-6404668d992f","caloriesMinimum":"70","stepName":"Customize","posPlu":"9015007","matched":"0","sodiumWarning":"true"},"sku":"3cd1dd71-83c0-4c1b-aa09-88fef8a910f8","posPlu":"9015007","childLineItems":[{"name":"  Bold BQ ","quantity":1,"price":0.00,"id":"e33c5c9a-872b-41e6-aa02-8f45d36bd1b0","receiptDescription":"  Bold BQ ","type":"WEIGHT","itemMatchKey":"55cd8911-4311-440d-a50c-bc4ec743c43e","rolledUpPrice":0.00,"priceToDisplayInPortal":0.00,"favoriteId":0,"count":0,"metaData":{"menuItemName":"With","modifierName":"Dip BOLD BBQ SAUCE"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","quantitySelectionOnSubst6":"false","stepType":"ModifierOption9","posPrice":"0","originalPrice":"0.00","lineItemId":"0045a0df-2ec5-4964-94a0-1908fdf0252a","menuItemName":"Dip BOLD BBQ SAUCE","stepId":"38def472-4bb8-4ca3-a826-17ffcc62223c--f5997ca1-433b-4c54-bfb2-6404668d992f","posType":"MODIFIER","caloriesMinimum":"70","posPlu":"9015007","stepName":"Customize","name":"9015007","matched":"0","modifierName":"Dip BOLD BBQ SAUCE","tillsterSku":"3cd1dd71-83c0-4c1b-aa09-88fef8a910f8","sodiumWarning":"true"},"sku":"e33c5c9a-872b-41e6-aa02-8f45d36bd1b0","posPlu":"9015007","posPrice":0,"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpd`... 12216 more characters,
+      '2025-06-04/13:00:05.152/EDT  INFO MicrosSimphonyV2PosOrderpoint:254:[exec-10]:[1279901973be08be641cae922f9cddd2] - Skumapped OrderDetails: {"sourceId":"KIOSK","kioskId":12799,"disablePayAtCounter":false,"pricingErrorDetected":false,"customer":{"name":"Karthik R"},"startTime":"2025-06-04T17:00:05.150+0000","updatedOn":"2025-06-04T17:00:05.150+0000","lineItems":[{"sku":"5003013","type":"COMBO","quantity":1,"children":[{"sku":"5003011","type":"PRODUCT","quantity":1,"itemMatchKey":"074748e0-03a9-4303-98ae-93a15cb5ddf1","isCouponItem":false,"shouldOverridePrice":false,"tillsterSku":"bb411d75-af75-4b54-8aed-ff8272eff13a","posPlu":"5003011","lineItemProperties":{"calorieUnit":"***","imageOverride":"true","lineItemId":"9a2e3ed3-df33-4bc2-8c18-8ef4e145187a","itemCategory":"Sandwiches","menuItemName":"Spicy Chicken Sandwich","posType":"PRODUCT","caloriesMinimum":"700","posPlu":"5003011","posTag":"ComboMainItem","linkedType":"variant","variant":"All Spicy","name":"5003011","location":"cym","tillsterSku":"bb411d75-af75-4b54-8aed-ff8272eff13a"},"tagName":"ComboMainItem","value":0.00,"orderDiscount":false},{"sku":"5013005","type":"PRODUCT","quantity":1,"itemMatchKey":"c798ed04-f080-4896-9ff9-3e00bc3e70ff","isCouponItem":false,"shouldOverridePrice":false,"tillsterSku":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","posPlu":"5013005","lineItemProperties":{"calorieUnit":"***","itemType":"SIDE","stepType":"Subst6","lineItemId":"8c12261e-d55f-4603-91e0-e0bcca96765a","itemCategory":"Snacks","menuItemName":"Regular Coleslaw","stepId":"e7140c75-3cd9-4e41-b61e-b3693056e5c3","posType":"PRODUCT","caloriesMinimum":"140","size":"S","posPlu":"5013005","stepName":"Sides","nonCustomizable":"true","name":"5013005","InFlowQuantity":"true","tillsterSku":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","ID":"ALL_SIDES","subcategory":"Regular","sodiumWarning":"true"},"value":0.00,"orderDiscount":false},{"sku":"2004002","type":"PRODUCT","quantity":1,"itemMatchKey":"740abb6e-9ff0-48ac-83d1-5541f0f1535d","isCouponItem":false,"shouldOverridePrice":false,"tillsterSku":"3b24342c-4ebc-461a-9541-dead2e233b51","posPlu":"2004002","lineItemProperties":{"calorieUnit":"***","itemType":"DRINK","stepType":"Subst6","lineItemId":"785e63be-46cd-48ad-a207-748cf10aa24e","itemCategory":"Cold Beverages","menuItemName":"Large Coca Cola","stepId":"a39a2bc6-1326-4104-ad88-68c01743bf9d","posType":"PRODUCT","caloriesMinimum":"540","size":"L","posPlu":"2004002","stepName":"Drinks","nonCustomizable":"true","name":"2004002","InFlowQuantity":"true","tillsterSku":"3b24342c-4ebc-461a-9541-dead2e233b51","ID":"ALL_DRINKS","subcategory":"Large","sodiumWarning":"true"},"value":1.26,"orderDiscount":false}],"itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","isCouponItem":false,"shouldOverridePrice":false,"orderUUID":"6fef65b8-7111-45fa-9b17-2a1a09bf9e40","tillsterSku":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","posPlu":"5003013","lineItemProperties":{"calorieUnit":"***","defaultsize":"true","itemType":"MEAL","lineItemId":"650107bc-cb52-4b08-b7f4-91fba3caf600","menuItemName":"Spicy Chicken Sandwich Combo (All Drink Sizes)","rootMenuItemStepType":"ComboSizeCategoryStep","posType":"COMBO","caloriesMinimum":"1020","size":"S","posPlu":"5003013","name":"5003013","tillsterSku":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","caloriesMaximum":"1810","ComboCrossSell":"true","category":"COMBO MEALS","customCategoryName":"Combo Meals","sodiumWarning":"true"},"value":12.99,"orderDiscount":false},{"sku":"9016001","type":"PRODUCT","quantity":1,"itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","isCouponItem":false,"shouldOverridePrice":false,"orderUUID":"6fef65b8-7111-45fa-9b17-2a1a09bf9e40","tillsterSku":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","posPlu":"9016001","lineItemProperties":{"calorieUnit":"***","stepType":"ModifierOption9","sequenceNum":"2","lineItemId":"93ae6b11-2136-4271-9867-887b21d3f9c0","menuItemName":"Dip BUTTERMILK RANCH SAUCE","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","posType":"PRODUCT","convertFromModifierToProduct":"true","caloriesMinimum":"140","posPlu":"9016001","stepName":"Customize","name":"9016001","tillsterSku":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","ID":"ENTREE","sodiumWarning":"true"},"value":0.25,"orderDiscount":false},{"sku":"9016008","type":"PRODUCT","quantity":1,"itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","isCouponItem":false,"shouldOverridePrice":false,"orderUUID":"6fef65b8-7111-45fa-9b17-2a1a09bf9e40","tillsterSku":"12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8","posPlu":"9016008","lineItemProperties":{"calorieUnit":"***","stepType":"ModifierOption9","sequenceNum":"2","lineItemId":"17a62f5b-5613-4871-ac22-c08b3b72f3a3","menuItemName":"Dip BLACKENED RANCH SAUCE","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","posType":"PRODUCT","convertFromModifierToProduct":"true","caloriesMinimum":"120","posPlu":"9016008","stepName":"Customize","name":"9016008","tillsterSku":"12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8","ID":"ENTREE","sodiumWarning":"true"},"value":0.25,"orderDiscount":false}],"orderProperties":[{"key":"dispositionId","value":"6"},{"key":"OrderSource","value":"KIOSK"},{"key":"SESSION_ID","value":"1279901973be08be641cae922f9cddd2"}],"status":"OPEN","cacheLookUpKey":" [1279901973be08be641cae922f9cddd2] , [12799] , [ [ [ [ [ [ [ [ [] , [bcb73a42-24ac-4114-a91e-33e8b8533a8a] , [1] , [12.99] , [] ] , [3b24342c-4ebc-461a-9541-dead2e233b51] , [1] , [1.26] , [] ] , [bb411d75-af75-4b54-8aed-ff8272eff13a] , [1] , [0.00] , [] ] , [12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8] , [1] , [0.00] , [] ] , [05bdf3a8-92b0-47a2-9f77-d76bf0563c0e] , [1] , [0.25] , [] ] , [e9e75a09-bf0d-4779-8cac-8fb15d80a073] , [1] , [0.00] , [] ] , [05bdf3a8-92b0-47a2-9f77-d76bf0563c0e] , [1] , [0.25] , [] ] , [c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb] , [1] , [0.00] , [] ] ","id":"666","sessionId":"1279901973be08be641cae922f9cddd2","orderDestinationId":"1","posOrderId":"666","uuid":"6fef65b8-7111-45fa-9b17-2a1a09bf9e40","mutableLineItems":[{"sku":"5003013","type":"COMBO","quantity":1,"children":[{"sku":"5003011","type":"PRODUCT","quantity":1,"itemMatchKey":"074748e0-03a9-4303-98ae-93a15cb5ddf1","isCouponItem":false,"shouldOverridePrice":false,"tillsterSku":"bb411d75-af75-4b54-8aed-ff8272eff13a","posPlu":"5003011","lineItemProperties":{"calorieUnit":"***","imageOverride":"true","lineItemId":"9a2e3ed3-df33-4bc2-8c18-8ef4e145187a","itemCategory":"Sandwiches","menuItemName":"Spicy Chicken Sandwich","posType":"PRODUCT","caloriesMinimum":"700","posPlu":"5003011","posTag":"ComboMainItem","linkedType":"variant","variant":"All Spicy","name":"5003011","location":"cym","tillsterSku":"bb411d75-af75-4b54-8aed-ff8272eff13a"},"tagName":"ComboMainItem","value":0.00,"orderDiscount":false},{"sku":"5013005","type":"PRODUCT","quantity":1,"itemMatchKey":"c798ed04-f080-4896-9ff9-3e00bc3e70ff","isCouponItem":false,"shouldOverridePrice":false,"tillsterSku":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","posPlu":"5013005","lineItemProperties":{"calorieUnit":"***","itemType":"SIDE","stepType":"Subst6","lineItemId":"8c12261e-d55f-4603-91e0-e0bcca96765a","itemCategory":"Snacks","menuItemName":"Regular Coleslaw","stepId":"e7140c75-3cd9-4e41-b61e-b3693056e5c3","posType":"PRODUCT","caloriesMinimum":"140","size":"S","posPlu":"5013005","stepName":"Sides","nonCustomizable":"true","name":"5013005","InFlowQuantity":"true","tillsterSku":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","ID":"ALL_SIDES","subcategory":"Regular","sodiumWarning":"true"},"value":0.00,"orderDiscount":false},{"sku":"2004002","type":"PRODUCT","quantity":1,"itemMatchKey":"740abb6e-9ff0-48ac-83d1-5541f0f1535d","isCouponItem":false,"shouldOverridePrice":false,"tillsterSku":"3b24342c-4ebc-461a-9541-dead2e233b51","posPlu":"2004002","lineItemProperties":{"calorieUnit":"***","itemType":"DRINK","stepType":"Subst6","lineItemId":"785e63be-46cd-48ad-a207-748cf10aa24e","itemCategory":"Cold Beverages","menuItemName":"Large Coca Cola","stepId":"a39a2bc6-1326-4104-ad88-68c01743bf9d","posType":"PRODUCT","caloriesMinimum":"540","size":"L","posPlu":"2004002","stepName":"Drinks","nonCustomizable":"true","name":"2004002","InFlowQuantity":"true","tillsterSku":"3b24342c-4ebc-461a-9541-dead2e233b51","ID":"ALL_DRINKS","subcategory":"Large","sodiumWarning":"true"},"value":1.26,"orderDiscount":false}],"itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","isCouponItem":false,"shouldOverridePrice":false,"orderUUID":"6fef65b8-7111-45fa-9b17-2a1a09bf9e40","tillsterSku":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","posPlu":"5003013","lineItemProperties":{"calorieUnit":"***","defaultsize":"true","itemType":"MEAL","lineItemId":"650107bc-cb52-4b08-b7f4-91fba3caf600","menuItemName":"Spicy Chicken Sandwich Combo (All Drink Sizes)","rootMenuItemStepType":"ComboSizeCategoryStep","posType":"COMBO","caloriesMinimum":"1020","size":"S","posPlu":"5003013","name":"5003013","tillsterSku":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","caloriesMaximum":"1810","ComboCrossSell":"true","category":"COMBO MEALS","customCategoryName":"Combo Meals","sodiumWarning":"true"},"value":12.99,"orderDiscount":false},{"sku":"9016001","type":"PRODUCT","quantity":1,"itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","isCouponItem":false,"shouldOverridePrice":false,"orderUUID":"6fef65b8-7111-45fa-9b17-2a1a09bf9e40","tillsterSku":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","posPlu":"9016001","lineItemProperties":{"calorieUnit":"***","stepType":"ModifierOption9","sequenceNum":"2","lineItemId":"93ae6b11-2136-4271-9867-887b21d3f9c0","menuItemName":"Dip BUTTERMILK RANCH SAUCE","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","posType":"PRODUCT","convertFromModifierToProduct":"true","caloriesMinimum":"140","posPlu":"9016001","stepName":"Customize","name":"9016001","tillsterSku":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","ID":"ENTREE","sodiumWarning":"true"},"value":0.25,"orderDiscount":false},{"sku":"9016008","type":"PRODUCT","quantity":1,"itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","isCouponItem":false,"shouldOverridePrice":false,"orderUUID":"6fef65b8-7111-45fa-9b17-2a1a09bf9e40","tillsterS'... 735 more characters,
+      '2025-06-04/13:00:05.476/EDT  INFO MobileM8WebService:1163:[exec-10]:[1279901973be08be641cae922f9cddd2] - Calculate Totals Returning with {"calculateTotalsResult":{"statusCode":0,"subtotal":"14.75","tax":"1.31","total":"16.06","taxMap":{"1":1.31},"lineItems":[{"name":"Spicy Chicken Sandwich Combo","quantity":1,"price":12.99,"id":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","receiptDescription":"Spicy Chicken Sandwich Combo","type":"COMBO","itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","rolledUpPrice":14.75,"priceToDisplayInPortal":14.75,"tokenName":"Spicy","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"1020","caloriesMaximum":"1810","sodiumWarning":"true","itemType":"MEAL","size":"S","ComboCrossSell":"true","defaultsize":"true","menuItemName":"Spicy Chicken Sandwich Combo (All Drink Sizes)","category":"COMBO MEALS","customCategoryName":"Combo Meals","rootMenuItemStepType":"ComboSizeCategoryStep"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","defaultsize":"true","itemType":"MEAL","originalPrice":"12.99","posPrice":"12.9900","lineItemId":"650107bc-cb52-4b08-b7f4-91fba3caf600","menuItemName":"Spicy Chicken Sandwich Combo (All Drink Sizes)","rootMenuItemStepType":"ComboSizeCategoryStep","posType":"COMBO","caloriesMinimum":"1020","size":"S","posPlu":"5003013","name":"5003013","matched":"0","caloriesMaximum":"1810","ComboCrossSell":"true","tillsterSku":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","category":"COMBO MEALS","customCategoryName":"Combo Meals","sodiumWarning":"true"},"sku":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","posPlu":"5003013","posPrice":12.9900,"childLineItems":[{"name":"Spicy Chicken Sandwich","quantity":1,"price":0.00,"id":"bb411d75-af75-4b54-8aed-ff8272eff13a","receiptDescription":"Spicy Chicken Sandwich","type":"PRODUCT","itemMatchKey":"074748e0-03a9-4303-98ae-93a15cb5ddf1","rolledUpPrice":0.50,"priceToDisplayInPortal":0.50,"tokenName":"Spicy","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"700","location":"cym","itemCategory":"Sandwiches","linkedType":"variant","variant":"All Spicy","imageOverride":"true","menuItemName":"Spicy Chicken Sandwich"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","imageOverride":"true","originalPrice":"0.00","posPrice":"0","lineItemId":"9a2e3ed3-df33-4bc2-8c18-8ef4e145187a","itemCategory":"Sandwiches","menuItemName":"Spicy Chicken Sandwich","posType":"PRODUCT","caloriesMinimum":"700","posPlu":"5003011","posTag":"ComboMainItem","linkedType":"variant","variant":"All Spicy","name":"5003011","location":"cym","matched":"0","tillsterSku":"bb411d75-af75-4b54-8aed-ff8272eff13a"},"sku":"bb411d75-af75-4b54-8aed-ff8272eff13a","posPlu":"5003011","posPrice":0,"childLineItems":[{"name":"Buttermilk Ranch","quantity":1,"price":0.00,"id":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","receiptDescription":"Buttermilk Ranch","type":"MODIFIER","itemMatchKey":"c7a003d8-06e3-48cc-a41c-dd3b61f5770f","rolledUpPrice":0.25,"priceToDisplayInPortal":0.25,"tokenName":"Buttermilk","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"140","sodiumWarning":"true","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","stepType":"ModifierOption9","stepName":"Customize","menuItemName":"Dip BUTTERMILK RANCH SAUCE"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","stepType":"ModifierOption9","originalPrice":"0.25","lineItemId":"93ae6b11-2136-4271-9867-887b21d3f9c0","menuItemName":"Dip BUTTERMILK RANCH SAUCE","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","caloriesMinimum":"140","stepName":"Customize","posPlu":"9016001","matched":"0","sodiumWarning":"true"},"sku":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","posPlu":"9016001","childLineItems":[{"name":"Extra Buttermilk Ranch","quantity":1,"price":0.25,"id":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","receiptDescription":"Extra Buttermilk Ranch","type":"WEIGHT","itemMatchKey":"d3aaea72-66aa-4502-b7c1-74997d66dbe5","rolledUpPrice":0.25,"priceToDisplayInPortal":0.25,"tokenName":"Extra","favoriteId":0,"count":0,"metaData":{"menuItemName":"Priced","modifierName":"Dip BUTTERMILK RANCH SAUCE"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","stepType":"ModifierOption9","sequenceNum":"2","posPrice":"0.2500","originalPrice":"0.25","lineItemId":"93ae6b11-2136-4271-9867-887b21d3f9c0","menuItemName":"Dip BUTTERMILK RANCH SAUCE","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","posType":"PRODUCT","convertFromModifierToProduct":"true","caloriesMinimum":"140","posPlu":"9016001","stepName":"Customize","name":"9016001","matched":"0","modifierName":"Dip BUTTERMILK RANCH SAUCE","tillsterSku":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","ID":"ENTREE","sodiumWarning":"true"},"sku":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","posPlu":"9016001","posPrice":0.2500,"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false},{"name":"Blackened Ranch","quantity":1,"price":0.00,"id":"12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8","receiptDescription":"Blackened Ranch","type":"MODIFIER","itemMatchKey":"7e174bc2-4b06-4662-81ca-00a03508c183","rolledUpPrice":0.25,"priceToDisplayInPortal":0.25,"tokenName":"Blackened","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"120","sodiumWarning":"true","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","stepType":"ModifierOption9","stepName":"Customize","menuItemName":"Dip BLACKENED RANCH SAUCE"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","stepType":"ModifierOption9","originalPrice":"0.25","lineItemId":"17a62f5b-5613-4871-ac22-c08b3b72f3a3","menuItemName":"Dip BLACKENED RANCH SAUCE","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","caloriesMinimum":"120","stepName":"Customize","posPlu":"9016008","matched":"0","sodiumWarning":"true"},"sku":"12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8","posPlu":"9016008","childLineItems":[{"name":"Extra Blackened Ranch","quantity":1,"price":0.25,"id":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","receiptDescription":"Extra Blackened Ranch","type":"WEIGHT","itemMatchKey":"214d5b15-7bb4-42ea-b70d-19e402530f56","rolledUpPrice":0.25,"priceToDisplayInPortal":0.25,"tokenName":"Extra","favoriteId":0,"count":0,"metaData":{"menuItemName":"Priced","modifierName":"Dip BLACKENED RANCH SAUCE"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","stepType":"ModifierOption9","sequenceNum":"2","posPrice":"0.2500","originalPrice":"0.25","lineItemId":"17a62f5b-5613-4871-ac22-c08b3b72f3a3","menuItemName":"Dip BLACKENED RANCH SAUCE","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","posType":"PRODUCT","convertFromModifierToProduct":"true","caloriesMinimum":"120","posPlu":"9016008","stepName":"Customize","name":"9016008","matched":"0","modifierName":"Dip BLACKENED RANCH SAUCE","tillsterSku":"12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8","ID":"ENTREE","sodiumWarning":"true"},"sku":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","posPlu":"9016008","posPrice":0.2500,"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false},{"name":"Regular Coleslaw","quantity":1,"price":0.00,"id":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","receiptDescription":"Regular Coleslaw","type":"PRODUCT","itemMatchKey":"c798ed04-f080-4896-9ff9-3e00bc3e70ff","rolledUpPrice":0.00,"priceToDisplayInPortal":0.00,"tokenName":"Regular","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"140","subcategory":"Regular","sodiumWarning":"true","itemCategory":"Snacks","InFlowQuantity":"true","size":"S","nonCustomizable":"true","stepId":"e7140c75-3cd9-4e41-b61e-b3693056e5c3","stepType":"Subst6","stepName":"Sides","menuItemName":"Regular Coleslaw"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","itemType":"SIDE","stepType":"Subst6","originalPrice":"0.00","posPrice":"0","lineItemId":"8c12261e-d55f-4603-91e0-e0bcca96765a","itemCategory":"Snacks","menuItemName":"Regular Coleslaw","stepId":"e7140c75-3cd9-4e41-b61e-b3693056e5c3","posType":"PRODUCT","caloriesMinimum":"140","size":"S","stepName":"Sides","posPlu":"5013005","nonCustomizable":"true","name":"5013005","InFlowQuantity":"true","matched":"0","tillsterSku":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","ID":"ALL_SIDES","subcategory":"Regular","sodiumWarning":"true"},"sku":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","posPlu":"5013005","posPrice":0,"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false},{"name":"Large Coca-Cola ","quantity":1,"price":1.26,"id":"3b24342c-4ebc-461a-9541-dead2e233b51","receiptDescription":"Large Coca-Cola ","type":"PRODUCT","itemMatchKey":"740abb6e-9ff0-48ac-83d1-5541f0f1535d","rolledUpPrice":1.26,"priceToDisplayInPortal":1.26,"tokenName":"Large","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"540","subcategory":"Large","sodiumWarning":"true","itemCategory":"Cold Beverages","nonCustomizable":"true","size":"L","InFlowQuantity":"true","stepId":"a39a2bc6-1326-4104-ad88-68c01743bf9d","stepType":"Subst6","stepName":"Drinks","menuItemName":"Large Coca Cola"},"shouldOverridePrice":false,"lineItemProperties":{"calorieUnit":"***","itemType":"DRINK","stepType":"Subst6","originalPrice":"1.26","posPrice":"1.2600","lineItemId":"785e63be-46cd-48ad-a207-748cf10aa24e","itemCategory":"Cold Beverages","menuItemName":"Large Coca Cola","stepId":"a39a2bc6-1326-4104-ad88-68c01743bf9d","posType":"PRODUCT","caloriesMinimum":"540","size":"L","stepName":"Drinks","posPlu":"2004002","nonCustomizable":"true","name":"2004002","InFlowQuantity":"true","matched":"0","tillsterSku":"3b24342c-4ebc-461a-9541-dead2e233b51","ID":"ALL_DRINK'... 439 more characters
+    ],
+    severityBreakdown: { critical: 0, high: 196, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:23:20.000Z,
+    description: 'API pattern occurring 196 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'General',
+    errorType: 'General',
+    severity: 'high',
+    count: 154,
+    examples: [
+      '2025-06-04/13:00:05.455/EDT ERROR AbstractPosHandler:1508:[exec-10]:[1279901973be08be641cae922f9cddd2] - Could not get input for output [Buttermilk Ranch]',
+      '2025-06-04/13:00:05.455/EDT ERROR AbstractPosHandler:1508:[exec-10]:[1279901973be08be641cae922f9cddd2] - Could not get input for output [Blackened Ranch]',
+      '2025-06-04/13:01:34.593/EDT ERROR AbstractPosHandler:1508:[-exec-1]:[1280401973be22af1e7e2cd20919e9b1] - Could not get input for output [Wild Honey Mustard]'
+    ],
+    severityBreakdown: { critical: 0, high: 106, medium: 48, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:23:20.000Z,
+    description: 'General pattern occurring 154 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'IO',
+    errorType: 'IO',
+    severity: 'high',
+    count: 11,
+    examples: [
+      '2025-06-04/13:00:15.009/EDT ERROR MobileM8WebServiceHelper:41:[exec-16]:[1279901973be08be641cae922f9cddd2] - Place transaction failed.  Failing Order.',
+      '2025-06-04/13:01:46.129/EDT ERROR MobileM8WebServiceHelper:41:[exec-15]:[1280401973be22af1e7e2cd20919e9b1] - Place transaction failed.  Failing Order.',
+      '2025-06-04/13:03:56.122/EDT ERROR MobileM8WebServiceHelper:41:[exec-23]:[1280601973be0e6d4084ae980a51760b] - Place transaction failed.  Failing Order.'
+    ],
+    severityBreakdown: { critical: 0, high: 11, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:23:20.000Z,
+    description: 'IO pattern occurring 11 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR MicrosSimphonyV2PosAdapter:362:[-exec-4]:[1280301973be3216fcdd02677c62acd8] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999',
+    errorType: 'ERROR MicrosSimphonyV2PosAdapter:362:[-exec-4]:[1280301973be3216fcdd02677c62acd8] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999',
+    severity: 'high',
+    count: 2,
+    examples: [
+      '2025-06-04/13:06:14.149/EDT ERROR MicrosSimphonyV2PosAdapter:362:[-exec-4]:[1280301973be3216fcdd02677c62acd8] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999',
+      '2025-06-04/13:06:25.572/EDT ERROR MicrosSimphonyV2PosAdapter:362:[-exec-1]:[1280301973be3216fcdd02677c62acd8] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999'
+    ],
+    severityBreakdown: { critical: 0, high: 2, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 2 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR MicrosSimphonyV2PosAdapter:362:[exec-25]:[1280101973bdeaaef55908744aa0e984] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999',
+    errorType: 'ERROR MicrosSimphonyV2PosAdapter:362:[exec-25]:[1280101973bdeaaef55908744aa0e984] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999',
+    severity: 'high',
+    count: 1,
+    examples: [
+      '2025-06-04/12:59:35.255/EDT ERROR MicrosSimphonyV2PosAdapter:362:[exec-25]:[1280101973bdeaaef55908744aa0e984] - Invalid child item type found in product. Expecting MODIFIER, but type is: PRODUCT child item sku: 9015999'
+    ],
+    severityBreakdown: { critical: 0, high: 1, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 1 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR MicrosSimphonyV2PosAdapter:160:[exec-16]:[1279901973be08be641cae922f9cddd2] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    errorType: 'ERROR MicrosSimphonyV2PosAdapter:160:[exec-16]:[1279901973be08be641cae922f9cddd2] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    severity: 'high',
+    count: 1,
+    examples: [
+      '2025-06-04/13:00:14.988/EDT ERROR MicrosSimphonyV2PosAdapter:160:[exec-16]:[1279901973be08be641cae922f9cddd2] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]'
+    ],
+    severityBreakdown: { critical: 0, high: 1, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 1 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR AbstractPosHandler:639:[exec-16]:[1279901973be08be641cae922f9cddd2] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    errorType: 'ERROR AbstractPosHandler:639:[exec-16]:[1279901973be08be641cae922f9cddd2] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    severity: 'high',
+    count: 1,
+    examples: [
+      '2025-06-04/13:00:14.988/EDT ERROR AbstractPosHandler:639:[exec-16]:[1279901973be08be641cae922f9cddd2] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]'
+    ],
+    severityBreakdown: { critical: 0, high: 1, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 1 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR MicrosSimphonyV2PosAdapter:160:[exec-15]:[1280401973be22af1e7e2cd20919e9b1] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    errorType: 'ERROR MicrosSimphonyV2PosAdapter:160:[exec-15]:[1280401973be22af1e7e2cd20919e9b1] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    severity: 'high',
+    count: 1,
+    examples: [
+      '2025-06-04/13:01:46.105/EDT ERROR MicrosSimphonyV2PosAdapter:160:[exec-15]:[1280401973be22af1e7e2cd20919e9b1] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]'
+    ],
+    severityBreakdown: { critical: 0, high: 1, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 1 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR AbstractPosHandler:639:[exec-15]:[1280401973be22af1e7e2cd20919e9b1] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    errorType: 'ERROR AbstractPosHandler:639:[exec-15]:[1280401973be22af1e7e2cd20919e9b1] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    severity: 'high',
+    count: 1,
+    examples: [
+      '2025-06-04/13:01:46.105/EDT ERROR AbstractPosHandler:639:[exec-15]:[1280401973be22af1e7e2cd20919e9b1] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]'
+    ],
+    severityBreakdown: { critical: 0, high: 1, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 1 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR MicrosSimphonyV2PosAdapter:160:[exec-23]:[1280601973be0e6d4084ae980a51760b] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    errorType: 'ERROR MicrosSimphonyV2PosAdapter:160:[exec-23]:[1280601973be0e6d4084ae980a51760b] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    severity: 'high',
+    count: 1,
+    examples: [
+      '2025-06-04/13:03:56.117/EDT ERROR MicrosSimphonyV2PosAdapter:160:[exec-23]:[1280601973be0e6d4084ae980a51760b] - Error occurred while sending place order request. Message: [{code=general_pos_error, message=Object reference not set to an instance of an object.}]'
+    ],
+    severityBreakdown: { critical: 0, high: 1, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 1 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'ERROR AbstractPosHandler:639:[exec-23]:[1280601973be0e6d4084ae980a51760b] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    errorType: 'ERROR AbstractPosHandler:639:[exec-23]:[1280601973be0e6d4084ae980a51760b] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]',
+    severity: 'high',
+    count: 1,
+    examples: [
+      '2025-06-04/13:03:56.117/EDT ERROR AbstractPosHandler:639:[exec-23]:[1280601973be0e6d4084ae980a51760b] - POS order failure; [{code=general_pos_error, message=Object reference not set to an instance of an object.}]'
+    ],
+    severityBreakdown: { critical: 0, high: 1, medium: 0, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:06:40.000Z,
+    description: 'GeneralException pattern occurring 1 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  },
+  {
+    pattern: 'Request/Response Logging',
+    errorType: 'Request/Response Logging',
+    severity: 'medium',
+    count: 365,
+    examples: [
+      '2025-06-04/12:59:35.255/EDT  INFO MicrosSimphonyV2PosOrderpoint:312:[exec-25]:[1280101973bdeaaef55908744aa0e984] - Simphony place order request: {"header":{"orgShortName":"PLK","locRef":"14136","rvcRef":"101","idempotencyId":"9414c186ce0e45bf97e6ab6ebab7bdd3","checkEmployeeRef":9984,"checkName":"Greta","orderTypeRef":6,"language":"en-US"},"notificationOptions":{"enabled":true},"comboMeals":[{"comboMealId":"5002063","comboItem":{"menuItemId":"5002063","quantity":1,"priceSequence":1,"definitionSequence":1},"mainItem":{"menuItemId":"5002611","quantity":1,"priceSequence":1,"definitionSequence":1},"sideItems":[{"menuItemId":"5013007","quantity":1,"priceSequence":1,"definitionSequence":1},{"menuItemId":"2004011","quantity":1,"priceSequence":1,"definitionSequence":1}]},{"comboMealId":"5002123","comboItem":{"menuItemId":"5002123","quantity":1,"priceSequence":1,"definitionSequence":1},"mainItem":{"menuItemId":"5002705","quantity":1,"priceSequence":1,"definitionSequence":1},"sideItems":[{"menuItemId":"5002604","quantity":1,"priceSequence":1,"definitionSequence":1,"condiments":[{"condimentId":"9015007","quantity":1,"priceSequence":1,"definitionSequence":1}]},{"menuItemId":"5013007","quantity":1,"priceSequence":1,"definitionSequence":1},{"menuItemId":"2004002","quantity":1,"priceSequence":1,"definitionSequence":1}]}],"tenders":[{"tenderId":"203","total":35.93}]}',
+      '2025-06-04/12:59:36.189/EDT  INFO MicrosSimphonyV2PosOrderpoint:329:[exec-25]:[1280101973bdeaaef55908744aa0e984] - Simphony place order status: OK response: {"header":{"orgShortName":"plk","locRef":"14136","rvcRef":"101","checkRef":"a01b28ecb1b9438393b4c524fb81c7a200001097","idempotencyId":"9414c186ce0e45bf97e6ab6ebab7bdd3","checkEmployeeRef":9984,"checkNumber":"7770","checkName":"Greta","orderTypeRef":6,"openTime":"2025-06-04T16:59:31.4682605Z","language":"en-US","status":"closed"},"comboMeals":[{"comboMealId":"5002063","comboItem":{"menuItemId":"5002063","name":"6 Pc. Wings Combo","quantity":1,"unitPrice":12.9900,"total":12.9900,"surcharge":0,"priceSequence":1,"definitionSequence":1},"mainItem":{"menuItemId":"5002611","name":"6 Ghost Pepper Wings","quantity":1,"unitPrice":0,"total":0,"surcharge":0,"priceSequence":1,"definitionSequence":1},"sideItems":[{"menuItemId":"5013007","name":"Rg Cajun Fries","quantity":1,"unitPrice":0,"total":0,"surcharge":0,"priceSequence":1,"definitionSequence":1},{"menuItemId":"2004011","name":"Lg Sweet Tea","quantity":1,"unitPrice":1.2600,"total":1.2600,"surcharge":0,"priceSequence":1,"definitionSequence":1}]},{"comboMealId":"5002123","comboItem":{"menuItemId":"5002123","name":"12 Pc. Wings Combo","quantity":1,"unitPrice":17.4900,"total":17.4900,"surcharge":0,"priceSequence":1,"definitionSequence":1},"mainItem":{"menuItemId":"5002705","name":"6P Classic Boneless","quantity":1,"unitPrice":0,"total":0,"surcharge":0,"priceSequence":1,"definitionSequence":1},"sideItems":[{"menuItemId":"5002604","name":"6 Honey BBQ Wings","quantity":1,"unitPrice":0,"total":0,"surcharge":0,"priceSequence":1,"definitionSequence":1,"condiments":[{"condimentId":"9015007","name":"Bold BBQ","quantity":1,"unitPrice":0,"total":0,"surcharge":0,"priceSequence":1,"definitionSequence":1}]},{"menuItemId":"5013007","name":"Rg Cajun Fries","quantity":1,"unitPrice":0,"total":0,"surcharge":0,"priceSequence":1,"definitionSequence":1},{"menuItemId":"2004002","name":"Lg Coke","quantity":1,"unitPrice":1.2600,"total":1.2600,"surcharge":0,"priceSequence":1,"definitionSequence":1}]}],"tenders":[{"tenderId":"203","name":"MasterCard","total":35.93}],"taxes":[{"taxRateId":1,"name":"NY State/City Tax","total":2.93}],"totals":{"subtotal":33.0000,"subtotalDiscountTotal":0,"autoServiceChargeTotal":0,"serviceChargeTotal":0,"taxTotal":2.93,"paymentTotal":35.93,"totalDue":0.0000}}',
+      '2025-06-04/13:00:05.141/EDT  INFO MobileM8WebService:1106:[exec-10]:[1279901973be08be641cae922f9cddd2] - Calculate Total Request: {"sessionId":"1279901973be08be641cae922f9cddd2","orderUUID":"1279901973be08be641cae922f9cddd2","userName":"*********************************************","storeName":"PLK-14136","lineItems":[{"name":"Spicy Chicken Sandwich Combo","quantity":1,"price":12.99,"id":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","receiptDescription":"Spicy Chicken Sandwich Combo","type":"COMBO","itemMatchKey":"2507c2b6-79fa-4345-a5e8-4cfeed3e8da6","tokenName":"Spicy","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"1020","caloriesMaximum":"1810","sodiumWarning":"true","itemType":"MEAL","size":"S","ComboCrossSell":"true","defaultsize":"true","menuItemName":"Spicy Chicken Sandwich Combo (All Drink Sizes)","category":"COMBO MEALS","customCategoryName":"Combo Meals","rootMenuItemStepType":"ComboSizeCategoryStep"},"shouldOverridePrice":false,"sku":"bcb73a42-24ac-4114-a91e-33e8b8533a8a","childLineItems":[{"name":"Spicy Chicken Sandwich","quantity":1,"price":0.00,"id":"bb411d75-af75-4b54-8aed-ff8272eff13a","receiptDescription":"Spicy Chicken Sandwich","type":"PRODUCT","itemMatchKey":"074748e0-03a9-4303-98ae-93a15cb5ddf1","tokenName":"Spicy","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"700","location":"cym","itemCategory":"Sandwiches","linkedType":"variant","variant":"All Spicy","imageOverride":"true","menuItemName":"Spicy Chicken Sandwich"},"shouldOverridePrice":false,"sku":"bb411d75-af75-4b54-8aed-ff8272eff13a","childLineItems":[{"name":"Buttermilk Ranch","quantity":1,"price":0.00,"id":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","receiptDescription":"Buttermilk Ranch","type":"MODIFIER","itemMatchKey":"c7a003d8-06e3-48cc-a41c-dd3b61f5770f","tokenName":"Buttermilk","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"140","sodiumWarning":"true","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","stepType":"ModifierOption9","stepName":"Customize","menuItemName":"Dip BUTTERMILK RANCH SAUCE"},"shouldOverridePrice":false,"sku":"e9e75a09-bf0d-4779-8cac-8fb15d80a073","childLineItems":[{"name":"Extra Buttermilk Ranch","quantity":1,"price":0.25,"id":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","receiptDescription":"Extra Buttermilk Ranch","type":"WEIGHT","itemMatchKey":"d3aaea72-66aa-4502-b7c1-74997d66dbe5","tokenName":"Extra","favoriteId":0,"count":0,"metaData":{"menuItemName":"Priced","modifierName":"Dip BUTTERMILK RANCH SAUCE"},"shouldOverridePrice":false,"sku":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false},{"name":"Blackened Ranch","quantity":1,"price":0.00,"id":"12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8","receiptDescription":"Blackened Ranch","type":"MODIFIER","itemMatchKey":"7e174bc2-4b06-4662-81ca-00a03508c183","tokenName":"Blackened","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"120","sodiumWarning":"true","stepId":"4323abd5-6703-4f41-968f-ac363bf1a674","stepType":"ModifierOption9","stepName":"Customize","menuItemName":"Dip BLACKENED RANCH SAUCE"},"shouldOverridePrice":false,"sku":"12a6b5a6-0b4d-42a7-88a5-e87ce8765ad8","childLineItems":[{"name":"Extra Blackened Ranch","quantity":1,"price":0.25,"id":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","receiptDescription":"Extra Blackened Ranch","type":"WEIGHT","itemMatchKey":"214d5b15-7bb4-42ea-b70d-19e402530f56","tokenName":"Extra","favoriteId":0,"count":0,"metaData":{"menuItemName":"Priced","modifierName":"Dip BLACKENED RANCH SAUCE"},"shouldOverridePrice":false,"sku":"05bdf3a8-92b0-47a2-9f77-d76bf0563c0e","available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false},{"name":"Regular Coleslaw","quantity":1,"price":0.00,"id":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","receiptDescription":"Regular Coleslaw","type":"PRODUCT","itemMatchKey":"c798ed04-f080-4896-9ff9-3e00bc3e70ff","tokenName":"Regular","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"140","subcategory":"Regular","sodiumWarning":"true","itemCategory":"Snacks","InFlowQuantity":"true","size":"S","nonCustomizable":"true","stepId":"e7140c75-3cd9-4e41-b61e-b3693056e5c3","stepType":"Subst6","stepName":"Sides","menuItemName":"Regular Coleslaw"},"shouldOverridePrice":false,"sku":"c3fb12e5-c5c4-49ca-b2d2-3683f7f1a8bb","available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false},{"name":"Large Coca-Cola ","quantity":1,"price":1.26,"id":"3b24342c-4ebc-461a-9541-dead2e233b51","receiptDescription":"Large Coca-Cola ","type":"PRODUCT","itemMatchKey":"740abb6e-9ff0-48ac-83d1-5541f0f1535d","tokenName":"Large","favoriteId":0,"count":0,"metaData":{"calorieUnit":"***","caloriesMinimum":"540","subcategory":"Large","sodiumWarning":"true","itemCategory":"Cold Beverages","nonCustomizable":"true","size":"L","InFlowQuantity":"true","stepId":"a39a2bc6-1326-4104-ad88-68c01743bf9d","stepType":"Subst6","stepName":"Drinks","menuItemName":"Large Coca Cola"},"shouldOverridePrice":false,"sku":"3b24342c-4ebc-461a-9541-dead2e233b51","available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"available":false,"couponItem":false,"orderDiscount":false,"quantityUpdated":false,"skuMappingCompleted":false}],"disposition":"FOR_HERE","kioskId":12799,"customer":{"name":"Karthik R"}}'
+    ],
+    severityBreakdown: { critical: 0, high: 0, medium: 365, low: 0 },
+    firstSeen: +057926-10-20T07:06:40.000Z,
+    lastSeen: +057926-10-20T07:23:20.000Z,
+    description: 'IO pattern occurring 365 times. This appears to be a recurring issue that may require attention.',
+    suggestions: [
+      'Review the error logs to identify the root cause',
+      'Check for recent code changes that might have introduced this pattern',
+      'Verify system configuration and dependencies',
+      'Consider implementing proper error handling for this scenario'
+    ]
+  }
+]
+12:44:09 AM [express] GET /api/analysis/115/patterns 200 in 1555ms :: {"patterns":[{"pattern":"API Er…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:44:14 AM [express] GET /api/analysis/processing 200 in 39ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:44:19 AM [express] GET /api/analysis/history 200 in 24ms :: {"history":[{"id":115,"fileId":124,"fi…
+📊 Analysis history request: { page: 1, limit: 100, fileIdFilter: null, userId: 1 }
+12:44:25 AM [express] GET /api/analysis/history 200 in 389ms :: {"history":[{"id":115,"fileId":124,"f…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:44:25 AM [express] GET /api/analysis/processing 200 in 34ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+🧹 Cleaned up old events. Current count: 16
+🧹 Cleaned up old events. Current count: 16
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:44:59 AM [express] GET /api/auth/me 200 in 243ms :: {"user":{"id":1,"username":"deepanimators","em…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 0, Total Events: 16
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:45:06 AM [express] GET /api/version 200 in 46ms :: {"version":"0.9.6","releaseDate":"2025-11-29","…
+📊 Generating metrics for window 1min. Events: 1, Total Events: 17
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:45:06 AM [express] POST /api/analytics/events 201 in 4ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:45:07 AM [express] POST /api/analytics/events 201 in 1ms :: {"success":true,"message":"Event recor…
+12:45:09 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+12:45:09 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Processing analyses for user: 2 found
+12:45:15 AM [express] GET /api/analysis/processing 200 in 146ms :: {"history":[{"id":111,"fileId":120…
+12:45:15 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:45:15 AM [express] GET /api/analytics/health-status 200 in 11ms :: {"success":true,"data":{"status…
+12:45:15 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:45:20 AM [express] GET /api/analytics/health-status 200 in 8ms :: {"success":true,"data":{"status"…
+12:45:20 AM [express] GET /api/analytics/metrics 200 in 6ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:45:26 AM [express] GET /api/analysis/processing 200 in 243ms :: {"history":[{"id":111,"fileId":120…
+12:45:26 AM [express] GET /api/analytics/alerts 200 in 12ms :: {"success":true,"data":{"alerts":[],"t…
+12:45:26 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+12:45:26 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+12:45:31 AM [express] GET /api/analytics/health-status 200 in 68ms :: {"success":true,"data":{"status…
+12:45:31 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:45:34 AM [express] GET /api/analysis/history 200 in 21ms :: {"history":[{"id":115,"fileId":124,"fi…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:45:36 AM [express] GET /api/analysis/processing 200 in 4ms :: {"history":[{"id":111,"fileId":120,"…
+12:45:36 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:45:36 AM [express] GET /api/analytics/health-status 200 in 3ms :: {"success":true,"data":{"status"…
+12:45:37 AM [express] GET /api/analytics/metrics 200 in 46ms :: {"success":true,"data":{"window":"1mi…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:45:42 AM [express] GET /api/analytics/health-status 200 in 2ms :: {"success":true,"data":{"status"…
+12:45:42 AM [express] GET /api/analytics/metrics 200 in 5ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:45:46 AM [express] GET /api/analysis/processing 200 in 9ms :: {"history":[{"id":111,"fileId":120,"…
+12:45:46 AM [express] GET /api/analytics/alerts 200 in 1ms :: {"success":true,"data":{"alerts":[],"to…
+12:45:47 AM [express] GET /api/analytics/health-status 200 in 1ms :: {"success":true,"data":{"status"…
+12:45:47 AM [express] GET /api/analytics/metrics 200 in 1ms :: {"success":true,"data":{"window":"1min…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:45:52 AM [express] GET /api/version 200 in 6ms :: {"version":"0.9.6","releaseDate":"2025-11-29","c…
+12:45:53 AM [express] GET /api/admin/stats 200 in 175ms :: {"totalUsers":13,"activeUsers":1,"totalRol…
+12:45:53 AM [express] GET /api/admin/roles 200 in 25ms :: [{"id":1,"name":"admin","description":"Admi…
+12:45:53 AM [express] GET /api/admin/users 200 in 2ms :: [{"id":11,"username":"Rajasbc@gmail.com","em…
+12:45:53 AM [express] GET /api/admin/training-modules 200 in 5ms :: [{"id":6,"title":"AI Error Resolu…
+12:45:53 AM [express] GET /api/admin/models 200 in 186ms :: [{"id":23,"name":"StackLens Error Suggest…
+🔐 Listing credentials...
+✅ Found 4 credentials
+12:45:53 AM [express] GET /api/admin/credentials 200 in 10ms :: [{"id":3,"name":"OpenRouter","provide…
+🧹 Cleaned up old events. Current count: 18
+🧹 Cleaned up old events. Current count: 18
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 2, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:46:01 AM [express] GET /api/analysis/processing 200 in 27ms :: {"history":[{"id":111,"fileId":120,…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Processing analyses for user: 2 found
+12:46:11 AM [express] GET /api/analysis/processing 200 in 10ms :: {"history":[{"id":111,"fileId":120,…
+12:46:13 AM [express] GET /api/automation/status 200 in 2ms :: {"success":true,"data":{"enabled":true…
+12:46:13 AM [express] GET /api/watcher/status 200 in 9ms :: {"success":true,"data":{"isWatching":true…
+12:46:13 AM [express] GET /api/jira/status 200 in 9ms :: {"success":true,"data":{"configured":true,"h…
+📊 Generating metrics for window 1min. Events: 0, Total Events: 18
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 1, Total Events: 19
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:46:21 AM [express] POST /api/analytics/events 201 in 7ms :: {"success":true,"message":"Event recor…
+📊 Generating metrics for window 1min. Events: 2, Total Events: 20
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:46:21 AM [express] POST /api/analytics/events 201 in 15ms :: {"success":true,"message":"Event reco…
+📊 Generating metrics for window 1min. Events: 3, Total Events: 21
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:46:22 AM [express] POST /api/analytics/events 201 in 24ms :: {"success":true,"message":"Event reco…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:46:22 AM [express] POST /api/analytics/events 201 in 58ms :: {"success":true,"message":"Event reco…
+12:46:25 AM [express] GET /api/auth/me 200 in 10ms :: {"user":{"id":1,"username":"deepanimators","ema…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:46:33 AM [express] GET /api/auth/me 200 in 42ms :: {"user":{"id":1,"username":"deepanimators","ema…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+12:46:44 AM [express] GET /api/auth/me 200 in 1525ms :: {"user":{"id":1,"username":"deepanimators","e…
+📊 Processing analyses for user: 2 found
+12:46:45 AM [express] GET /api/analysis/processing 200 in 419ms :: {"history":[{"id":111,"fileId":120…
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Generating metrics for window 1min. Events: 4, Total Events: 22
+🔔 Updating alerts. Current active: 2. Latest Metric Error Rate: 0
+📊 Analysis history request: { page: 1, limit: 20, fileIdFilter: null, userId: 1 }
+12:46:51 AM [express] GET /api/analysis/history 200 in 90ms :: {"history":[{"id":115,"fileId":124,"fi…
+🧹 Cleaned up old events. Current count: 22
+🧹 Cleaned up old events. Current count: 22
+📊 Processing analyses for user: 2 found
+12:46:56 AM [express] GET /api/analysis/processing 200 in 38ms :: {"history":[{"id":111,"fileId":120,…

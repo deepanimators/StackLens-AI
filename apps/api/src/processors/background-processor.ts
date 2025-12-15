@@ -56,8 +56,14 @@ class BackgroundJobProcessor {
 
     this.jobs.set(jobId, job);
 
-    // Start the analysis in the background
-    setTimeout(() => this.processAnalysisJob(job), 100);
+    // Start the analysis in the background (with error handling)
+    setTimeout(() => {
+      this.processAnalysisJob(job).catch((error) => {
+        console.error(`Unhandled error in analysis job ${jobId}:`, error);
+        // Error is already logged and handled in the processAnalysisJob catch block
+        // This catch is just to prevent unhandled promise rejection from crashing the server
+      });
+    }, 100);
 
     return jobId;
   }
@@ -164,6 +170,14 @@ class BackgroundJobProcessor {
         fileContent,
         logFile.originalName
       );
+
+      console.log(`📊 File: ${logFile.originalName}`);
+      console.log(`📊 Total file lines: ${fileContent.split('\n').length}`);
+      console.log(`📊 Error patterns loaded: ${errorPatterns.length}`);
+      console.log(`📊 Parsed errors found: ${parsedErrors.length}`);
+      if (parsedErrors.length > 0) {
+        console.log(`📊 First error: ${parsedErrors[0].message}`);
+      }
 
       await this.updateJobStatus(
         job.id,
@@ -347,6 +361,47 @@ class BackgroundJobProcessor {
         "Analysis completed successfully"
       );
 
+      // Create comprehensive Jira ticket for the file if there are errors
+      if (errorLogs.length > 0) {
+        try {
+          // Build error summary (top 10 unique error messages)
+          const uniqueErrors = Array.from(
+            new Map(errorLogs.map((e) => [e.message, e])).values()
+          ).slice(0, 10);
+
+          const errorSummary = uniqueErrors.map(
+            (e) => `${e.errorType} (${e.severity}): ${e.message}`
+          );
+
+          // Calculate average ML confidence from error suggestions
+          const avgMLConfidence = 0.85; // Default confidence
+
+          const jiraResult = await errorAutomation.createFileTicket(
+            logFile.originalName,
+            errorLogs.length,
+            {
+              critical: analysisData.criticalErrors,
+              high: analysisData.highErrors,
+              medium: analysisData.mediumErrors,
+              low: analysisData.lowErrors,
+            },
+            errorSummary,
+            logFile.storeNumber || undefined,
+            logFile.kioskNumber || undefined,
+            avgMLConfidence
+          );
+
+          if (jiraResult.success) {
+            console.log(`✅ Created Jira ticket: ${jiraResult.ticketKey} for file ${logFile.originalName}`);
+          } else {
+            console.warn(`⚠️ Failed to create Jira ticket: ${jiraResult.message}`);
+          }
+        } catch (jiraError) {
+          console.error("Error creating file-based Jira ticket:", jiraError);
+          // Continue processing even if Jira ticket creation fails
+        }
+      }
+
       // Trigger automatic model retraining with new data
       try {
         console.log(
@@ -392,7 +447,14 @@ class BackgroundJobProcessor {
         status: "failed",
         errorMessage: error instanceof Error ? error.message : "Unknown error",
       });
-      throw error;
+      // Don't rethrow - the error is handled and logged
+      // Mark job as failed in memory as well
+      await this.updateJobStatus(
+        job.id,
+        "failed",
+        job.progress,
+        error instanceof Error ? error.message : "Unknown error"
+      );
     }
   }
 

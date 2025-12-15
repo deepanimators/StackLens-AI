@@ -1,11 +1,15 @@
 // Application configuration
 export const config = {
   // API base URL from environment variable, with fallback
+  // In development, use relative path to leverage Vite proxy
+  // In production, use full URL
   apiBaseUrl:
     import.meta.env.VITE_API_URL ||
-    (typeof window !== "undefined"
-      ? `${window.location.protocol}//${window.location.hostname}:4000`
-      : "http://localhost:4000"),
+    (import.meta.env.DEV
+      ? ""  // Use relative path in development (Vite proxy handles /api)
+      : (typeof window !== "undefined"
+        ? `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}`
+        : "http://localhost:4000")),
 
   // Development mode check
   isDevelopment: import.meta.env.DEV,

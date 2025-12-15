@@ -146,83 +146,105 @@ export class RAGSuggestionService {
   private async populateKnowledgeBase() {
     try {
       console.log('🔄 RAG: Starting knowledge base population...');
-      // Get all error logs with successful AI suggestions
-      const resolvedErrors = await storage.getResolvedErrorsWithSuggestions();
 
-      console.log(
-        `📚 RAG: Indexing ${resolvedErrors.length} resolved error patterns...`
+      // Create a timeout promise for the entire population process (10 seconds for tests)
+      const maxPopulationTime = process.env.NODE_ENV === 'test' ? 5000 : 15000;
+      const populationTimeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Knowledge base population timeout')), maxPopulationTime)
       );
 
-      // For fast startup, skip expensive embedding generation
-      // Instead, create simple patterns without embeddings
-      console.log('🔄 RAG: Creating patterns (skipping embeddings for speed)...');
-      const patterns = resolvedErrors.map((error, index) => {
-        // Generate a simple deterministic embedding from the error message
-        const errorText = [
-          error.message,
-          error.errorType,
-          error.severity,
-        ].join(" | ");
-
-        // Use a simple hash-based embedding instead of calling the embedding service
-        const embedding = new Array(384).fill(0);
-        for (let i = 0; i < errorText.length && i < embedding.length; i++) {
-          embedding[i % embedding.length] += errorText.charCodeAt(i) / 1000;
-        }
-        const magnitude = Math.sqrt(
-          embedding.reduce((sum, val) => sum + val * val, 0)
-        );
-        const normalizedEmbedding = embedding.map((val) => (magnitude > 0 ? val / magnitude : 0));
-
-        return {
-          id: error.id.toString(),
-          pattern: error.message,
-          errorType: error.errorType,
-          severity: error.severity,
-          embedding: normalizedEmbedding,
-          solution: this.extractSolutionData(error.aiSuggestion),
-          frequency: 1, // Skip frequency calculation for speed
-          metadata: {
-            createdAt: error.createdAt,
-            confidence: error.aiSuggestion?.confidence || 0,
-            resolutionTime:
-              error.mlPrediction?.estimatedResolutionTime || "unknown",
-          },
-        };
-      });
-
-      console.log(`🔄 RAG: Indexing ${patterns.length} patterns in vector database...`);
-
-      // Add timeout to vectorDB indexing (5 second timeout)
       try {
-        const indexPromise = this.vectorDB.indexPatterns(patterns);
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Vector DB indexing timeout")), 5000)
-        );
-        await Promise.race([indexPromise, timeoutPromise]);
-      } catch (indexError) {
-        console.warn(`⚠️ RAG: Vector DB indexing skipped/failed:`, indexError);
+        // Race between actual population and timeout
+        await Promise.race([
+          this.performKnowledgeBasePopulation(),
+          populationTimeoutPromise
+        ]);
+      } catch (timeoutError) {
+        console.warn(`⚠️ RAG: Knowledge base population timed out after ${maxPopulationTime}ms, using empty KB`);
       }
-
-      // Cache frequently accessed patterns
-      console.log(`🔄 RAG: Caching frequently accessed patterns...`);
-      patterns.forEach((pattern) => {
-        this.knowledgeBase.set(pattern.id, {
-          pattern: pattern.pattern,
-          similarity: 1.0,
-          errorType: pattern.errorType,
-          solution: pattern.solution,
-          frequency: pattern.frequency,
-        });
-      });
-
-      console.log(
-        `✅ RAG: Knowledge base populated with ${patterns.length} patterns`
-      );
     } catch (error) {
       console.error("❌ RAG: Error populating knowledge base:", error);
       console.error("❌ RAG: Stack trace:", (error as Error).stack);
     }
+  }
+
+  /**
+   * Actual knowledge base population logic
+   */
+  private async performKnowledgeBasePopulation() {
+    // Get all error logs with successful AI suggestions
+    const resolvedErrors = await storage.getResolvedErrorsWithSuggestions();
+
+    console.log(
+      `📚 RAG: Indexing ${resolvedErrors.length} resolved error patterns...`
+    );
+
+    // For fast startup, skip expensive embedding generation
+    // Instead, create simple patterns without embeddings
+    console.log('🔄 RAG: Creating patterns (skipping embeddings for speed)...');
+    const patterns = resolvedErrors.map((error, index) => {
+      // Generate a simple deterministic embedding from the error message
+      const errorText = [
+        error.message,
+        error.errorType,
+        error.severity,
+      ].join(" | ");
+
+      // Use a simple hash-based embedding instead of calling the embedding service
+      const embedding = new Array(384).fill(0);
+      for (let i = 0; i < errorText.length && i < embedding.length; i++) {
+        embedding[i % embedding.length] += errorText.charCodeAt(i) / 1000;
+      }
+      const magnitude = Math.sqrt(
+        embedding.reduce((sum, val) => sum + val * val, 0)
+      );
+      const normalizedEmbedding = embedding.map((val) => (magnitude > 0 ? val / magnitude : 0));
+
+      return {
+        id: error.id.toString(),
+        pattern: error.message,
+        errorType: error.errorType,
+        severity: error.severity,
+        embedding: normalizedEmbedding,
+        solution: this.extractSolutionData(error.aiSuggestion),
+        frequency: 1, // Skip frequency calculation for speed
+        metadata: {
+          createdAt: error.createdAt,
+          confidence: error.aiSuggestion?.confidence || 0,
+          resolutionTime:
+            error.mlPrediction?.estimatedResolutionTime || "unknown",
+        },
+      };
+    });
+
+    console.log(`🔄 RAG: Indexing ${patterns.length} patterns in vector database...`);
+
+    // Add timeout to vectorDB indexing (5 second timeout)
+    try {
+      const indexPromise = this.vectorDB.indexPatterns(patterns);
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Vector DB indexing timeout")), 5000)
+      );
+      await Promise.race([indexPromise, timeoutPromise]);
+    } catch (indexError) {
+      console.warn(`⚠️ RAG: Vector DB indexing skipped/failed:`, indexError);
+    }
+
+    // Cache frequently accessed patterns
+    console.log(`🔄 RAG: Caching frequently accessed patterns...`);
+    patterns.forEach((pattern) => {
+      this.knowledgeBase.set(pattern.id, {
+        pattern: pattern.pattern,
+        similarity: 1.0,
+        errorType: pattern.errorType,
+        solution: pattern.solution,
+        frequency: pattern.frequency,
+      });
+    });
+
+    console.log(
+      `✅ RAG: Knowledge base populated with ${patterns.length} patterns`
+    );
   }
 
   /**

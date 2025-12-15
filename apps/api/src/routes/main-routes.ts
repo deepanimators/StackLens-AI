@@ -10478,13 +10478,16 @@ Format as JSON with the following structure:
   try {
     console.log('⏳ Waiting for RAG initialization to complete...');
 
-    // Create a timeout promise that resolves after 30 seconds
+    // Use shorter timeout for tests, longer for production
+    const ragInitTimeout = process.env.NODE_ENV === 'test' ? 10000 : 30000;
+
+    // Create a timeout promise that resolves after the specified duration
     const initPromise = ragSuggestionService.waitForInit();
     const timeoutPromise = new Promise<void>((resolve) => {
       setTimeout(() => {
-        console.warn('⚠️ RAG initialization timeout (30s), continuing...');
+        console.warn(`⚠️ RAG initialization timeout (${ragInitTimeout}ms), continuing...`);
         resolve();
-      }, 30000);
+      }, ragInitTimeout);
     });
 
     // Race both promises - whichever completes first

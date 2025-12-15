@@ -80,7 +80,6 @@ export class CredentialService {
             console.warn(`Warning: Could not fetch credential by name from database: ${error.message}`);
             return null;
         }
-        };
     }
 
     /**
@@ -126,32 +125,34 @@ export class CredentialService {
             // Sort by priority in memory (default 100 if priority is null/undefined)
             credentials.sort((a: any, b: any) => {
                 const aPriority = a.priority ?? 100;
-            const bPriority = b.priority ?? 100;
-            return aPriority - bPriority;
-        });
+                const bPriority = b.priority ?? 100;
+                return aPriority - bPriority;
+            });
 
-        const credential = credentials[0];
+            const credential = credentials[0];
 
-        // Update usage tracking
-        await this.recordUsage(credential.id);
+            // Update usage tracking
+            await this.recordUsage(credential.id);
 
-        return {
-            id: credential.id,
-            name: credential.name,
-            provider: credential.provider,
-            apiKey: credential.apiKey ? decrypt(credential.apiKey) : undefined,
-            apiSecret: credential.apiSecret ? decrypt(credential.apiSecret) : undefined,
-            endpoint: credential.endpoint,
-            priority: credential.priority ?? 100,
-            isActive: credential.isActive,
-        };
+            return {
+                id: credential.id,
+                name: credential.name,
+                provider: credential.provider,
+                apiKey: credential.apiKey ? decrypt(credential.apiKey) : undefined,
+                apiSecret: credential.apiSecret ? decrypt(credential.apiSecret) : undefined,
+                endpoint: credential.endpoint,
+                priority: credential.priority ?? 100,
+                isActive: credential.isActive,
+            };
         } catch (error: any) {
             // Handle table not existing or other database errors gracefully
             console.warn(`Warning: Could not fetch credential from database: ${error.message}`);
             console.warn(`Falling back to environment variables for ${provider} provider`);
             return null;
         }
-    }    /**
+    }
+
+    /**
      * Get all active credentials for a provider, sorted by priority
      * Useful for trying multiple providers in order
      * Handles backward compatibility if priority column doesn't exist yet
@@ -275,34 +276,40 @@ export class CredentialService {
      * List all credentials (without decrypted values)
      */
     async listCredentials(userId?: number): Promise<Omit<ApiCredential, 'apiKey' | 'apiSecret'>[]> {
-        const conditions = userId
-            ? eq(apiCredentials.userId, userId)
-            : eq(apiCredentials.isGlobal, true);
+        try {
+            const conditions = userId
+                ? eq(apiCredentials.userId, userId)
+                : eq(apiCredentials.isGlobal, true);
 
-        const credentials = await db
-            .select({
-                id: apiCredentials.id,
-                name: apiCredentials.name,
-                provider: apiCredentials.provider,
-                endpoint: apiCredentials.endpoint,
-                priority: apiCredentials.priority,
-                isActive: apiCredentials.isActive,
-                isGlobal: apiCredentials.isGlobal,
-                userId: apiCredentials.userId,
-                rateLimit: apiCredentials.rateLimit,
-                usageCount: apiCredentials.usageCount,
-                currentMonthUsage: apiCredentials.currentMonthUsage,
-                lastUsed: apiCredentials.lastUsed,
-                createdAt: apiCredentials.createdAt,
-                updatedAt: apiCredentials.updatedAt,
-            })
-            .from(apiCredentials)
-            .where(conditions);
+            const credentials = await db
+                .select({
+                    id: apiCredentials.id,
+                    name: apiCredentials.name,
+                    provider: apiCredentials.provider,
+                    endpoint: apiCredentials.endpoint,
+                    priority: apiCredentials.priority,
+                    isActive: apiCredentials.isActive,
+                    isGlobal: apiCredentials.isGlobal,
+                    userId: apiCredentials.userId,
+                    rateLimit: apiCredentials.rateLimit,
+                    usageCount: apiCredentials.usageCount,
+                    currentMonthUsage: apiCredentials.currentMonthUsage,
+                    lastUsed: apiCredentials.lastUsed,
+                    createdAt: apiCredentials.createdAt,
+                    updatedAt: apiCredentials.updatedAt,
+                })
+                .from(apiCredentials)
+                .where(conditions);
 
-        // Sort by priority in-memory
-        credentials.sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100));
+            // Sort by priority in-memory
+            credentials.sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100));
 
-        return credentials;
+            return credentials;
+        } catch (error: any) {
+            console.error("❌ Error in listCredentials:", error.message);
+            // Return empty array instead of throwing to prevent crashes
+            return [];
+        }
     }
 
     /**

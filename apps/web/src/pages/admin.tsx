@@ -110,6 +110,9 @@ interface MLModel {
   performanceGrade?: string | null;
   trainingTimeHours?: number;
   dataQualityScore?: number;
+  topFeatures?: Array<{ feature: string; importance: number }> | null;
+  trainingLoss?: number | null;
+  validationLoss?: number | null;
 }
 
 interface AdminStats {
@@ -763,7 +766,7 @@ export default function AdminDashboard() {
     if (!selectedUser) return;
 
     const formData = new FormData(event.target as HTMLFormElement);
-    const userData = {
+    const userData: any = {
       id: selectedUser.id,
       username: formData.get("username"),
       email: formData.get("email"),
@@ -1348,23 +1351,27 @@ export default function AdminDashboard() {
                       </div>
                     )}
 
-                    {model.topFeatures && model.topFeatures.length > 0 && (
+                    {model.topFeatures && 
+                      Array.isArray(model.topFeatures) && 
+                      model.topFeatures.length > 0 && (
                       <div className="space-y-2">
                         <span className="text-sm font-medium">
                           Top Features
                         </span>
                         <div className="space-y-1">
-                          {model.topFeatures
+                          {(model.topFeatures as Array<any>)
                             .slice(0, 3)
-                            .map((feature, index) => (
+                            .map((feature: any, index: number) => (
                               <div
                                 key={index}
                                 className="flex items-center justify-between text-xs"
                               >
                                 <span className="text-muted-foreground truncate flex-1">
-                                  {feature.feature
-                                    .replace(/_/g, " ")
-                                    .replace(/\b\w/g, (l) => l.toUpperCase())}
+                                  {typeof feature === 'object' && feature.feature
+                                    ? feature.feature
+                                        .replace(/_/g, " ")
+                                        .replace(/\b\w/g, (l: string) => l.toUpperCase())
+                                    : String(feature)}
                                 </span>
                                 <div className="flex items-center space-x-2 ml-2">
                                   <div className="w-12 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">

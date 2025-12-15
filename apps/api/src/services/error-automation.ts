@@ -296,6 +296,110 @@ export class ErrorAutomationService extends EventEmitter {
 
         return `${severity} severity with ${(mlConfidence * 100).toFixed(1)}% confidence below threshold of ${(threshold * 100).toFixed(0)}%`;
     }
+
+    /**
+     * Create a comprehensive ticket for an entire file analysis
+     * Combines all errors from a file into a single ticket with summary
+     */
+    async createFileTicket(
+        fileName: string,
+        totalErrors: number,
+        errorsBySeverity: { critical: number; high: number; medium: number; low: number },
+        errorSummary: string[],
+        storeNumber?: string,
+        kioskNumber?: string,
+        avgMLConfidence: number = 0.85
+    ): Promise<{ success: boolean; ticketKey?: string; message: string }> {
+        if (!this.enabled) {
+            return {
+                success: true,
+                message: "Automation disabled - ticket not created",
+            };
+        }
+
+        try {
+            // Only create ticket if there are errors and high confidence
+            if (totalErrors === 0) {
+                return {
+                    success: true,
+                    message: "No errors detected - ticket not needed",
+                };
+            }
+
+            // Determine severity based on error distribution
+            let fileSeverity = "LOW";
+            if (errorsBySeverity.critical > 0) {
+                fileSeverity = "CRITICAL";
+            } else if (errorsBySeverity.high > 0) {
+                fileSeverity = "HIGH";
+            } else if (errorsBySeverity.medium > 0) {
+                fileSeverity = "MEDIUM";
+            }
+
+            // Build comprehensive description
+            const description = `
+## File Analysis Report
+
+**File:** ${fileName}
+**Total Errors Found:** ${totalErrors}
+
+### Error Breakdown
+- **Critical:** ${errorsBySeverity.critical}
+- **High:** ${errorsBySeverity.high}
+- **Medium:** ${errorsBySeverity.medium}
+- **Low:** ${errorsBySeverity.low}
+
+### Location
+- **Store:** ${storeNumber || "N/A"}
+- **Kiosk:** ${kioskNumber || "N/A"}
+
+### Top Errors
+${errorSummary.slice(0, 10).map((err, i) => `${i + 1}. ${err}`).join("\n")}
+
+### Analysis Confidence
+${(avgMLConfidence * 100).toFixed(1)}%
+
+### Recommended Actions
+1. Review the uploaded file analysis results
+2. Prioritize critical errors for immediate resolution
+3. Track resolution progress in this ticket
+4. Update ticket when errors are fixed in subsequent uploads
+`.trim();
+
+            // Create ticket in Jira
+            const ticketResponse = await jiraService.createTicket({
+                title: `[FILE] ${fileName} - ${totalErrors} Errors Detected`,
+                description,
+                errorType: "FileAnalysisReport",
+                severity: fileSeverity,
+                message: `Comprehensive analysis of ${fileName} with ${totalErrors} total errors`,
+                storeNumber,
+                kioskNumber,
+                mlConfidence: avgMLConfidence,
+                errorDetails: {
+                    totalErrors,
+                    errorsBySeverity,
+                    fileName,
+                },
+            });
+
+            console.log(`[FileAutomation] Created file ticket: ${ticketResponse.key} for ${fileName}`);
+
+            this.statistics.ticketsCreated++;
+            return {
+                success: true,
+                ticketKey: ticketResponse.key,
+                message: `Created comprehensive ticket ${ticketResponse.key} for ${fileName}`,
+            };
+        } catch (error) {
+            console.error("[FileAutomation] Failed to create file ticket:", error);
+            this.statistics.failed++;
+            return {
+                success: false,
+                message: `Failed to create Jira ticket: ${error instanceof Error ? error.message : "Unknown error"}`,
+            };
+        }
+    }
 }
 
 // Export singleton

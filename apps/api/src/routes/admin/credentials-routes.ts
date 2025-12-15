@@ -11,11 +11,21 @@ const router = Router();
  */
 router.get("/", verifyToken, requireAdmin, async (req, res) => {
     try {
+        console.log("🔐 Listing credentials...");
         const credentials = await credentialService.listCredentials();
+        console.log(`✅ Found ${credentials.length} credentials`);
         res.json(credentials);
-    } catch (error) {
-        console.error("Error listing credentials:", error);
-        res.status(500).json({ error: "Failed to list credentials" });
+    } catch (error: any) {
+        console.error("❌ Error listing credentials:", error);
+        console.error("Error details:", {
+            message: error.message,
+            code: error.code,
+            stack: error.stack?.split('\n').slice(0, 3).join('\n')
+        });
+        res.status(500).json({
+            error: "Failed to list credentials",
+            details: error.message
+        });
     }
 });
 
@@ -63,6 +73,7 @@ router.post("/", verifyToken, requireAdmin, async (req, res) => {
         else if (providerLower === 'openai') defaultPriority = 40;
         else if (providerLower === 'anthropic') defaultPriority = 50;
 
+        console.log("🔐 Creating credential:", { name, provider: providerLower });
         const credential = await credentialService.createCredential({
             name,
             provider: provider.toLowerCase(),
@@ -75,6 +86,7 @@ router.post("/", verifyToken, requireAdmin, async (req, res) => {
             priority: priority !== undefined ? priority : defaultPriority,
         });
 
+        console.log("✅ Credential created successfully:", credential.id);
         res.status(201).json({
             id: credential.id,
             name: credential.name,
@@ -84,9 +96,17 @@ router.post("/", verifyToken, requireAdmin, async (req, res) => {
             isGlobal: credential.isGlobal,
             createdAt: credential.createdAt,
         });
-    } catch (error) {
-        console.error("Error creating credential:", error);
-        res.status(500).json({ error: "Failed to create credential" });
+    } catch (error: any) {
+        console.error("❌ Error creating credential:", error);
+        console.error("Error details:", {
+            message: error.message,
+            code: error.code,
+            stack: error.stack?.split('\n').slice(0, 3).join('\n')
+        });
+        res.status(500).json({
+            error: "Failed to create credential",
+            details: error.message
+        });
     }
 });
 
